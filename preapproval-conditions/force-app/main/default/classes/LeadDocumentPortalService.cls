@@ -421,7 +421,9 @@ public without sharing class LeadDocumentPortalService {
 
         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
         email.setToAddresses(recipients);
-        email.setSubject('Documents uploaded - ' + leadRecord.Name);
+        email.setSubject(
+            leadRecord.Name + ' - Documents Uploaded - ' + Datetime.now().format('M/d/yyyy')
+        );
         email.setHtmlBody(buildUploadNotificationBody(leadRecord, requestRecord, fileCount));
         email.setSaveAsActivity(false);
 
@@ -463,6 +465,8 @@ public without sharing class LeadDocumentPortalService {
         return addresses;
     }
 
+    // Matches the Lead Note Update email so the team gets one consistent house style: navy header,
+    // orange rule, the detail in a panel, and a pill button back into Salesforce.
     @TestVisible
     private static String buildUploadNotificationBody(
         Lead leadRecord,
@@ -471,14 +475,52 @@ public without sharing class LeadDocumentPortalService {
     ) {
         String leadUrl = URL.getOrgDomainUrl().toExternalForm() + '/lightning/r/Lead/' + leadRecord.Id + '/view';
         Integer safeFileCount = fileCount == null ? 0 : fileCount;
+        String fileLabel = safeFileCount == 1 ? '1 document' : String.valueOf(safeFileCount) + ' documents';
+        // Subject__c carries the document the borrower was actually asked for; Name is the
+        // grouping label, which on its own reads as "uploaded 1 document to Income".
+        String documentName = String.isNotBlank(requestRecord.Subject__c)
+            ? requestRecord.Subject__c
+            : requestRecord.Name;
+        String folderName = LeadDocumentRequestService.resolveFolderName(requestRecord.Category__c);
 
         return ''
-            + '<p>' + htmlEncode(buildBorrowerName(leadRecord)) + ' uploaded '
-            + String.valueOf(safeFileCount) + ' document' + (safeFileCount == 1 ? '' : 's')
-            + ' to <strong>' + htmlEncode(requestRecord.Name) + '</strong>.</p>'
-            + '<p><strong>Lead:</strong> ' + htmlEncode(leadRecord.Name) + '</p>'
-            + '<p>The upload is waiting for review.</p>'
-            + '<p><a href="' + htmlEncode(leadUrl) + '">Open Lead</a></p>';
+            + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;">'
+            + '<tr><td style="background:#1c3155;padding:26px 30px;">'
+            + '<div style="color:#ffa534;font-size:11px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Reach Home Loans</div>'
+            + '<div style="color:#ffffff;font-size:26px;font-weight:900;margin-top:8px;font-family:Arial,sans-serif;">Documents Uploaded</div>'
+            + '</td></tr>'
+            + '<tr><td style="padding:28px 30px 8px;">'
+            + '<div style="color:#8290aa;font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;font-family:Arial,sans-serif;">Lead</div>'
+            + '<div style="color:#142342;font-size:22px;font-weight:900;margin-top:6px;font-family:Arial,sans-serif;">'
+            + htmlEncode(leadRecord.Name) + '</div></td></tr>'
+            + '<tr><td style="padding:20px 30px 0;">'
+            + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f7f9fc;border-left:4px solid #ffa534;border-radius:8px;">'
+            + '<tr><td style="padding:20px 22px;">'
+            + '<div style="color:#8290aa;font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;font-family:Arial,sans-serif;margin-bottom:12px;">Waiting For Review</div>'
+            + '<div style="color:#22314f;font-size:15px;line-height:1.65;font-family:Arial,sans-serif;">'
+            + htmlEncode(buildBorrowerName(leadRecord)) + ' uploaded <strong>' + fileLabel + '</strong> for:</div>'
+            + '<div style="color:#142342;font-size:17px;font-weight:800;line-height:1.5;margin-top:10px;font-family:Arial,sans-serif;">'
+            + htmlEncode(documentName) + '</div>'
+            + '</td></tr></table></td></tr>'
+            + '<tr><td style="padding:18px 30px 0;">'
+            + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">'
+            + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;width:120px;">Borrower</td>'
+            + '<td style="padding:6px 0;color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
+            + htmlEncode(buildBorrowerName(leadRecord)) + '</td></tr>'
+            + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Filed Under</td>'
+            + '<td style="padding:6px 0;color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
+            + htmlEncode(folderName) + '</td></tr>'
+            + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Uploaded</td>'
+            + '<td style="padding:6px 0;color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
+            + Datetime.now().format('M/d/yyyy, h:mm a') + '</td></tr>'
+            + '</table></td></tr>'
+            + '<tr><td align="center" style="padding:28px 30px 30px;">'
+            + '<a href="' + htmlEncode(leadUrl) + '" style="display:inline-block;background:#ff9824;color:#122242;font-size:15px;font-weight:900;font-family:Arial,sans-serif;text-decoration:none;padding:14px 34px;border-radius:999px;">Review in Salesforce</a>'
+            + '</td></tr>'
+            + '<tr><td style="background:#f4f6fa;padding:18px 30px;border-top:1px solid #e2e7f0;">'
+            + '<div style="color:#77839c;font-size:12px;line-height:1.6;font-family:Arial,sans-serif;">'
+            + 'You are receiving this because you are the Loan Officer or Loan Partner on this lead.'
+            + '</div></td></tr></table>';
     }
 
     private static String htmlEncode(String value) {
