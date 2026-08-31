@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sent to the borrower when a Loan Officer or Loan Partner rejects a document uploaded against a pre-approval request. The portal button href is intentionally empty: LeadDocumentRequestService injects the Lead portal link at send time.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Lead Document Rejection</name>
+    <style>none</style>
+    <subject>Document Rejection Notice</subject>
+    <type>custom</type>
+    <uiType>SFX</uiType>
+    <relatedEntityType>Lead_Document_Request__c</relatedEntityType>
+</EmailTemplate>

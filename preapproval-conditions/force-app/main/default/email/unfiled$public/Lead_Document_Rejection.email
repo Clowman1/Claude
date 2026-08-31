@@ -1,0 +1,23 @@
+<html><head><style type="text/css">
+.portalButton {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: #0082cb;
+  font: normal normal bold 16px Arial, sans-serif;
+  line-height: 20px;
+  color: #ffffff !important;
+  text-decoration: none;
+}
+</style></head>
+<body style="font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#1f2937;">
+<p>Dear {{{Recipient.FirstName}}},</p>
+<p>Thank you for submitting this over to us for review. The following item needs your attention please:</p>
+<p><strong>{{{Lead_Document_Request__c.Name}}}</strong>&nbsp;-&nbsp;{{{Lead_Document_Request__c.Description__c}}}</p>
+<p>Reason for requesting again:</p>
+<p>{{{Lead_Document_Request__c.Rejection_Notes__c}}}</p>
+<p>Can you kindly assist to resolve this item as soon as possible? I'm here to assist you in every possible way. Please do not hesitate to contact me for any question or clarifications.</p>
+<p>Secure Conditions Portal:</p>
+<p><a class="portalButton" href="">Open Secure Portal</a></p>
+</body></html>

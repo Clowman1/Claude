@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <description>Borrower Portal Contact Card</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Borrower Portal Contact Card</masterLabel>
+    <targets>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page </target>
+        <target>lightningCommunity__Default </target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="contactFieldName" type="String" label="Please Enter the API of the field name from the Opportunity that you would like to show."/>
+        </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>
