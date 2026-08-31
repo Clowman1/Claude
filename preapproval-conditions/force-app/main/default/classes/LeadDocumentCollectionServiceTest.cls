@@ -456,6 +456,89 @@ private class LeadDocumentCollectionServiceTest {
     }
 
     @IsTest
+    static void borrowerBase64UploadStoresTheFileAndFlipsToReview() {
+        Lead leadRecord = createLead('base64-upload@example.com');
+        LeadDocumentRequestService.populateMissingPortalHashes(new Set<Id>{ leadRecord.Id });
+        Lead_Document_Request__c requestRecord = createRequest(leadRecord.Id, 'Bank Statement');
+        Lead leadWithHash = LeadDocumentRequestRepository.getInstance()
+            .selectLeadsByIds(new Set<Id>{ leadRecord.Id }).get(leadRecord.Id);
+        String portalHash = LeadDocumentRequestService.getLeadPortalHash(leadWithHash);
+
+        Test.startTest();
+        LeadDocumentPortalService.PortalRequest response = LeadDocumentPortalController.uploadBorrowerDocument(
+            portalHash,
+            requestRecord.Id,
+            'statement.pdf',
+            EncodingUtil.base64Encode(Blob.valueOf('a borrower document'))
+        );
+        LeadDocumentPortalController.notifyLeadTeamOfCompletedUpload(portalHash, requestRecord.Id, 1);
+        Test.stopTest();
+
+        Lead_Document_Request__c updatedRequest = [
+            SELECT Status__c FROM Lead_Document_Request__c WHERE Id = :requestRecord.Id
+        ];
+        ContentVersion storedVersion = [
+            SELECT Title, Folder__c, Lead_Document_Request__c
+            FROM ContentVersion
+            WHERE Lead_Document_Request__c = :requestRecord.Id
+            AND IsLatest = TRUE
+            LIMIT 1
+        ];
+        Integer linkCount = [
+            SELECT COUNT() FROM ContentDocumentLink WHERE LinkedEntityId = :requestRecord.Id
+        ];
+
+        System.assertEquals('Review', response.status);
+        System.assertEquals(1, response.fileCount, 'The borrower needs to see the attached count go up.');
+        System.assertEquals('Review', updatedRequest.Status__c);
+        System.assertEquals('statement.pdf', storedVersion.Title);
+        System.assertEquals('Income', storedVersion.Folder__c, 'The folder comes from the request category.');
+        System.assertEquals(1, linkCount, 'The document is linked to the request server-side, not by the browser.');
+    }
+
+    @IsTest
+    static void borrowerUploadRejectsEmptyAndForeignRequests() {
+        Lead leadRecord = createLead('upload-guards@example.com');
+        Lead otherLead = createLead('upload-guards-other@example.com');
+        LeadDocumentRequestService.populateMissingPortalHashes(new Set<Id>{ leadRecord.Id });
+        Lead_Document_Request__c foreignRequest = createRequest(otherLead.Id, 'Someone Else Statement');
+        Lead leadWithHash = LeadDocumentRequestRepository.getInstance()
+            .selectLeadsByIds(new Set<Id>{ leadRecord.Id }).get(leadRecord.Id);
+        String portalHash = LeadDocumentRequestService.getLeadPortalHash(leadWithHash);
+
+        Boolean emptyRejected = false;
+        Boolean foreignRejected = false;
+        Boolean missingRequestRejected = false;
+
+        Test.startTest();
+        try {
+            LeadDocumentPortalController.uploadBorrowerDocument(portalHash, foreignRequest.Id, 'x.pdf', '');
+        } catch (Exception expected) {
+            emptyRejected = true;
+        }
+        try {
+            LeadDocumentPortalController.uploadBorrowerDocument(
+                portalHash,
+                foreignRequest.Id,
+                'x.pdf',
+                EncodingUtil.base64Encode(Blob.valueOf('data'))
+            );
+        } catch (Exception expected) {
+            foreignRejected = true;
+        }
+        try {
+            LeadDocumentPortalController.uploadBorrowerDocument(portalHash, null, 'x.pdf', 'abcd');
+        } catch (Exception expected) {
+            missingRequestRejected = true;
+        }
+        Test.stopTest();
+
+        System.assertEquals(true, emptyRejected, 'An empty payload must not create a blank file.');
+        System.assertEquals(true, foreignRejected, 'A request on another Lead must not accept this session\'s upload.');
+        System.assertEquals(true, missingRequestRejected, 'Uploads must target a request.');
+    }
+
+    @IsTest
     static void portalUploadLinksFileAndSetsReview() {
         Lead leadRecord = createLead('portal@example.com');
         LeadDocumentRequestService.populateMissingPortalHashes(new Set<Id>{ leadRecord.Id });

@@ -175,6 +175,91 @@ public without sharing class LeadDocumentPortalService {
         return String.isNotBlank(userRecord.NMLS__c) || String.isNotBlank(userRecord.Headshot_URL__c);
     }
 
+    // lightning-file-upload does not work for site guest users, which is why no borrower has ever
+    // managed to upload a document through either portal. The borrower's browser sends the file as
+    // base64 instead and it is written here, in system mode, so the upload never depends on the
+    // guest user having record access to the Lead.
+    // ponytail: single request per file, so heap caps the file size at MAX_UPLOAD_BYTES. Chunked
+    // upload is the upgrade if borrowers start hitting the limit on bank statements.
+    private static final Integer MAX_UPLOAD_BYTES = 3500000;
+
+    public static PortalRequest uploadBorrowerDocument(
+        String hashFromURL,
+        Id requestId,
+        String fileName,
+        String base64Data
+    ) {
+        if (requestId == null) {
+            throw new LeadDocumentPortalException('A document request is required for borrower document upload.');
+        }
+        if (String.isBlank(base64Data)) {
+            throw new LeadDocumentPortalException('The file came through empty. Please try uploading it again.');
+        }
+
+        Lead leadRecord = getActivePortalLead(hashFromURL);
+        Lead_Document_Request__c requestRecord = LeadDocumentRequestRepository.getInstance()
+            .selectRequestForPortalUpload(requestId);
+        if (requestRecord == null) {
+            throw new LeadDocumentPortalException('Unable to locate the document request for upload.');
+        }
+        if (requestRecord.Lead__c != leadRecord.Id) {
+            throw new LeadDocumentPortalException('The document request does not belong to this lead portal session.');
+        }
+
+        Blob fileBody;
+        try {
+            fileBody = EncodingUtil.base64Decode(base64Data);
+        } catch (Exception decodeException) {
+            throw new LeadDocumentPortalException('That file could not be read. Please try a different file.');
+        }
+        if (fileBody.size() > MAX_UPLOAD_BYTES) {
+            throw new LeadDocumentPortalException(
+                'That file is larger than 3.5 MB. Please upload a smaller file, or send it to your loan team directly.'
+            );
+        }
+
+        String safeFileName = String.isBlank(fileName) ? 'Borrower Upload' : fileName.trim();
+        ContentVersion version = new ContentVersion(
+            Title = safeFileName,
+            PathOnClient = safeFileName,
+            VersionData = fileBody,
+            Folder__c = LeadDocumentRequestService.resolveFolderName(requestRecord.Category__c),
+            Lead_Document_Request__c = requestId,
+            Origin = 'H'
+        );
+        Database.insert(version, true, AccessLevel.SYSTEM_MODE);
+
+        associateContentVersions(new Set<Id>{ version.Id }, requestId);
+
+        if (requestRecord.Status__c != REVIEW_STATUS) {
+            Database.update(
+                new Lead_Document_Request__c(Id = requestId, Status__c = REVIEW_STATUS),
+                true,
+                AccessLevel.SYSTEM_MODE
+            );
+            requestRecord.Status__c = REVIEW_STATUS;
+        }
+
+        Decimal fileCount = LeadDocumentRequestRepository.getInstance()
+            .selectLinkedDocumentCountsByRequestIds(new Set<Id>{ requestId }).get(requestId);
+        return new PortalRequest(requestRecord, fileCount);
+    }
+
+    // Called once after a borrower's batch of files finishes, so selecting four documents sends one
+    // email naming the request rather than four separate ones.
+    public static void notifyLeadTeamOfCompletedUpload(String hashFromURL, Id requestId, Integer fileCount) {
+        if (requestId == null || fileCount == null || fileCount <= 0) {
+            return;
+        }
+        Lead leadRecord = getActivePortalLead(hashFromURL);
+        Lead_Document_Request__c requestRecord = LeadDocumentRequestRepository.getInstance()
+            .selectRequestForPortalUpload(requestId);
+        if (requestRecord == null || requestRecord.Lead__c != leadRecord.Id) {
+            return;
+        }
+        notifyLeadTeamOfUpload(leadRecord, requestRecord, fileCount);
+    }
+
     public static PortalRequest updateRequestOnFileUpload(List<Id> contentVersionIds, Id requestId, String hashFromURL) {
         if (requestId == null) {
             throw new LeadDocumentPortalException('A document request is required for borrower document upload.');

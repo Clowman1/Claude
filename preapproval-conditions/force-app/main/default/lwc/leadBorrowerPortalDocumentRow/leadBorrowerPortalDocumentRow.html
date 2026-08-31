@@ -3,36 +3,79 @@
         <div class="imbus-table-row">
             <div class="request-name">{request.name}</div>
             <div class="request-description">{request.description}</div>
+            <div class={statusClass}>{statusLabel}</div>
+            <template lwc:if={hasFiles}>
+                <div class="file-count">{fileCountLabel}</div>
+            </template>
             <div class="mobile-actions">
-                <lightning-file-upload
-                    label=""
-                    name="fileUploader"
-                    accept=".pdf,.png,.jpg,.jpeg,.doc"
-                    record-id={leadId}
-                    data-id="fileUploader"
-                    onuploadfinished={handleUploadFinished}
+                <div
+                    class={dropZoneClass}
+                    role="button"
+                    tabindex="0"
+                    ondragover={handleDragOver}
+                    ondragenter={handleDragOver}
+                    ondragleave={handleDragLeave}
+                    ondrop={handleDrop}
+                    onclick={handleBrowseClick}
+                    onkeydown={handleBrowseKeyDown}>
+                    <span class="drop-zone-label">{dropZoneLabel}</span>
+                </div>
+                <input
+                    type="file"
+                    class="file-input"
+                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.heic"
                     multiple
-                    variant="label-hidden">
-                </lightning-file-upload>
+                    onchange={handleFileInputChange} />
             </div>
+            <template lwc:if={showConfirmation}>
+                <div class="upload-confirmation" role="status">
+                    <span class="upload-check" aria-hidden="true">&#10003;</span>
+                    Received. Your loan team has been notified.
+                </div>
+            </template>
+            <template lwc:if={hasLocalError}>
+                <div class="upload-error" role="alert">{localError}</div>
+            </template>
         </div>
     </template>
     <template lwc:else>
         <div class="imbus-table-row slds-grid slds-grid_vertical-align-center">
             <div class="slds-col">{request.name}</div>
-            <div class="imbus-status-text slds-col" data-status={request.status}>{request.status}</div>
+            <div class="slds-col">
+                <div class={statusClass}>{statusLabel}</div>
+                <template lwc:if={hasFiles}>
+                    <div class="file-count">{fileCountLabel}</div>
+                </template>
+            </div>
             <div class="slds-col">{request.description}</div>
             <div class="slds-col upload-actions">
-                <lightning-file-upload
-                    label=""
-                    name="fileUploader"
-                    accept=".pdf,.png,.jpg,.jpeg,.doc"
-                    record-id={leadId}
-                    data-id="fileUploader"
-                    onuploadfinished={handleUploadFinished}
+                <div
+                    class={dropZoneClass}
+                    role="button"
+                    tabindex="0"
+                    ondragover={handleDragOver}
+                    ondragenter={handleDragOver}
+                    ondragleave={handleDragLeave}
+                    ondrop={handleDrop}
+                    onclick={handleBrowseClick}
+                    onkeydown={handleBrowseKeyDown}>
+                    <span class="drop-zone-label">{dropZoneLabel}</span>
+                </div>
+                <input
+                    type="file"
+                    class="file-input"
+                    accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.heic"
                     multiple
-                    variant="label-hidden">
-                </lightning-file-upload>
+                    onchange={handleFileInputChange} />
+                <template lwc:if={showConfirmation}>
+                    <div class="upload-confirmation" role="status">
+                        <span class="upload-check" aria-hidden="true">&#10003;</span>
+                        Received. Your loan team has been notified.
+                    </div>
+                </template>
+                <template lwc:if={hasLocalError}>
+                    <div class="upload-error" role="alert">{localError}</div>
+                </template>
             </div>
         </div>
     </template>

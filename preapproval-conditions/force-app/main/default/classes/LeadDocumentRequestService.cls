@@ -792,13 +792,13 @@ public with sharing class LeadDocumentRequestService {
         }
         String category = referenceRecord.Category__c;
         String label = referenceRecord.Borrower_Label__c;
-        if (category == 'ID' || label == 'ID' || isIdentificationItem(resolvedItemDescription)) {
+        if (category == 'Credit' || category == 'ID' || label == 'ID' || isIdentificationItem(resolvedItemDescription)) {
             return 'Identification';
         }
-        if (category == 'Assets' || category == 'Gift Letter' || label == 'Assets' || label == 'Gift Letter') {
+        if (category == 'Asset' || category == 'Assets' || category == 'Gift Letter' || label == 'Assets' || label == 'Gift Letter') {
             return 'Asset';
         }
-        if (category == 'REO') {
+        if (category == 'Other' || category == 'REO') {
             return 'Other Items';
         }
         if (String.isNotBlank(category)) {

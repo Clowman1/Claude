@@ -66,3 +66,100 @@
         grid-template-columns: minmax(72px, .85fr) minmax(112px, 1.25fr) minmax(118px, .9fr);
     }
 }
+/* Guest users cannot use lightning-file-upload, so this is a hand-built drop
+   zone over a hidden file input. */
+.file-input {
+    display: none;
+}
+
+.drop-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    border: 1px dashed #9aa7b4;
+    border-radius: 6px;
+    background: #f8fafc;
+    color: #33475b;
+    font-size: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.drop-zone:hover,
+.drop-zone:focus-visible {
+    border-color: #0082cb;
+    background: #eef6fc;
+    outline: none;
+}
+
+.drop-zone:focus-visible {
+    box-shadow: 0 0 0 2px rgba(0, 130, 203, 0.4);
+}
+
+.drop-zone--active {
+    border-color: #0082cb;
+    border-style: solid;
+    background: #e2f0fa;
+}
+
+.drop-zone--busy {
+    cursor: progress;
+    opacity: 0.75;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-needed {
+    background: #fdf0e4;
+    color: #8a5a0f;
+}
+
+.status-partial {
+    background: #eef2f6;
+    color: #33475b;
+}
+
+.status-submitted {
+    background: #e2efe8;
+    color: #1c6f4d;
+}
+
+.status-uploading {
+    background: #e2f0fa;
+    color: #0067a8;
+}
+
+.file-count {
+    margin-top: 0.25rem;
+    font-size: 0.76rem;
+    color: #5b6473;
+}
+
+.upload-confirmation {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: #1c6f4d;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.upload-check {
+    font-weight: 700;
+}
+
+.upload-error {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: #a8332b;
+}
