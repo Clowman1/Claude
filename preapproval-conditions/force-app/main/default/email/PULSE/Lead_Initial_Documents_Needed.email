@@ -1,0 +1,38 @@
+<messaging:emailTemplate subject="Items Needed - {!recipient.LastName} Mortgage Pre-Approval" recipientType="Lead">
+<messaging:htmlEmailBody >
+<html>
+<head>
+<style type="text/css">
+.myButton {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #0082cb;
+    font: normal normal bold 20px arial;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.myButton:hover,
+.myButton:focus {
+    background: #142850;
+    cursor: pointer;
+}
+</style>
+</head>
+<body style="height: auto; min-height: auto;">
+<span class="container"></span>
+<p>Hi {!recipient.FirstName},<br />
+<br />
+It was nice speaking with you earlier! As discussed, below are the items needed to bring you one step closer to purchasing a home! Please gather and upload them to the secure portal I've provided a link to below, and once received, I'll review them and reconnect with you to discuss the next steps to complete your pre-approval. Thank you in advance!</p>
+{{REQUESTED_DOCUMENT_LIST}}
+<br />
+<p>Here is a link to your secure portal</p>
+<div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></div>
+<br />
+<span class="end-container"></span>
+<p>{{SENDER_SIGNATURE}}</p>
+</body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>
