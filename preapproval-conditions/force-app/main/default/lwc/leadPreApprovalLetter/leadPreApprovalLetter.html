@@ -61,6 +61,17 @@
                         placeholder="Select property type"
                         onchange={handlePropertyChange}>
                     </lightning-combobox>
+
+                    <template lwc:if={isNonQm}>
+                        <lightning-combobox
+                            label="Non-QM Type"
+                            value={nonQmType}
+                            options={nonQmOptions}
+                            placeholder="Select programme"
+                            required
+                            onchange={handleNonQmChange}>
+                        </lightning-combobox>
+                    </template>
                 </div>
 
                 <lightning-textarea

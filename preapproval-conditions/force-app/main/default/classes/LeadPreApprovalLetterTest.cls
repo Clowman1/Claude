@@ -30,6 +30,7 @@ private class LeadPreApprovalLetterTest {
             675750,
             'Conventional',
             'Single Family',
+            null,
             'Most recent 12 months of bank statements\nCredit history',
             context.defaultSignerId
         );
@@ -62,7 +63,7 @@ private class LeadPreApprovalLetterTest {
 
         Test.startTest();
         String html = LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
-            leadRecord.Id, 500000, 400000, 'FHA', 'Condo', '   ', context.defaultSignerId
+            leadRecord.Id, 500000, 400000, 'FHA', 'Condo', null, '   ', context.defaultSignerId
         );
         Test.stopTest();
 
@@ -136,6 +137,51 @@ private class LeadPreApprovalLetterTest {
         System.assertEquals('<p>Final letter</p>', afterFinalize);
     }
 
+
+    @IsTest
+    static void nonQmPrintsItsProgrammeHyphenatedAfterTheFinancing() {
+        Lead leadRecord = createLead();
+        LeadPreApprovalLetterController.LetterContext context =
+            LeadPreApprovalLetterController.getContext(leadRecord.Id);
+
+        Test.startTest();
+        String html = LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+            leadRecord.Id, 900000, 630000, 'NON-QM', 'Single Family', 'DSCR', 'Credit history',
+            context.defaultSignerId
+        );
+        Test.stopTest();
+
+        System.assertEquals(true, html.contains('Non-QM - DSCR'),
+            'The letter prints the programme after the financing type.');
+        System.assertEquals(
+            'DSCR',
+            [SELECT Non_QM_Type__c FROM Lead WHERE Id = :leadRecord.Id].Non_QM_Type__c
+        );
+    }
+
+    @IsTest
+    static void switchingAwayFromNonQmClearsTheProgramme() {
+        Lead leadRecord = createLead();
+        LeadPreApprovalLetterController.LetterContext context =
+            LeadPreApprovalLetterController.getContext(leadRecord.Id);
+        LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+            leadRecord.Id, 900000, 630000, 'NON-QM', 'Single Family', 'ITIN', '', context.defaultSignerId
+        );
+
+        Test.startTest();
+        String html = LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+            leadRecord.Id, 900000, 630000, 'Conventional', 'Single Family', 'ITIN', '',
+            context.defaultSignerId
+        );
+        Test.stopTest();
+
+        System.assertEquals(
+            null,
+            [SELECT Non_QM_Type__c FROM Lead WHERE Id = :leadRecord.Id].Non_QM_Type__c,
+            'A programme must not survive a change of financing type.'
+        );
+        System.assertEquals(false, html.contains('ITIN'), 'Nor appear on the letter afterwards.');
+    }
     private static Lead createLead() {
         Lead leadRecord = new Lead(
             FirstName = 'Javine',

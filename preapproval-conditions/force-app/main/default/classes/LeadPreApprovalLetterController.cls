@@ -8,6 +8,9 @@
  */
 public with sharing class LeadPreApprovalLetterController {
     private static final String PRE_APPROVAL_STATUS = 'Pre-Approval';
+    // The stored picklist value is upper case; the letter prints the cased form the template uses.
+    private static final String NON_QM_VALUE = 'NON-QM';
+    private static final String NON_QM_DISPLAY = 'Non-QM';
     // Falls back to the Lead Owner if this user is ever deactivated or renamed.
     private static final String DEFAULT_SIGNER_NAME = 'Brandon Brotsky';
     private static final String COMPANY_NMLS = '2266637';
@@ -43,9 +46,12 @@ public with sharing class LeadPreApprovalLetterController {
         @AuraEnabled public Decimal loanAmount;
         @AuraEnabled public String financingType;
         @AuraEnabled public String propertyType;
+        @AuraEnabled public String nonQmType;
         @AuraEnabled public String docsReviewed;
         @AuraEnabled public List<PicklistOption> financingOptions;
         @AuraEnabled public List<PicklistOption> propertyOptions;
+        @AuraEnabled public List<PicklistOption> nonQmOptions;
+        @AuraEnabled public String nonQmTriggerValue;
         @AuraEnabled public List<SignerOption> signerOptions;
         @AuraEnabled public Id defaultSignerId;
     }
@@ -62,9 +68,12 @@ public with sharing class LeadPreApprovalLetterController {
             context.loanAmount = leadRecord.Loan_Amount__c;
             context.financingType = leadRecord.Loan_Type_1st_TD__c;
             context.propertyType = leadRecord.Property_Type__c;
+            context.nonQmType = leadRecord.Non_QM_Type__c;
             context.docsReviewed = leadRecord.Reviewed_Documents__c;
             context.financingOptions = describeOptions(Lead.Loan_Type_1st_TD__c);
             context.propertyOptions = describeOptions(Lead.Property_Type__c);
+            context.nonQmOptions = describeOptions(Lead.Non_QM_Type__c);
+            context.nonQmTriggerValue = NON_QM_VALUE;
             context.signerOptions = buildSignerOptions(leadRecord);
             context.defaultSignerId = context.signerOptions.isEmpty() ? null : context.signerOptions[0].userId;
             return context;
@@ -84,6 +93,7 @@ public with sharing class LeadPreApprovalLetterController {
         Decimal loanAmount,
         String financingType,
         String propertyType,
+        String nonQmType,
         String docsReviewed,
         Id signerId
     ) {
@@ -94,6 +104,9 @@ public with sharing class LeadPreApprovalLetterController {
                 Loan_Amount__c = loanAmount,
                 Loan_Type_1st_TD__c = financingType,
                 Property_Type__c = propertyType,
+                // Cleared when the financing is not Non-QM, so a stale sub-type cannot survive a
+                // change of loan type and reappear on a later letter.
+                Non_QM_Type__c = NON_QM_VALUE.equalsIgnoreCase(financingType) ? nonQmType : null,
                 Reviewed_Documents__c = docsReviewed
             );
             if (purchasePrice != null && purchasePrice != 0 && loanAmount != null) {
@@ -220,12 +233,27 @@ public with sharing class LeadPreApprovalLetterController {
         rows.add(termRow('APPLICANT', htmlEncode(borrowerName), false, true));
         rows.add(termRow('PURCHASE PRICE', formatCurrency(leadRecord.Purchase_Price__c), true, false));
         rows.add(termRow('LOAN AMOUNT', formatCurrency(leadRecord.Loan_Amount__c) + ltvSuffix, true, true));
-        rows.add(termRow('FINANCING', htmlEncode(leadRecord.Loan_Type_1st_TD__c), false, false));
+        rows.add(termRow('FINANCING', htmlEncode(buildFinancingLabel(leadRecord)), false, false));
         rows.add(termRow('PROPERTY TYPE', htmlEncode(leadRecord.Property_Type__c), false, true));
 
         return '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:13px;">'
             + String.join(rows, '')
             + '</table>';
+    }
+
+    // Non-QM prints with its programme hyphenated after it, as in "Non-QM - Bank Statement".
+    @TestVisible
+    private static String buildFinancingLabel(Lead leadRecord) {
+        String financing = leadRecord.Loan_Type_1st_TD__c;
+        if (String.isBlank(financing)) {
+            return '';
+        }
+        if (!NON_QM_VALUE.equalsIgnoreCase(financing)) {
+            return financing;
+        }
+        return String.isBlank(leadRecord.Non_QM_Type__c)
+            ? NON_QM_DISPLAY
+            : NON_QM_DISPLAY + ' - ' + leadRecord.Non_QM_Type__c;
     }
 
     private static String termRow(String label, String value, Boolean emphasise, Boolean shaded) {
@@ -307,7 +335,7 @@ public with sharing class LeadPreApprovalLetterController {
         List<Lead> leads = [
             SELECT Id, FirstName, LastName, Name, OwnerId, Owner.Name,
                    Purchase_Price__c, Loan_Amount__c, Loan_Type_1st_TD__c, Property_Type__c,
-                   Reviewed_Documents__c, Status
+                   Reviewed_Documents__c, Non_QM_Type__c, Status
             FROM Lead
             WHERE Id = :leadId
             WITH SYSTEM_MODE

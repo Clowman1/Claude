@@ -21,6 +21,7 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
     @track step = STEP_DETAILS;
     @track financingOptions = [];
     @track propertyOptions = [];
+    @track nonQmOptions = [];
     @track signerOptions = [];
 
     borrowerName = '';
@@ -28,6 +29,8 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
     loanAmount;
     financingType = '';
     propertyType = '';
+    nonQmType = '';
+    nonQmTriggerValue = 'NON-QM';
     docsReviewed = '';
     signerId;
     letterHtml = '';
@@ -75,7 +78,16 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
         if (!this.propertyType) {
             return 'Choose a property type.';
         }
+        if (this.isNonQm && !this.nonQmType) {
+            return 'Choose which Non-QM programme this is.';
+        }
         return '';
+    }
+
+    // The Non-QM programme is asked for only when it applies, and required once it does.
+    get isNonQm() {
+        return String(this.financingType || '').toUpperCase()
+            === String(this.nonQmTriggerValue || '').toUpperCase();
     }
 
     get generateDisabled() {
@@ -108,6 +120,9 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
             this.docsReviewed = context.docsReviewed || '';
             this.financingOptions = context.financingOptions || [];
             this.propertyOptions = context.propertyOptions || [];
+            this.nonQmOptions = context.nonQmOptions || [];
+            this.nonQmTriggerValue = context.nonQmTriggerValue || this.nonQmTriggerValue;
+            this.nonQmType = context.nonQmType || '';
             this.signerOptions = context.signerOptions || [];
             this.signerId = context.defaultSignerId;
         } catch (error) {
@@ -129,6 +144,15 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
 
     handleFinancingChange(event) {
         this.financingType = event.detail.value;
+        // Dropping the sub-type on the way out stops a stale programme riding along if the Loan
+        // Officer picks Non-QM, chooses DSCR, then switches the financing to Conventional.
+        if (!this.isNonQm) {
+            this.nonQmType = '';
+        }
+    }
+
+    handleNonQmChange(event) {
+        this.nonQmType = event.detail.value;
     }
 
     handlePropertyChange(event) {
@@ -159,6 +183,7 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
                 loanAmount: this.loanAmount,
                 financingType: this.financingType,
                 propertyType: this.propertyType,
+                nonQmType: this.nonQmType,
                 docsReviewed: this.docsReviewed,
                 signerId: this.signerId
             });

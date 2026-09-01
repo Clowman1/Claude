@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Non_QM_Type__c</fullName>
+    <description>Which Non-QM programme this is. Only meaningful when Loan Type (1st TD) is NON-QM; the pre-approval letter prints it after the financing type as "Non-QM - Bank Statement".</description>
+    <inlineHelpText>Only applies when the loan type is NON-QM.</inlineHelpText>
+    <label>Non-QM Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Bank Statement</fullName><default>false</default><label>Bank Statement</label></value>
+            <value><fullName>DSCR</fullName><default>false</default><label>DSCR</label></value>
+            <value><fullName>Foreign National</fullName><default>false</default><label>Foreign National</label></value>
+            <value><fullName>Asset Depletion</fullName><default>false</default><label>Asset Depletion</label></value>
+            <value><fullName>Community Mortgage</fullName><default>false</default><label>Community Mortgage</label></value>
+            <value><fullName>1099</fullName><default>false</default><label>1099</label></value>
+            <value><fullName>ITIN</fullName><default>false</default><label>ITIN</label></value>
+            <value><fullName>Other</fullName><default>false</default><label>Other</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
