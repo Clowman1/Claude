@@ -52,7 +52,7 @@
         <inputParameters>
             <name>description</name>
             <value>
-                <elementReference>Custom_Description</elementReference>
+                <elementReference>ManualConditionEntry.description</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -70,7 +70,7 @@
         <inputParameters>
             <name>category</name>
             <value>
-                <elementReference>Custom_Category</elementReference>
+                <elementReference>ManualConditionEntry.category</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -278,38 +278,6 @@
             <targetReference>Initial_References_Table_Screen</targetReference>
         </connector>
     </assignments>
-    <choices>
-        <name>Category_Asset</name>
-        <choiceText>Asset</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Asset</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>Category_Credit</name>
-        <choiceText>Credit</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Credit</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>Category_Income</name>
-        <choiceText>Income</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Income</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>Category_Other</name>
-        <choiceText>Other</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Other</stringValue>
-        </value>
-    </choices>
     <choices>
         <name>Additional_Requests</name>
         <choiceText>Additional Conditions</choiceText>
@@ -802,28 +770,11 @@
             <targetReference>Create_Custom_Request</targetReference>
         </connector>
         <fields>
-            <name>CustomRequestBanner</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Add a condition by hand&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Choose the type, then describe what the borrower needs to send. The description is what they see on their portal and in the request email.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Custom_Category</name>
-            <choiceReferences>Category_Income</choiceReferences>
-            <choiceReferences>Category_Asset</choiceReferences>
-            <choiceReferences>Category_Credit</choiceReferences>
-            <choiceReferences>Category_Other</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Condition Type</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <name>ManualConditionEntry</name>
+            <extensionName>c:leadManualConditionEntry</extensionName>
+            <fieldType>ComponentInstance</fieldType>
             <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Custom_Description</name>
-            <fieldText>Description</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>

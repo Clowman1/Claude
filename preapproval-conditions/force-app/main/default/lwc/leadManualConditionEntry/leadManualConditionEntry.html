@@ -1,0 +1,51 @@
+<template>
+    <section class="details-shell">
+        <div class="details-header">
+            <p class="eyebrow">Manual Add</p>
+            <h2>Add a condition by hand</h2>
+            <p>Pick the type, then describe what the borrower needs to send. The description is what they read on their portal and in the request email.</p>
+        </div>
+
+        <div class="group">
+            <div class="group-heading">
+                <span>Condition Type</span>
+                <small>Required</small>
+            </div>
+            <div class="card-grid four">
+                <button class={incomeClass} type="button" data-value="Income" onclick={handleTypeSelect}>
+                    <span class="card-title">Income</span>
+                    <span class="card-copy">Pay stubs, W-2s, tax returns, benefit or award letters.</span>
+                </button>
+                <button class={assetClass} type="button" data-value="Asset" onclick={handleTypeSelect}>
+                    <span class="card-title">Asset</span>
+                    <span class="card-copy">Bank and retirement statements, gift funds, earnest money.</span>
+                </button>
+                <button class={creditClass} type="button" data-value="Credit" onclick={handleTypeSelect}>
+                    <span class="card-title">Credit</span>
+                    <span class="card-copy">Identification, letters of explanation, housing history.</span>
+                </button>
+                <button class={otherClass} type="button" data-value="Other" onclick={handleTypeSelect}>
+                    <span class="card-title">Other</span>
+                    <span class="card-copy">Anything outside the three above. Files under Conditions.</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="group">
+            <div class="group-heading">
+                <span>What does the borrower need to send?</span>
+                <small>Required</small>
+            </div>
+            <textarea
+                class="description-input"
+                placeholder="Most Recent 2 Months Bank Statements for Accounts Being Used for Closing"
+                value={description}
+                oninput={handleDescriptionChange}></textarea>
+            <p class="field-hint">Write it the way you would say it to the borrower. Be specific about how many months or years you need.</p>
+        </div>
+
+        <template lwc:if={errorMessage}>
+            <div class="error">{errorMessage}</div>
+        </template>
+    </section>
+</template>
