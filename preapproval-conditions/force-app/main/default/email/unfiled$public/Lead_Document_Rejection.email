@@ -19,6 +19,5 @@
 <p style="background:#f7f9fc;border-left:4px solid #ffa534;border-radius:6px;padding:14px 18px;margin:16px 0;">{{{Lead_Document_Request__c.Rejection_Notes__c}}}</p>
 <p>Whenever you have a moment, you can add it in the same place you uploaded the first one. Everything you have already sent is still there, so there's no need to upload anything twice.</p>
 <p>Here's the link to your secure portal:</p>
-<p><a class="portalButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></p>
-<p>{{SENDER_SIGNATURE}}</p>
+<p><a class="portalButton" href="">Upload Files</a></p>
 </body></html>

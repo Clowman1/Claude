@@ -672,7 +672,7 @@ public with sharing class LeadDocumentRequestService {
         }
         email.setSubject(
             String.isBlank(rendered.getSubject())
-                ? 'One more thing for your pre-approval'
+                ? 'Need additional item(s) for your Pre-Approval'
                 : rendered.getSubject()
         );
         email.setHtmlBody(htmlBody);
@@ -1071,12 +1071,21 @@ public with sharing class LeadDocumentRequestService {
     private static String addSenderSignature(String htmlBody) {
         String signature = buildSenderSignature();
         String updatedBody = htmlBody;
+        Boolean replaced = false;
         // Both tokens are honored so existing templates keep working after the rename.
         if (updatedBody.contains(SENDER_SIGNATURE_PLACEHOLDER)) {
             updatedBody = updatedBody.replace(SENDER_SIGNATURE_PLACEHOLDER, signature);
+            replaced = true;
         }
         if (updatedBody.contains(OWNER_SIGNATURE_PLACEHOLDER)) {
             updatedBody = updatedBody.replace(OWNER_SIGNATURE_PLACEHOLDER, signature);
+            replaced = true;
+        }
+        // A double-brace placeholder is only literal text in a Visualforce template. In an HTML
+        // template Salesforce parses it as a merge field and refuses to render, so those templates
+        // carry no token and the signature is appended instead.
+        if (!replaced && String.isNotBlank(signature)) {
+            updatedBody += '<br/>' + signature;
         }
         return updatedBody;
     }
