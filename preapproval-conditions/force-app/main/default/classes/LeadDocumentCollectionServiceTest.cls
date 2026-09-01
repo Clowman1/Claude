@@ -201,7 +201,7 @@ private class LeadDocumentCollectionServiceTest {
         System.assertEquals('Income', LeadDocumentRequestService.resolveFolderName('Income'));
         System.assertEquals('Asset', LeadDocumentRequestService.resolveFolderName('Asset'));
         System.assertEquals('Credit', LeadDocumentRequestService.resolveFolderName('Credit'));
-        System.assertEquals('Conditions', LeadDocumentRequestService.resolveFolderName('Other'));
+        System.assertEquals('Credit', LeadDocumentRequestService.resolveFolderName('Other'));
         System.assertEquals(
             'Conditions',
             LeadDocumentRequestService.resolveFolderName(null),
@@ -492,7 +492,7 @@ private class LeadDocumentCollectionServiceTest {
         System.assertEquals(1, response.fileCount, 'The borrower needs to see the attached count go up.');
         System.assertEquals('Review', updatedRequest.Status__c);
         System.assertEquals('statement.pdf', storedVersion.Title);
-        System.assertEquals('Income', storedVersion.Folder__c, 'The folder comes from the request category.');
+        System.assertEquals(null, storedVersion.Folder__c, 'A freshly uploaded document is unfiled until someone reviews it.');
         System.assertEquals(1, linkCount, 'The document is linked to the request server-side, not by the browser.');
     }
 
@@ -628,14 +628,14 @@ private class LeadDocumentCollectionServiceTest {
 
         System.assertEquals('Review', response.status);
         System.assertEquals(requestRecord.Id, updatedVersion.Lead_Document_Request__c);
-        System.assertEquals('Income', updatedVersion.Folder__c);
+        System.assertEquals('Income', updatedVersion.Folder__c, 'Accepting files the document by its condition category.');
         System.assertEquals(2, documents.size());
         System.assert(documents[0].filename.contains('internal-bank'));
         System.assert(new Set<String>{ 'Review', 'Approved' }.contains(approvedResponse.status));
         System.assertEquals('Requested', rejectedResponse.status);
         System.assertEquals('Requested', updatedRequest.Status__c);
         System.assertEquals('Please upload the correct bank statement.', updatedRequest.Description__c);
-        System.assertEquals('Junk', updatedSecondVersion.Folder__c);
+        System.assertEquals('Not Needed', updatedSecondVersion.Folder__c, 'A returned document goes to Not Needed.');
     }
 
     @IsTest

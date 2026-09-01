@@ -223,7 +223,7 @@ public without sharing class LeadDocumentPortalService {
             Title = safeFileName,
             PathOnClient = safeFileName,
             VersionData = fileBody,
-            Folder__c = LeadDocumentRequestService.resolveFolderName(requestRecord.Category__c),
+            // No folder yet: filing happens when the lead team accepts or returns the document.
             Lead_Document_Request__c = requestId,
             Origin = 'H'
         );
@@ -280,9 +280,9 @@ public without sharing class LeadDocumentPortalService {
             throw new LeadDocumentPortalException('The document request does not belong to this lead portal session.');
         }
 
-        String folderName = LeadDocumentRequestService.resolveFolderName(requestRecord.Category__c);
         associateContentVersions(versionIds, requestId);
-        updateContentVersions(versionIds, folderName, requestId);
+        // Unfiled until a decision, same as the base64 upload path.
+        updateContentVersions(versionIds, null, requestId);
         Database.update(
             new Lead_Document_Request__c(Id = requestId, Status__c = REVIEW_STATUS),
             true,
@@ -481,7 +481,7 @@ public without sharing class LeadDocumentPortalService {
         String documentName = String.isNotBlank(requestRecord.Subject__c)
             ? requestRecord.Subject__c
             : requestRecord.Name;
-        String folderName = LeadDocumentRequestService.resolveFolderName(requestRecord.Category__c);
+        String conditionType = String.isBlank(requestRecord.Category__c) ? 'Other' : requestRecord.Category__c;
 
         return ''
             + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;">'
@@ -507,9 +507,9 @@ public without sharing class LeadDocumentPortalService {
             + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;width:120px;">Borrower</td>'
             + '<td style="padding:6px 0;color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
             + htmlEncode(buildBorrowerName(leadRecord)) + '</td></tr>'
-            + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Filed Under</td>'
+            + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Condition Type</td>'
             + '<td style="padding:6px 0;color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
-            + htmlEncode(folderName) + '</td></tr>'
+            + htmlEncode(conditionType) + '</td></tr>'
             + '<tr><td style="padding:6px 0;color:#8290aa;font-size:12px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Uploaded</td>'
             + '<td style="padding:6px 0;color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
             + Datetime.now().format('M/d/yyyy, h:mm a') + '</td></tr>'

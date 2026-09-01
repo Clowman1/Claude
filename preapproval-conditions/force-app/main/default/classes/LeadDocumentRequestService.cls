@@ -9,6 +9,7 @@ public with sharing class LeadDocumentRequestService {
     private static final String REVIEW_ACCEPTED = 'Accepted';
     private static final String REVIEW_REJECTED = 'Rejected';
     private static final String FALLBACK_FOLDER = 'Conditions';
+    private static final String NOT_NEEDED_FOLDER = 'Not Needed';
     private static final String REJECTION_TEMPLATE_DEVELOPER_NAME = 'Lead_Document_Rejection';
     private static final String EMAIL_TEMPLATE_DEVELOPER_NAME = 'Lead_Initial_Documents_Needed';
     private static final String FOLLOW_UP_TEMPLATE_DEVELOPER_NAME = 'Lead_Documents_Follow_Up';
@@ -26,7 +27,7 @@ public with sharing class LeadDocumentRequestService {
         'Income' => 'Income',
         'Asset' => 'Asset',
         'Credit' => 'Credit',
-        'Other' => FALLBACK_FOLDER
+        'Other' => 'Credit'
     };
 
     // The Name field is the grouping label shown above the document detail. A hand-added condition
@@ -326,9 +327,10 @@ public with sharing class LeadDocumentRequestService {
         }
         ensureLeadIsOpenForDocumentRequests(getLeadOrThrow(requestRecord.Lead__c));
 
-        String folderName = resolveFolderName(requestRecord.Category__c);
         associateContentVersions(versionIds, requestId);
-        updateContentVersions(versionIds, folderName, requestId);
+        // Left unfiled on purpose. The document lands in the folder matching its condition only
+        // once someone accepts it, and in Not Needed if it is sent back.
+        updateContentVersions(versionIds, null, requestId);
         Database.update(
             new Lead_Document_Request__c(Id = requestId, Status__c = 'Review'),
             true,
@@ -377,7 +379,14 @@ public with sharing class LeadDocumentRequestService {
         ensureLeadIsOpenForDocumentRequests(leadRecord);
         ensureCanActOnRequest(leadRecord);
 
-        updateLatestContentVersionReviewStatus(contentDocumentId, REVIEW_ACCEPTED, null, requestId);
+        // Filing happens on the decision, not the upload: until someone has looked at it, the
+        // document belongs in no folder rather than in a folder that implies it was accepted.
+        updateLatestContentVersionReviewStatus(
+            contentDocumentId,
+            REVIEW_ACCEPTED,
+            resolveFolderName(requestRecord.Category__c),
+            requestId
+        );
         String nextStatus;
         if (countPendingDocuments(requestId) > 0) {
             nextStatus = REVIEW_STATUS;
@@ -417,7 +426,9 @@ public with sharing class LeadDocumentRequestService {
         ensureLeadIsOpenForDocumentRequests(leadRecord);
         ensureCanActOnRequest(leadRecord);
 
-        updateLatestContentVersionReviewStatus(contentDocumentId, REVIEW_REJECTED, 'Junk', null);
+        // A returned document is filed under Not Needed so it stays on the Lead for the record
+        // without cluttering the folder the borrower's good copy will eventually land in.
+        updateLatestContentVersionReviewStatus(contentDocumentId, REVIEW_REJECTED, NOT_NEEDED_FOLDER, null);
         removeDocumentLink(requestId, contentDocumentId);
 
         Lead_Document_Request__c requestUpdate = new Lead_Document_Request__c(Id = requestId);
@@ -943,7 +954,8 @@ public with sharing class LeadDocumentRequestService {
         for (Id contentVersionId : contentVersionIds) {
             ContentVersion versionRecord = new ContentVersion(
                 Id = contentVersionId,
-                Folder__c = String.isBlank(folderName) ? FALLBACK_FOLDER : folderName,
+                // A blank folder is meaningful here: the document is waiting on a decision.
+                Folder__c = folderName,
                 Lead_Document_Request__c = requestId
             );
             if (Schema.SObjectType.ContentVersion.fields.getMap().containsKey(REVIEW_STATUS_FIELD)) {
