@@ -69,6 +69,8 @@ export default class LeadDocumentRequestManager extends LightningElement {
     @track rows = [];
     @track draftRows = [];
     leadName;
+    borrowerLastName;
+    linkCopied = false;
     borrowerEmail;
     portalLink;
     isConverted = false;
@@ -198,6 +200,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
         try {
             const data = await initializeData({ leadId });
             this.leadName = data.leadName;
+            this.borrowerLastName = data.borrowerLastName;
             this.borrowerEmail = data.borrowerEmail;
             this.portalLink = data.portalLink;
             this.isConverted = data.isConverted;
@@ -214,6 +217,87 @@ export default class LeadDocumentRequestManager extends LightningElement {
                 this.loadingRecordId = null;
             }
             this.isLoading = false;
+        }
+    }
+
+    // Loan Officers often want the portal link inside an email they are writing themselves, so the
+    // copy puts a ready-made hyperlink on the clipboard rather than a bare URL. Pasting into Outlook
+    // yields "Testiana Portal Link" as a link; pasting somewhere plain yields the URL.
+    get portalLinkLabel() {
+        const lastName = (this.borrowerLastName || '').trim();
+        return lastName ? `${lastName} Portal Link` : 'Borrower Portal Link';
+    }
+
+    get copyLinkLabel() {
+        return this.linkCopied ? 'Copied' : 'Copy Link';
+    }
+
+    get copyLinkIcon() {
+        return this.linkCopied ? 'utility:check' : 'utility:copy_to_clipboard';
+    }
+
+    get copyLinkTitle() {
+        return `Copy as "${this.portalLinkLabel}"`;
+    }
+
+    async handleCopyPortalLink() {
+        if (!this.portalLink) {
+            return;
+        }
+
+        const label = this.portalLinkLabel;
+        const html = `<a href="${this.portalLink}">${label}</a>`;
+
+        try {
+            if (navigator.clipboard && window.ClipboardItem) {
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': new Blob([html], { type: 'text/html' }),
+                        'text/plain': new Blob([this.portalLink], { type: 'text/plain' })
+                    })
+                ]);
+            } else {
+                this.copyHtmlFallback(html);
+            }
+            this.linkCopied = true;
+            this.showToast(`Copied as "${label}".`);
+            // ponytail: plain timeout reset. Good enough for a label that only says "Copied".
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                this.linkCopied = false;
+            }, 2500);
+        } catch (error) {
+            // Clipboard permission varies by browser, so fall back rather than fail in the user's face.
+            try {
+                this.copyHtmlFallback(html);
+                this.linkCopied = true;
+                this.showToast(`Copied as "${label}".`);
+            } catch (fallbackError) {
+                this.showError(fallbackError);
+            }
+        }
+    }
+
+    // Selecting rich markup and letting the browser copy it is the only route that survives
+    // browsers without the async clipboard API, and it keeps the hyperlink intact.
+    copyHtmlFallback(html) {
+        const holder = document.createElement('div');
+        holder.innerHTML = html;
+        holder.setAttribute('contenteditable', 'true');
+        holder.style.position = 'fixed';
+        holder.style.opacity = '0';
+        holder.style.pointerEvents = 'none';
+        document.body.appendChild(holder);
+        try {
+            const range = document.createRange();
+            range.selectNodeContents(holder);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+        } finally {
+            document.body.removeChild(holder);
         }
     }
 

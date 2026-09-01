@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Follow-up reminder for outstanding pre-approval documents. Resends the item list and the portal link without re-introducing the process.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Follow Up - Resend Link</name>
+    <style>none</style>
+    <subject>Follow Up - Items Needed for your Pre-Approval</subject>
+    <type>visualforce</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

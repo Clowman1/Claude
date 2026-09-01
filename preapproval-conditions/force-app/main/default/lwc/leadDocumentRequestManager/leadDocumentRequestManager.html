@@ -52,6 +52,10 @@
                     </div>
                     <template lwc:if={portalLink}>
                         <a class="portal-anchor" href={portalLink} target="_blank">Lead Portal Link</a>
+                        <button class="portal-copy" type="button" title={copyLinkTitle} onclick={handleCopyPortalLink}>
+                            <lightning-icon icon-name={copyLinkIcon} size="xx-small" alternative-text={copyLinkTitle}></lightning-icon>
+                            <span>{copyLinkLabel}</span>
+                        </button>
                     </template>
                 </div>
                 <div class="toolbar-actions">

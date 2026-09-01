@@ -1,0 +1,39 @@
+<messaging:emailTemplate subject="Follow Up - Items Needed for your Pre-Approval" recipientType="Lead">
+<messaging:htmlEmailBody >
+<html>
+<head>
+<style type="text/css">
+.myButton {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #0082cb;
+    font: normal normal bold 20px arial;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.myButton:hover,
+.myButton:focus {
+    background: #142850;
+    cursor: pointer;
+}
+</style>
+</head>
+<body style="height: auto; min-height: auto;">
+<span class="container"></span>
+<p>Hi {!recipient.FirstName},<br />
+<br />
+Circling back on the items below. Once these are in, I can keep everything moving on your pre-approval, so if you are able to get them over in the next day or two that would be a big help.</p>
+{{REQUESTED_DOCUMENT_LIST}}
+<br />
+<p>Anything you have already uploaded is still saved, so there is nothing to send twice. Here is your secure portal again:</p>
+<div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></div>
+<br />
+<p>As soon as I have them, I will review everything and follow up with your next steps.</p>
+<span class="end-container"></span>
+<p>{{SENDER_SIGNATURE}}</p>
+</body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

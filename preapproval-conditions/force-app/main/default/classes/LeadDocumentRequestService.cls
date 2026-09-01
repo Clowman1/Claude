@@ -11,6 +11,7 @@ public with sharing class LeadDocumentRequestService {
     private static final String FALLBACK_FOLDER = 'Conditions';
     private static final String REJECTION_TEMPLATE_DEVELOPER_NAME = 'Lead_Document_Rejection';
     private static final String EMAIL_TEMPLATE_DEVELOPER_NAME = 'Lead_Initial_Documents_Needed';
+    private static final String FOLLOW_UP_TEMPLATE_DEVELOPER_NAME = 'Lead_Documents_Follow_Up';
     private static final String REQUESTED_DOCUMENT_LIST_PLACEHOLDER = '{{REQUESTED_DOCUMENT_LIST}}';
     private static final String OWNER_SIGNATURE_PLACEHOLDER = '{{OWNER_SIGNATURE}}';
     private static final String SENDER_SIGNATURE_PLACEHOLDER = '{{SENDER_SIGNATURE}}';
@@ -101,6 +102,7 @@ public with sharing class LeadDocumentRequestService {
     public class LeadDocumentRequestData {
         @AuraEnabled public Id leadId;
         @AuraEnabled public String leadName;
+        @AuraEnabled public String borrowerLastName;
         @AuraEnabled public String borrowerEmail;
         @AuraEnabled public String portalLink;
         @AuraEnabled public Boolean isConverted;
@@ -170,6 +172,9 @@ public with sharing class LeadDocumentRequestService {
         LeadDocumentRequestData data = new LeadDocumentRequestData();
         data.leadId = leadRecord.Id;
         data.leadName = leadRecord.Name;
+        // Drives the "Testiana Portal Link" label when a Loan Officer copies the link to paste
+        // into an email of their own.
+        data.borrowerLastName = leadRecord.LastName;
         data.borrowerEmail = leadRecord.Email;
         data.portalLink = buildLeadPortalLink(leadRecord);
         data.isConverted = leadRecord.IsConverted;
@@ -457,7 +462,8 @@ public with sharing class LeadDocumentRequestService {
 
     public static List<EmailTemplateOption> getEmailTemplateOptions() {
         return new List<EmailTemplateOption>{
-            new EmailTemplateOption('Pre-Approval Docs Needed', EMAIL_TEMPLATE_DEVELOPER_NAME)
+            new EmailTemplateOption('Pre-Approval Docs Needed', EMAIL_TEMPLATE_DEVELOPER_NAME),
+            new EmailTemplateOption('Follow Up - Resend Link', FOLLOW_UP_TEMPLATE_DEVELOPER_NAME)
         };
     }
 
