@@ -28,6 +28,23 @@ public with sharing class LeadDocumentRequestService {
         'Other' => FALLBACK_FOLDER
     };
 
+    // The Name field is the grouping label the borrower sees above the document detail. A hand-added
+    // condition only supplies a type and a description, so the label is derived from the type.
+    private static final Map<String, String> GROUPING_BY_CATEGORY = new Map<String, String>{
+        'Income' => 'Income',
+        'Asset' => 'Asset',
+        'Credit' => 'Identification',
+        'Other' => 'Other Items'
+    };
+
+    public static String resolveGroupingName(String category) {
+        if (String.isBlank(category)) {
+            return 'Other Items';
+        }
+        String grouping = GROUPING_BY_CATEGORY.get(category);
+        return grouping == null ? category : grouping;
+    }
+
     public static String resolveFolderName(String category) {
         if (String.isBlank(category)) {
             return FALLBACK_FOLDER;
@@ -802,7 +819,7 @@ public with sharing class LeadDocumentRequestService {
             return 'Other Items';
         }
         if (String.isNotBlank(category)) {
-            return category;
+            return resolveGroupingName(category);
         }
         return String.isNotBlank(label) ? label : 'Condition';
     }

@@ -60,7 +60,7 @@ private class LeadDocumentCollectionServiceTest {
         System.assert(preview.htmlBody.contains('Hi Test,'));
         System.assert(preview.htmlBody.contains('items needed to bring you one step closer'));
         System.assert(preview.htmlBody.contains('complete your pre-approval'));
-        System.assert(preview.htmlBody.contains('Here is a link to your secure folder'));
+        System.assert(preview.htmlBody.contains('Here is a link to your secure portal'));
         System.assert(preview.htmlBody.contains('Pay Stub'));
         System.assert(preview.htmlBody.indexOf('Pay Stub') < preview.htmlBody.indexOf('Upload Files'));
         System.assert(preview.htmlBody.indexOf('Upload Files') < preview.htmlBody.indexOf('327 Plaza Real'));
