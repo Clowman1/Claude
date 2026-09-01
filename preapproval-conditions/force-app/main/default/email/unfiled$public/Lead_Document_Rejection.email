@@ -11,13 +11,15 @@
   text-decoration: none;
 }
 </style></head>
-<body style="font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#1f2937;">
-<p>Dear {{{Recipient.FirstName}}},</p>
-<p>Thank you for submitting this over to us for review. The following item needs your attention please:</p>
+<body style="font-family:Arial,sans-serif;font-size:14px;line-height:22px;color:#1f2937;">
+<p>Hi {{{Recipient.FirstName}}},</p>
+<p>Thank you for sending that over. I've had a look at what you uploaded for:</p>
 <p><strong>{{{Lead_Document_Request__c.Subject__c}}}</strong></p>
-<p>Reason for requesting again:</p>
-<p>{{{Lead_Document_Request__c.Rejection_Notes__c}}}</p>
-<p>Can you kindly assist to resolve this item as soon as possible? I'm here to assist you in every possible way. Please do not hesitate to contact me for any question or clarifications.</p>
+<p>To move this one forward, there's a little more I need from you:</p>
+<p style="background:#f7f9fc;border-left:4px solid #ffa534;border-radius:6px;padding:14px 18px;margin:16px 0;">{{{Lead_Document_Request__c.Rejection_Notes__c}}}</p>
+<p>Whenever you have a moment, you can add it in the same place you uploaded the first one. Everything you have already sent is still there, so there's no need to upload anything twice.</p>
 <p>Here's the link to your secure portal:</p>
-<p><a class="portalButton" href="">Open Secure Portal</a></p>
+<p><a class="portalButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></p>
+<p>If anything here is unclear, or you're having trouble tracking the document down, just reply to this email and I'll help you sort it out.</p>
+<p>{{SENDER_SIGNATURE}}</p>
 </body></html>

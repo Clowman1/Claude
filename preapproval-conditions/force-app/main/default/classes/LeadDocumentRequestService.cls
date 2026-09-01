@@ -28,21 +28,13 @@ public with sharing class LeadDocumentRequestService {
         'Other' => FALLBACK_FOLDER
     };
 
-    // The Name field is the grouping label the borrower sees above the document detail. A hand-added
-    // condition only supplies a type and a description, so the label is derived from the type.
-    private static final Map<String, String> GROUPING_BY_CATEGORY = new Map<String, String>{
-        'Income' => 'Income',
-        'Asset' => 'Asset',
-        'Credit' => 'Identification',
-        'Other' => 'Other Items'
-    };
-
+    // The Name field is the grouping label shown above the document detail. A hand-added condition
+    // only supplies a type and a description, so the label is the type the Loan Officer picked --
+    // verbatim. Renaming Credit to Identification here made the table disagree with the choice they
+    // had just made. Catalog-derived conditions keep their own friendlier labels in
+    // resolveReferenceConditionName.
     public static String resolveGroupingName(String category) {
-        if (String.isBlank(category)) {
-            return 'Other Items';
-        }
-        String grouping = GROUPING_BY_CATEGORY.get(category);
-        return grouping == null ? category : grouping;
+        return String.isBlank(category) ? 'Other' : category;
     }
 
     public static String resolveFolderName(String category) {
@@ -635,44 +627,66 @@ public with sharing class LeadDocumentRequestService {
         populateMissingPortalHashes(new Set<Id>{ leadId });
     }
 
-    // Mirrors the Transaction rejection path: the borrower is told which item came back and why.
-    // Rendered against the request as whatId so the template can merge the item name, description
-    // and rejection reason; the Lead is the whoId so {{{Recipient.FirstName}}} resolves. Sent as an
-    // Activity, which is what preserves earlier rejection wording once Rejection_Notes__c is
-    // overwritten by the next rejection on the same item.
+    // Sent when a Loan Officer or Loan Partner sends an item back. Deliberately not called a
+    // rejection to the borrower: the copy says we looked and need a bit more. The other half of the
+    // lead team is CC'd, so whoever did not do the reviewing still sees what was asked for.
+    // Sends from the reviewing user rather than an org-wide address so the borrower's reply lands
+    // with the person who looked at their document.
     private static void sendBorrowerRejectionEmail(Lead leadRecord, Id requestId) {
         if (leadRecord == null || String.isBlank(leadRecord.Email)) {
-            return;
+            throw new LeadDocumentRequestException(
+                'This lead has no email address, so the borrower could not be told what is still needed.'
+            );
         }
         EmailTemplate template = LeadDocumentRequestRepository.getInstance()
             .selectEmailTemplateByDeveloperName(REJECTION_TEMPLATE_DEVELOPER_NAME);
         if (template == null) {
-            return;
+            throw new LeadDocumentRequestException(
+                'The borrower follow-up email template is missing, so no email was sent.'
+            );
         }
 
-        try {
-            ensurePortalHash(leadRecord.Id);
-            Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
-                template.Id,
-                leadRecord.Id,
-                requestId
-            );
-            rendered.setTargetObjectId(leadRecord.Id);
-            rendered.setTreatTargetObjectAsRecipient(true);
-            rendered.setHtmlBody(repairLeadPortalLinks(rendered.getHtmlBody(), leadRecord));
-            rendered.setSaveAsActivity(true);
-            if (!Test.isRunningTest()) {
-                Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ rendered });
-            }
-        } catch (Exception rejectionEmailException) {
-            // A template or link problem must not roll back the rejection itself: the document is
-            // already unlinked and the reason is already saved on the request.
-            System.debug(
-                LoggingLevel.ERROR,
-                'Lead rejection email failed for request ' + requestId + ' :: ' +
-                    rejectionEmailException.getTypeName() + ': ' + rejectionEmailException.getMessage()
-            );
+        ensurePortalHash(leadRecord.Id);
+        Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
+            template.Id,
+            leadRecord.Id,
+            requestId
+        );
+
+        String htmlBody = rendered.getHtmlBody();
+        htmlBody = addLeadPortalLink(htmlBody, leadRecord);
+        htmlBody = addSenderSignature(htmlBody);
+        htmlBody = repairLeadPortalLinks(htmlBody, leadRecord);
+
+        Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+        email.setToAddresses(new List<String>{ leadRecord.Email });
+        List<String> ccAddresses = buildDefaultCcAddresses(leadRecord);
+        if (!ccAddresses.isEmpty()) {
+            email.setCcAddresses(ccAddresses);
         }
+        email.setSubject(
+            String.isBlank(rendered.getSubject())
+                ? 'One more thing for your pre-approval'
+                : rendered.getSubject()
+        );
+        email.setHtmlBody(htmlBody);
+        email.setWhatId(requestId);
+        email.setSaveAsActivity(true);
+        String senderEmail = currentUserEmail();
+        if (String.isNotBlank(senderEmail)) {
+            email.setReplyTo(senderEmail);
+        }
+
+        if (!Test.isRunningTest()) {
+            Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ email });
+        }
+    }
+
+    private static String currentUserEmail() {
+        User sender = LeadDocumentRequestRepository.getInstance()
+            .selectUsersByIds(new Set<Id>{ UserInfo.getUserId() })
+            .get(UserInfo.getUserId());
+        return sender == null ? null : sender.Email;
     }
 
     // The portal button is authored with an empty href and the real link is injected at send time,
