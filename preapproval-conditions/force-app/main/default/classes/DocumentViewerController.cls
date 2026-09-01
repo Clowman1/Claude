@@ -1,4 +1,6 @@
 public without sharing class DocumentViewerController {
+    // 3.5 MB, the same ceiling as the borrower upload path: base64 in and out of Apex is heap-bound.
+    private static final Integer MAX_ROTATED_BYTES = 3500000;
     private static final Map<String, String> FILETYPE_TO_ICON_MAP = new Map<String, String>{
         'jpg' => 'doctype:image',
         'jpeg' => 'doctype:image',
@@ -175,6 +177,112 @@ public without sharing class DocumentViewerController {
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+    }
+
+    /**
+     * Saves a rotated copy of a document as a NEW version of the same ContentDocument, so every
+     * ContentDocumentLink, the condition it belongs to, and the folder all survive the rotation.
+     * Replacing the file instead would break the links and orphan it, which is exactly the failure
+     * mode the Lead linking fix was written to stop.
+     *
+     * The rotation itself happens in the browser: canvas for images, pdf-lib for PDFs. Apex cannot
+     * re-encode either format, so it only persists the bytes it is handed.
+     */
+    @AuraEnabled
+    public static Id saveRotatedDocument(Id contentDocumentId, String base64Data, String fileName) {
+        if (contentDocumentId == null || String.isBlank(base64Data)) {
+            throw new AuraHandledException('A document and its rotated contents are required.');
+        }
+
+        try {
+            List<ContentDocument> documents = retrieveContentDocs(new Set<Id>{ contentDocumentId });
+            if (documents.isEmpty()) {
+                throw new AuraHandledException('File not found.');
+            }
+
+            ContentVersion current = [
+                SELECT Id, Title, PathOnClient, FileExtension, Folder__c, Lead_Document_Request__c, Condition__c
+                FROM ContentVersion
+                WHERE Id = :documents[0].LatestPublishedVersionId
+                WITH SYSTEM_MODE
+                LIMIT 1
+            ];
+
+            Blob rotatedBody;
+            try {
+                rotatedBody = EncodingUtil.base64Decode(base64Data);
+            } catch (Exception decodeException) {
+                throw new AuraHandledException('The rotated file could not be read. Please try again.');
+            }
+            if (rotatedBody.size() > MAX_ROTATED_BYTES) {
+                throw new AuraHandledException(
+                    'That file is too large to rotate and save here. Please rotate it before uploading.'
+                );
+            }
+
+            ContentVersion rotated = new ContentVersion(
+                // Setting ContentDocumentId adds a version rather than creating a separate file.
+                ContentDocumentId = contentDocumentId,
+                Title = current.Title,
+                PathOnClient = String.isBlank(fileName) ? current.PathOnClient : fileName,
+                VersionData = rotatedBody,
+                Folder__c = current.Folder__c,
+                Lead_Document_Request__c = current.Lead_Document_Request__c,
+                Condition__c = current.Condition__c,
+                ReasonForChange = 'Rotated by ' + UserInfo.getName()
+            );
+            Database.insert(rotated, true, AccessLevel.SYSTEM_MODE);
+            return rotated.Id;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    /**
+     * Returns the current bytes so the browser can rotate them. Fetching the file over its download
+     * URL fails inside a Lightning modal on some browsers, and this keeps the whole round trip in
+     * one place regardless of where the modal is opened from.
+     */
+    @AuraEnabled
+    public static DocumentContentDto getDocumentContent(Id contentDocumentId) {
+        if (contentDocumentId == null) {
+            throw new AuraHandledException('A document is required.');
+        }
+        try {
+            List<ContentDocument> documents = retrieveContentDocs(new Set<Id>{ contentDocumentId });
+            if (documents.isEmpty()) {
+                throw new AuraHandledException('File not found.');
+            }
+
+            ContentVersion current = [
+                SELECT Id, Title, FileExtension, ContentSize, VersionData
+                FROM ContentVersion
+                WHERE Id = :documents[0].LatestPublishedVersionId
+                WITH SYSTEM_MODE
+                LIMIT 1
+            ];
+            if (current.ContentSize != null && current.ContentSize > MAX_ROTATED_BYTES) {
+                throw new AuraHandledException(
+                    'That file is too large to rotate here. Please rotate it before uploading.'
+                );
+            }
+
+            DocumentContentDto dto = new DocumentContentDto();
+            dto.contentVersionId = current.Id;
+            dto.title = current.Title;
+            dto.extension = current.FileExtension == null ? '' : current.FileExtension.toLowerCase();
+            dto.base64Data = EncodingUtil.base64Encode(current.VersionData);
+            return dto;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    public class DocumentContentDto {
+        @AuraEnabled public Id contentVersionId;
+        @AuraEnabled public String title;
+        @AuraEnabled public String extension;
+        @AuraEnabled public String base64Data;
     }
 
     // Moving a document re-points it at another request or condition and re-derives the folder

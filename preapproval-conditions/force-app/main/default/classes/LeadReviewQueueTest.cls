@@ -129,6 +129,106 @@ private class LeadReviewQueueTest {
         System.assertEquals('statement.pdf', documents[0].filename);
     }
 
+    @IsTest
+    static void documentContentComesBackForRotation() {
+        Lead leadRecord = buildLead(UserInfo.getUserId(), null);
+        Lead_Document_Request__c requestRecord = buildRequest(leadRecord.Id, 'Bank Statements', 'Asset');
+        Id contentDocumentId = attachDocumentReturningDocId(requestRecord.Id, 'statement.pdf');
+
+        Test.startTest();
+        DocumentViewerController.DocumentContentDto content =
+            DocumentViewerController.getDocumentContent(contentDocumentId);
+        Test.stopTest();
+
+        System.assertEquals('statement', content.title);
+        System.assertEquals('pdf', content.extension);
+        System.assertNotEquals(null, content.base64Data, 'The browser needs the bytes to rotate them.');
+    }
+
+    @IsTest
+    static void rotatedSaveAddsAVersionAndKeepsTheLinks() {
+        Lead leadRecord = buildLead(UserInfo.getUserId(), null);
+        Lead_Document_Request__c requestRecord = buildRequest(leadRecord.Id, 'Bank Statements', 'Asset');
+        Id contentDocumentId = attachDocumentReturningDocId(requestRecord.Id, 'statement.pdf');
+        Integer linksBefore = [
+            SELECT COUNT() FROM ContentDocumentLink WHERE ContentDocumentId = :contentDocumentId
+        ];
+
+        Test.startTest();
+        DocumentViewerController.saveRotatedDocument(
+            contentDocumentId,
+            EncodingUtil.base64Encode(Blob.valueOf('rotated bytes')),
+            null
+        );
+        Test.stopTest();
+
+        List<ContentVersion> versions = [
+            SELECT Id, IsLatest, Folder__c, Lead_Document_Request__c
+            FROM ContentVersion
+            WHERE ContentDocumentId = :contentDocumentId
+            ORDER BY CreatedDate
+        ];
+        Integer linksAfter = [
+            SELECT COUNT() FROM ContentDocumentLink WHERE ContentDocumentId = :contentDocumentId
+        ];
+
+        System.assertEquals(2, versions.size(), 'Rotating adds a version rather than a second file.');
+        System.assertEquals(
+            linksBefore,
+            linksAfter,
+            'Every link survives the rotation, so the document cannot be orphaned by it.'
+        );
+        System.assertEquals(
+            requestRecord.Id,
+            [SELECT Lead_Document_Request__c FROM ContentVersion
+             WHERE ContentDocumentId = :contentDocumentId AND IsLatest = TRUE LIMIT 1].Lead_Document_Request__c,
+            'The rotated version stays attached to its condition.'
+        );
+    }
+
+    @IsTest
+    static void rotateAndContentRejectMissingInput() {
+        Boolean rotateRejected = false;
+        Boolean contentRejected = false;
+
+        Test.startTest();
+        try {
+            DocumentViewerController.saveRotatedDocument(null, null, null);
+        } catch (Exception expected) {
+            rotateRejected = true;
+        }
+        try {
+            DocumentViewerController.getDocumentContent(null);
+        } catch (Exception expected) {
+            contentRejected = true;
+        }
+        Test.stopTest();
+
+        System.assertEquals(true, rotateRejected);
+        System.assertEquals(true, contentRejected);
+    }
+
+    private static Id attachDocumentReturningDocId(Id requestId, String title) {
+        ContentVersion version = new ContentVersion(
+            Title = title.substringBeforeLast('.'),
+            PathOnClient = title,
+            VersionData = Blob.valueOf('rotate test file'),
+            Lead_Document_Request__c = requestId,
+            Folder__c = 'Asset'
+        );
+        insert version;
+        Id contentDocumentId = [
+            SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id
+        ].ContentDocumentId;
+        insert new ContentDocumentLink(
+            ContentDocumentId = contentDocumentId,
+            LinkedEntityId = requestId,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        return contentDocumentId;
+    }
+
     // ---------- helpers ----------
 
     private static ConditionReviewQueueService.LoanQueueDto findEntry(

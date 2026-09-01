@@ -1,0 +1,73 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="rotate-rename-heading" class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCancel}>
+                    <lightning-icon icon-name="utility:close" size="small" variant="inverse"></lightning-icon>
+                </button>
+                <h2 id="rotate-rename-heading" class="slds-modal__title slds-hyphenate">Rotate &amp; Rename</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium rotate-body">
+                <template lwc:if={showSpinner}>
+                    <lightning-spinner alternative-text="Working" size="medium"></lightning-spinner>
+                </template>
+
+                <template lwc:if={hasError}>
+                    <div class="rotate-error" role="alert">{errorMessage}</div>
+                </template>
+
+                <div class="rotate-toolbar">
+                    <lightning-input
+                        class="rotate-title"
+                        label="File name"
+                        value={workingTitle}
+                        oninput={handleTitleChange}>
+                    </lightning-input>
+                    <div class="rotate-buttons">
+                        <lightning-button
+                            label="Rotate left"
+                            icon-name="utility:rotate"
+                            disabled={isLoading}
+                            onclick={handleRotateLeft}>
+                        </lightning-button>
+                        <lightning-button
+                            label="Rotate right"
+                            icon-name="utility:redo"
+                            disabled={isLoading}
+                            onclick={handleRotateRight}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <template lwc:if={hasRotateDisabledReason}>
+                    <p class="rotate-note">{rotateDisabledReason}</p>
+                </template>
+
+                <div class={previewWrapperClass}>
+                    <template lwc:if={isImage}>
+                        <img class="rotate-preview" src={previewUrl} alt={workingTitle} style={previewStyle} />
+                    </template>
+                    <template lwc:elseif={isPdf}>
+                        <iframe class="rotate-preview rotate-preview--pdf" src={previewUrl} title={workingTitle} style={previewStyle}></iframe>
+                    </template>
+                    <template lwc:else>
+                        <p class="rotate-note">No preview available for this file type. You can still rename it.</p>
+                    </template>
+                </div>
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button
+                    class="slds-m-left_x-small"
+                    label="Save"
+                    variant="brand"
+                    disabled={saveDisabled}
+                    onclick={handleSave}>
+                </lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
