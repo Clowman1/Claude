@@ -12,11 +12,11 @@
                 <small>Required</small>
             </div>
             <div class="card-grid two">
-                <button class={purchaseClass} type="button" data-field="loanPurpose" data-value="Purchase" onclick={handleSelect}>
+                <button class={purchaseClass} type="button" data-field="loanPurpose" data-value="Purchase" onclick={handleSelect} onkeydown={handleKeyDown}>
                     <span class="card-title">Purchase</span>
                     <span class="card-copy">Starts with common identification and purchase asset defaults.</span>
                 </button>
-                <button class={refinanceClass} type="button" data-field="loanPurpose" data-value="Refinance" onclick={handleSelect}>
+                <button class={refinanceClass} type="button" data-field="loanPurpose" data-value="Refinance" onclick={handleSelect} onkeydown={handleKeyDown}>
                     <span class="card-title">Refinance</span>
                     <span class="card-copy">Starts with common identification defaults.</span>
                 </button>

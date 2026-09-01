@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 
 export default class LeadInitialBundleDetailsCards extends LightningElement {
     @api loanPurpose;
@@ -29,6 +29,16 @@ export default class LeadInitialBundleDetailsCards extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('employmentType', null));
         this.dispatchEvent(new FlowAttributeChangeEvent('selfEmploymentType', null));
         this.errorMessage = '';
+        // Loan purpose is the only choice on this screen, so picking a card is the whole decision
+        // and it advances the flow itself. Matches the chooser screen before it.
+        this.dispatchEvent(new FlowNavigationNextEvent());
+    }
+
+    handleKeyDown(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.handleSelect(event);
+        }
     }
 
     @api
