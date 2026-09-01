@@ -1,0 +1,114 @@
+.letter-shell {
+    position: relative;
+    min-height: 20rem;
+}
+
+.letter-header {
+    border-bottom: 1px solid #e2e7f0;
+    padding-bottom: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.eyebrow {
+    color: #ffa534;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+}
+
+.letter-header h2 {
+    color: #14284b;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+
+.sub {
+    color: #5a6b86;
+    font-size: 0.85rem;
+    margin: 0.3rem 0 0;
+}
+
+.letter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.field-grid {
+    display: grid;
+    gap: 0.85rem 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.loan-amount-cell {
+    position: relative;
+}
+
+/* Sits against the loan amount so an out-of-range LTV is obvious before generating. */
+.ltv-chip {
+    background: #e8f1fb;
+    border-radius: 999px;
+    color: #1b6fc4;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.field-hint {
+    color: #5a6b86;
+    font-size: 0.76rem;
+    margin: -0.35rem 0 0;
+}
+
+.signer-group {
+    margin-top: 0.35rem;
+}
+
+.letter-error {
+    background: #fdeceb;
+    border: 1px solid #f5b8b3;
+    border-radius: 4px;
+    color: #a8332b;
+    font-size: 0.85rem;
+    margin-bottom: 0.85rem;
+    padding: 0.6rem 0.8rem;
+}
+
+/* A page-shaped frame so the reviewer is editing something that looks like the PDF. */
+.letter-preview-frame {
+    background: #eef1f5;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+    max-height: 30rem;
+    overflow: auto;
+    padding: 1.25rem;
+}
+
+.letter-canvas {
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(20, 40, 75, 0.14);
+    margin: 0 auto;
+    max-width: 46rem;
+    min-height: 24rem;
+    padding: 2.25rem 2.5rem;
+}
+
+.letter-canvas:focus {
+    outline: 2px solid #1b6fc4;
+    outline-offset: 3px;
+}
+
+.letter-footer {
+    border-top: 1px solid #e2e7f0;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+}

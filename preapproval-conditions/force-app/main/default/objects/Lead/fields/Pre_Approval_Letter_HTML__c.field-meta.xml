@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pre_Approval_Letter_HTML__c</fullName>
+    <description>The finalized pre-approval letter body, exactly as the Loan Officer edited it. The Visualforce PDF page reads this field to render the download, which is the only way to get edited HTML into Salesforce's PDF renderer. Not intended for manual editing.</description>
+    <externalId>false</externalId>
+    <label>Pre-Approval Letter HTML</label>
+    <length>131072</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

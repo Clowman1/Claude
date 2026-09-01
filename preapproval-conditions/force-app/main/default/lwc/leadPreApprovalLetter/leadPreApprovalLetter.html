@@ -1,0 +1,114 @@
+<template>
+    <div class="letter-shell">
+        <template lwc:if={isLoading}>
+            <lightning-spinner alternative-text="Working" size="medium"></lightning-spinner>
+        </template>
+
+        <div class="letter-header">
+            <p class="eyebrow">Pre-Approval Letter</p>
+            <template lwc:if={isDetailsStep}>
+                <h2>Confirm the terms for {borrowerName}</h2>
+                <p class="sub">These save to the Lead as well, so the record and the letter stay in step.</p>
+            </template>
+            <template lwc:else>
+                <h2>Review before you send</h2>
+                <p class="sub">Click anywhere in the letter to edit it. Finalizing moves this Lead to Pre-Approval.</p>
+            </template>
+        </div>
+
+        <template lwc:if={hasError}>
+            <div class="letter-error" role="alert">{errorMessage}</div>
+        </template>
+
+        <template lwc:if={isDetailsStep}>
+            <div class="letter-form">
+                <div class="field-grid">
+                    <lightning-input
+                        type="number"
+                        formatter="currency"
+                        step="1"
+                        label="Purchase Price"
+                        value={purchasePrice}
+                        onchange={handlePurchasePriceChange}>
+                    </lightning-input>
+
+                    <div class="loan-amount-cell">
+                        <lightning-input
+                            type="number"
+                            formatter="currency"
+                            step="1"
+                            label="Loan Amount"
+                            value={loanAmount}
+                            onchange={handleLoanAmountChange}>
+                        </lightning-input>
+                        <template lwc:if={hasLtvLabel}>
+                            <span class="ltv-chip">{ltvLabel}</span>
+                        </template>
+                    </div>
+
+                    <lightning-combobox
+                        label="Financing Type"
+                        value={financingType}
+                        options={financingOptions}
+                        placeholder="Select financing"
+                        onchange={handleFinancingChange}>
+                    </lightning-combobox>
+
+                    <lightning-combobox
+                        label="Property Type"
+                        value={propertyType}
+                        options={propertyOptions}
+                        placeholder="Select property type"
+                        onchange={handlePropertyChange}>
+                    </lightning-combobox>
+                </div>
+
+                <lightning-textarea
+                    label="Docs Reviewed"
+                    value={docsReviewed}
+                    placeholder="One item per line, for example:&#10;Most recent 12 months of bank statements&#10;Verification of active business&#10;Credit history"
+                    onchange={handleDocsReviewedChange}>
+                </lightning-textarea>
+                <p class="field-hint">Each line becomes a ticked item under Documentation Reviewed.</p>
+
+                <lightning-radio-group
+                    class="signer-group"
+                    label="Display Loan Officer"
+                    type="button"
+                    options={signerRadioOptions}
+                    value={signerId}
+                    onchange={handleSignerChange}>
+                </lightning-radio-group>
+                <p class="field-hint">Whoever is selected appears on the signature card at the foot of the letter.</p>
+            </div>
+
+            <footer class="letter-footer">
+                <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button
+                    class="slds-m-left_x-small"
+                    label="Generate Letter"
+                    variant="brand"
+                    disabled={generateDisabled}
+                    onclick={handleGenerate}>
+                </lightning-button>
+            </footer>
+        </template>
+
+        <template lwc:if={isPreviewStep}>
+            <div class="letter-preview-frame">
+                <div class="letter-canvas" contenteditable="true" spellcheck="true"></div>
+            </div>
+
+            <footer class="letter-footer">
+                <lightning-button label="Back" onclick={handleBackToDetails}></lightning-button>
+                <lightning-button class="slds-m-left_x-small" label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button
+                    class="slds-m-left_x-small"
+                    label="Finalize and Download"
+                    variant="brand"
+                    onclick={handleFinalize}>
+                </lightning-button>
+            </footer>
+        </template>
+    </div>
+</template>
