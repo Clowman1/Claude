@@ -229,7 +229,7 @@ public without sharing class LeadDocumentPortalService {
         );
         Database.insert(version, true, AccessLevel.SYSTEM_MODE);
 
-        associateContentVersions(new Set<Id>{ version.Id }, requestId);
+        associateContentVersions(new Set<Id>{ version.Id }, requestId, leadRecord.Id);
 
         if (requestRecord.Status__c != REVIEW_STATUS) {
             Database.update(
@@ -280,7 +280,7 @@ public without sharing class LeadDocumentPortalService {
             throw new LeadDocumentPortalException('The document request does not belong to this lead portal session.');
         }
 
-        associateContentVersions(versionIds, requestId);
+        associateContentVersions(versionIds, requestId, leadRecord.Id);
         // Unfiled until a decision, same as the base64 upload path.
         updateContentVersions(versionIds, null, requestId);
         Database.update(
@@ -328,33 +328,43 @@ public without sharing class LeadDocumentPortalService {
         return BorrowerPortalLinkService.buildBorrowerHomeUrl(transactions[0].Portal_Hash_Parameter__c);
     }
 
-    private static void associateContentVersions(Set<Id> contentVersionIds, Id requestId) {
+    // Linked to BOTH the request and the Lead. The request link ties the file to the condition and
+    // is removed when an item is sent back; the Lead link is what the Documents tab actually reads,
+    // since it queries links on the Lead itself. Without it an uploaded file never appeared there,
+    // and a rejected one lost its only link and was orphaned outright.
+    private static void associateContentVersions(Set<Id> contentVersionIds, Id requestId, Id leadId) {
         List<ContentVersion> versions = LeadDocumentRequestRepository.getInstance()
             .selectContentVersionsByLatestIds(contentVersionIds);
         Map<Id, ContentVersion> versionsById = new Map<Id, ContentVersion>(versions);
-        Set<Id> contentDocumentIds = new Set<Id>();
-        for (ContentVersion version : versions) {
-            contentDocumentIds.add(version.ContentDocumentId);
+
+        Set<Id> targetEntityIds = new Set<Id>{ requestId };
+        if (leadId != null) {
+            targetEntityIds.add(leadId);
         }
 
-        Set<Id> existingDocumentIds = new Set<Id>();
+        Set<String> existingLinkKeys = new Set<String>();
         for (ContentDocumentLink existingLink : LeadDocumentRequestRepository.getInstance()
-            .selectDocumentLinksByEntityIds(new Set<Id>{ requestId })) {
-            existingDocumentIds.add(existingLink.ContentDocumentId);
+            .selectDocumentLinksByEntityIds(targetEntityIds)) {
+            existingLinkKeys.add(existingLink.LinkedEntityId + ':' + existingLink.ContentDocumentId);
         }
 
         List<ContentDocumentLink> linksToInsert = new List<ContentDocumentLink>();
         for (Id contentVersionId : contentVersionIds) {
             ContentVersion version = versionsById.get(contentVersionId);
-            if (version == null || existingDocumentIds.contains(version.ContentDocumentId)) {
+            if (version == null) {
                 continue;
             }
-            linksToInsert.add(new ContentDocumentLink(
-                ContentDocumentId = version.ContentDocumentId,
-                LinkedEntityId = requestId,
-                ShareType = 'V',
-                Visibility = 'AllUsers'
-            ));
+            for (Id targetEntityId : targetEntityIds) {
+                if (existingLinkKeys.contains(targetEntityId + ':' + version.ContentDocumentId)) {
+                    continue;
+                }
+                linksToInsert.add(new ContentDocumentLink(
+                    ContentDocumentId = version.ContentDocumentId,
+                    LinkedEntityId = targetEntityId,
+                    ShareType = 'V',
+                    Visibility = 'AllUsers'
+                ));
+            }
         }
 
         if (!linksToInsert.isEmpty()) {

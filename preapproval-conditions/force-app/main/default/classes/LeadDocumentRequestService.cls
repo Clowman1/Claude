@@ -327,7 +327,7 @@ public with sharing class LeadDocumentRequestService {
         }
         ensureLeadIsOpenForDocumentRequests(getLeadOrThrow(requestRecord.Lead__c));
 
-        associateContentVersions(versionIds, requestId);
+        associateContentVersions(versionIds, requestId, requestRecord.Lead__c);
         // Left unfiled on purpose. The document lands in the folder matching its condition only
         // once someone accepts it, and in Not Needed if it is sent back.
         updateContentVersions(versionIds, null, requestId);
@@ -982,28 +982,43 @@ public with sharing class LeadDocumentRequestService {
         return body;
     }
 
-    private static void associateContentVersions(Set<Id> contentVersionIds, Id requestId) {
+    // Linked to BOTH the request and the Lead. The request link ties the file to the condition and
+    // is removed when an item is sent back; the Lead link is what the Documents tab actually reads,
+    // since it queries links on the Lead itself. Without it an uploaded file never appeared there,
+    // and a rejected one lost its only link and was orphaned outright.
+    private static void associateContentVersions(Set<Id> contentVersionIds, Id requestId, Id leadId) {
         List<ContentVersion> versions = LeadDocumentRequestRepository.getInstance()
             .selectContentVersionsByLatestIds(contentVersionIds);
         Map<Id, ContentVersion> versionsById = new Map<Id, ContentVersion>(versions);
-        Set<Id> existingDocumentIds = new Set<Id>();
+
+        Set<Id> targetEntityIds = new Set<Id>{ requestId };
+        if (leadId != null) {
+            targetEntityIds.add(leadId);
+        }
+
+        Set<String> existingLinkKeys = new Set<String>();
         for (ContentDocumentLink existingLink : LeadDocumentRequestRepository.getInstance()
-            .selectDocumentLinksByEntityIds(new Set<Id>{ requestId })) {
-            existingDocumentIds.add(existingLink.ContentDocumentId);
+            .selectDocumentLinksByEntityIds(targetEntityIds)) {
+            existingLinkKeys.add(existingLink.LinkedEntityId + ':' + existingLink.ContentDocumentId);
         }
 
         List<ContentDocumentLink> linksToInsert = new List<ContentDocumentLink>();
         for (Id contentVersionId : contentVersionIds) {
             ContentVersion version = versionsById.get(contentVersionId);
-            if (version == null || existingDocumentIds.contains(version.ContentDocumentId)) {
+            if (version == null) {
                 continue;
             }
-            linksToInsert.add(new ContentDocumentLink(
-                ContentDocumentId = version.ContentDocumentId,
-                LinkedEntityId = requestId,
-                ShareType = 'V',
-                Visibility = 'AllUsers'
-            ));
+            for (Id targetEntityId : targetEntityIds) {
+                if (existingLinkKeys.contains(targetEntityId + ':' + version.ContentDocumentId)) {
+                    continue;
+                }
+                linksToInsert.add(new ContentDocumentLink(
+                    ContentDocumentId = version.ContentDocumentId,
+                    LinkedEntityId = targetEntityId,
+                    ShareType = 'V',
+                    Visibility = 'AllUsers'
+                ));
+            }
         }
 
         if (!linksToInsert.isEmpty()) {
