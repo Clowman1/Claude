@@ -872,3 +872,26 @@
     border-color: #0082cb;
     outline: none;
 }
+/* Click-to-rename on the document name inside the review modal. */
+.document-preview-name--editable {
+    border-bottom: 1px dashed transparent;
+    cursor: text;
+}
+
+.document-preview-name--editable:hover {
+    border-bottom-color: #94a3b8;
+}
+
+.document-rename-input {
+    border: 1px solid #0082cb;
+    border-radius: 4px;
+    font: inherit;
+    font-weight: 600;
+    padding: 0.15rem 0.35rem;
+    width: 100%;
+}
+
+.document-rename-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 130, 203, 0.25);
+}

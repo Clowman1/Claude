@@ -357,7 +357,15 @@
                                                     </template>
                                                     <lightning-icon icon-name={doc.iconName} size="small" class={doc.iconClass}></lightning-icon>
                                                     <div class="pru-doc-meta">
-                                                        <p class="pru-doc-filename">{doc.filename}</p>
+                                                        <template if:true={doc.isRenaming}>
+                                                            <input type="text" class="pru-doc-rename-input" value={renameDraft}
+                                                                oninput={handleRenameInput} onkeydown={handleRenameKeyDown}
+                                                                onblur={handleRenameCommit} autocomplete="off" />
+                                                        </template>
+                                                        <template if:false={doc.isRenaming}>
+                                                            <p class="pru-doc-filename pru-doc-filename--editable" data-doc-id={doc.id}
+                                                                title="Click to rename" onclick={handleRenameStart}>{doc.filename}</p>
+                                                        </template>
                                                         <p class="pru-doc-sub">{doc.subLabel}</p>
                                                     </div>
                                                     <template if:true={doc.showLinkButton}>

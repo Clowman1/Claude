@@ -8,6 +8,7 @@ import deleteRequest from '@salesforce/apex/LeadDocumentRequestController.delete
 import saveNotes from '@salesforce/apex/LeadDocumentRequestController.saveNotes';
 import handleInternalFileUpload from '@salesforce/apex/LeadDocumentRequestController.handleInternalFileUpload';
 import getRequestDocuments from '@salesforce/apex/LeadDocumentRequestController.getRequestDocuments';
+import renameFile from '@salesforce/apex/DocumentViewerController.renameFile';
 import approveRequestDocument from '@salesforce/apex/LeadDocumentRequestController.approveRequestDocument';
 import rejectRequestDocument from '@salesforce/apex/LeadDocumentRequestController.rejectRequestDocument';
 import getEmailTemplateOptions from '@salesforce/apex/LeadDocumentRequestController.getEmailTemplateOptions';
@@ -102,6 +103,8 @@ export default class LeadDocumentRequestManager extends LightningElement {
     showDocumentPreviewModal = false;
     documentPreviewTitle = 'Uploaded Documents';
     previewDocuments = [];
+    renamingDocumentId;
+    renameDraft = '';
     showCloseDecisionPrompt = false;
     pendingAcceptDocumentId = null;
     selectedPreviewDocumentId;
@@ -620,7 +623,8 @@ export default class LeadDocumentRequestManager extends LightningElement {
                 viewUrl: `/lightning/r/ContentDocument/${documentItem.id}/view`,
                 sizeLabel: this.formatFileSize(documentItem.contentSize),
                 reviewStatusLabel: documentItem.reviewStatus || 'Pending Review',
-                isSelected: false
+                isSelected: false,
+                isRenaming: false
             }));
             this.selectedPreviewDocumentId = this.previewDocuments[0]?.id || null;
             this.previewDocuments = this.decoratePreviewDocumentSelection(this.previewDocuments);
@@ -630,6 +634,94 @@ export default class LeadDocumentRequestManager extends LightningElement {
         } finally {
             this.isLoading = false;
         }
+    }
+
+    // ---------- inline rename ----------
+
+    // Borrowers upload "scan0001.pdf"; the reviewer renames it to something findable. Click the
+    // name, type, Enter to commit, Escape to abandon. The extension is not editable: Title holds
+    // the name and FileExtension the type, and letting them diverge is what produced ".pdf.pdf".
+    handleRenameStart(event) {
+        event.stopPropagation();
+        const documentId = event.currentTarget.dataset.documentId;
+        const documentItem = this.previewDocuments.find(item => item.id === documentId);
+        this.renamingDocumentId = documentId;
+        this.renameDraft = documentItem ? this.stripExtension(documentItem.filename) : '';
+        this.previewDocuments = this.decorateRenameState(this.previewDocuments);
+    }
+
+    handleRenameInput(event) {
+        this.renameDraft = event.target.value;
+    }
+
+    handleRenameKeyDown(event) {
+        event.stopPropagation();
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.handleRenameCommit();
+        } else if (event.key === 'Escape') {
+            event.preventDefault();
+            this.cancelRename();
+        }
+    }
+
+    stopRowClick(event) {
+        event.stopPropagation();
+    }
+
+    handlePreviewRowKeyDown(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.selectPreviewDocument(event);
+        }
+    }
+
+    cancelRename() {
+        this.renamingDocumentId = undefined;
+        this.renameDraft = '';
+        this.previewDocuments = this.decorateRenameState(this.previewDocuments);
+    }
+
+    async handleRenameCommit() {
+        const documentId = this.renamingDocumentId;
+        const newName = (this.renameDraft || '').trim();
+        const documentItem = this.previewDocuments.find(item => item.id === documentId);
+        if (!documentId || !documentItem) {
+            this.cancelRename();
+            return;
+        }
+        if (!newName || newName === this.stripExtension(documentItem.filename)) {
+            this.cancelRename();
+            return;
+        }
+
+        try {
+            await renameFile({ fileId: documentId, newFileName: newName });
+            const extension = documentItem.extension ? `.${documentItem.extension}` : '';
+            this.previewDocuments = this.previewDocuments.map(item =>
+                item.id === documentId ? { ...item, filename: `${newName}${extension}` } : item
+            );
+            this.showToast('Document renamed.');
+        } catch (error) {
+            this.showError(error);
+        } finally {
+            this.cancelRename();
+        }
+    }
+
+    stripExtension(filename) {
+        if (!filename) {
+            return '';
+        }
+        const dot = filename.lastIndexOf('.');
+        return dot > 0 ? filename.substring(0, dot) : filename;
+    }
+
+    decorateRenameState(documents) {
+        return (documents || []).map(item => ({
+            ...item,
+            isRenaming: item.id === this.renamingDocumentId
+        }));
     }
 
     closeDocumentPreviewModal() {

@@ -740,3 +740,27 @@
 .pru-doc-icon { --sds-c-icon-color-foreground-default: var(--slate-500); }
 .pru-doc-icon-pdf { --sds-c-icon-color-foreground-default: #ef4444; }
 .pru-doc-icon-img { --sds-c-icon-color-foreground-default: #3b82f6; }
+/* Click-to-rename on the document name. The dotted underline is the only hint
+   that the text is editable, which keeps the row uncluttered. */
+.pru-doc-filename--editable {
+    border-bottom: 1px dashed transparent;
+    cursor: text;
+    display: inline-block;
+}
+
+.pru-doc-filename--editable:hover {
+    border-bottom-color: #94a3b8;
+}
+
+.pru-doc-rename-input {
+    border: 1px solid #0082cb;
+    border-radius: 4px;
+    font: inherit;
+    padding: 0.15rem 0.35rem;
+    width: 100%;
+}
+
+.pru-doc-rename-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 130, 203, 0.25);
+}

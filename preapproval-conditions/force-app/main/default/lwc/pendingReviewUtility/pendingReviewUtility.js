@@ -9,6 +9,7 @@ import approveDocument from '@salesforce/apex/ConditionReviewQueueController.app
 import rejectDocument from '@salesforce/apex/ConditionReviewQueueController.rejectDocument';
 import moveDocumentToCondition from '@salesforce/apex/ConditionReviewQueueController.moveDocumentToCondition';
 import unassociateDocuments from '@salesforce/apex/ConditionReviewQueueController.unassociateDocuments';
+import renameFile from '@salesforce/apex/DocumentViewerController.renameFile';
 import approveCondition from '@salesforce/apex/LoanConditionController.approveCondition';
 import reviewCondition from '@salesforce/apex/LoanConditionController.reviewCondition';
 import getComments from '@salesforce/apex/ConditionCommentController.getComments';
@@ -37,6 +38,8 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     @track activeLoan;
     @track activeCondition;
     @track activeDocuments = [];
+    @track renamingDocId;
+    renameDraft = '';
     @track activeDocId;
     @track activeComments = [];
     @track isModalOpen = false;
@@ -328,10 +331,83 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
             iconClass: this.fileIconClass(d.extension),
             isMarked: false,
             isActive: false,
+            isRenaming: false,
             rowClass: 'pru-doc-row'
         }));
     }
 
+
+    // ---------- inline rename ----------
+
+    // Reviewers rename documents constantly: borrowers upload "scan0001.pdf" and it has to become
+    // something a human can find later. Click the name, type, press Enter. Escape abandons it.
+    handleRenameStart(event) {
+        const docId = event.currentTarget.dataset.docId;
+        this.renamingDocId = docId;
+        const doc = (this.activeDocuments || []).find((d) => d.id === docId);
+        this.renameDraft = doc ? this.stripExtension(doc.filename) : '';
+        this.activeDocuments = this.decorateRenameState(this.activeDocuments);
+    }
+
+    handleRenameInput(event) {
+        this.renameDraft = event.target.value;
+    }
+
+    handleRenameKeyDown(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.handleRenameCommit();
+        } else if (event.key === 'Escape') {
+            event.preventDefault();
+            this.handleRenameCancel();
+        }
+    }
+
+    handleRenameCancel() {
+        this.renamingDocId = undefined;
+        this.renameDraft = '';
+        this.activeDocuments = this.decorateRenameState(this.activeDocuments);
+    }
+
+    async handleRenameCommit() {
+        const docId = this.renamingDocId;
+        const newName = (this.renameDraft || '').trim();
+        const doc = (this.activeDocuments || []).find((d) => d.id === docId);
+        if (!docId || !doc) {
+            this.handleRenameCancel();
+            return;
+        }
+        if (!newName || newName === this.stripExtension(doc.filename)) {
+            this.handleRenameCancel();
+            return;
+        }
+
+        try {
+            await renameFile({ fileId: docId, newFileName: newName });
+            const extension = doc.extension ? `.${doc.extension}` : '';
+            this.activeDocuments = this.activeDocuments.map((d) =>
+                d.id === docId ? { ...d, filename: `${newName}${extension}` } : d
+            );
+            this.fireToast('Document renamed.', 'success');
+        } catch (error) {
+            this.fireToast(this.extractErrorMessage(error), 'error');
+        } finally {
+            this.handleRenameCancel();
+        }
+    }
+
+    // The extension is not the reviewer's to edit: Title carries the name, FileExtension the type.
+    stripExtension(filename) {
+        if (!filename) {
+            return '';
+        }
+        const dot = filename.lastIndexOf('.');
+        return dot > 0 ? filename.substring(0, dot) : filename;
+    }
+
+    decorateRenameState(docs) {
+        return (docs || []).map((d) => ({ ...d, isRenaming: d.id === this.renamingDocId }));
+    }
     formatShortDate(ts) {
         if (!ts) return '';
         try {

@@ -505,13 +505,28 @@
                                     </div>
                                     <div class="review-documents-list">
                                         <template for:each={previewDocuments} for:item="document">
-                                            <button key={document.id} class={document.rowClass} data-document-id={document.id} onclick={selectPreviewDocument}>
-                                                <span class="document-preview-name">{document.filename}</span>
+                                            <div key={document.id} class={document.rowClass}
+                                                role="button" tabindex="0"
+                                                data-document-id={document.id}
+                                                onclick={selectPreviewDocument}
+                                                onkeydown={handlePreviewRowKeyDown}>
+                                                <template lwc:if={document.isRenaming}>
+                                                    <input type="text" class="document-rename-input" value={renameDraft}
+                                                        oninput={handleRenameInput} onkeydown={handleRenameKeyDown}
+                                                        onblur={handleRenameCommit} onclick={stopRowClick}
+                                                        autocomplete="off" />
+                                                </template>
+                                                <template lwc:else>
+                                                    <span class="document-preview-name document-preview-name--editable"
+                                                        data-document-id={document.id}
+                                                        title="Click to rename"
+                                                        onclick={handleRenameStart}>{document.filename}</span>
+                                                </template>
                                                 <span class="document-preview-meta">
                                                     {document.folderName} &bull; {document.createdByName} &bull; {document.sizeLabel}
                                                 </span>
                                                 <span class="document-preview-status">{document.reviewStatusLabel}</span>
-                                            </button>
+                                            </div>
                                         </template>
                                     </div>
                                 </template>
