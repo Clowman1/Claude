@@ -36,17 +36,26 @@ const REQUEST_TABLES = [
     {
         key: 'outstanding',
         label: 'Outstanding Requests',
-        statuses: ['New', 'Submitted', 'Requested', 'Review']
-    },
-    {
-        key: 'ready',
-        label: 'Ready for Lender Requests',
-        statuses: ['Approved']
+        // Every status that is not finished belongs here. In Progress is on the Loan Officer's
+        // dropdown, and the rest exist for Transaction parity - none of them may leave a request
+        // with no table to appear in.
+        statuses: [
+            'New',
+            'Requested',
+            'In Progress',
+            'Review',
+            'Submitted',
+            'Deferred',
+            'Not Started',
+            'Waiting on someone else'
+        ]
     },
     {
         key: 'cleared',
         label: 'Cleared Requests',
-        statuses: ['Cleared']
+        // Approved and Completed are carried for Transaction parity and nothing on the Lead side
+        // sets them, but any legacy record holding one still has to appear somewhere.
+        statuses: ['Cleared', 'Approved', 'Completed']
     }
 ];
 const LEAD_CONVERSION_FIELDS = [IS_CONVERTED_FIELD, CONVERTED_TRANSACTION_FIELD];
