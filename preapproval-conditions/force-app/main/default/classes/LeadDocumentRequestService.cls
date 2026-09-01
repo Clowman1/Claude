@@ -646,7 +646,13 @@ public with sharing class LeadDocumentRequestService {
             );
         }
 
-        ensurePortalHash(leadRecord.Id);
+        try {
+            ensurePortalHash(leadRecord.Id);
+        } catch (Exception portalHashException) {
+            // A missing portal encryption key should not stop the borrower being told what is
+            // still needed. The link falls back to whatever hash the Lead already carries.
+            System.debug(LoggingLevel.WARN, 'Lead portal hash unavailable: ' + portalHashException.getMessage());
+        }
         Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
             template.Id,
             leadRecord.Id,

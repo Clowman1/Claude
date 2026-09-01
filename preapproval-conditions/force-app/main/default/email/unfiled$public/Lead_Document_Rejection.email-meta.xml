@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Lead Document Rejection</name>
     <style>none</style>
-    <subject>Document Rejection Notice</subject>
+    <subject>One more item for your pre-approval</subject>
     <type>custom</type>
     <uiType>SFX</uiType>
     <relatedEntityType>Lead_Document_Request__c</relatedEntityType>

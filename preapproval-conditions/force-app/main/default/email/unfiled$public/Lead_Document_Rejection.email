@@ -20,6 +20,5 @@
 <p>Whenever you have a moment, you can add it in the same place you uploaded the first one. Everything you have already sent is still there, so there's no need to upload anything twice.</p>
 <p>Here's the link to your secure portal:</p>
 <p><a class="portalButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></p>
-<p>If anything here is unclear, or you're having trouble tracking the document down, just reply to this email and I'll help you sort it out.</p>
 <p>{{SENDER_SIGNATURE}}</p>
 </body></html>
