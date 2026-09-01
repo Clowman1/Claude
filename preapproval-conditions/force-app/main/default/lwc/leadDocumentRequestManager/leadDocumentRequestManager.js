@@ -1043,7 +1043,8 @@ export default class LeadDocumentRequestManager extends LightningElement {
                 subject: this.emailSubjectLine,
                 htmlBody: this.emailSectionOneHtml + this.emailBody + this.emailLastSectionHtml,
                 toAddresses: this.emailToAddresses,
-                ccAddresses: this.emailCcAddresses || ''
+                ccAddresses: this.emailCcAddresses || '',
+                templateDeveloperName: this.selectedEmailTemplate
             });
             this.showToast(`Document request email sent to ${this.emailToAddresses.trim()}.`);
             this.closeEmailModal();

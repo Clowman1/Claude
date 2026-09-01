@@ -94,8 +94,16 @@ public with sharing class LeadDocumentRequestController {
         String subject,
         String htmlBody,
         String toAddresses,
-        String ccAddresses
+        String ccAddresses,
+        String templateDeveloperName
     ) {
-        LeadDocumentRequestService.sendEditedRequestEmail(leadId, subject, htmlBody, toAddresses, ccAddresses);
+        LeadDocumentRequestService.sendEditedRequestEmail(
+            leadId,
+            subject,
+            htmlBody,
+            toAddresses,
+            ccAddresses,
+            templateDeveloperName
+        );
     }
 }

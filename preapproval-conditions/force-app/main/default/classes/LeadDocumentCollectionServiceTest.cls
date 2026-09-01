@@ -136,6 +136,96 @@ private class LeadDocumentCollectionServiceTest {
     }
 
     @IsTest
+    static void firstDocsRequestEmailMovesTheLeadStatusOnce() {
+        Lead leadRecord = createLead('status-once@example.com');
+        createRequest(leadRecord.Id, 'Bank Statements');
+
+        Test.startTest();
+        LeadDocumentRequestService.sendRequestEmail(leadRecord.Id);
+        Test.stopTest();
+
+        Lead afterFirstSend = [
+            SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals('Documents Requested', afterFirstSend.Status);
+        System.assertNotEquals(null, afterFirstSend.Initial_Docs_Requested_Date__c);
+
+        // The Lead moves on, then someone resends. It must not be dragged back a stage.
+        // Any later status proves the point; Pre-Approval trips a Loan Amount validation rule.
+        update new Lead(Id = leadRecord.Id, Status = 'Working');
+        LeadDocumentRequestService.sendRequestEmail(leadRecord.Id);
+
+        Lead afterResend = [
+            SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals(
+            'Working',
+            afterResend.Status,
+            'A resend must not pull the Lead back to Documents Requested.'
+        );
+        System.assertEquals(
+            afterFirstSend.Initial_Docs_Requested_Date__c,
+            afterResend.Initial_Docs_Requested_Date__c,
+            'The first-send stamp is written once and never moved.'
+        );
+    }
+
+    @IsTest
+    static void controllerEmailEntryPointsAreCovered() {
+        Lead leadRecord = createLead('controller-email@example.com');
+        createRequest(leadRecord.Id, 'Bank Statements');
+
+        Test.startTest();
+        LeadDocumentRequestService.EmailInformation preview =
+            LeadDocumentRequestController.getEmailPreview(leadRecord.Id);
+        LeadDocumentRequestController.sendRequestEmail(leadRecord.Id);
+        LeadDocumentRequestController.sendComposedRequestEmail(
+            leadRecord.Id,
+            'Follow Up - Items Needed for your Pre-Approval',
+            '<p>Following up.</p>',
+            leadRecord.Email,
+            '',
+            'Lead_Documents_Follow_Up'
+        );
+        Test.stopTest();
+
+        System.assertNotEquals(null, preview);
+        System.assertEquals(
+            'Documents Requested',
+            [SELECT Status FROM Lead WHERE Id = :leadRecord.Id].Status,
+            'The initial send is what moves the status; the follow-up after it must not undo that.'
+        );
+    }
+
+    @IsTest
+    static void followUpTemplateLeavesTheLeadStatusAlone() {
+        Lead leadRecord = createLead('status-followup@example.com');
+        createRequest(leadRecord.Id, 'Recent Paystubs');
+        String startingStatus = [SELECT Status FROM Lead WHERE Id = :leadRecord.Id].Status;
+
+        Test.startTest();
+        LeadDocumentRequestService.sendEditedRequestEmail(
+            leadRecord.Id,
+            'Follow Up - Items Needed for your Pre-Approval',
+            '<p>Following up.</p>',
+            null,
+            null,
+            'Lead_Documents_Follow_Up'
+        );
+        Test.stopTest();
+
+        Lead afterSend = [
+            SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals(startingStatus, afterSend.Status, 'A follow-up never changes status.');
+        System.assertEquals(
+            null,
+            afterSend.Initial_Docs_Requested_Date__c,
+            'Only the initial template stamps the first-send date.'
+        );
+    }
+
+    @IsTest
     static void saveNotesUpdatesBorrowerFacingDescription() {
         Lead leadRecord = createLead('notes-comments@example.com');
         Lead_Document_Request__c requestRecord = createRequest(leadRecord.Id, 'Notes Request');

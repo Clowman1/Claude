@@ -498,12 +498,12 @@ public with sharing class LeadDocumentRequestService {
 
     public static void sendRequestEmail(Id leadId) {
         EmailInformation rendered = getEmailTemplatePreview(leadId, EMAIL_TEMPLATE_DEVELOPER_NAME);
-        sendEditedRequestEmail(leadId, rendered.subject, rendered.htmlBody);
+        sendEditedRequestEmail(leadId, rendered.subject, rendered.htmlBody, null, null, EMAIL_TEMPLATE_DEVELOPER_NAME);
     }
 
     public static void sendEditedRequestEmail(Id leadId, String subject, String htmlBody) {
         // Null To/CC means "use the defaults" (borrower email, Loan Partner on the Lead).
-        sendEditedRequestEmail(leadId, subject, htmlBody, null, null);
+        sendEditedRequestEmail(leadId, subject, htmlBody, null, null, null);
     }
 
     public static void sendEditedRequestEmail(
@@ -512,6 +512,17 @@ public with sharing class LeadDocumentRequestService {
         String htmlBody,
         String toAddresses,
         String ccAddresses
+    ) {
+        sendEditedRequestEmail(leadId, subject, htmlBody, toAddresses, ccAddresses, null);
+    }
+
+    public static void sendEditedRequestEmail(
+        Id leadId,
+        String subject,
+        String htmlBody,
+        String toAddresses,
+        String ccAddresses,
+        String templateDeveloperName
     ) {
         Lead leadRecord = getLeadOrThrow(leadId);
         ensureLeadIsOpenForDocumentRequests(leadRecord);
@@ -562,6 +573,57 @@ public with sharing class LeadDocumentRequestService {
         }
 
         markIncludedRequestsAsRequested(requestRecords);
+        stampInitialDocsRequested(leadRecord, templateDeveloperName);
+    }
+
+    // The first Pre-Approval Docs Needed email moves the Lead to Documents Requested. Only the
+    // first: a Lead that has since reached Pre-Approval must not be dragged back a stage because
+    // someone resent the request, and the follow-up template never touches status at all.
+    // Initial_Docs_Requested_Date__c exists purely to make "first" detectable, rather than
+    // inferring it from a status the Lead may have already moved past.
+    private static final String DOCS_REQUESTED_STATUS = 'Documents Requested';
+
+    @TestVisible
+    private static void stampInitialDocsRequested(Lead leadRecord, String templateDeveloperName) {
+        if (leadRecord == null || templateDeveloperName != EMAIL_TEMPLATE_DEVELOPER_NAME) {
+            return;
+        }
+        if (!hasLeadField('Initial_Docs_Requested_Date__c')) {
+            return;
+        }
+
+        Lead currentLead = getLeadWithInitialDocsStamp(leadRecord.Id);
+        if (currentLead == null || currentLead.get('Initial_Docs_Requested_Date__c') != null) {
+            return;
+        }
+
+        Lead leadUpdate = new Lead(Id = leadRecord.Id);
+        leadUpdate.put('Initial_Docs_Requested_Date__c', Datetime.now());
+        leadUpdate.Status = DOCS_REQUESTED_STATUS;
+
+        try {
+            Database.update(leadUpdate, true, AccessLevel.SYSTEM_MODE);
+        } catch (Exception statusException) {
+            // The borrower already has the email; a status or validation-rule problem on the Lead
+            // must not present itself as a failed send. Retry happens on the next first-send only,
+            // which is why the stamp and the status move together in one update.
+            System.debug(
+                LoggingLevel.ERROR,
+                'Could not move Lead ' + leadRecord.Id + ' to ' + DOCS_REQUESTED_STATUS + ': ' +
+                    statusException.getMessage()
+            );
+        }
+    }
+
+    private static Lead getLeadWithInitialDocsStamp(Id leadId) {
+        List<Lead> leads = Database.query(
+            'SELECT Id, Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1'
+        );
+        return leads.isEmpty() ? null : leads[0];
+    }
+
+    private static Boolean hasLeadField(String fieldApiName) {
+        return Schema.SObjectType.Lead.fields.getMap().containsKey(fieldApiName);
     }
 
     public static void populateMissingPortalHashes(Set<Id> leadIds) {
