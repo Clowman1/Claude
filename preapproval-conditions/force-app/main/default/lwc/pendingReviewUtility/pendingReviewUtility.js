@@ -144,7 +144,8 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
             const conditions = (loan.conditions || []).map((c) => ({
                 ...c,
                 hasDocs: (c.documentCount || 0) > 0,
-                hasUnreadComments: (c.unreadCommentCount || 0) > 0,
+                hasUnreadComments: !c.isPreApproval && (c.unreadCommentCount || 0) > 0,
+                openLabel: c.isPreApproval ? 'View Documents' : 'View Documents and Comments',
                 docsLabel: this.pluralize(c.documentCount || 0, 'Document', 'Documents'),
                 commentsLabel: this.pluralize(c.commentCount || 0, 'Comment', 'Comments'),
                 statusBadgeClass: this.statusBadgeClass(c.status),
@@ -846,6 +847,12 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     get hasActiveDocuments() {
         return this.activeDocuments && this.activeDocuments.length > 0;
     }
+    // The lead team does not use comments on pre-approval conditions, so the whole conversation
+    // panel is hidden for them rather than left as an empty box the reviewer has to scroll past.
+    get showConversation() {
+        return !(this.activeCondition && this.activeCondition.isPreApproval);
+    }
+
     get hasUnreadActiveComments() {
         return (this.activeComments || []).some((comment) => comment.unread);
     }

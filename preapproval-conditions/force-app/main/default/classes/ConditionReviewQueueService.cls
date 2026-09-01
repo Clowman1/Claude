@@ -48,6 +48,9 @@ public with sharing class ConditionReviewQueueService {
         @AuraEnabled public Integer documentCount;
         @AuraEnabled public Integer unreadCommentCount;
         @AuraEnabled public Integer commentCount;
+        // Pre-approval conditions carry no comment thread, so the tray hides the conversation
+        // panel for them rather than showing an empty box the lead team never uses.
+        @AuraEnabled public Boolean isPreApproval;
     }
 
     @AuraEnabled
@@ -161,6 +164,7 @@ public with sharing class ConditionReviewQueueService {
             // Pre-approval conditions carry no comment thread by design.
             dto.unreadCommentCount = 0;
             dto.commentCount = 0;
+            dto.isPreApproval = true;
 
             leadDto.conditions.add(dto);
             leadDto.pendingConditionsCount++;
@@ -322,6 +326,7 @@ public with sharing class ConditionReviewQueueService {
 
     private static ConditionDto buildConditionDto(Condition__c condition, Integer documentCount, Integer unreadCommentCount) {
         ConditionDto dto = new ConditionDto();
+        dto.isPreApproval = false;
         dto.id = condition.Id;
         dto.name = condition.Name;
         dto.title = String.isNotBlank(condition.Description__c) ? condition.Description__c

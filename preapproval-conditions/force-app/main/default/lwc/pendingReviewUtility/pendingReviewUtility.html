@@ -136,7 +136,7 @@
                                         </div>
                                         <button type="button" class="pru-view-btn" data-condition-id={cond.id} data-loan-id={loan.loanId} onclick={handleOpenCondition}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0b5cab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open w-4 h-4 mr-1.5" aria-hidden="true" data-id="element-52"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg>
-                                            <span>View Documents and Comments</span>
+                                            <span>{cond.openLabel}</span>
                                         </button>
                                     </div>
                                 </template>
@@ -415,6 +415,7 @@
                             </div>
 
                             <!-- Comments -->
+                            <template if:true={showConversation}>
                             <div class="pru-actions-section pru-actions-section-last">
                                 <div class="pru-section-heading-row">
                                     <h3 class="pru-section-heading">
@@ -488,6 +489,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </template>
                         </aside>
                     </div>
                 </div>
