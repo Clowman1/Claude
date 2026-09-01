@@ -581,7 +581,7 @@ private class LeadDocumentCollectionServiceTest {
         System.assertEquals('Review', response.status);
         System.assertEquals(1, response.fileCount, 'The borrower needs to see the attached count go up.');
         System.assertEquals('Review', updatedRequest.Status__c);
-        System.assertEquals('statement.pdf', storedVersion.Title);
+        System.assertEquals('statement', storedVersion.Title, 'Title drops the extension so viewers do not render "statement.pdf.pdf".');
         System.assertEquals(null, storedVersion.Folder__c, 'A freshly uploaded document is unfiled until someone reviews it.');
         System.assertEquals(1, linkCount, 'The document is linked to the request server-side, not by the browser.');
     }

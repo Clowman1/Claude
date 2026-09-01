@@ -219,8 +219,13 @@ public without sharing class LeadDocumentPortalService {
         }
 
         String safeFileName = String.isBlank(fileName) ? 'Borrower Upload' : fileName.trim();
+        // Title carries no extension: PathOnClient supplies it, and viewers append FileExtension
+        // to Title when they render a filename. Keeping it in both produced "license.pdf.pdf".
+        String titleWithoutExtension = safeFileName.contains('.')
+            ? safeFileName.substringBeforeLast('.')
+            : safeFileName;
         ContentVersion version = new ContentVersion(
-            Title = safeFileName,
+            Title = titleWithoutExtension,
             PathOnClient = safeFileName,
             VersionData = fileBody,
             // No folder yet: filing happens when the lead team accepts or returns the document.
