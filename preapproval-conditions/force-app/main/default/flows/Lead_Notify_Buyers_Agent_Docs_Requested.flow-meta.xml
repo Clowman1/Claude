@@ -62,7 +62,7 @@
     <formulas>
         <name>MessageBody</name>
         <dataType>String</dataType>
-        <expression>&quot;Documents have been requested for &quot; &amp; TRIM(BLANKVALUE({!$Record.FirstName}, &quot;&quot;) &amp; &quot; &quot; &amp; BLANKVALUE({!$Record.LastName}, &quot;&quot;)) &amp; &quot; to complete the Pre-Approval&quot;</expression>
+        <expression>&quot;Documents have been requested from &quot; &amp; TRIM(BLANKVALUE({!$Record.FirstName}, &quot;&quot;) &amp; &quot; &quot; &amp; BLANKVALUE({!$Record.LastName}, &quot;&quot;)) &amp; &quot; to complete the Pre-Approval&quot;</expression>
     </formulas>
     <interviewLabel>Lead: Notify Buyer&apos;s Agent Docs Requested {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Lead: Notify Buyer&apos;s Agent Docs Requested</label>
