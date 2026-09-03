@@ -1,0 +1,55 @@
+<template>
+    <template if:true={isAvailable}>
+    <section class="assistant">
+        <template if:true={isLoading}><lightning-spinner alternative-text="Loading Zoom meetings" size="small"></lightning-spinner></template>
+        <header class="hero"><p class="eyebrow">REACH HOME LOANS · ZOOM</p><h2>Zoom Meeting Assistant</h2><p>Schedule a meeting from this record. The meeting will use your connected Zoom account.</p></header>
+        <div class="body">
+            <h3>Schedule Zoom Meeting</h3>
+            <div class="form-grid">
+                <lightning-input class="full" label="Meeting Topic" value={topic} data-field="topic" onchange={handleInput} required></lightning-input>
+                <lightning-input type="date" label="Start Date" value={startDate} data-field="startDate" onchange={handleInput} required></lightning-input>
+                <lightning-combobox label="Start Time" value={startTime} options={startTimeOptions} data-field="startTime" onchange={handleInput} required placeholder="Select a time"></lightning-combobox>
+                <template if:true={hasOtherHosts}><lightning-combobox class="full" label="Schedule For" value={hostUserId} options={hostOptions} data-field="hostUserId" onchange={handleInput} field-level-help="Books the Zoom meeting under this person's Zoom account and assigns them the Salesforce Event. They must have granted you Scheduling Privilege in Zoom."></lightning-combobox></template>
+                <lightning-combobox class="full" label="Duration" value={duration} options={durationOptions} data-field="duration" onchange={handleInput}></lightning-combobox>
+                <p class="full recording-enabled">Cloud Recording is automatically enabled for Zoom meetings created here.</p>
+                <lightning-textarea class="full" label="Agenda / Notes" value={agenda} data-field="agenda" onchange={handleInput}></lightning-textarea>
+            </div>
+            <lightning-button variant="brand" label="Schedule Zoom Meeting" onclick={handleSchedule} disabled={isSaving}></lightning-button>
+            <p class="hint">Review the borrower invitation before scheduling. A Salesforce calendar Event is created with the Zoom meeting.</p>
+            <section class="meetings"><h3>Zoom Meetings for this Record</h3>
+                <template if:true={hasMeetings}><template for:each={meetings} for:item="meeting"><article key={meeting.id} class="meeting-row"><div><strong>{meeting.topic}</strong><p>{meeting.startLabel} · {meeting.durationMinutes} minutes · {meeting.status}</p><template if:true={meeting.recordingRequested}><p class="recording-note">Cloud recording requested. Completed recordings will appear here.</p></template><template for:each={meeting.recordings} for:item="recording"><p key={recording.id} class="recording-link"><a href={recording.playbackUrl} target="_blank" rel="noopener">Open {recording.fileType}</a></p></template></div><div class="actions"><lightning-button variant="brand" label="Import Recording" title="Import completed cloud recordings from Zoom" data-id={meeting.id} onclick={handleRefreshRecordings} disabled={isSaving}></lightning-button><lightning-button label="Start" data-id={meeting.id} onclick={handleStart}></lightning-button><lightning-button label="Join" data-url={meeting.joinUrl} onclick={handleJoin}></lightning-button></div></article></template></template>
+                <template if:false={hasMeetings}><p class="empty">No Zoom meetings have been scheduled here yet.</p></template>
+            </section>
+        </div>
+        <template if:true={showInvitationModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="invitation-title" class="slds-modal slds-fade-in-open invitation-modal">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header modal-header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseInvitationModal} disabled={isSaving}>
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small"></lightning-icon>
+                        </button>
+                        <p class="eyebrow">REACH HOME LOANS · ZOOM INVITATION</p>
+                        <h2 id="invitation-title">Send Pre-Approval Meeting Invitation</h2>
+                        <p>Confirm recipients and tailor the email before the Zoom meeting is scheduled.</p>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-combobox label="Meeting Template" value={meetingTemplate} options={templateOptions} onchange={handleTemplateChange} field-level-help="Switching template rewrites the subject and body below, discarding any edits."></lightning-combobox>
+                        <lightning-input type="email" label="Borrower Email" value={borrowerEmail} data-field="borrowerEmail" onchange={handleInput}></lightning-input>
+                        <lightning-textarea label="Additional Email Recipients" value={additionalEmails} data-field="additionalEmails" onchange={handleInput} placeholder="Add emails separated by commas or semicolons"></lightning-textarea>
+                        <p class="recipient-help">The record email is prefilled. Add a co-borrower, spouse, realtor, or other attendee as needed.</p>
+                        <p class="sender-help">This invitation will be sent from <strong>{context.senderName}</strong> ({context.senderEmail}). Replies will go directly to them.</p>
+                        <lightning-input label="Email Subject" value={invitationSubject} data-field="invitationSubject" onchange={handleInput} required></lightning-input>
+                        <lightning-textarea class="email-body" label="Email Body" value={invitationBody} data-field="invitationBody" onchange={handleInput} required></lightning-textarea>
+                        <p class="merge-help">The Zoom link is inserted automatically. The sender's signature card is appended when the invitation is sent.</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={handleCloseInvitationModal} disabled={isSaving}></lightning-button>
+                        <lightning-button class="send-button" variant="brand" label="Schedule & Send Invitation" onclick={handleConfirmSchedule} disabled={isSaving}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </section>
+    </template>
+</template>

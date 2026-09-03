@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invitee_Emails__c</fullName>
+    <description>Everyone the original invitation was sent to, semicolon separated. Read when a reschedule or cancellation has to re-notify the same people.</description>
+    <externalId>false</externalId>
+    <label>Invitee Emails</label>
+    <length>4000</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

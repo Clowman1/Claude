@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Host_Email__c</fullName>
+    <description>Who hosts the meeting. Set to the host user's Salesforce address for meetings scheduled here (the address a reschedule notice comes from, and the organiser on the calendar invitation), or to the Zoom account address by the sweep for meetings not scheduled through Salesforce.</description>
+    <externalId>false</externalId>
+    <label>Host Email</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Email</type>
+    <unique>false</unique>
+</CustomField>
