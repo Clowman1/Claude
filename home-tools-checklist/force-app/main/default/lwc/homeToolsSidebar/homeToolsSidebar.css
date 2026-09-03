@@ -1,0 +1,507 @@
+.tools {
+    display: grid;
+    gap: 12px;
+}
+
+.tools-card {
+    background: #fff;
+    border: 1px solid #d9e1ec;
+    border-radius: 6px;
+    padding: 14px;
+}
+
+.tools-card-hidden {
+    display: none;
+}
+
+.tools-card header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.tools-card h2 {
+    color: #1a2541;
+    font-size: 16px;
+    font-weight: 750;
+    margin: 0;
+}
+
+.tools-card header button {
+    background: #fff;
+    border: 1px solid #c9d3e2;
+    border-radius: 999px;
+    color: #1a2541;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+}
+
+.tools-row {
+    background: #f7fafc;
+    border: 1px solid #e3e9f2;
+    border-radius: 6px;
+    color: #1a2541;
+    cursor: pointer;
+    display: block;
+    font: inherit;
+    margin-top: 8px;
+    padding: 9px 10px;
+    text-align: left;
+    width: 100%;
+}
+
+.tools-row span,
+.tools-row small {
+    display: block;
+}
+
+.tools-row span {
+    font-weight: 700;
+}
+
+.tools-row small,
+.tools-empty {
+    color: #5f6f86;
+    font-size: 12px;
+}
+
+.tools-empty {
+    margin: 10px 0 0;
+}
+
+.tracker-panel {
+    background: linear-gradient(180deg, #f7fbff 0%, #eef5fb 100%);
+    border-color: #bfd1e6;
+}
+
+.tracker-panel header {
+    align-items: flex-start;
+}
+
+.tracker-panel header p {
+    color: #5f6f86;
+    font-size: 12px;
+    margin: 3px 0 0;
+}
+
+.tracker-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.tracker-card {
+    background: #fff;
+    border: 1px solid #c7d9ee;
+    border-left: 6px solid #8bbbe7;
+    border-radius: 8px;
+    color: #0b1f3f;
+    cursor: pointer;
+    font: inherit;
+    overflow: hidden;
+    padding: 12px 12px 11px;
+    position: relative;
+    text-align: left;
+    width: 100%;
+}
+
+.tracker-card::after {
+    background: rgba(255, 171, 64, 0.22);
+    border-radius: 999px;
+    content: '';
+    height: 70px;
+    position: absolute;
+    right: -24px;
+    top: -28px;
+    width: 70px;
+}
+
+.tracker-card:hover,
+.tracker-card:focus {
+    border-color: #84aeda;
+    box-shadow: 0 8px 22px rgba(23, 50, 86, 0.13);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.tracker-card span,
+.tracker-card strong,
+.tracker-card small {
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.tracker-label {
+    color: #40516b;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.tracker-card strong {
+    color: #061a39;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-top: 7px;
+}
+
+.tracker-units {
+    background: #dcecff;
+    border: 1px solid #b7d6f5;
+    border-radius: 999px;
+    color: #123f69;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 8px;
+    padding: 3px 9px;
+    width: fit-content;
+}
+
+.tracker-card small {
+    color: #5f6f86;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.tracker-card-preapproval {
+    background: #eef7ff;
+    border-left-color: #4f97d7;
+}
+
+.tracker-card-house {
+    background: #eefaf4;
+    border-left-color: #55b589;
+}
+
+.tracker-card-personal {
+    background: #fff7e6;
+    border-left-color: #ffab40;
+}
+
+.weekly-lead-panel {
+    background: linear-gradient(135deg, #18345f 0%, #234d82 100%);
+    border-color: #17345d;
+    color: #fff;
+}
+
+.weekly-lead-panel h2 { color: #fff; }
+
+.weekly-lead-panel header { align-items: flex-start; }
+
+.weekly-lead-panel header p {
+    color: #dbe8f7;
+    font-size: 12px;
+    margin: 4px 0 0;
+}
+
+.weekly-lead-eyebrow {
+    color: #f7b65d;
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.weekly-lead-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.weekly-lead-stat {
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.weekly-lead-stat-highlight {
+    background: #f7b65d;
+    border-color: #f7b65d;
+    color: #132c50;
+}
+
+.weekly-lead-stat span,
+.weekly-lead-stat strong,
+.weekly-lead-stat small { display: block; }
+.weekly-lead-stat span { font-size: 11px; font-weight: 800; }
+.weekly-lead-stat strong { font-size: 24px; line-height: 1.1; margin-top: 5px; }
+.weekly-lead-stat small { color: #dbe8f7; font-size: 11px; margin-top: 4px; }
+.weekly-lead-stat-highlight small { color: #274466; }
+
+.daily-checklist-panel {
+    background: linear-gradient(180deg, #f8fbff 0%, #eef5fb 100%);
+    border-color: #bfd1e6;
+}
+
+.daily-checklist-panel header { align-items: flex-start; }
+
+.daily-checklist-panel header {
+    align-items: center;
+}
+
+.daily-checklist-panel header p {
+    color: #5f6f86;
+    font-size: 12px;
+    margin: 4px 0 0;
+}
+
+.daily-checklist-eyebrow {
+    color: #d17c10;
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.checklist-counter {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #c8d9ec;
+    border-left: 5px solid #2e6fb7;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+}
+
+.checklist-counter-alert {
+    border-left-color: #c23934;
+}
+
+.checklist-counter-clear-state {
+    border-left-color: #147144;
+}
+
+.checklist-counter-primary {
+    align-items: baseline;
+    display: flex;
+    gap: 7px;
+}
+
+.checklist-counter-primary strong {
+    color: #1a2541;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.checklist-counter-primary span {
+    color: #5f6f86;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.checklist-counter-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.checklist-counter-badge,
+.checklist-counter-clear {
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    white-space: nowrap;
+}
+
+.checklist-counter-badge-catchup { background: #fde0e0; color: #9f1e1e; }
+.checklist-counter-badge-today { background: #e4eefb; color: #174b83; }
+.checklist-counter-clear { background: #dff4e7; color: #147144; }
+
+.daily-checklist-form {
+    background: #fff;
+    border: 1px solid #c8d9ec;
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    margin-top: 3px;
+    padding: 12px;
+}
+
+.daily-checklist-add {
+    background: #1b456f;
+    border: 1px solid #1b456f;
+    border-radius: 999px;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 6px 10px;
+    white-space: nowrap;
+}
+
+.daily-checklist-add span { font-size: 16px; line-height: 10px; margin-right: 3px; }
+
+.daily-checklist-form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.daily-checklist-list {
+    margin-top: 12px;
+}
+
+.daily-checklist-item {
+    background: #fff;
+    border: 1px solid #d9e1ec;
+    border-left: 5px solid #8ba8c7;
+    border-radius: 7px;
+    margin-top: 9px;
+    padding: 10px;
+}
+
+.daily-checklist-item:first-child { margin-top: 0; }
+
+.daily-checklist-item-header,
+.daily-checklist-item-footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.daily-checklist-item-header .daily-checklist-lead { flex: 1; }
+
+.daily-checklist-history-item .daily-checklist-lead { display: block; }
+
+.daily-checklist-lead {
+    color: #174b83;
+    font-weight: 800;
+    text-align: left;
+}
+
+.daily-checklist-done {
+    background: transparent;
+    border: 0;
+    color: #174b83;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    padding: 0;
+    text-align: left;
+}
+
+/* The whole row is the drag target; the handle is there to advertise that it can be moved. */
+.daily-checklist-drag-handle {
+    color: #9bb0c7;
+    cursor: grab;
+    font-size: 0.95rem;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-right: 2px;
+}
+
+.daily-checklist-item[draggable='true']:active .daily-checklist-drag-handle { cursor: grabbing; }
+
+.daily-checklist-item-dragging {
+    opacity: 0.45;
+}
+
+.daily-checklist-item-drag-over {
+    border-top: 2px solid #174b83;
+}
+
+.daily-checklist-done {
+    border: 1px solid #93b6dc;
+    border-radius: 999px;
+    color: #174b83;
+    font-size: 12px;
+    padding: 4px 9px;
+}
+
+.daily-checklist-done:disabled { cursor: default; opacity: .55; }
+
+.daily-checklist-item p {
+    color: #263c58;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 8px 0;
+}
+
+.daily-checklist-item-footer small { color: #5f6f86; font-size: 11px; }
+
+.checklist-priority {
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 8px;
+}
+
+.checklist-priority-high { background: #fee2e2; color: #af1f1f; }
+.checklist-priority-medium { background: #fff1cc; color: #9a5d00; }
+.checklist-priority-low { background: #dff4e7; color: #147144; }
+.checklist-priority-catchup { background: #fde0e0; color: #9f1e1e; }
+
+.daily-checklist-history-control {
+    border-top: 1px solid #d8e3f0;
+    margin-top: 12px;
+    padding-top: 10px;
+}
+
+.daily-checklist-history-link {
+    background: transparent;
+    border: 0;
+    color: #174b83;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.daily-checklist-history {
+    background: #fff;
+    border: 1px solid #d8e3f0;
+    border-radius: 7px;
+    margin-top: 10px;
+    min-height: 56px;
+    padding: 10px;
+    position: relative;
+}
+
+.daily-checklist-history h3 {
+    color: #1b456f;
+    font-size: 13px;
+    margin: 0 0 8px;
+}
+
+.daily-checklist-history-item {
+    border-top: 1px solid #edf1f6;
+    padding: 8px 0;
+}
+
+.daily-checklist-history-item p { color: #4a5d76; font-size: 12px; margin: 4px 0; }
+.daily-checklist-history-item small { color: #67778e; font-size: 11px; }
+.daily-checklist-edit {
+    background: #fff;
+    border: 1px solid #c9d3e2;
+    border-radius: 999px;
+    color: #174b83;
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: auto;
+    margin-right: 6px;
+    padding: 4px 10px;
+}
+
+.daily-checklist-edit:hover { background: #e8f1fb; border-color: #84aeda; }

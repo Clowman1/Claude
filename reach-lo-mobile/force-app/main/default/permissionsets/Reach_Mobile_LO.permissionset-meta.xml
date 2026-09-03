@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Reach Mobile - LO</label>
+    <description>Access to the phone-only Reach Mobile - LO app. Assign to Loan Officers.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <applicationVisibilities>
+        <application>Reach_Mobile_LO</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <classAccesses>
+        <apexClass>LOMobileTransactionsController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <tabSettings>
+        <tab>LO_Mobile_Dashboard</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>LO_Mobile_Active_Transactions</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>LO_Mobile_Pre_Approved_Leads</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>LO_Mobile_Closed_Transactions</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

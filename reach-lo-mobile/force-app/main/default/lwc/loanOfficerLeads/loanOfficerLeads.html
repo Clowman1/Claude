@@ -1,0 +1,52 @@
+<template>
+    <lightning-card title={cardTitle} icon-name={iconName}>
+        <span slot="actions" class="slds-badge">{count}</span>
+
+        <template if:true={error}>
+            <div class="slds-p-horizontal_medium slds-p-bottom_small slds-text-color_error">
+                {error}
+            </div>
+        </template>
+
+        <template if:true={isEmpty}>
+            <div class="slds-p-horizontal_medium slds-p-bottom_small slds-text-color_weak">
+                {emptyMessage}
+            </div>
+        </template>
+
+        <template if:true={hasRows}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={rows} for:item="row">
+                    <li key={row.id}
+                        class="slds-item slds-p-horizontal_medium slds-p-vertical_x-small tile"
+                        data-id={row.id}
+                        onclick={handleOpen}>
+
+                        <div class="slds-text-heading_small slds-truncate">{row.name}</div>
+
+                        <div class="slds-text-body_small slds-text-color_weak slds-truncate">
+                            {row.status}
+                        </div>
+
+                        <div class="slds-grid slds-grid_align-spread slds-text-body_small">
+                            <template if:true={row.phone}>
+                                <lightning-formatted-phone value={row.phone}></lightning-formatted-phone>
+                            </template>
+                            <template if:true={row.lastActivity}>
+                                <span class="slds-text-color_weak">
+                                    Last activity
+                                    <lightning-formatted-date-time
+                                        value={row.lastActivity}
+                                        month="short"
+                                        day="2-digit"
+                                        time-zone="UTC">
+                                    </lightning-formatted-date-time>
+                                </span>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>uwm_LoanTermMonths__c</fullName>
+    <description>EASE sends Term in YEARS (30, 15, 20) but Transaction__c.Term_1st__c is stored in MONTHS (360, 180, 240) and is used as the month exponent in the Monthly_Payment_and_Interest__c P&amp;I formula. This formula converts years to months so the UWM Insights mapping can write Term_1st__c directly. When EASE sends no usable term it falls back to the Transaction's current value, so the mapped write is a no-op instead of clearing the field.</description>
+    <externalId>false</externalId>
+    <formula>IF(ISNUMBER(uwm_LoanTerm__c), VALUE(uwm_LoanTerm__c) * 12, Transaction__r.Term_1st__c)</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <label>Loan Term (Months)</label>
+    <precision>6</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

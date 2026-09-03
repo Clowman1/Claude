@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPage>LO_Mobile_Pre_Approved_Leads</flexiPage>
+    <label>Pre-Approved Leads</label>
+    <motif>Custom20: Bell</motif>
+</CustomTab>

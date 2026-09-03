@@ -1,0 +1,8 @@
+.tile {
+    cursor: pointer;
+    /* 44px min target -- thumb-sized, per mobile accessibility guidance */
+    min-height: 44px;
+}
+.tile:active {
+    background-color: var(--lwc-colorBackgroundRowHover, #f3f3f3);
+}

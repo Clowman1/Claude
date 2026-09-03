@@ -1,0 +1,50 @@
+<template>
+    <section class="hero">
+        <template if:true={isLoading}>
+            <div class="loading">Loading lead banner...</div>
+        </template>
+
+        <template if:false={isLoading}>
+            <div class="hero-left">
+                <p class="eyebrow">Reach Home Loans</p>
+                <div class="title-row">
+                    <h1>{name}</h1>
+                    <template if:true={phone}>
+                        <span class="contact-pill">{phone}</span>
+                    </template>
+                    <template if:true={email}>
+                        <span class="contact-pill">{email}</span>
+                    </template>
+                </div>
+
+                <div class="chips">
+                    <template for:each={chips} for:item="chip">
+                        <span key={chip} class="chip">{chip}</span>
+                    </template>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <p class="panel-title">Lead Team</p>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span>Lead Owner</span>
+                        <strong>{ownerName}</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Loan Partner</span>
+                        <strong>{loanPartnerName}</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Scenario Manager</span>
+                        <strong>{scenarioManagerName}</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Other</span>
+                        <strong>{otherTeamMemberName}</strong>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </section>
+</template>

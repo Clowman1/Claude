@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <assignments>
+        <name>Set_Scenario_Manager</name>
+        <label>Set Scenario Manager</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Scenario_Manager__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>0055x00000Bf9saAAB</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <environments>Default</environments>
+    <interviewLabel>Lead - Default Scenario Manager {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Lead - Default Scenario Manager</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Set_Scenario_Manager</targetReference>
+        </connector>
+        <filterFormula>AND(
+            ISBLANK({!$Record.Scenario_Manager__c}),
+            OR(
+                {!$Record.RecordTypeId} = "0125x000000KuZLAA0",
+                {!$Record.RecordTypeId} = "0125x000000KuaiAAC"
+            )
+        )</filterFormula>
+        <object>Lead</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

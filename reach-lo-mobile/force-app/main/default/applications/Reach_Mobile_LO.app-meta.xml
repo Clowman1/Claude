@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#1A2541</headerColor>
+        <logo>RHL_full_logo_blue</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
+    <defaultLandingTab>LO_Mobile_Dashboard</defaultLandingTab>
+    <description>Phone-only app for Loan Officers. Lands on active consumer leads and active transactions.</description>
+    <formFactors>Small</formFactors>
+    <isNavAutoTempTabsDisabled>true</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>Reach Mobile - LO</label>
+    <navType>Standard</navType>
+    <tabs>LO_Mobile_Dashboard</tabs>
+    <tabs>LO_Mobile_Active_Transactions</tabs>
+    <tabs>LO_Mobile_Pre_Approved_Leads</tabs>
+    <tabs>LO_Mobile_Closed_Transactions</tabs>
+    <tabs>standard-Lead</tabs>
+    <tabs>standard-Account</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

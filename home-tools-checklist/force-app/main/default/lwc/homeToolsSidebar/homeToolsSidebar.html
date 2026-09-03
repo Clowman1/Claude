@@ -1,0 +1,333 @@
+<template>
+    <section class="tools">
+        <template if:true={isRunningTodoUser}>
+            <article class="tools-card daily-checklist-panel">
+                <header>
+                    <div>
+                        <span class="daily-checklist-eyebrow">My workspace</span>
+                        <h2>To-Do List</h2>
+                        <p>A running list. Drag items to reprioritize; they stay here until you check them off.</p>
+                    </div>
+                    <button class="daily-checklist-add" onclick={toggleTodoAddForm} type="button">
+                        <span aria-hidden="true">+</span> Add item
+                    </button>
+                </header>
+                <div class={todoCounterClass} aria-live="polite">
+                    <div class="checklist-counter-primary">
+                        <strong>{openTodoCount}</strong>
+                        <span>{openTodoCountLabel}</span>
+                    </div>
+                    <template if:true={hasHighPriorityTodos}>
+                        <div class="checklist-counter-badges">
+                            <span class="checklist-counter-badge checklist-counter-badge-catchup">{highPriorityTodoBadgeText}</span>
+                        </div>
+                    </template>
+                    <template if:false={hasRunningTodoItems}>
+                        <span class="checklist-counter-clear">All clear</span>
+                    </template>
+                </div>
+                <template if:true={isTodoAddFormOpen}>
+                    <section class="daily-checklist-form" aria-label="Add to-do item">
+                        <lightning-textarea
+                            label="What needs to be done?"
+                            value={todoDescription}
+                            maxlength="1000"
+                            onchange={handleTodoDescriptionChange}>
+                        </lightning-textarea>
+                        <lightning-combobox
+                            label="Priority"
+                            value={todoPriority}
+                            options={checklistPriorityOptions}
+                            onchange={handleTodoPriorityChange}>
+                        </lightning-combobox>
+                        <div class="daily-checklist-form-actions">
+                            <lightning-button label="Cancel" onclick={closeTodoAddForm}></lightning-button>
+                            <lightning-button label="Add item" variant="brand" onclick={addTodoItem} disabled={isSavingTodoItem}></lightning-button>
+                        </div>
+                    </section>
+                </template>
+                <div class="daily-checklist-list">
+                    <template if:true={hasRunningTodoItems}>
+                        <template for:each={runningTodoItems} for:item="item">
+                            <article key={item.id} class="daily-checklist-item" data-id={item.id} data-list="todo"
+                                draggable={item.draggable}
+                                ondragstart={handleDragStart}
+                                ondragover={handleDragOver}
+                                ondrop={handleDrop}
+                                ondragend={handleDragEnd}>
+                                <div class="daily-checklist-item-header">
+                                    <span class="daily-checklist-drag-handle" title="Drag to reorder" aria-hidden="true">⠿</span>
+                                    <span class={item.priorityClass}>{item.priority}</span>
+                                </div>
+                                <template if:true={item.isEditing}>
+                                    <section class="daily-checklist-form" aria-label="Edit item">
+                                        <lightning-textarea label="What needs to be done?" value={editDescription} maxlength="1000" onchange={handleEditDescriptionChange}></lightning-textarea>
+                                        <lightning-combobox label="Priority" value={editPriority} options={checklistPriorityOptions} onchange={handleEditPriorityChange}></lightning-combobox>
+                                        <div class="daily-checklist-form-actions">
+                                            <lightning-button label="Cancel" onclick={cancelEditItem}></lightning-button>
+                                            <lightning-button label="Save" variant="brand" data-id={item.id} onclick={saveEditItem} disabled={isSavingEdit}></lightning-button>
+                                        </div>
+                                    </section>
+                                </template>
+                                <template if:false={item.isEditing}>
+                                    <p>{item.description}</p>
+                                    <div class="daily-checklist-item-footer">
+                                        <small>{item.addedLabel}</small>
+                                        <button class="daily-checklist-edit" data-id={item.id} onclick={startEditItem} type="button">Edit</button>
+                                        <button class="daily-checklist-done" data-id={item.id} onclick={completeTodoItem} disabled={item.isCompleting} type="button">Done</button>
+                                    </div>
+                                </template>
+                            </article>
+                        </template>
+                    </template>
+                    <template if:false={hasRunningTodoItems}>
+                        <p class="tools-empty">Nothing on your list. Use <strong>Add item</strong> when something comes up.</p>
+                    </template>
+                </div>
+                <div class="daily-checklist-history-control">
+                    <button class="daily-checklist-history-link" onclick={toggleCompletedTodoItems} type="button" aria-expanded={isCompletedTodoOpen}>{completedTodoToggleLabel}</button>
+                </div>
+                <template if:true={isCompletedTodoOpen}>
+                    <section class="daily-checklist-history" aria-label="Completed to-do items">
+                        <h3>Recently completed</h3>
+                        <template if:true={isLoadingCompletedTodoItems}>
+                            <lightning-spinner alternative-text="Loading completed items" size="small"></lightning-spinner>
+                        </template>
+                        <template if:false={isLoadingCompletedTodoItems}>
+                            <template if:true={hasCompletedTodoItems}>
+                                <template for:each={completedTodoItems} for:item="item">
+                                    <article key={item.id} class="daily-checklist-history-item">
+                                        <p>{item.description}</p>
+                                        <div class="daily-checklist-item-footer">
+                                            <small>Completed {item.completedAtText}</small>
+                                            <button class="daily-checklist-history-link" data-id={item.id} onclick={reopenTodoItem} type="button">Reopen</button>
+                                        </div>
+                                    </article>
+                                </template>
+                            </template>
+                            <template if:false={hasCompletedTodoItems}>
+                                <p class="tools-empty">You have not completed any items yet.</p>
+                            </template>
+                        </template>
+                    </section>
+                </template>
+            </article>
+        </template>
+
+        <template if:true={isLoanPartnerChecklistUser}>
+            <article class="tools-card daily-checklist-panel">
+                <header>
+                    <div>
+                        <span class="daily-checklist-eyebrow">Loan Partner workspace</span>
+                        <h2>Daily Checklist</h2>
+                        <p>Keep today’s work organized, drag items to reprioritize, and check them off as you finish.</p>
+                    </div>
+                    <button class="daily-checklist-add" onclick={toggleChecklistAddForm} type="button">
+                        <span aria-hidden="true">+</span> Add item
+                    </button>
+                </header>
+                <div class={taskCounterClass} aria-live="polite">
+                    <div class="checklist-counter-primary">
+                        <strong>{openTaskCount}</strong>
+                        <span>{openTaskCountLabel}</span>
+                    </div>
+                    <template if:true={hasDailyChecklistItems}>
+                        <div class="checklist-counter-badges">
+                            <template if:true={hasPastDueTasks}>
+                                <span class="checklist-counter-badge checklist-counter-badge-catchup">{pastDueBadgeText}</span>
+                            </template>
+                            <template if:true={hasDueTodayTasks}>
+                                <span class="checklist-counter-badge checklist-counter-badge-today">{dueTodayBadgeText}</span>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={hasDailyChecklistItems}>
+                        <span class="checklist-counter-clear">All caught up</span>
+                    </template>
+                </div>
+                <template if:true={isChecklistAddFormOpen}>
+                    <section class="daily-checklist-form" aria-label="Add checklist item">
+                        <lightning-input
+                            label="Lead Name"
+                            value={checklistLeadName}
+                            maxlength="120"
+                            placeholder="Who is this for?"
+                            onchange={handleChecklistLeadNameChange}>
+                        </lightning-input>
+                        <lightning-textarea
+                            label="What needs to be done?"
+                            value={checklistDescription}
+                            maxlength="1000"
+                            onchange={handleChecklistDescriptionChange}>
+                        </lightning-textarea>
+                        <lightning-combobox
+                            label="Priority"
+                            value={checklistPriority}
+                            options={checklistPriorityOptions}
+                            onchange={handleChecklistPriorityChange}>
+                        </lightning-combobox>
+                        <div class="daily-checklist-form-actions">
+                            <lightning-button label="Cancel" onclick={closeChecklistAddForm}></lightning-button>
+                            <lightning-button label="Add item" variant="brand" onclick={addChecklistItem} disabled={isSavingChecklistItem}></lightning-button>
+                        </div>
+                    </section>
+                </template>
+                <div class="daily-checklist-list">
+                    <template if:true={hasDailyChecklistItems}>
+                        <template for:each={dailyChecklistItems} for:item="item">
+                            <article key={item.id} class="daily-checklist-item" data-id={item.id} data-list="checklist"
+                                draggable={item.draggable}
+                                ondragstart={handleDragStart}
+                                ondragover={handleDragOver}
+                                ondrop={handleDrop}
+                                ondragend={handleDragEnd}>
+                                <div class="daily-checklist-item-header">
+                                    <span class="daily-checklist-drag-handle" title="Drag to reorder" aria-hidden="true">⠿</span>
+                                    <span class="daily-checklist-lead">{item.leadName}</span>
+                                    <span class={item.priorityClass}>{item.priority}</span>
+                                </div>
+                                <template if:true={item.isEditing}>
+                                    <section class="daily-checklist-form" aria-label="Edit item">
+                                        <lightning-input label="Lead Name" value={editLeadName} maxlength="120" onchange={handleEditLeadNameChange}></lightning-input>
+                                        <lightning-textarea label="What needs to be done?" value={editDescription} maxlength="1000" onchange={handleEditDescriptionChange}></lightning-textarea>
+                                        <lightning-combobox label="Priority" value={editPriority} options={checklistPriorityOptions} onchange={handleEditPriorityChange}></lightning-combobox>
+                                        <div class="daily-checklist-form-actions">
+                                            <lightning-button label="Cancel" onclick={cancelEditItem}></lightning-button>
+                                            <lightning-button label="Save" variant="brand" data-id={item.id} onclick={saveEditItem} disabled={isSavingEdit}></lightning-button>
+                                        </div>
+                                    </section>
+                                </template>
+                                <template if:false={item.isEditing}>
+                                    <p>{item.description}</p>
+                                    <div class="daily-checklist-item-footer">
+                                        <small>{item.dueText}</small>
+                                        <button class="daily-checklist-edit" data-id={item.id} onclick={startEditItem} type="button">Edit</button>
+                                        <button class="daily-checklist-done" data-id={item.id} onclick={completeChecklistItem} disabled={item.isCompleting} type="button">Done</button>
+                                    </div>
+                                </template>
+                            </article>
+                        </template>
+                    </template>
+                    <template if:false={hasDailyChecklistItems}>
+                        <p class="tools-empty">No open checklist items. Use <strong>Add item</strong> when you have something to track.</p>
+                    </template>
+                </div>
+                <div class="daily-checklist-history-control">
+                    <button class="daily-checklist-history-link" onclick={toggleClearedChecklistItems} type="button" aria-expanded={isClearedChecklistOpen}>{clearedChecklistToggleLabel}</button>
+                </div>
+                <template if:true={isClearedChecklistOpen}>
+                    <section class="daily-checklist-history" aria-label="Cleared checklist items">
+                        <h3>Cleared today &amp; yesterday</h3>
+                        <template if:true={isLoadingClearedChecklistItems}>
+                            <lightning-spinner alternative-text="Loading cleared checklist items" size="small"></lightning-spinner>
+                        </template>
+                        <template if:false={isLoadingClearedChecklistItems}>
+                            <template if:true={hasClearedChecklistItems}>
+                                <template for:each={clearedChecklistItems} for:item="item">
+                                    <article key={item.id} class="daily-checklist-history-item">
+                                        <span class="daily-checklist-lead">{item.leadName}</span>
+                                        <p>{item.description}</p>
+                                        <small>Cleared {item.clearedAtText}</small>
+                                    </article>
+                                </template>
+                            </template>
+                            <template if:false={hasClearedChecklistItems}>
+                                <p class="tools-empty">No items were cleared today or yesterday.</p>
+                            </template>
+                        </template>
+                    </section>
+                </template>
+            </article>
+        </template>
+
+        <template if:false={isLoanPartnerChecklistUser}>
+        <template if:true={hasTrackers}>
+            <article class="tools-card tracker-panel">
+                <header>
+                    <div>
+                        <h2>Production Trackers</h2>
+                        <p>Click any tracker to review the source records.</p>
+                    </div>
+                </header>
+                <div class="tracker-grid">
+                    <template for:each={trackers} for:item="tracker">
+                        <button key={tracker.key} class={tracker.className} data-report-url={tracker.reportUrl} onclick={openReport} type="button">
+                            <span class="tracker-label">{tracker.label}</span>
+                            <strong>{tracker.formattedVolume}</strong>
+                            <span class="tracker-units">{tracker.unitsText}</span>
+                            <small>{tracker.helperText}</small>
+                        </button>
+                    </template>
+                </div>
+            </article>
+        </template>
+
+        <template if:true={hasWeeklyLeadTracker}>
+            <article class="tools-card weekly-lead-panel">
+                <header>
+                    <div>
+                        <span class="weekly-lead-eyebrow">Lead intake</span>
+                        <h2>Weekly New Leads</h2>
+                        <p>New leads by Created Date assigned to you, regardless of current status.</p>
+                    </div>
+                </header>
+                <div class="weekly-lead-grid">
+                    <div class="weekly-lead-stat">
+                        <span>Last Week</span>
+                        <strong>{weeklyLeadTracker.lastWeek}</strong>
+                        <small>new leads</small>
+                    </div>
+                    <div class="weekly-lead-stat weekly-lead-stat-highlight">
+                        <span>This Week</span>
+                        <strong>{weeklyLeadTracker.thisWeek}</strong>
+                        <small>new leads</small>
+                    </div>
+                    <div class="weekly-lead-stat">
+                        <span>12-Month Weekly Avg.</span>
+                        <strong>{formattedRollingTwelveMonthWeeklyAverage}</strong>
+                        <small>new leads per week</small>
+                    </div>
+                </div>
+            </article>
+        </template>
+
+        <template if:true={showEventsAndRecentRecords}>
+        <article class={eventsCardClass}>
+            <header>
+                <h2>Today&apos;s Events</h2>
+                <button onclick={openCalendar}>View Calendar</button>
+            </header>
+            <template if:true={hasEvents}>
+                <template for:each={events} for:item="item">
+                    <button key={item.id} class="tools-row" data-id={item.id} data-object={item.objectApiName} onclick={openRecord}>
+                        <span>{item.title}</span>
+                        <small>{item.subtitle}</small>
+                    </button>
+                </template>
+            </template>
+            <template if:false={hasEvents}>
+                <p class="tools-empty">No upcoming events.</p>
+            </template>
+        </article>
+
+        <article class="tools-card">
+            <header>
+                <h2>Recent Records</h2>
+            </header>
+            <template if:true={hasRecentRecords}>
+                <template for:each={recentRecords} for:item="item">
+                    <button key={item.id} class="tools-row" data-id={item.id} data-object={item.objectApiName} onclick={openRecord}>
+                        <span>{item.title}</span>
+                        <small>{item.subtitle}</small>
+                    </button>
+                </template>
+            </template>
+            <template if:false={hasRecentRecords}>
+                <p class="tools-empty">No recent records.</p>
+            </template>
+        </article>
+        </template>
+        </template>
+
+    </section>
+</template>

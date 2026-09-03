@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Read on uwm_LoanTermMonths__c, the years-to-months formula feeding the UWM Insights map into Term_1st__c. The mapping runs in system mode; this just lets admins and reports see the field.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>UWM Loan Term Months (Read)</label>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>UWM_Loan_Info__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UWM_Loan_Info__c.uwm_LoanTermMonths__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>
