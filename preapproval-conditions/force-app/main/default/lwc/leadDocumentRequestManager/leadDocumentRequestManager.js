@@ -1139,7 +1139,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
 
         this.isLoading = true;
         try {
-            await sendComposedRequestEmail({
+            const warning = await sendComposedRequestEmail({
                 leadId: this.recordId,
                 subject: this.emailSubjectLine,
                 htmlBody: this.emailSectionOneHtml + this.emailBody + this.emailLastSectionHtml,
@@ -1147,7 +1147,13 @@ export default class LeadDocumentRequestManager extends LightningElement {
                 ccAddresses: this.emailCcAddresses || '',
                 templateDeveloperName: this.selectedEmailTemplate
             });
-            this.showToast(`Document request email sent to ${this.emailToAddresses.trim()}.`);
+            // A warning means the borrower has the email but Salesforce stumbled afterwards. It
+            // must not read as a failure: that is what prompts a second Send and a duplicate.
+            if (warning) {
+                this.showWarning(warning);
+            } else {
+                this.showToast(`Document request email sent to ${this.emailToAddresses.trim()}.`);
+            }
             this.closeEmailModal();
             await this.loadData();
         } catch (error) {
@@ -1420,6 +1426,15 @@ export default class LeadDocumentRequestManager extends LightningElement {
             title: 'Lead Documents',
             message,
             variant: 'success'
+        }));
+    }
+
+    showWarning(message) {
+        this.dispatchEvent(new ShowToastEvent({
+            title: 'Email sent - Lead not fully updated',
+            message,
+            variant: 'warning',
+            mode: 'sticky'
         }));
     }
 

@@ -77,19 +77,21 @@ public with sharing class LeadDocumentRequestController {
         return LeadDocumentRequestService.getEmailTemplatePreview(leadId, templateDeveloperName);
     }
 
+    // Returns null on a clean send, or a warning when the email left but Salesforce could not
+    // finish updating the Lead - the sender needs to know the difference before resending.
     @AuraEnabled
-    public static void sendRequestEmail(Id leadId) {
-        LeadDocumentRequestService.sendRequestEmail(leadId);
+    public static String sendRequestEmail(Id leadId) {
+        return LeadDocumentRequestService.sendRequestEmail(leadId);
     }
 
     @AuraEnabled
-    public static void sendEditedRequestEmail(Id leadId, String subject, String htmlBody) {
-        LeadDocumentRequestService.sendEditedRequestEmail(leadId, subject, htmlBody);
+    public static String sendEditedRequestEmail(Id leadId, String subject, String htmlBody) {
+        return LeadDocumentRequestService.sendEditedRequestEmail(leadId, subject, htmlBody);
     }
 
     // Separate name rather than an overload: @AuraEnabled methods cannot be overloaded.
     @AuraEnabled
-    public static void sendComposedRequestEmail(
+    public static String sendComposedRequestEmail(
         Id leadId,
         String subject,
         String htmlBody,
@@ -97,7 +99,7 @@ public with sharing class LeadDocumentRequestController {
         String ccAddresses,
         String templateDeveloperName
     ) {
-        LeadDocumentRequestService.sendEditedRequestEmail(
+        return LeadDocumentRequestService.sendEditedRequestEmail(
             leadId,
             subject,
             htmlBody,

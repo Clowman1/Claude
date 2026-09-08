@@ -496,27 +496,33 @@ public with sharing class LeadDocumentRequestService {
         return preview;
     }
 
-    public static void sendRequestEmail(Id leadId) {
+    public static String sendRequestEmail(Id leadId) {
         EmailInformation rendered = getEmailTemplatePreview(leadId, EMAIL_TEMPLATE_DEVELOPER_NAME);
-        sendEditedRequestEmail(leadId, rendered.subject, rendered.htmlBody, null, null, EMAIL_TEMPLATE_DEVELOPER_NAME);
+        return sendEditedRequestEmail(
+            leadId, rendered.subject, rendered.htmlBody, null, null, EMAIL_TEMPLATE_DEVELOPER_NAME
+        );
     }
 
-    public static void sendEditedRequestEmail(Id leadId, String subject, String htmlBody) {
+    public static String sendEditedRequestEmail(Id leadId, String subject, String htmlBody) {
         // Null To/CC means "use the defaults" (borrower email, Loan Partner on the Lead).
-        sendEditedRequestEmail(leadId, subject, htmlBody, null, null, null);
+        return sendEditedRequestEmail(leadId, subject, htmlBody, null, null, null);
     }
 
-    public static void sendEditedRequestEmail(
+    public static String sendEditedRequestEmail(
         Id leadId,
         String subject,
         String htmlBody,
         String toAddresses,
         String ccAddresses
     ) {
-        sendEditedRequestEmail(leadId, subject, htmlBody, toAddresses, ccAddresses, null);
+        return sendEditedRequestEmail(leadId, subject, htmlBody, toAddresses, ccAddresses, null);
     }
 
-    public static void sendEditedRequestEmail(
+    /**
+     * Sends the request email and returns null when everything committed cleanly, or a warning
+     * for the sender when the email left but Salesforce could not finish the record updates.
+     */
+    public static String sendEditedRequestEmail(
         Id leadId,
         String subject,
         String htmlBody,
@@ -568,12 +574,73 @@ public with sharing class LeadDocumentRequestService {
             mail.setCcAddresses(resolvedCcAddresses);
         }
 
+        ensureNotAlreadyJustSent(leadId, subject);
+
+        String warning = null;
         if (!Test.isRunningTest()) {
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[]{ mail });
+            try {
+                Messaging.sendEmail(new Messaging.SingleEmailMessage[]{ mail });
+            } catch (Exception sendException) {
+                if (!isRowLockFailure(sendException)) {
+                    throw sendException;
+                }
+                // The email is already with the mail server. Rethrowing would roll back the
+                // request and status updates and show a red failure, which is what led a Loan
+                // Officer to click Send a second time and double-email a borrower. Keep the
+                // updates, and hand back a warning instead of an error.
+                warning = POST_DISPATCH_WARNING;
+            }
         }
 
         markIncludedRequestsAsRequested(requestRecords);
         stampInitialDocsRequested(leadRecord, templateDeveloperName);
+        return warning;
+    }
+
+    // Salesforce hands the email to the mail server before the activity logging that can hit
+    // UNABLE_TO_LOCK_ROW, so a failure here does not mean the borrower was spared the email. The
+    // logged activity is created outside this transaction and survives the rollback, which makes
+    // it the only reliable evidence of what actually went out.
+    private static final Integer RECENT_SEND_MINUTES = 5;
+    private static final String POST_DISPATCH_WARNING =
+        'The email was handed off to the mail server, but Salesforce hit a record lock before it '
+        + 'finished updating the Lead. The requests and status have been updated. Check the '
+        + 'activity timeline on this Lead before sending again - a second send would deliver a '
+        + 'duplicate.';
+
+    private static void ensureNotAlreadyJustSent(Id leadId, String subject) {
+        Datetime lastSend = findRecentSend(leadId, subject);
+        if (lastSend == null) {
+            return;
+        }
+        throw new LeadDocumentRequestException(
+            'This exact email already went to the borrower at ' + lastSend.format('h:mm a')
+            + '. Use the Follow Up - Resend Link template if you meant to send it again.'
+        );
+    }
+
+    // Judged from the error itself rather than by looking for the logged activity: that activity
+    // is committed outside this transaction and is not reliably visible to a query made from
+    // inside it.
+    @TestVisible
+    private static Boolean isRowLockFailure(Exception sendException) {
+        String message = sendException == null ? null : sendException.getMessage();
+        return message != null && message.contains('UNABLE_TO_LOCK_ROW');
+    }
+
+    private static Datetime findRecentSend(Id leadId, String subject) {
+        if (leadId == null || String.isBlank(subject)) {
+            return null;
+        }
+        // Matches the activity Salesforce logs for a sent email: "Email: <subject> on <date>".
+        String subjectPattern = 'Email: ' + subject + '%';
+        Datetime cutoff = Datetime.now().addMinutes(-RECENT_SEND_MINUTES);
+        List<Task> recentSends = Database.query(
+            'SELECT Id, CreatedDate FROM Task' +
+            ' WHERE WhoId = :leadId AND Subject LIKE :subjectPattern AND CreatedDate >= :cutoff' +
+            ' WITH SYSTEM_MODE ORDER BY CreatedDate DESC LIMIT 1'
+        );
+        return recentSends.isEmpty() ? null : recentSends[0].CreatedDate;
     }
 
     // The first Pre-Approval Docs Needed email moves the Lead to Documents Requested. Only the

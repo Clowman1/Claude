@@ -1342,6 +1342,89 @@ private class LeadDocumentCollectionServiceTest {
         System.assertEquals('LEAD_DOCUMENT_CARRY_FORWARD_FAILED', results[0].errorCode);
     }
 
+    // Wilson Rosado, 8 Sep 2026: the send hit UNABLE_TO_LOCK_ROW after the email had already
+    // gone, the transaction rolled back, and the red error prompted a second Send ten seconds
+    // later. The borrower got the same email twice.
+    @IsTest
+    static void aSecondSendOfTheSameEmailIsRefused() {
+        Lead leadRecord = createLead('duplicate-guard@example.com');
+        createRequest(leadRecord.Id, 'Bank Statements');
+        LeadDocumentRequestService.EmailInformation preview =
+            LeadDocumentRequestController.getEmailPreview(leadRecord.Id);
+
+        // The activity Salesforce logs for a sent email. It is committed outside the failing
+        // transaction, so it survives the rollback and is the only evidence the email went out.
+        insert new Task(
+            WhoId = leadRecord.Id,
+            Subject = 'Email: ' + preview.subject + ' on 9/8/2026 2:42:56 PM'
+        );
+
+        String message = '';
+        Test.startTest();
+        try {
+            LeadDocumentRequestService.sendRequestEmail(leadRecord.Id);
+        } catch (Exception refused) {
+            message = refused.getMessage();
+        }
+        Test.stopTest();
+
+        System.assertEquals(
+            true,
+            message.contains('already went to the borrower'),
+            'A repeat of the same email within minutes must be refused, not delivered twice.'
+        );
+        System.assertEquals(
+            true,
+            message.contains('Follow Up'),
+            'And it must say which template to use for a deliberate resend.'
+        );
+    }
+
+    @IsTest
+    static void aDifferentEmailToTheSameLeadStillSends() {
+        Lead leadRecord = createLead('other-subject@example.com');
+        createRequest(leadRecord.Id, 'Bank Statements');
+
+        insert new Task(
+            WhoId = leadRecord.Id,
+            Subject = 'Email: Something else entirely on 9/8/2026 2:42:56 PM'
+        );
+
+        Test.startTest();
+        LeadDocumentRequestService.sendRequestEmail(leadRecord.Id);
+        Test.stopTest();
+
+        System.assertEquals(
+            'Documents Requested',
+            [SELECT Status FROM Lead WHERE Id = :leadRecord.Id].Status,
+            'The guard is scoped to the same subject; unrelated mail must not block a send.'
+        );
+    }
+
+    @IsTest
+    static void onlyARowLockIsTreatedAsSentAfterDispatch() {
+        // Salesforce releases the email before the activity logging that can hit this, so a row
+        // lock means the borrower already has it. Anything else is a genuine failure to send.
+        System.assertEquals(
+            true,
+            LeadDocumentRequestService.isRowLockFailure(
+                new LeadDocumentRequestService.LeadDocumentRequestException(
+                    'SendEmail failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, '
+                    + 'unable to obtain exclusive access to this record'
+                )
+            )
+        );
+        System.assertEquals(
+            false,
+            LeadDocumentRequestService.isRowLockFailure(
+                new LeadDocumentRequestService.LeadDocumentRequestException(
+                    'SendEmail failed. First exception on row 0; first error: INVALID_EMAIL_ADDRESS'
+                )
+            ),
+            'A bad address must still surface as a failure - nothing was delivered.'
+        );
+    }
+
     private static Lead createLead(String email) {
         LeadDocumentRequestService.testLeadHomeUrlOverride = 'https://example.force.com/documents/s/lead';
         Lead leadRecord = new Lead(
