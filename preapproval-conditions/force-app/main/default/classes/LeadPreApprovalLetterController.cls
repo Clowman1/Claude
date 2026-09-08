@@ -208,12 +208,9 @@ public with sharing class LeadPreApprovalLetterController {
             + htmlEncode(borrowerName) + ' is pre-approved for mortgage financing.</td></tr>'
             + '<tr><td style="padding:0 0 12px 0;font-size:13px;line-height:20px;color:#33405c;">'
             + 'To whom it may concern:</td></tr>'
-            + '<tr><td style="padding:0 0 12px 0;font-size:13px;line-height:20px;color:#33405c;">'
+            + '<tr><td style="padding:0 0 20px 0;font-size:13px;line-height:20px;color:#33405c;">'
             + 'I have issued this Pre-Approval Letter to certify that the below applicant(s) is/are '
             + 'pre-approved for financing per Desktop Underwriter (DU) and/or Loan Prospector (LP).</td></tr>'
-            + '<tr><td style="padding:0 0 20px 0;font-size:13px;line-height:20px;color:#33405c;">'
-            + 'The applicant(s) is/are pre-approved for the following terms provided that their '
-            + 'creditworthiness and financial position do not materially change prior to closing.</td></tr>'
 
             + '<tr><td>' + buildTermsTable(leadRecord, borrowerName, ltvSuffix) + '</td></tr>'
 

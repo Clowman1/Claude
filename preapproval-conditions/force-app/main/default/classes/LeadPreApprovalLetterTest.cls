@@ -51,6 +51,8 @@ private class LeadPreApprovalLetterTest {
         System.assertEquals(true, html.contains('Javine Roman is pre-approved for mortgage financing.'));
         System.assertEquals(true, html.contains('To whom it may concern:'));
         System.assertEquals(true, html.contains('Desktop Underwriter (DU) and/or Loan Prospector (LP)'));
+        System.assertEquals(false, html.contains('do not materially change prior to closing'),
+            'The QUALIFICATION REVIEW section already says this; it is not said twice.');
         System.assertEquals(false, html.contains('FINANCING QUALIFICATION'),
             'The banner strapline was removed.');
         System.assertEquals(true, html.contains('/resource/Reach_Logo'), 'The real logo, not typed text.');
