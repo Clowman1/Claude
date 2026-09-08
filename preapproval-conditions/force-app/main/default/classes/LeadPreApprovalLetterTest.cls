@@ -49,6 +49,11 @@ private class LeadPreApprovalLetterTest {
         System.assertEquals(85.00, saved.LTV__c, 'LTV is derived rather than typed.');
 
         System.assertEquals(true, html.contains('Javine Roman is pre-approved for mortgage financing.'));
+        System.assertEquals(true, html.contains('To whom it may concern:'));
+        System.assertEquals(true, html.contains('Desktop Underwriter (DU) and/or Loan Prospector (LP)'));
+        System.assertEquals(false, html.contains('FINANCING QUALIFICATION'),
+            'The banner strapline was removed.');
+        System.assertEquals(true, html.contains('/resource/Reach_Logo'), 'The real logo, not typed text.');
         System.assertEquals(true, html.contains('$795,000'));
         System.assertEquals(true, html.contains('85.00% LTV'));
         System.assertEquals(true, html.contains('DOCUMENTATION REVIEWED'));
@@ -72,11 +77,8 @@ private class LeadPreApprovalLetterTest {
     }
 
     @IsTest
-    static void finalizingStoresTheLetterAndMovesTheLead() {
+    static void finalizingStoresTheLetterAndLeavesTheStatusAlone() {
         Lead leadRecord = createLead();
-        // Pre-Approval is gated by a validation rule needing the loan amount. In the real flow the
-        // terms are always saved before Finalize is reachable, so the test mirrors that order.
-        update new Lead(Id = leadRecord.Id, Purchase_Price__c = 795000, Loan_Amount__c = 675750);
         String edited = '<p>Edited by the Loan Officer</p>';
 
         Test.startTest();
@@ -91,10 +93,8 @@ private class LeadPreApprovalLetterTest {
 
         System.assertEquals(edited, saved.Pre_Approval_Letter_HTML__c,
             'The PDF renders exactly what was on screen, edits included.');
-        System.assertEquals('Pre-Approval', saved.Status);
-        System.assertEquals(true, saved.Letter_Completed__c);
+        System.assertEquals(true, saved.Letter_Completed__c, 'A letter was produced.');
         System.assertEquals(true, result.pdfPath.contains('Lead_Pre_Approval_Letter'));
-        System.assertEquals(true, result.statusMoved, 'A Lead with terms on it should advance.');
     }
 
     @IsTest
@@ -111,10 +111,10 @@ private class LeadPreApprovalLetterTest {
         Test.stopTest();
 
         System.assertEquals(true, rejected);
-        System.assertNotEquals(
-            'Pre-Approval',
-            [SELECT Status FROM Lead WHERE Id = :leadRecord.Id].Status,
-            'A failed finalize must not advance the Lead.'
+        System.assertEquals(
+            null,
+            [SELECT Pre_Approval_Letter_HTML__c FROM Lead WHERE Id = :leadRecord.Id].Pre_Approval_Letter_HTML__c,
+            'A failed finalize must not leave a half-written letter behind.'
         );
     }
 
@@ -182,15 +182,66 @@ private class LeadPreApprovalLetterTest {
         );
         System.assertEquals(false, html.contains('ITIN'), 'Nor appear on the letter afterwards.');
     }
+    // A Lead the letter is actually allowed to be issued for: already in Pre-Approval, which is
+    // where logging a call puts it.
+    @IsTest
+    static void theLetterIsRefusedUntilTheLeadReachesPreApproval() {
+        Lead leadRecord = createLead('Documents Requested');
+        Boolean contextRefused = false;
+        Boolean generateRefused = false;
+        String message = '';
+
+        Test.startTest();
+        try {
+            LeadPreApprovalLetterController.getContext(leadRecord.Id);
+        } catch (Exception expected) {
+            contextRefused = true;
+        }
+        // Asserted against the guard itself: an AuraHandledException reports only
+        // "Script-thrown exception" to getMessage() in a test, though LWC does receive the real
+        // text through error.body.message.
+        try {
+            LeadPreApprovalLetterController.ensurePreApprovalStatus(leadRecord);
+        } catch (Exception expected) {
+            message = expected.getMessage();
+        }
+        try {
+            LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+                leadRecord.Id, 795000, 675750, 'Conventional', 'Single Family', null, '', null
+            );
+        } catch (Exception expected) {
+            generateRefused = true;
+        }
+        Test.stopTest();
+
+        System.assertEquals(true, contextRefused, 'Opening the modal is refused outright.');
+        System.assertEquals(true, generateRefused,
+            'And again on generate, in case the status changed while the modal sat open.');
+        System.assertEquals(true, message.contains('log a call'),
+            'The message has to tell the Loan Officer what to do about it.');
+    }
+
     private static Lead createLead() {
+        Lead leadRecord = createLead('Pre-Approval');
+        return leadRecord;
+    }
+
+    private static Lead createLead(String status) {
         Lead leadRecord = new Lead(
             FirstName = 'Javine',
             LastName = 'Roman',
             Company = 'Pre-Approval Letter Test',
             Status = 'New',
-            Email = 'javine.roman@example.com'
+            Email = 'javine.roman@example.com',
+            Purchase_Price__c = 795000,
+            Loan_Amount__c = 675750
         );
         insert leadRecord;
-        return leadRecord;
+        if (status != 'New') {
+            update new Lead(Id = leadRecord.Id, Status = status);
+        }
+        return [
+            SELECT Id, FirstName, LastName, Status FROM Lead WHERE Id = :leadRecord.Id
+        ];
     }
 }

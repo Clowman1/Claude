@@ -229,22 +229,11 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
                 letterHtml: this.letterHtml
             });
 
-            // The letter always saves; the status move can be refused by a validation rule, and the
-            // Loan Officer has to hear about that rather than get a success message that is untrue.
-            this.dispatchEvent(new ShowToastEvent(
-                result.statusMoved
-                    ? {
-                          title: 'Pre-approval letter finalized',
-                          message: 'The Lead has moved to Pre-Approval. The letter is opening in a new tab.',
-                          variant: 'success'
-                      }
-                    : {
-                          title: 'Letter saved, Lead status unchanged',
-                          message: result.statusMessage,
-                          variant: 'warning',
-                          mode: 'sticky'
-                      }
-            ));
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Pre-approval letter finalized',
+                message: 'The letter is opening in a new tab.',
+                variant: 'success'
+            }));
 
             // Opened rather than downloaded directly: the PDF is rendered by a Visualforce page, and
             // the browser's own viewer gives the Loan Officer print and save without extra plumbing.

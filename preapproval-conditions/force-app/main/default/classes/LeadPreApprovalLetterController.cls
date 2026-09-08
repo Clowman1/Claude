@@ -8,6 +8,9 @@
  */
 public with sharing class LeadPreApprovalLetterController {
     private static final String PRE_APPROVAL_STATUS = 'Pre-Approval';
+    private static final String STATUS_GATE_MESSAGE =
+        'This Lead must be in Pre-Approval status before a letter can be issued. '
+        + 'Please log a call to move the status to Pre-Approval, then try again.';
     // The stored picklist value is upper case; the letter prints the cased form the template uses.
     private static final String NON_QM_VALUE = 'NON-QM';
     private static final String NON_QM_DISPLAY = 'Non-QM';
@@ -60,6 +63,7 @@ public with sharing class LeadPreApprovalLetterController {
     public static LetterContext getContext(Id leadId) {
         try {
             Lead leadRecord = loadLead(leadId);
+            ensurePreApprovalStatus(leadRecord);
 
             LetterContext context = new LetterContext();
             context.leadId = leadRecord.Id;
@@ -98,6 +102,8 @@ public with sharing class LeadPreApprovalLetterController {
         Id signerId
     ) {
         try {
+            ensurePreApprovalStatus(loadLead(leadId));
+
             Lead leadUpdate = new Lead(
                 Id = leadId,
                 Purchase_Price__c = purchasePrice,
@@ -126,17 +132,12 @@ public with sharing class LeadPreApprovalLetterController {
 
     public class FinalizeResult {
         @AuraEnabled public String pdfPath;
-        @AuraEnabled public Boolean statusMoved;
-        @AuraEnabled public String statusMessage;
     }
 
     /**
-     * Stores the letter exactly as edited and moves the Lead to Pre-Approval.
-     *
-     * The status move is attempted separately and its outcome is reported back rather than
-     * swallowed. This org has validation rules on Lead status, and if one fires the Loan Officer
-     * needs to be told the Lead did not advance -- the letter is already saved either way, so
-     * failing the whole action would be worse, but so would a success toast that was not true.
+     * Stores the letter exactly as edited. The Lead status is deliberately left alone: reaching
+     * Pre-Approval is the Loan Officer's decision, recorded by logging a call, and the letter is
+     * only reachable once they have already made it.
      */
     @AuraEnabled
     public static FinalizeResult finalizeLetter(Id leadId, String letterHtml) {
@@ -151,25 +152,26 @@ public with sharing class LeadPreApprovalLetterController {
                 AccessLevel.SYSTEM_MODE
             );
 
+            // Letter_Completed__c still records that a letter was produced; only the status move
+            // is gone.
+            Database.update(
+                new Lead(Id = leadId, Letter_Completed__c = true),
+                true,
+                AccessLevel.SYSTEM_MODE
+            );
+
             FinalizeResult result = new FinalizeResult();
             result.pdfPath = '/apex/Lead_Pre_Approval_Letter?id=' + leadId;
-
-            try {
-                Database.update(
-                    new Lead(Id = leadId, Status = PRE_APPROVAL_STATUS, Letter_Completed__c = true),
-                    true,
-                    AccessLevel.SYSTEM_MODE
-                );
-                result.statusMoved = true;
-            } catch (Exception statusException) {
-                result.statusMoved = false;
-                result.statusMessage = 'The letter is saved, but this Lead could not move to '
-                    + PRE_APPROVAL_STATUS + ': ' + statusException.getDmlMessage(0);
-            }
-
             return result;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @TestVisible
+    private static void ensurePreApprovalStatus(Lead leadRecord) {
+        if (leadRecord == null || leadRecord.Status != PRE_APPROVAL_STATUS) {
+            throw new LetterException(STATUS_GATE_MESSAGE);
         }
     }
 
@@ -193,23 +195,25 @@ public with sharing class LeadPreApprovalLetterController {
         return ''
             + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family:Helvetica,Arial,sans-serif;color:#1b2f5c;">'
             + '<tr><td style="padding:0 0 26px 0;">'
-            + '<div style="font-size:26px;font-weight:bold;color:#14284b;letter-spacing:-0.5px;">Reach</div>'
-            + '<div style="font-size:11px;letter-spacing:5px;color:#5a6b86;font-weight:bold;">HOME LOANS</div>'
+            + '<img src="/resource/Reach_Logo" alt="Reach Home Loans" width="190" />'
             + '</td></tr>'
 
             + '<tr><td style="background:#e8f1fb;padding:20px 24px;">'
             + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
-            + '<td style="font-size:21px;font-weight:bold;color:#14284b;">PRE-APPROVAL LETTER'
-            + '<div style="font-size:11px;font-weight:bold;color:#1b6fc4;letter-spacing:1px;padding-top:8px;">FINANCING QUALIFICATION</div>'
-            + '</td>'
+            + '<td style="font-size:21px;font-weight:bold;color:#14284b;">PRE-APPROVAL LETTER</td>'
             + '<td align="right" style="font-size:11px;font-weight:bold;color:#5a6b86;letter-spacing:1px;vertical-align:top;">' + today + '</td>'
             + '</tr></table></td></tr>'
 
             + '<tr><td style="padding:26px 0 10px 0;font-size:19px;font-weight:bold;color:#14284b;">'
             + htmlEncode(borrowerName) + ' is pre-approved for mortgage financing.</td></tr>'
+            + '<tr><td style="padding:0 0 12px 0;font-size:13px;line-height:20px;color:#33405c;">'
+            + 'To whom it may concern:</td></tr>'
+            + '<tr><td style="padding:0 0 12px 0;font-size:13px;line-height:20px;color:#33405c;">'
+            + 'I have issued this Pre-Approval Letter to certify that the below applicant(s) is/are '
+            + 'pre-approved for financing per Desktop Underwriter (DU) and/or Loan Prospector (LP).</td></tr>'
             + '<tr><td style="padding:0 0 20px 0;font-size:13px;line-height:20px;color:#33405c;">'
-            + 'Reach Home Loans is pleased to confirm that the applicant has been evaluated based on the '
-            + 'financial information and documentation provided and is pre-approved for the terms shown below.</td></tr>'
+            + 'The applicant(s) is/are pre-approved for the following terms provided that their '
+            + 'creditworthiness and financial position do not materially change prior to closing.</td></tr>'
 
             + '<tr><td>' + buildTermsTable(leadRecord, borrowerName, ltvSuffix) + '</td></tr>'
 
