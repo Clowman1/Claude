@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <classAccesses>
+        <apexClass>LeadPreApprovalLetterPdfExtension</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LeadDocumentRequestService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ConditionReviewQueueService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LeadPresetConditionSelectorController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ConditionReviewQueueController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -255,4 +271,8 @@
         <tab>Lead_Document_Request_Reference__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <pageAccesses>
+        <apexPage>Lead_Pre_Approval_Letter</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
 </PermissionSet>
