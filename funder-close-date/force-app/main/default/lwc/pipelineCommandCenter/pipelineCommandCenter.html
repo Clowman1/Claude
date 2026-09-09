@@ -1,0 +1,1379 @@
+<template>
+    <section class={rootClass}>
+        <template if:false={isWebinarMarketingDashboard}>
+        <aside id="command-center-trackers" class={trackersDrawerClass} aria-label={trackersDrawerAriaLabel}>
+            <div class="pcc-trackers-drawer-header">
+                <div>
+                    <span class="pcc-trackers-eyebrow">Home tools</span>
+                    <h2>{trackersDrawerTitle}</h2>
+                </div>
+                <button class="pcc-trackers-close" onclick={toggleTrackersDrawer} type="button" title="Hide trackers">×</button>
+            </div>
+            <div class="pcc-trackers-drawer-body">
+                <c-home-tools-sidebar></c-home-tools-sidebar>
+            </div>
+        </aside>
+        <button class={trackersToggleClass} onclick={toggleTrackersDrawer} aria-expanded={isTrackersDrawerOpen} aria-controls="command-center-trackers" type="button">
+            <span class="pcc-trackers-toggle-icon" aria-hidden="true">›</span>
+            <span>{trackersToggleLabel}</span>
+        </button>
+        </template>
+        <template if:true={showCeoHubHomeOverride}>
+            <c-ceo-intelligence-center page-key="hub"></c-ceo-intelligence-center>
+    </template>
+
+    <template if:true={isWebinarMarketingDashboard}>
+        <c-webinar-marketing-command-center></c-webinar-marketing-command-center>
+    </template>
+
+    <template if:true={isRealtorEventModalOpen}>
+        <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Schedule Realtor Event">
+            <div class="pcc-modal pcc-realtor-modal">
+                <header class="pcc-modal-header"><div><span class="pcc-modal-eyebrow">Realtor Engagement</span><h2>{realtorEventType}</h2><p>Create the event, then add invitees from Campaign Members.</p></div><button class="pcc-modal-close" onclick={closeRealtorEventModal} type="button">X</button></header>
+                <div class="pcc-modal-body">
+                    <lightning-input name="realtorEventName" label="Event Name" value={realtorEventName} onchange={handleRealtorEventFieldChange} required></lightning-input>
+                    <div class="pcc-realtor-event-time-grid">
+                        <lightning-input name="realtorEventDate" label="Event Date" type="date" value={realtorEventDate} onchange={handleRealtorEventFieldChange} required></lightning-input>
+                        <lightning-input name="realtorEventTime" label="Time of Day" type="time" value={realtorEventTime} onchange={handleRealtorEventFieldChange} required></lightning-input>
+                    </div>
+                    <lightning-combobox name="realtorEventDuration" label="Duration" value={realtorEventDuration} options={realtorEventDurationOptions} onchange={handleRealtorEventFieldChange} required></lightning-combobox>
+                    <lightning-input name="realtorEventLocation" label="Location" value={realtorEventLocation} onchange={handleRealtorEventFieldChange}></lightning-input>
+                    <lightning-textarea name="realtorEventNotes" label="Notes" value={realtorEventNotes} onchange={handleRealtorEventFieldChange}></lightning-textarea>
+                    <section class="pcc-realtor-cohosts">
+                        <h3>Co-hosts</h3>
+                        <p>Co-hosts are CC'd on invite emails and each host's signature card is included.</p>
+                        <template for:each={realtorEventCoHosts} for:item="coHost">
+                            <div key={coHost.userId} class="pcc-cohost-chip">
+                                <span><strong>{coHost.name}</strong><small>{coHost.title} · {coHost.email}</small></span>
+                                <lightning-button-icon data-id={coHost.userId} icon-name="utility:close" alternative-text="Remove co-host" title="Remove co-host" onclick={handleRemoveRealtorEventCoHost}></lightning-button-icon>
+                            </div>
+                        </template>
+                        <lightning-input type="search" label="Add a Reach co-host" placeholder="Search employee name or email" value={realtorEventCoHostSearchTerm} onchange={handleRealtorEventCoHostSearch}></lightning-input>
+                        <template if:true={showRealtorEventCoHostSearchResults}>
+                            <div class="pcc-cohost-results">
+                                <template for:each={realtorEventCoHostSearchResults} for:item="person">
+                                    <div key={person.userId} class="pcc-cohost-result">
+                                        <span><strong>{person.name}</strong><small>{person.title} · {person.email}</small></span>
+                                        <lightning-button data-id={person.userId} label="Add co-host" onclick={handleAddRealtorEventCoHost}></lightning-button>
+                                    </div>
+                                </template>
+                                <template if:true={noRealtorEventCoHostSearchResults}><p>No active Reach employees match that search.</p></template>
+                            </div>
+                        </template>
+                        <lightning-input type="checkbox" label="Invite all Nickley team" checked={inviteAllNickleyTeam} onchange={handleInviteAllNickleyTeamChange}></lightning-input>
+                        <p class="pcc-field-note">Adds matching Nickley Group Person Accounts. Invitations are sent later from the event page.</p>
+                    </section>
+                </div>
+                <footer class="pcc-modal-footer"><button class="pcc-button" onclick={closeRealtorEventModal} type="button">Cancel</button><button class="pcc-button pcc-button-primary" onclick={saveRealtorEvent} disabled={isSavingRealtorEvent} type="button">Create Event</button></footer>
+            </div>
+        </section>
+    </template>
+
+        <template if:true={showStandardCommandCenter}>
+        <header class="pcc-hero">
+            <p class="pcc-licensed-states">Licensed in: FL, CA, CO, GA, LA, MD, NJ, NC, PA, SC, TN, VA, TX</p>
+            <div>
+                <p class="pcc-kicker">Reach Home Loans</p>
+                <h1>{headerTitle}</h1>
+                <p class="pcc-subtitle">{headerSubtitle}</p>
+            </div>
+            <template if:true={showHeroActions}>
+                <div class="pcc-hero-actions">
+                <template if:true={showCreateLeadButton}>
+                    <button class="pcc-button pcc-button-primary" onclick={openNewLeadFlow} type="button">Create a New Lead</button>
+                </template>
+                <template if:true={showRealtorEventActions}>
+                    <button class="pcc-button pcc-button-primary" data-event-type="Coffee/Lunch" onclick={createRealtorEvent} type="button">Schedule Coffee/Lunch</button>
+                    <button class="pcc-button pcc-button-primary" data-event-type="Happy Hour" onclick={createRealtorEvent} type="button">Schedule Happy Hour</button>
+                </template>
+                <button class="pcc-button pcc-button-primary" onclick={openNewRealtorPartner} type="button">{realtorAccountButtonLabel}</button>
+                <template if:true={showRealtorLeadButton}>
+                    <button class="pcc-button pcc-button-primary" onclick={openNewRealtorLead} type="button">Create New Realtor Lead</button>
+                </template>
+                <template if:true={showQuickButtons}>
+                    <template for:each={quickButtons} for:item="button">
+                        <button key={button.key} class={button.className} data-object={button.objectApiName} data-filter={button.filterName} onclick={openListView}>{button.label}</button>
+                    </template>
+                </template>
+                <template if:true={showEditButtons}>
+                    <button class="pcc-button pcc-button-ghost" onclick={openEditor}>Edit Buttons</button>
+                </template>
+                </div>
+            </template>
+        </header>
+
+        <template if:true={isLoading}>
+            <div class="pcc-loading">
+                <lightning-spinner alternative-text="Loading pipeline command center" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="pcc-error">{error}</div>
+        </template>
+
+        <template if:false={isLoading}>
+            <div class="pcc-card-grid">
+                <template for:each={statusCards} for:item="card">
+                    <button key={card.key} class={card.className} data-object={card.objectApiName} data-filter={card.filterName} onclick={openListView} type="button">
+                        <span class="pcc-stat-label">{card.label}</span>
+                        <strong>{card.valueText}</strong>
+                        <span class="pcc-stat-helper">{card.helperText}</span>
+                        <template if:true={card.detailText}>
+                            <span class="pcc-stat-detail">{card.detailText}</span>
+                        </template>
+                    </button>
+                </template>
+            </div>
+
+            <section class="pcc-layout">
+                <article class="pcc-panel pcc-panel-large">
+                    <div class="pcc-panel-header">
+                        <div>
+                            <h2>{activePipelineTitle}</h2>
+                            <p>{activePipelineSubtitle}</p>
+                        </div>
+                        <div class="pcc-panel-actions">
+                            <template if:true={showEditColumnsButton}>
+                                <button class="pcc-button pcc-button-secondary pcc-edit-columns-button" onclick={openColumnEditor} type="button">
+                                    Edit Columns
+                                    <span>{selectedColumnCountText}</span>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+                    <template if:true={showBenMasterGroups}>
+                        <div class="pcc-ben-master-tabs" role="tablist" aria-label="Ben work groups">
+                            <template for:each={benMasterGroups} for:item="group">
+                                <button
+                                    key={group.key}
+                                    class={group.className}
+                                    data-key={group.key}
+                                    data-master-type="ben"
+                                    draggable="true"
+                                    ondragstart={handleMasterGroupDragStart}
+                                    ondragover={handleMasterGroupDragOver}
+                                    ondrop={handleMasterGroupDrop}
+                                    ondragend={handleMasterGroupDragEnd}
+                                    onclick={selectBenMasterGroup}
+                                    type="button">
+                                    <span>{group.label}</span>
+                                    <strong>{group.count}</strong>
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:true={showJoeyMasterGroups}>
+                        <div class="pcc-ben-master-tabs pcc-joey-master-tabs" role="tablist" aria-label="Loan officer work groups">
+                            <template for:each={joeyMasterGroups} for:item="group">
+                                <button
+                                    key={group.key}
+                                    class={group.className}
+                                    data-key={group.key}
+                                    data-master-type="joey"
+                                    draggable="true"
+                                    ondragstart={handleMasterGroupDragStart}
+                                    ondragover={handleMasterGroupDragOver}
+                                    ondrop={handleMasterGroupDrop}
+                                    ondragend={handleMasterGroupDragEnd}
+                                    onclick={selectJoeyMasterGroup}
+                                    type="button">
+                                    <span>{group.label}</span>
+                                    <strong>{group.count}</strong>
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:true={showPipelineTabRows}>
+                        <div class="pcc-tabs" role="tablist" aria-label="Pipeline sections">
+                            <template for:each={pipelineTabRows} for:item="tabRow">
+                                <div key={tabRow.key} class="pcc-tab-row">
+                                    <template for:each={tabRow.tabs} for:item="tab">
+                                        <button
+                                            key={tab.key}
+                                            class={tab.className}
+                                            data-key={tab.key}
+                                            draggable="true"
+                                            ondragstart={handleTabDragStart}
+                                            ondragover={handleTabDragOver}
+                                            ondrop={handleTabDrop}
+                                            ondragend={handleTabDragEnd}
+                                            onclick={selectPipelineTab}
+                                            type="button">
+                                            <span>{tab.label}</span>
+                                            <strong>{tab.count}</strong>
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <div class="pcc-table-wrap">
+                        <template if:true={showBenEmptyGroup}>
+                            <div class="pcc-empty pcc-ben-empty-group">{benEmptyGroupMessage}</div>
+                        </template>
+                        <template if:true={isConversionMetricsTab}>
+                            <table class="pcc-table pcc-metric-table">
+                                <thead>
+                                    <tr>
+                                        <th>Loan Officer</th>
+                                        <th>New to Pre-Approval</th>
+                                        <th>Pre-Approval to Transaction</th>
+                                        <th>New to Post-Closed</th>
+                                        <th>Avg Active Days - 12 Mo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activeMetricRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td>{row.loanOfficerName}</td>
+                                            <td>
+                                                <button class="pcc-mini-metric" data-report-url={row.newToPreApprovalReportUrl} onclick={openReport} type="button">
+                                                    <strong>{row.formattedNewToPreApprovalPercent}</strong>
+                                                    <span>YTD</span>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="pcc-mini-metric" data-report-url={row.preApprovalToTransactionReportUrl} onclick={openReport} type="button">
+                                                    <strong>{row.formattedPreApprovalToTransactionPercent}</strong>
+                                                    <span>YTD</span>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="pcc-mini-metric" data-report-url={row.newToPostClosedReportUrl} onclick={openReport} type="button">
+                                                    <strong>{row.formattedNewToPostClosedPercent}</strong>
+                                                    <span>YTD</span>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="pcc-mini-metric pcc-mini-metric-neutral" data-report-url={row.averageActiveDaysReportUrl} onclick={openReport} type="button">
+                                                    <strong>{row.formattedAverageActiveDays}</strong>
+                                                    <span>Days / 12 mo</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isOpenerWorkflowTab}>
+                            <table class="pcc-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class={nameSortClass} data-field="name" onclick={handleSort} type="button">
+                                                <span>Name</span>
+                                                <span class="pcc-sort-indicator">{nameSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={statusSortClass} data-field="status" onclick={handleSort} type="button">
+                                                <span>Status</span>
+                                                <span class="pcc-sort-indicator">{statusSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={tridSortClass} data-field={openerDateSortField} onclick={handleSort} type="button">
+                                                <span>{openerDateColumnLabel}</span>
+                                                <span class="pcc-sort-indicator">{tridSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={lenderSortClass} data-field="lenderName" onclick={handleSort} type="button">
+                                                <span>Lender</span>
+                                                <span class="pcc-sort-indicator">{lenderSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={purposeSortClass} data-field="loanPurpose" onclick={handleSort} type="button">
+                                                <span>Purpose</span>
+                                                <span class="pcc-sort-indicator">{purposeSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <template if:true={showsOwnerColumn}>
+                                            <th>
+                                                <button class={ownerSortClass} data-field="ownerName" onclick={handleSort} type="button">
+                                                    <span>Owner</span>
+                                                    <span class="pcc-sort-indicator">{ownerSortIndicator}</span>
+                                                </button>
+                                            </th>
+                                        </template>
+                                        <th>
+                                            <button class={loanOfficerSortClass} data-field="loanOfficerName" onclick={handleSort} type="button">
+                                                <span>Loan Officer</span>
+                                                <span class="pcc-sort-indicator">{loanOfficerSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={detailSortClass} data-field="detail" onclick={handleSort} type="button">
+                                                <span>Open Checklist Items</span>
+                                                <span class="pcc-sort-indicator">{detailSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>EASE Link</th>
+                                        <template if:true={isActionablePipelineTab}>
+                                            <th class="pcc-action-column">Actions</th>
+                                        </template>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td><a href="#" data-record-id={row.id} onclick={openRecord}>{row.name}</a></td>
+                                            <td><span class={row.statusClass}>{row.statusLabel}</span></td>
+                                            <td>{row.formattedOpenerDate}</td>
+                                            <td>{row.lenderName}</td>
+                                            <td>{row.loanPurpose}</td>
+                                            <template if:true={showsOwnerColumn}>
+                                                <td>{row.ownerName}</td>
+                                            </template>
+                                            <td>{row.loanOfficerName}</td>
+                                            <td>
+                                                <div class="pcc-note-preview" title={row.detail}>
+                                                    <span>{row.detail}</span>
+                                                    <template if:true={row.hasDetail}>
+                                                        <button class="pcc-inline-view" data-title="Open Checklist Items" data-text={row.detail} onclick={openTextPreview} type="button">View</button>
+                                                    </template>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <template if:true={row.hasEaseLink}>
+                                                    <a href={row.easeLink} target="_blank" rel="noopener noreferrer">EASE</a>
+                                                </template>
+                                            </td>
+                                            <template if:true={isTransactionPipelineTab}>
+                                                <td class="pcc-action-column">
+                                                    <div class="pcc-row-actions">
+                                                        <template if:true={isBrokerChecksOutstandingTab}>
+                                                            <button class="pcc-row-edit pcc-row-success" data-record-id={row.id} onclick={openBrokerCheckConfirm} type="button">Check Received</button>
+                                                        </template>
+                                                        <button class="pcc-row-edit" data-record-id={row.id} onclick={openEventEditor} type="button">Set Event</button>
+                                                        <template if:true={isPastClientTab}>
+                                                            <button class="pcc-row-edit pcc-row-danger" data-record-id={row.id} onclick={handlePastClientBadPhone} type="button">{pastClientActionLabel}</button>
+                                                            <button class="pcc-row-edit pcc-row-brown" data-record-id={row.id} onclick={handlePastClientNoBrownies} type="button">No Brownies</button>
+                                                        </template>
+                                                        <template if:false={isPastClientTab}>
+                                                            <button class="pcc-row-edit" data-record-id={row.id} onclick={openProcessorNoteEditor} type="button">Note</button>
+                                                        </template>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isCloserWorkflowTab}>
+                            <table class="pcc-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class={nameSortClass} data-field="name" onclick={handleSort} type="button">
+                                                <span>Name</span>
+                                                <span class="pcc-sort-indicator">{nameSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={standardPrimaryColumnSortClass} data-field={standardPrimaryColumnSortField} onclick={handleSort} type="button">
+                                                <span>{standardPrimaryColumnLabel}</span>
+                                                <span class="pcc-sort-indicator">{standardPrimaryColumnSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={statusSortClass} data-field="status" onclick={handleSort} type="button">
+                                                <span>Status</span>
+                                                <span class="pcc-sort-indicator">{statusSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={cdSentDateSortClass} data-field="cdSentDate" onclick={handleSort} type="button">
+                                                <span>CD Sent Date</span>
+                                                <span class="pcc-sort-indicator">{cdSentDateSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={closingDateSortClass} data-field="displayDate" onclick={handleSort} type="button">
+                                                <span>Closing Date</span>
+                                                <span class="pcc-sort-indicator">{closingDateSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={fundingDateSortClass} data-field="fundingDate" onclick={handleSort} type="button">
+                                                <span>Funding Date</span>
+                                                <span class="pcc-sort-indicator">{fundingDateSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={lenderSortClass} data-field="lenderName" onclick={handleSort} type="button">
+                                                <span>Lender</span>
+                                                <span class="pcc-sort-indicator">{lenderSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={purposeSortClass} data-field="loanPurpose" onclick={handleSort} type="button">
+                                                <span>Purpose</span>
+                                                <span class="pcc-sort-indicator">{purposeSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={closerNotesSortClass} data-field="closerNotes" onclick={handleSort} type="button">
+                                                <span>Closing Notes for Closer</span>
+                                                <span class="pcc-sort-indicator">{closerNotesSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={detailSortClass} data-field="detail" onclick={handleSort} type="button">
+                                                <span>Open Checklist Items</span>
+                                                <span class="pcc-sort-indicator">{detailSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>EASE Link</th>
+                                        <th class="pcc-action-column">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td><a href="#" data-record-id={row.id} onclick={openRecord}>{row.name}</a></td>
+                                            <td><span class={row.statusClass}>{row.statusLabel}</span></td>
+                                            <td>{row.formattedCdSentDate}</td>
+                                            <td>{row.formattedDisplayDate}</td>
+                                            <td>{row.formattedFundingDate}</td>
+                                            <td>{row.lenderName}</td>
+                                            <td>{row.loanPurpose}</td>
+                                            <td>
+                                                <div class="pcc-note-preview" title={row.closerNotes}>
+                                                    <span>{row.closerNotes}</span>
+                                                    <template if:true={row.hasCloserNotes}>
+                                                        <button class="pcc-inline-view" data-title="Closing Notes for Closer" data-text={row.closerNotes} onclick={openTextPreview} type="button">View</button>
+                                                    </template>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="pcc-note-preview" title={row.detail}>
+                                                    <span>{row.detail}</span>
+                                                    <template if:true={row.hasDetail}>
+                                                        <button class="pcc-inline-view" data-title="Open Checklist Items" data-text={row.detail} onclick={openTextPreview} type="button">View</button>
+                                                    </template>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <template if:true={row.hasEaseLink}>
+                                                    <a href={row.easeLink} target="_blank" rel="noopener noreferrer">EASE</a>
+                                                </template>
+                                            </td>
+                                            <td class="pcc-action-column">
+                                                <div class="pcc-row-actions">
+                                                    <button class="pcc-row-edit" data-record-id={row.id} onclick={openEventEditor} type="button">Set Event</button>
+                                                    <template if:true={isPastClientTab}>
+                                                        <button class="pcc-row-edit pcc-row-danger" data-record-id={row.id} onclick={handlePastClientBadPhone} type="button">{pastClientActionLabel}</button>
+                                                        <button class="pcc-row-edit pcc-row-brown" data-record-id={row.id} onclick={handlePastClientNoBrownies} type="button">No Brownies</button>
+                                                    </template>
+                                                    <template if:false={isPastClientTab}>
+                                                        <button class="pcc-row-edit" data-record-id={row.id} onclick={openProcessorNoteEditor} type="button">Note</button>
+                                                    </template>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isAppraisalsOutstandingTab}>
+                            <table class="pcc-table pcc-feature-table">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Status</th>
+                                        <th>Appraisal Ordered Date</th>
+                                        <th>ValueLink Ordered Date</th>
+                                        <th>Appraisal Order Status</th>
+                                        <th>Due Date</th>
+                                        <th>Lender</th>
+                                        <th>Loan Officer</th>
+                                        <th>Processor</th>
+                                        <th>Owner</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td><a href="#" data-record-id={row.id} onclick={openRecord}>{row.name}</a></td>
+                                            <td><span class={row.statusClass}>{row.statusLabel}</span></td>
+                                            <td>{row.formattedAppraisalOrderedDate}</td>
+                                            <td>{row.formattedValueLinkOrderedDate}</td>
+                                            <td><span class="pcc-soft-pill">{row.appraisalStatus}</span></td>
+                                            <td>{row.formattedAppraisalDueDate}</td>
+                                            <td>{row.lenderName}</td>
+                                            <td>{row.loanOfficerName}</td>
+                                            <td>{row.processorName}</td>
+                                            <td>{row.ownerName}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isBrokerChecksOutstandingTab}>
+                            <table class="pcc-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class={nameSortClass} data-field="name" onclick={handleSort} type="button">
+                                                <span>File Name</span>
+                                                <span class="pcc-sort-indicator">{nameSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={fundingDateSortClass} data-field="fundingDate" onclick={handleSort} type="button">
+                                                <span>Funding Date</span>
+                                                <span class="pcc-sort-indicator">{fundingDateSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th class="pcc-action-column">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td><a href="#" data-record-id={row.id} onclick={openRecord}>{row.name}</a></td>
+                                            <td>{row.formattedFundingDate}</td>
+                                            <td class="pcc-action-column">
+                                                <button class="pcc-row-edit pcc-row-success" data-record-id={row.id} onclick={openBrokerCheckConfirm} type="button">Check Received</button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isGenericCustomColumnTab}>
+                            <table class={customTableClass}>
+                                <thead>
+                                    <tr>
+                                        <template for:each={activeDisplayColumnsWithControls} for:item="column">
+                                            <th key={column.key}>
+                                                <div class="pcc-column-header">
+                                                    <button class={column.sortClass} data-field={column.sortField} onclick={handleSort} type="button">
+                                                        <span>{column.displayLabel}</span>
+                                                        <span class="pcc-sort-indicator">{column.sortIndicator}</span>
+                                                    </button>
+                                                    <template if:true={column.showMoveControls}>
+                                                        <span class="pcc-column-move">
+                                                            <button class="pcc-column-move-button" data-key={column.key} onclick={handleColumnMoveLeft} disabled={column.disableMoveLeft} title={column.moveLeftLabel} aria-label={column.moveLeftLabel} type="button">&#9664;</button>
+                                                            <button class="pcc-column-move-button" data-key={column.key} onclick={handleColumnMoveRight} disabled={column.disableMoveRight} title={column.moveRightLabel} aria-label={column.moveRightLabel} type="button">&#9654;</button>
+                                                        </span>
+                                                    </template>
+                                                </div>
+                                            </th>
+                                        </template>
+                                        <template if:true={isActionablePipelineTab}>
+                                            <th class="pcc-action-column">Actions</th>
+                                        </template>
+                                        <template if:true={showPassAction}>
+                                            <th class="pcc-pass-column"></th>
+                                        </template>
+                                        <template if:true={isPastClientTab}>
+                                            <th class="pcc-action-column">Manual Log</th>
+                                        </template>
+                                        <template if:false={isPastClientTab}>
+                                            <template if:true={isNickleyRealtorTab}>
+                                                <th class="pcc-action-column">In Person Touch</th>
+                                                <th class="pcc-action-column">Manual Call Log</th>
+                                            </template>
+                                            <template if:true={showRealtorEditColumn}>
+                                                <th class="pcc-action-column">Edit</th>
+                                            </template>
+                                        </template>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key} class={row.rowClass}>
+                                            <template for:each={row.visibleCustomCells} for:item="cell">
+                                                <td key={cell.key} title={cell.value}>
+                                                    <template if:true={cell.isRecordLink}>
+                                                        <a href="#" data-record-id={row.id} onclick={openRecord}>{cell.value}</a>
+                                                    </template>
+                                                    <template if:true={cell.isExternalLink}>
+                                                        <a href={cell.url} target="_blank" rel="noopener noreferrer">{cell.value}</a>
+                                                    </template>
+                                                    <template if:false={cell.isRecordLink}>
+                                                        <template if:false={cell.isExternalLink}>
+                                                            <template if:true={cell.isPhoneLink}>
+                                                                <a class="pcc-phone-link" href={cell.phoneHref}>{cell.value}</a>
+                                                            </template>
+                                                            <template if:false={cell.isPhoneLink}>
+                                                                <template if:true={cell.isStatus}>
+                                                                    <span class={cell.statusClass}>{cell.value}</span>
+                                                                </template>
+                                                                <template if:false={cell.isStatus}>
+                                                                    <div class="pcc-note-preview">
+                                                                        <span>{cell.value}</span>
+                                                                        <template if:true={cell.isPreviewable}>
+                                                                            <button class="pcc-inline-view" data-title="Full Cell Value" data-text={cell.value} onclick={openTextPreview} type="button">View</button>
+                                                                        </template>
+                                                                    </div>
+                                                                </template>
+                                                            </template>
+                                                        </template>
+                                                    </template>
+                                                </td>
+                                            </template>
+                                            <template if:true={isActionablePipelineTab}>
+                                                <td class="pcc-action-column">
+                                                    <div class="pcc-row-actions">
+                                                        <template if:false={isManagerNoteTab}>
+                                                            <button class="pcc-row-edit" data-record-id={row.id} onclick={openEventEditor} type="button">Set Event</button>
+                                                        </template>
+                                                        <template if:true={isPastClientTab}>
+                                                            <button class="pcc-row-edit pcc-row-danger" data-record-id={row.id} onclick={handlePastClientBadPhone} type="button">{pastClientActionLabel}</button>
+                                                            <button class="pcc-row-edit pcc-row-brown" data-record-id={row.id} onclick={handlePastClientNoBrownies} type="button">No Brownies</button>
+                                                        </template>
+                                                        <template if:false={isPastClientTab}>
+                                                            <button class="pcc-row-edit" data-record-id={row.id} onclick={openProcessorNoteEditor} type="button">Note</button>
+                                                        </template>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                            <template if:true={showPassAction}>
+                                                <td class="pcc-pass-column">
+                                                    <button class="pcc-pass-pill" data-record-id={row.id} onclick={handlePassFollowUp} title="Treat as contacted and cycle this lead back later" type="button">Pass</button>
+                                                </td>
+                                            </template>
+                                            <template if:true={isPastClientTab}>
+                                                <td class="pcc-action-column">
+                                                    <button class="pcc-row-edit pcc-row-success" data-record-id={row.id} onclick={handlePastClientManualLog} type="button">Manual Log</button>
+                                                </td>
+                                            </template>
+                                            <template if:false={isPastClientTab}>
+                                                <template if:true={isNickleyRealtorTab}>
+                                                    <td class="pcc-action-column">
+                                                        <button class="pcc-row-edit pcc-row-success" data-record-id={row.id} onclick={handleRealtorInPersonTouch} title="Log an in person conversation with this Realtor" type="button">In Person Touch</button>
+                                                    </td>
+                                                    <td class="pcc-action-column">
+                                                        <button class="pcc-row-edit" data-record-id={row.id} onclick={handleRealtorManualCall} title="Log a call placed outside RingCentral, such as from your personal line" type="button">Manual Call Log</button>
+                                                    </td>
+                                                </template>
+                                                <template if:true={showRealtorEditColumn}>
+                                                    <td class="pcc-action-column">
+                                                        <button class="pcc-row-edit" data-record-id={row.id} onclick={openRowEditor} type="button">Edit</button>
+                                                    </td>
+                                                </template>
+                                            </template>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isExecutiveAssignedLeadsTab}>
+                            <table class="pcc-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class={createdDateTimeSortClass} data-field="createdDateTime" onclick={handleSort} type="button">
+                                                <span>Created Date</span>
+                                                <span class="pcc-sort-indicator">{createdDateTimeSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={lastActivityDateSortClass} data-field="lastActivityDate" onclick={handleSort} type="button">
+                                                <span>Last Activity</span>
+                                                <span class="pcc-sort-indicator">{lastActivityDateSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={statusSortClass} data-field="status" onclick={handleSort} type="button">
+                                                <span>Lead Status</span>
+                                                <span class="pcc-sort-indicator">{statusSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={nameSortClass} data-field="name" onclick={handleSort} type="button">
+                                                <span>Name</span>
+                                                <span class="pcc-sort-indicator">{nameSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={phoneSortClass} data-field="phone" onclick={handleSort} type="button">
+                                                <span>Phone</span>
+                                                <span class="pcc-sort-indicator">{phoneSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={emailSortClass} data-field="email" onclick={handleSort} type="button">
+                                                <span>Email</span>
+                                                <span class="pcc-sort-indicator">{emailSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={leadSourceSortClass} data-field="leadSource" onclick={handleSort} type="button">
+                                                <span>Lead Source</span>
+                                                <span class="pcc-sort-indicator">{leadSourceSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={realtorBuyingAgentSortClass} data-field="realtorBuyingAgentName" onclick={handleSort} type="button">
+                                                <span>Realtor - Buying Agent</span>
+                                                <span class="pcc-sort-indicator">{realtorBuyingAgentSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={loanOfficerSortClass} data-field="loanOfficerName" onclick={handleSort} type="button">
+                                                <span>Loan Officer</span>
+                                                <span class="pcc-sort-indicator">{loanOfficerSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={appointmentDateTimeSortClass} data-field="appointmentDateTime" onclick={handleSort} type="button">
+                                                <span>Appointment Date ...</span>
+                                                <span class="pcc-sort-indicator">{appointmentDateTimeSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={loanDetailsSortClass} data-field="loanDetails" onclick={handleSort} type="button">
+                                                <span>Loan Details</span>
+                                                <span class="pcc-sort-indicator">{loanDetailsSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td>{row.formattedCreatedDateTime}</td>
+                                            <td>{row.formattedLastActivityDate}</td>
+                                            <td><span class={row.statusClass}>{row.statusLabel}</span></td>
+                                            <td><a href="#" data-record-id={row.id} onclick={openRecord}>{row.name}</a></td>
+                                            <td>
+                                                <template if:true={showsStandardPropertyAddressColumn}>{row.propertyAddress}</template>
+                                                <template if:false={showsStandardPropertyAddressColumn}>
+                                                    <template if:true={row.hasPhone}>
+                                                        <a class="pcc-phone-link" href={row.phoneHref}>{row.phone}</a>
+                                                    </template>
+                                                    <template if:false={row.hasPhone}>{row.phone}</template>
+                                                </template>
+                                            </td>
+                                            <td>{row.email}</td>
+                                            <td>{row.leadSource}</td>
+                                            <td>{row.realtorBuyingAgentName}</td>
+                                            <td>{row.loanOfficerName}</td>
+                                            <td>{row.formattedAppointmentDateTime}</td>
+                                            <td>{row.loanDetails}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isStandardWorkflowTab}>
+                            <table class="pcc-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <button class={nameSortClass} data-field="name" onclick={handleSort} type="button">
+                                                <span>Name</span>
+                                                <span class="pcc-sort-indicator">{nameSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={standardPrimaryColumnSortClass} data-field={standardPrimaryColumnSortField} onclick={handleSort} type="button">
+                                                <span>{standardPrimaryColumnLabel}</span>
+                                                <span class="pcc-sort-indicator">{standardPrimaryColumnSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={statusSortClass} data-field="status" onclick={handleSort} type="button">
+                                                <span>Status</span>
+                                                <span class="pcc-sort-indicator">{statusSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={dateSortClass} data-field="displayDateTime" onclick={handleSort} type="button">
+                                                <span>{dateColumnLabel}</span>
+                                                <span class="pcc-sort-indicator">{dateSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={detailSortClass} data-field="detail" onclick={handleSort} type="button">
+                                                <span>{standardDetailColumnLabel}</span>
+                                                <span class="pcc-sort-indicator">{detailSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <template if:true={showsProcessorColumn}>
+                                            <th>
+                                                <button class={processorSortClass} data-field="processorName" onclick={handleSort} type="button">
+                                                    <span>Processor</span>
+                                                    <span class="pcc-sort-indicator">{processorSortIndicator}</span>
+                                                </button>
+                                            </th>
+                                        </template>
+                                        <template if:true={showsProcessorContactColumns}>
+                                            <th>
+                                                <button class={lastProcessorSmsSortClass} data-field="lastProcessorSms" onclick={handleSort} type="button">
+                                                    <span>Last Processor SMS</span>
+                                                    <span class="pcc-sort-indicator">{lastProcessorSmsSortIndicator}</span>
+                                                </button>
+                                            </th>
+                                            <th>
+                                                <button class={lastProcessorCallSortClass} data-field="lastProcessorCall" onclick={handleSort} type="button">
+                                                    <span>Last Processor Call</span>
+                                                    <span class="pcc-sort-indicator">{lastProcessorCallSortIndicator}</span>
+                                                </button>
+                                            </th>
+                                        </template>
+                                        <th>
+                                            <button class={lenderSortClass} data-field="lenderName" onclick={handleSort} type="button">
+                                                <span>Lender</span>
+                                                <span class="pcc-sort-indicator">{lenderSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>
+                                            <button class={purposeSortClass} data-field="loanPurpose" onclick={handleSort} type="button">
+                                                <span>Purpose</span>
+                                                <span class="pcc-sort-indicator">{purposeSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <template if:true={showsOwnerColumn}>
+                                            <th>
+                                                <button class={ownerSortClass} data-field="ownerName" onclick={handleSort} type="button">
+                                                    <span>Owner</span>
+                                                    <span class="pcc-sort-indicator">{ownerSortIndicator}</span>
+                                                </button>
+                                            </th>
+                                        </template>
+                                        <th>
+                                            <button class={loanOfficerSortClass} data-field="loanOfficerName" onclick={handleSort} type="button">
+                                                <span>Loan Officer</span>
+                                                <span class="pcc-sort-indicator">{loanOfficerSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th class="pcc-number">
+                                            <button class={amountSortClass} data-field="loanAmount" onclick={handleSort} type="button">
+                                                <span>Amount</span>
+                                                <span class="pcc-sort-indicator">{amountSortIndicator}</span>
+                                            </button>
+                                        </th>
+                                        <th>EASE Link</th>
+                                        <template if:true={isTransactionPipelineTab}>
+                                            <th class="pcc-action-column">Actions</th>
+                                        </template>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={activePipelineRows} for:item="row">
+                                        <tr key={row.key} class={row.rowClass}>
+                                            <td><a href="#" data-record-id={row.id} onclick={openRecord}>{row.name}</a></td>
+                                            <td>
+                                                <template if:true={showsStandardPropertyAddressColumn}>{row.propertyAddress}</template>
+                                                <template if:false={showsStandardPropertyAddressColumn}>
+                                                    <template if:true={row.hasPhone}>
+                                                        <a class="pcc-phone-link" href={row.phoneHref}>{row.phone}</a>
+                                                    </template>
+                                                    <template if:false={row.hasPhone}>{row.phone}</template>
+                                                </template>
+                                            </td>
+                                            <td><span class={row.statusClass}>{row.statusLabel}</span></td>
+                                            <td>{row.formattedDisplayDate}</td>
+                                            <td>
+                                                <div class="pcc-note-preview" title={row.detail}>
+                                                    <span>{row.detail}</span>
+                                                    <template if:true={row.hasDetail}>
+                                                        <button class="pcc-inline-view" data-title={standardDetailColumnLabel} data-text={row.detail} onclick={openTextPreview} type="button">View</button>
+                                                    </template>
+                                                </div>
+                                            </td>
+                                            <template if:true={showsProcessorColumn}>
+                                                <td>{row.processorName}</td>
+                                            </template>
+                                            <template if:true={showsProcessorContactColumns}>
+                                                <td>{row.formattedLastProcessorSms}</td>
+                                                <td>{row.formattedLastProcessorCall}</td>
+                                            </template>
+                                            <td>{row.lenderName}</td>
+                                            <td>{row.loanPurpose}</td>
+                                            <template if:true={showsOwnerColumn}>
+                                                <td>{row.ownerName}</td>
+                                            </template>
+                                            <td>{row.loanOfficerName}</td>
+                                            <td class="pcc-number">{row.formattedAmount}</td>
+                                            <td>
+                                                <template if:true={row.hasEaseLink}>
+                                                    <a href={row.easeLink} target="_blank" rel="noopener noreferrer">EASE</a>
+                                                </template>
+                                            </td>
+                                            <template if:true={isTransactionPipelineTab}>
+                                                <td class="pcc-action-column">
+                                                    <div class="pcc-row-actions">
+                                                        <button class="pcc-row-edit" data-record-id={row.id} onclick={openEventEditor} type="button">Set Event</button>
+                                                        <button class="pcc-row-edit" data-record-id={row.id} onclick={openProcessorNoteEditor} type="button">Note</button>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={isActivePipelineEmpty}>
+                            <div class="pcc-empty">No records need attention in this section.</div>
+                        </template>
+                    </div>
+                </article>
+            </section>
+
+            <template if:true={showRhettRingCentralVerifier}>
+                <section class="pcc-rhett-verifier">
+                    <c-ring-central-user-auth></c-ring-central-user-auth>
+                </section>
+            </template>
+        </template>
+
+        <template if:true={isEditorOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Edit command center buttons">
+                <div class="pcc-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>Edit Quick Buttons</h2>
+                            <p>Choose the three list views you want at the top of your Command Center.</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={editorError}>
+                            <div class="pcc-modal-error">{editorError}</div>
+                        </template>
+                        <template for:each={editableButtons} for:item="button">
+                            <div key={button.key} class="pcc-editor-row">
+                                <span class="pcc-editor-number">{button.displayNumber}</span>
+                                <lightning-combobox
+                                    label="Object"
+                                    value={button.objectApiName}
+                                    options={objectOptions}
+                                    data-index={button.index}
+                                    onchange={handleButtonObjectChange}>
+                                </lightning-combobox>
+                                <lightning-combobox
+                                    label="List View"
+                                    value={button.filterName}
+                                    options={button.listViewOptions}
+                                    data-index={button.index}
+                                    onchange={handleButtonListViewChange}>
+                                </lightning-combobox>
+                            </div>
+                        </template>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeEditor}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={saveButtons} disabled={isSaving}>Save Buttons</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isNewLeadFlowOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Create a New Lead">
+                <div class="pcc-modal pcc-flow-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <span class="pcc-modal-eyebrow">Reach Home Loans</span>
+                            <h2>Create a New Lead</h2>
+                            <p>Add a Consumer Lead directly from the Home Screen.</p>
+                        </div>
+                        <button class="pcc-modal-close" onclick={closeNewLeadFlow} title="Close" type="button">X</button>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={usesCustomNewLeadForm}>
+                            <template if:true={newLeadError}>
+                                <div class="pcc-modal-error">{newLeadError}</div>
+                            </template>
+                            <div class="pcc-realtor-section">
+                                <h3>Required Details</h3>
+                                <div class="pcc-realtor-grid">
+                                    <lightning-input label="First Name" value={newLeadFirstName} data-field="newLeadFirstName" data-new-lead-input="true" onchange={handleNewLeadInput} required></lightning-input>
+                                    <lightning-input label="Last Name" value={newLeadLastName} data-field="newLeadLastName" data-new-lead-input="true" onchange={handleNewLeadInput} required></lightning-input>
+                                    <lightning-input type="tel" label="Phone" value={newLeadPhone} data-field="newLeadPhone" data-new-lead-input="true" onchange={handleNewLeadInput} required></lightning-input>
+                                    <lightning-input type="email" label="Email" value={newLeadEmail} data-field="newLeadEmail" data-new-lead-input="true" onchange={handleNewLeadInput} required></lightning-input>
+                                    <lightning-combobox label="Lead Source" value={newLeadSource} data-field="newLeadSource" data-new-lead-input="true" options={newLeadSourceOptions} onchange={handleNewLeadInput} required></lightning-combobox>
+                                    <lightning-combobox label="Loan Purpose" value={newLeadLoanPurpose} data-field="newLeadLoanPurpose" data-new-lead-input="true" options={newLeadLoanPurposeOptions} onchange={handleNewLeadInput} required></lightning-combobox>
+                                </div>
+                            </div>
+                            <div class="pcc-realtor-section pcc-realtor-section-muted">
+                                <h3>Assignment</h3>
+                                <div class="pcc-realtor-grid">
+                                    <lightning-combobox label="Biz Dev" value={newLeadBizDev} data-field="newLeadBizDev" data-new-lead-input="true" options={newLeadBizDevOptions} onchange={handleNewLeadInput} required></lightning-combobox>
+                                    <lightning-combobox label="Owner" value={newLeadOwnerId} data-field="newLeadOwnerId" data-new-lead-input="true" options={newLeadOwnerOptions} onchange={handleNewLeadInput} required></lightning-combobox>
+                                </div>
+                            </div>
+                            <div class="pcc-realtor-section pcc-realtor-section-muted">
+                                <h3>Purchase Details</h3>
+                                <c-flow-realtor-account-lookup data-id="new-lead-realtor-lookup" label="Realtor - Buying Agent"></c-flow-realtor-account-lookup>
+                            </div>
+                        </template>
+                        <template if:false={usesCustomNewLeadForm}>
+                            <lightning-flow flow-api-name="New_Lead_Screen_Flow" onstatuschange={handleNewLeadFlowStatus}></lightning-flow>
+                        </template>
+                    </div>
+                    <template if:true={usesCustomNewLeadForm}>
+                        <footer class="pcc-modal-footer">
+                            <button class="pcc-button" onclick={closeNewLeadFlow} disabled={isNewLeadSaving}>Cancel</button>
+                            <button class="pcc-button pcc-button-primary" type="button" onclick={submitNewLeadForm} disabled={isNewLeadSaving}>{newLeadSaveLabel}</button>
+                        </footer>
+                    </template>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isNewRealtorPartnerOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Create New Realtor Partner">
+                <div class="pcc-modal pcc-realtor-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <span class="pcc-modal-eyebrow">Reach Home Loans</span>
+                            <h2>Create New Realtor Partner</h2>
+                            <p>Add a Realtor Person Account with only the details the team needs to start.</p>
+                        </div>
+                        <button class="pcc-modal-close" onclick={closeNewRealtorPartner} title="Close" type="button">X</button>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={realtorPartnerError}>
+                            <div class="pcc-modal-error">{realtorPartnerError}</div>
+                        </template>
+                        <div class="pcc-realtor-section">
+                            <h3>Required Details</h3>
+                            <div class="pcc-realtor-grid">
+                                <lightning-input label="First Name" value={realtorPartnerFirstName} data-field="realtorPartnerFirstName" onchange={handleRealtorPartnerInput} required></lightning-input>
+                                <lightning-input label="Last Name" value={realtorPartnerLastName} data-field="realtorPartnerLastName" onchange={handleRealtorPartnerInput} required></lightning-input>
+                                <lightning-input type="tel" label="Mobile" value={realtorPartnerMobilePhone} data-field="realtorPartnerMobilePhone" onchange={handleRealtorPartnerInput} required></lightning-input>
+                                <lightning-input type="email" label="Email" value={realtorPartnerEmail} data-field="realtorPartnerEmail" onchange={handleRealtorPartnerInput} required></lightning-input>
+                                <lightning-combobox label="Biz Dev Designation" value={realtorPartnerBizDevDesignation} data-field="realtorPartnerBizDevDesignation" options={realtorPartnerBizDevOptions} onchange={handleRealtorPartnerInput} required></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="pcc-realtor-section pcc-realtor-section-muted">
+                            <h3>Partner Details</h3>
+                            <div class="pcc-realtor-grid">
+                                <lightning-input label="Brokerage" value={realtorPartnerBrokerage} data-field="realtorPartnerBrokerage" onchange={handleRealtorPartnerInput}></lightning-input>
+                                <lightning-combobox label="Realtor Group" value={realtorPartnerGroup} data-field="realtorPartnerGroup" options={realtorPartnerGroupOptions} onchange={handleRealtorPartnerInput}></lightning-combobox>
+                                <lightning-record-picker label="Transaction Coordinator" object-api-name="Account" value={realtorPartnerTransactionCoordinatorId} data-field="transactionCoordinatorId" onchange={handleRealtorPartnerInput}></lightning-record-picker>
+                                <lightning-input label="Realtor/Individual License Number" value={realtorPartnerIndividualLicenseNumber} data-field="realtorPartnerIndividualLicenseNumber" onchange={handleRealtorPartnerInput}></lightning-input>
+                                <lightning-input label="Company License Number" value={realtorPartnerCompanyLicenseNumber} data-field="realtorPartnerCompanyLicenseNumber" onchange={handleRealtorPartnerInput}></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeNewRealtorPartner} disabled={isRealtorPartnerSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" type="button" onclick={submitRealtorPartnerForm} disabled={isRealtorPartnerSaving}>{realtorAccountButtonLabel}</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isNewRealtorLeadOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Create New Realtor Lead">
+                <div class="pcc-modal pcc-realtor-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <span class="pcc-modal-eyebrow">Reach Home Loans</span>
+                            <h2>Create New Realtor Lead</h2>
+                            <p>Add a Realtor Lead directly into Ben's Working tab.</p>
+                        </div>
+                        <button class="pcc-modal-close" onclick={closeNewRealtorLead} title="Close" type="button">X</button>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={realtorLeadError}>
+                            <div class="pcc-modal-error">{realtorLeadError}</div>
+                        </template>
+                        <div class="pcc-realtor-section">
+                            <h3>Required Details</h3>
+                            <div class="pcc-realtor-grid">
+                                <lightning-input label="First Name" value={realtorLeadFirstName} data-field="firstName" data-realtor-lead-input="true" onchange={handleRealtorLeadInput} required></lightning-input>
+                                <lightning-input label="Last Name" value={realtorLeadLastName} data-field="lastName" data-realtor-lead-input="true" onchange={handleRealtorLeadInput} required></lightning-input>
+                                <lightning-input type="tel" label="Phone" value={realtorLeadPhone} data-field="phone" data-realtor-lead-input="true" onchange={handleRealtorLeadInput} required></lightning-input>
+                                <lightning-input type="email" label="Email" value={realtorLeadEmail} data-field="email" data-realtor-lead-input="true" onchange={handleRealtorLeadInput} required></lightning-input>
+                            </div>
+                        </div>
+                        <div class="pcc-realtor-section pcc-realtor-section-muted">
+                            <h3>Lead Details</h3>
+                            <div class="pcc-realtor-grid">
+                                <lightning-input label="Lead Source" value={realtorLeadSource} data-field="leadSource" onchange={handleRealtorLeadInput}></lightning-input>
+                                <lightning-textarea label="Further Information" value={realtorLeadNotes} data-field="notes" onchange={handleRealtorLeadInput}></lightning-textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeNewRealtorLead} disabled={isRealtorLeadSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" type="button" onclick={saveRealtorLead} disabled={isRealtorLeadSaving}>Create Realtor Lead</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isNewTitleAgentOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Create Title Agent">
+                <div class="pcc-modal pcc-realtor-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <span class="pcc-modal-eyebrow">Reach Home Loans</span>
+                            <h2>Create Title Agent</h2>
+                            <p>Add a Title Agent account with only the contact details needed for file setup.</p>
+                        </div>
+                        <button class="pcc-modal-close" onclick={closeNewTitleAgent} title="Close" type="button">X</button>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={titleAgentError}>
+                            <div class="pcc-modal-error">{titleAgentError}</div>
+                        </template>
+                        <div class="pcc-realtor-section">
+                            <h3>Required Details</h3>
+                            <div class="pcc-realtor-grid">
+                                <lightning-input label="Name" value={titleAgentName} data-field="name" data-title-agent-input="true" onchange={handleTitleAgentInput} required></lightning-input>
+                                <lightning-input type="tel" label="Phone Number" value={titleAgentPhone} data-field="phone" data-title-agent-input="true" onchange={handleTitleAgentInput} required></lightning-input>
+                                <lightning-input type="email" label="Email" value={titleAgentEmail} data-field="email" data-title-agent-input="true" onchange={handleTitleAgentInput} required></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeNewTitleAgent} disabled={isTitleAgentSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" type="button" onclick={createTitleAgent} disabled={isTitleAgentSaving}>Create Title Agent</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isColumnEditorOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Edit command center columns">
+                <div class="pcc-modal pcc-column-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{columnEditorTitle}</h2>
+                            <p>{columnEditorSubtitle}</p>
+                        </div>
+                        <strong class="pcc-column-count">{columnEditorCountText}</strong>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={columnEditorError}>
+                            <div class="pcc-modal-error">{columnEditorError}</div>
+                        </template>
+                        <div class="pcc-column-panes">
+                            <section class="pcc-column-pane">
+                                <h3>Shown columns</h3>
+                                <p class="pcc-column-pane-hint">Top to bottom is left to right in the table.</p>
+                                <ol class="pcc-column-order">
+                                    <template for:each={columnEditorShownColumns} for:item="column">
+                                        <li key={column.key} class="pcc-column-order-item">
+                                            <span class="pcc-column-order-position">{column.positionLabel}</span>
+                                            <span class="pcc-column-order-label">
+                                                {column.displayLabel}
+                                                <template if:true={column.isLockedColumn}>
+                                                    <em>Always first</em>
+                                                </template>
+                                                <template if:true={column.requiredNote}>
+                                                    <em>{column.requiredNote}</em>
+                                                </template>
+                                            </span>
+                                            <span class="pcc-column-order-actions">
+                                                <button class="pcc-column-move-button" data-key={column.key} onclick={handleColumnEditorMoveUp} disabled={column.disableMoveUp} title={column.moveUpLabel} aria-label={column.moveUpLabel} type="button">&#9650;</button>
+                                                <button class="pcc-column-move-button" data-key={column.key} onclick={handleColumnEditorMoveDown} disabled={column.disableMoveDown} title={column.moveDownLabel} aria-label={column.moveDownLabel} type="button">&#9660;</button>
+                                                <template if:true={column.canRemove}>
+                                                    <button class="pcc-column-remove-button" data-key={column.key} onclick={handleColumnEditorRemove} title="Remove column" aria-label="Remove column" type="button">&times;</button>
+                                                </template>
+                                            </span>
+                                        </li>
+                                    </template>
+                                </ol>
+                            </section>
+                            <section class="pcc-column-pane">
+                                <h3>Available columns</h3>
+                                <input
+                                    class="pcc-column-search"
+                                    type="search"
+                                    placeholder="Search columns"
+                                    value={columnEditorSearchTerm}
+                                    oninput={handleColumnSearch}
+                                />
+                                <template if:true={columnEditorLimitNote}>
+                                    <p class="pcc-column-pane-hint">{columnEditorLimitNote}</p>
+                                </template>
+                                <div class="pcc-column-available">
+                                    <template for:each={columnEditorAvailableColumns} for:item="column">
+                                        <button key={column.key} class="pcc-column-add" data-key={column.key} onclick={handleColumnEditorAdd} type="button">
+                                            <span aria-hidden="true">+</span> {column.displayLabel}
+                                        </button>
+                                    </template>
+                                    <template if:false={hasColumnEditorAvailableColumns}>
+                                        <p class="pcc-column-pane-hint">No other columns match.</p>
+                                    </template>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={resetColumnEditor} disabled={isSaving} type="button">Reset Default</button>
+                        <button class="pcc-button" onclick={closeColumnEditor} disabled={isSaving} type="button">Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={saveColumnEditor} disabled={isSaving} type="button">Save Columns</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isRowEditorOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label={rowEditorTitle}>
+                <div class="pcc-modal pcc-row-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{rowEditorTitle}</h2>
+                            <p>Update the selected list-view fields directly from the Home Screen.</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={rowEditorError}>
+                            <div class="pcc-modal-error">{rowEditorError}</div>
+                        </template>
+                        <lightning-record-edit-form
+                            data-form="row-editor"
+                            object-api-name={rowEditorObjectApiName}
+                            record-id={rowEditorRecordId}
+                            onsuccess={handleRowEditorSuccess}
+                            onerror={handleRowEditorError}>
+                            <lightning-messages></lightning-messages>
+                            <div class="pcc-row-editor-grid">
+                                <template for:each={rowEditorFields} for:item="field">
+                                    <lightning-input-field key={field.key} field-name={field.fieldApiName}></lightning-input-field>
+                                </template>
+                            </div>
+                        </lightning-record-edit-form>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeRowEditor} disabled={isRowSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={submitRowEditor} disabled={isRowSaving}>Save Changes</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isProcessorNoteEditorOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label={processorNoteTitle}>
+                <div class="pcc-modal pcc-row-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{processorNoteTitle}</h2>
+                            <p>{noteEditorSubtitle}</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={processorNoteError}>
+                            <div class="pcc-modal-error">{processorNoteError}</div>
+                        </template>
+                        <lightning-textarea
+                            label={noteEditorLabel}
+                            value={processorNoteText}
+                            onchange={handleProcessorNoteTextChange}
+                            required>
+                        </lightning-textarea>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeProcessorNoteEditor} disabled={isProcessorNoteSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={saveProcessorNoteFromEditor} disabled={isProcessorNoteSaving}>Save Note</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isEventEditorOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label={eventEditorTitle}>
+                <div class="pcc-modal pcc-row-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{eventEditorTitle}</h2>
+                            <p>This creates a 15-minute Scheduled Appointment on the Transaction and your calendar.</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={eventEditorError}>
+                            <div class="pcc-modal-error">{eventEditorError}</div>
+                        </template>
+                        <div class="pcc-event-editor-grid">
+                            <lightning-input
+                                label="Event Name"
+                                value={eventSubject}
+                                onchange={handleEventSubjectChange}
+                                required>
+                            </lightning-input>
+                            <lightning-input
+                                type="datetime"
+                                label="Event Date/Time"
+                                value={eventStartDateTime}
+                                onchange={handleEventStartDateTimeChange}
+                                required>
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeEventEditor} disabled={isEventSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={saveEventFromEditor} disabled={isEventSaving}>Save Event</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isBrokerCheckConfirmOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label={brokerCheckConfirmTitle}>
+                <div class="pcc-modal pcc-row-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{brokerCheckConfirmTitle}</h2>
+                            <p>Check received and scanned?</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={brokerCheckError}>
+                            <div class="pcc-modal-error">{brokerCheckError}</div>
+                        </template>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closeBrokerCheckConfirm} disabled={isBrokerCheckSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={confirmBrokerCheckReceived} disabled={isBrokerCheckSaving}>Confirm</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isPastClientConfirmOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label={pastClientConfirmTitle}>
+                <div class="pcc-modal pcc-row-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{pastClientConfirmTitle}</h2>
+                            <p>{pastClientConfirmMessage}</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <template if:true={pastClientConfirmError}>
+                            <div class="pcc-modal-error">{pastClientConfirmError}</div>
+                        </template>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button" onclick={closePastClientConfirm} disabled={isPastClientActionSaving}>Cancel</button>
+                        <button class="pcc-button pcc-button-primary" onclick={confirmPastClientAction} disabled={isPastClientActionSaving}>{pastClientConfirmButtonLabel}</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+
+        <template if:true={isTextPreviewOpen}>
+            <section class="pcc-modal-backdrop" role="dialog" aria-modal="true" aria-label={textPreviewTitle}>
+                <div class="pcc-modal pcc-text-preview-modal">
+                    <header class="pcc-modal-header">
+                        <div>
+                            <h2>{textPreviewTitle}</h2>
+                            <p>Full text from the selected Home Screen row.</p>
+                        </div>
+                    </header>
+                    <div class="pcc-modal-body">
+                        <div class="pcc-text-preview-body">{textPreviewBody}</div>
+                    </div>
+                    <footer class="pcc-modal-footer">
+                        <button class="pcc-button pcc-button-primary" onclick={closeTextPreview}>Close</button>
+                    </footer>
+                </div>
+            </section>
+        </template>
+        </template>
+    </section>
+</template>

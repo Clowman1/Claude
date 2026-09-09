@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Initial_Docs_Requested_Date__c</fullName>
+    <description>Stamped the first time the Pre-Approval Docs Needed email is sent for this Lead. Its only job is to make that first send detectable, so the Lead moves to Documents Requested once and never gets pulled back there by a later resend.</description>
+    <inlineHelpText>When the initial pre-approval document request was first emailed to this borrower.</inlineHelpText>
+    <label>Initial Docs Requested Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Webinar Registration Date Write</label>
+    <description>Read/Write on Lead.Webinar_Registration_Date__c. The field was Read Only on every profile, so the webinar Zap could not write it. Assigned to the Zapier connection user and admins.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Webinar_Registration_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>

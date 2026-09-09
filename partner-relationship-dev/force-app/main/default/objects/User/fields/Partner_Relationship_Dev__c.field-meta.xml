@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Partner_Relationship_Dev__c</fullName>
+    <label>Partner Relationship Dev</label>
+    <inlineHelpText>Shows the Partner Relationships card on the Home page for this user.</inlineHelpText>
+    <defaultValue>false</defaultValue>
+    <externalId>false</externalId>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

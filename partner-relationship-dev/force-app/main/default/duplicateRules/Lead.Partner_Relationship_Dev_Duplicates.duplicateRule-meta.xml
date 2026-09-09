@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DuplicateRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <masterLabel>Partner Relationship Dev Duplicates</masterLabel>
+    <description>Alerts when a partner contact matches an existing lead on email, phone or mobile. Scoped to the Partner Relationship Dev record type only - it must never fire on consumer or realtor referral leads.</description>
+    <isActive>true</isActive>
+    <actionOnInsert>Allow</actionOnInsert>
+    <actionOnUpdate>Allow</actionOnUpdate>
+    <alertText>This person may already be in Salesforce. Check the existing record before adding them again - their call history and owner may already exist.</alertText>
+    <duplicateRuleFilter>
+        <duplicateRuleFilterItems>
+            <field>BD_Type__c</field>
+            <operation>notEqual</operation>
+            <sortOrder>1</sortOrder>
+            <table>Lead</table>
+            <value></value>
+        </duplicateRuleFilterItems>
+    </duplicateRuleFilter>
+    <duplicateRuleMatchRules>
+        <matchRuleSObjectType>Lead</matchRuleSObjectType>
+        <matchingRule>Partner_Relationship_Match</matchingRule>
+    </duplicateRuleMatchRules>
+    <operationsOnInsert>Alert</operationsOnInsert>
+    <operationsOnInsert>Report</operationsOnInsert>
+    <operationsOnUpdate>Alert</operationsOnUpdate>
+    <operationsOnUpdate>Report</operationsOnUpdate>
+    <securityOption>EnforceSharingRules</securityOption>
+    <sortOrder>4</sortOrder>
+</DuplicateRule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>App_Summary_Borrower_1__c</fullName>
+    <description>Borrower 1 identifying and background details from call summaries. Appended automatically from RingSense call transcripts, newest block last. Never overwritten.</description>
+    <inlineHelpText>Automatically appended from call transcripts. Existing content is never replaced.</inlineHelpText>
+    <label>App Summary - Borrower 1</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>6</visibleLines>
+</CustomField>
