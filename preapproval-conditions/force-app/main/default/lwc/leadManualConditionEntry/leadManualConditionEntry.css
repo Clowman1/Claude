@@ -54,6 +54,14 @@ p {
     font-weight: 800;
 }
 
+/* An aside beside the question, not a second heading. */
+.group-heading .label-note {
+    color: #c9d6ee;
+    font-size: 0.82rem;
+    font-style: normal;
+    font-weight: 600;
+}
+
 .group-heading small {
     color: #ffcf91;
     font-size: 0.72rem;
