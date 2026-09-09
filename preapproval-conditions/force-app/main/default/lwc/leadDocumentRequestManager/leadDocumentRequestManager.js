@@ -824,6 +824,12 @@ export default class LeadDocumentRequestManager extends LightningElement {
         this.rejectionReason = event.target.value;
     }
 
+    readRejectionComment() {
+        const field = this.template.querySelector('lightning-textarea[data-id="rejection-comment"]');
+        const typed = field?.value ?? this.rejectionReason;
+        return typeof typed === 'string' ? typed.trim() : '';
+    }
+
     handleUpdatedDescriptionInput(event) {
         this.updatedRequestDescription = event.target.value;
     }
@@ -832,9 +838,19 @@ export default class LeadDocumentRequestManager extends LightningElement {
         if (!this.previewRequestId || !this.selectedRejectDocumentId) {
             return;
         }
-        if (!this.rejectionReason || !this.rejectionReason.trim()) {
+        const typedReason = this.readRejectionComment();
+        if (!typedReason) {
             this.showError(new Error('Please enter a rejection comment.'));
             return;
+        }
+        this.rejectionReason = typedReason;
+        // Same commit problem, quieter symptom: an uncommitted edit here just never reached the
+        // borrower's request description.
+        const descriptionField = this.template.querySelector(
+            'lightning-textarea[data-id="rejection-description"]'
+        );
+        if (descriptionField && typeof descriptionField.value === 'string') {
+            this.updatedRequestDescription = descriptionField.value;
         }
 
         this.isLoading = true;
@@ -1439,12 +1455,39 @@ export default class LeadDocumentRequestManager extends LightningElement {
     }
 
     showError(error) {
-        const message = error?.body?.message || error?.message || 'An unexpected error occurred.';
+        const message = this.extractErrorMessage(error);
         this.dispatchEvent(new ShowToastEvent({
             title: 'Lead Documents',
             message,
             variant: 'error',
             mode: 'sticky'
         }));
+    }
+
+    extractErrorMessage(error) {
+        if (!error) {
+            return 'An unexpected error occurred.';
+        }
+        if (typeof error === 'string') {
+            return error;
+        }
+        const body = error.body;
+        if (Array.isArray(body)) {
+            const joined = body.map(item => item?.message).filter(Boolean).join(', ');
+            if (joined) {
+                return joined;
+            }
+        }
+        if (body?.message) {
+            return body.message;
+        }
+        if (body?.pageErrors?.[0]?.message) {
+            return body.pageErrors[0].message;
+        }
+        const fieldErrors = body?.fieldErrors && Object.values(body.fieldErrors)[0];
+        if (fieldErrors?.[0]?.message) {
+            return fieldErrors[0].message;
+        }
+        return error.message || 'An unexpected error occurred.';
     }
 }

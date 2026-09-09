@@ -822,7 +822,12 @@ public with sharing class LeadDocumentRequestService {
                 : rendered.getSubject()
         );
         email.setHtmlBody(htmlBody);
-        email.setWhatId(requestId);
+        // Same shape as the document request email, which sends and logs cleanly in this org:
+        // the Lead is the target so the activity has something to attach to, and the recipient
+        // list stays explicit. setWhatId is gone - it is only valid alongside a Contact target,
+        // and the template rendering above already takes the request as its whatId.
+        email.setTargetObjectId(leadRecord.Id);
+        email.setTreatTargetObjectAsRecipient(false);
         email.setSaveAsActivity(true);
         String senderEmail = currentUserEmail();
         if (String.isNotBlank(senderEmail)) {

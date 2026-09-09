@@ -465,12 +465,14 @@
                                     <section class="reject-form">
                                         <h4 class="reject-title">Reject Document: {selectedRejectDocumentTitle}</h4>
                                         <lightning-textarea
+                                            data-id="rejection-comment"
                                             required
                                             label="Rejection Comment to Client"
                                             value={rejectionReason}
                                             onchange={handleRejectionInput}>
                                         </lightning-textarea>
                                         <lightning-textarea
+                                            data-id="rejection-description"
                                             label="Request Description Update"
                                             value={updatedRequestDescription}
                                             placeholder="Optional: update what the borrower should provide next."
