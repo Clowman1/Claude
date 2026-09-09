@@ -1114,7 +1114,7 @@ public with sharing class LeadDocumentRequestService {
         }
 
         if (!versionsToUpdate.isEmpty()) {
-            Database.update(versionsToUpdate, false, AccessLevel.SYSTEM_MODE);
+            new BorrowerFileWriter().updateVersions(versionsToUpdate, false);
         }
     }
 
@@ -1154,7 +1154,39 @@ public with sharing class LeadDocumentRequestService {
             }
             versionsToUpdate.add(versionUpdate);
         }
-        Database.update(versionsToUpdate, true, AccessLevel.SYSTEM_MODE);
+        new BorrowerFileWriter().updateVersions(versionsToUpdate, true);
+    }
+
+    /**
+     * Writes to borrower-uploaded files.
+     *
+     * Files arriving through the borrower portal are created by the site guest user and owned by
+     * the integration user, so no Loan Officer or Loan Partner has edit access to them. Reviewing
+     * one is the job this component exists for, and callers have already checked the running user
+     * is the Owner or Loan Partner on the Lead, so these writes run without sharing.
+     * AccessLevel.SYSTEM_MODE alone is not enough: it waives field and object permissions but
+     * leaves record-level sharing in place, and sharing is what refuses the update.
+     */
+    private without sharing class BorrowerFileWriter {
+        private void updateVersions(List<ContentVersion> versionsToUpdate, Boolean allOrNone) {
+            if (versionsToUpdate == null || versionsToUpdate.isEmpty()) {
+                return;
+            }
+            Database.update(versionsToUpdate, allOrNone, AccessLevel.SYSTEM_MODE);
+        }
+
+        private void removeLink(Id requestId, Id contentDocumentId) {
+            List<ContentDocumentLink> linksToDelete = [
+                SELECT Id
+                FROM ContentDocumentLink
+                WHERE LinkedEntityId = :requestId
+                AND ContentDocumentId = :contentDocumentId
+                WITH SYSTEM_MODE
+            ];
+            if (!linksToDelete.isEmpty()) {
+                Database.delete(linksToDelete, true, AccessLevel.SYSTEM_MODE);
+            }
+        }
     }
 
     private static Integer countPendingDocuments(Id requestId) {
@@ -1186,16 +1218,7 @@ public with sharing class LeadDocumentRequestService {
     }
 
     private static void removeDocumentLink(Id requestId, Id contentDocumentId) {
-        List<ContentDocumentLink> linksToDelete = [
-            SELECT Id
-            FROM ContentDocumentLink
-            WHERE LinkedEntityId = :requestId
-            AND ContentDocumentId = :contentDocumentId
-            WITH SYSTEM_MODE
-        ];
-        if (!linksToDelete.isEmpty()) {
-            Database.delete(linksToDelete, true, AccessLevel.SYSTEM_MODE);
-        }
+        new BorrowerFileWriter().removeLink(requestId, contentDocumentId);
     }
 
     private static String prepareRenderedHtmlBody(

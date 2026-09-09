@@ -303,6 +303,9 @@ public without sharing class DocumentViewerController {
                     WITH USER_MODE
                     LIMIT 1
                 ];
+                // SYSTEM_MODE, like the rest of this class: borrower uploads are owned by the
+                // integration user, and USER_MODE enforces record sharing even here, so a Loan
+                // Officer or Loan Partner filing one under the right condition would be refused.
                 Database.update(
                     new ContentVersion(
                         Id = documentRecord.LatestPublishedVersionId,
@@ -310,12 +313,12 @@ public without sharing class DocumentViewerController {
                         Folder__c = LeadDocumentRequestService.resolveFolderName(targetRequest.Category__c)
                     ),
                     true,
-                    AccessLevel.USER_MODE
+                    AccessLevel.SYSTEM_MODE
                 );
                 Database.update(
                     new Lead_Document_Request__c(Id = targetRequest.Id, Status__c = 'Review'),
                     true,
-                    AccessLevel.USER_MODE
+                    AccessLevel.SYSTEM_MODE
                 );
                 return;
             }
