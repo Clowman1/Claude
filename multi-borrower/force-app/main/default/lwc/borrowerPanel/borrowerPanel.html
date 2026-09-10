@@ -1,0 +1,154 @@
+<template>
+    <section class="panel">
+        <header class="panel-head">
+            <p class="panel-title">Borrowers</p>
+            <template lwc:if={canAdd}>
+                <button class="add-btn" type="button" onclick={handleAdd}>+ Add Borrower</button>
+            </template>
+            <template lwc:if={capReached}>
+                <span class="cap-note">Maximum of 4 borrowers</span>
+            </template>
+        </header>
+
+        <template lwc:if={hasNoBorrowers}>
+            <p class="empty">No borrower details yet.</p>
+        </template>
+
+        <ul class="rows">
+            <template for:each={rows} for:item="row">
+                <li key={row.key} class="row">
+                    <button
+                        class="row-head"
+                        type="button"
+                        data-key={row.key}
+                        onclick={handleToggle}
+                        aria-expanded={row.isOpen}
+                    >
+                        <span class="row-name">{row.name}</span>
+                        <span class="row-role">{row.role}</span>
+                        <lightning-icon icon-name={row.chevron} size="xx-small" class="row-chevron"></lightning-icon>
+                    </button>
+
+                    <template lwc:if={row.isOpen}>
+                        <div class="row-body">
+                            <template lwc:if={row.editable}>
+                                <div class="field-grid">
+                                    <lightning-input
+                                        label="First Name"
+                                        value={row.firstName}
+                                        data-id={row.id}
+                                        data-field="First_Name__c"
+                                        onchange={handleFieldCommit}
+                                        required
+                                    ></lightning-input>
+                                    <lightning-input
+                                        label="Last Name"
+                                        value={row.lastName}
+                                        data-id={row.id}
+                                        data-field="Last_Name__c"
+                                        onchange={handleFieldCommit}
+                                        required
+                                    ></lightning-input>
+                                    <lightning-input
+                                        type="email"
+                                        label="Email"
+                                        value={row.email}
+                                        data-id={row.id}
+                                        data-field="Email__c"
+                                        onchange={handleFieldCommit}
+                                        required
+                                    ></lightning-input>
+                                    <lightning-input
+                                        type="tel"
+                                        label="Phone"
+                                        value={row.phone}
+                                        data-id={row.id}
+                                        data-field="Phone__c"
+                                        onchange={handleFieldCommit}
+                                        required
+                                    ></lightning-input>
+                                </div>
+                            </template>
+
+                            <template lwc:else>
+                                <dl class="read-grid">
+                                    <div>
+                                        <dt>Email</dt>
+                                        <dd>
+                                            <template lwc:if={row.mailto}>
+                                                <a href={row.mailto}>{row.email}</a>
+                                            </template>
+                                            <template lwc:else>&mdash;</template>
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt>Phone</dt>
+                                        <dd>
+                                            <template lwc:if={row.tel}>
+                                                <a href={row.tel}>{row.phone}</a>
+                                            </template>
+                                            <template lwc:else>&mdash;</template>
+                                        </dd>
+                                    </div>
+                                </dl>
+                            </template>
+
+                            <template lwc:if={row.removable}>
+                                <button class="remove-btn" type="button" data-id={row.id} onclick={handleRemove}>
+                                    Remove borrower
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+                </li>
+            </template>
+        </ul>
+
+        <template lwc:if={draft}>
+            <div class="draft">
+                <p class="draft-title">New Borrower</p>
+                <div class="field-grid">
+                    <lightning-input
+                        label="First Name"
+                        value={draft.First_Name__c}
+                        data-field="First_Name__c"
+                        onchange={handleDraftChange}
+                        required
+                    ></lightning-input>
+                    <lightning-input
+                        label="Last Name"
+                        value={draft.Last_Name__c}
+                        data-field="Last_Name__c"
+                        onchange={handleDraftChange}
+                        required
+                    ></lightning-input>
+                    <lightning-input
+                        type="email"
+                        label="Email"
+                        value={draft.Email__c}
+                        data-field="Email__c"
+                        onchange={handleDraftChange}
+                        required
+                    ></lightning-input>
+                    <lightning-input
+                        type="tel"
+                        label="Phone"
+                        value={draft.Phone__c}
+                        data-field="Phone__c"
+                        onchange={handleDraftChange}
+                        required
+                    ></lightning-input>
+                </div>
+                <div class="draft-actions">
+                    <lightning-button
+                        variant="brand"
+                        label="Save Borrower"
+                        onclick={handleSaveNew}
+                        disabled={saving}
+                    ></lightning-button>
+                    <lightning-button label="Cancel" onclick={handleCancel} disabled={saving}></lightning-button>
+                </div>
+            </div>
+        </template>
+    </section>
+</template>

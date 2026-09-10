@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Removed__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Set instead of deleting once the borrower has a Person Account, so emails and conditions already tied to them are not orphaned. Rows are hard-deleted while the Lead is still unconverted.</description>
+    <externalId>false</externalId>
+    <label>Removed</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

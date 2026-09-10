@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Link_Additional_Borrowers</name>
+        <label>Link Additional Borrowers</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <actionName>BorrowerPersonAccountService</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>transactionId</name>
+            <value>
+                <elementReference>$Record.Converted_Transaction_ID__c</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>BorrowerPersonAccountService</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>62.0</apiVersion>
+    <description>Carries a converted Lead's additional borrowers onto its Transaction and gives each one a Person Account. Mirrors Lead_Document_Requests_Carry_Forward_On_Conversion: the trigger is Converted_Transaction_ID__c becoming non-null, which is the only reliable signal that conversion has finished, and is written by both conversion paths (Convert_Lead and Convert_Lead_to_Person_Account_on_TRID_Date).</description>
+    <environments>Default</environments>
+    <interviewLabel>Link Borrowers On Lead Conversion {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Link Borrowers On Lead Conversion</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Link_Additional_Borrowers</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Converted_Transaction_ID__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Lead</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

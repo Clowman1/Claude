@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Loan_Partner_Reassignment</name>
+    </customPermissions>
+    <description>Allows reassigning Loan Partner on any Lead or Transaction, regardless of who the current Loan Partner is. Assigned to Admins.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Loan Partner Reassignment</label>
+</PermissionSet>
