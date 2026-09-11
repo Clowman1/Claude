@@ -161,3 +161,16 @@
 		flex: 1 1 calc(50% - 4px);
 	}
 }
+/* Add Document modal: the file input reads as a drop target rather than a bare button. */
+.add-document__drop-zone {
+    background: #f7f9fc;
+    border: 1px dashed #b6c2d6;
+    border-radius: 8px;
+    padding: 18px 16px;
+}
+
+.add-document__hint {
+    color: #5b6577;
+    font-size: 12px;
+    line-height: 1.5;
+}

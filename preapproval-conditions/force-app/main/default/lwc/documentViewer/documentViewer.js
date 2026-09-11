@@ -11,6 +11,7 @@ import getLoanConditions from '@salesforce/apex/DocumentViewerController.getLoan
 import relateFileToCondition from '@salesforce/apex/DocumentViewerController.relateFileToCondition';
 import changeFolder from '@salesforce/apex/DocumentViewerController.changeFolder';
 import getDefaultFolders from '@salesforce/apex/FileUploaderController.getDefaultFolders';
+import applyUploadDetails from '@salesforce/apex/DocumentViewerController.applyUploadDetails';
 
 
 export default class DocumentViewer extends NavigationMixin(LightningElement) {
@@ -36,6 +37,11 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 	@track fileToRelate;
 	@track conditions = [];
 	@track defaultFolders = [];
+	@track addDocumentModalOpen = false;
+	@track uploadFolder;
+	@track uploadLabel = '';
+	LEAD_ID_PREFIX = '00Q';
+	DEFAULT_UPLOAD_FOLDER = 'Conditions';
 	isCompactView = FORM_FACTOR !== 'Large';
 	ERROR_TOAST_VARIANT = 'error';
 	SUCCESS_TOAST_VARIANT = 'success';
@@ -287,6 +293,86 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 
 		this.foldersToFilesMap = foldersToFilesMap;
 			}
+
+	// Adding documents is offered on the Lead only; on a Transaction the file goes in through
+	// the processing tools, which carry their own rules about where it belongs.
+	get canAddDocument() {
+		return typeof this.recordId === 'string' && this.recordId.startsWith(this.LEAD_ID_PREFIX);
+	}
+
+	get folderOptions() {
+		return this.defaultFolders;
+	}
+
+	openAddDocumentModal() {
+		const hasDefault = this.defaultFolders.some(
+			(folder) => folder.value === this.DEFAULT_UPLOAD_FOLDER
+		);
+		this.uploadFolder = hasDefault
+			? this.DEFAULT_UPLOAD_FOLDER
+			: this.defaultFolders[0] && this.defaultFolders[0].value;
+		this.uploadLabel = '';
+		this.addDocumentModalOpen = true;
+	}
+
+	closeAddDocumentModal() {
+		this.addDocumentModalOpen = false;
+		this.uploadLabel = '';
+	}
+
+	handleUploadFolderChange(event) {
+		this.uploadFolder = event.detail.value;
+	}
+
+	handleUploadLabelChange(event) {
+		this.uploadLabel = event.detail.value;
+	}
+
+	handleUploadFinished(event) {
+		const uploaded = (event.detail && event.detail.files) || [];
+		const contentVersionIds = uploaded
+			.map((file) => file.contentVersionId)
+			.filter(Boolean);
+		if (contentVersionIds.length === 0) {
+			// The file is already attached to the record; only the filing failed to resolve.
+			this.showToast(
+				'Document added, but it could not be filed automatically. Use Change Folder on the row.',
+				this.ERROR_TOAST_VARIANT
+			);
+			this.closeAddDocumentModal();
+			this.connectedCallback();
+			return;
+		}
+
+		this.showSpinner();
+		applyUploadDetails({
+			contentVersionIds,
+			folderName: this.uploadFolder,
+			documentLabel: this.uploadLabel
+		})
+			.then(() => {
+				const count = contentVersionIds.length;
+				this.showToast(
+					`${count === 1 ? 'Document' : `${count} documents`} added to ${this.uploadFolder}.`,
+					this.SUCCESS_TOAST_VARIANT
+				);
+				this.closeAddDocumentModal();
+				this.connectedCallback();
+			})
+			.catch((error) => {
+				this.closeSpinner();
+				// The upload itself succeeded, so say so rather than implying nothing happened.
+				this.showToast(
+					this.apexErrorMessage(
+						error,
+						'Document added, but the folder and label could not be applied.'
+					),
+					this.ERROR_TOAST_VARIANT
+				);
+				this.closeAddDocumentModal();
+				this.connectedCallback();
+			});
+	}
 
 	onGetDefaultFoldersSuccess(folders) {
 		const defaultFolders = [];

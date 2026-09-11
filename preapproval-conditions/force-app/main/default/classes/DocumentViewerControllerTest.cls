@@ -138,6 +138,60 @@ private class DocumentViewerControllerTest {
         System.assertEquals(true, relateFailed, 'A missing file should not fail silently.');
     }
 
+    @IsTest
+    static void addingADocumentFilesItAndUsesTheTypedLabel() {
+        Lead leadRecord = buildLead();
+        ContentVersion uploaded = buildContentVersion('scan0001.pdf', null, null);
+        ContentDocumentLink link = new ContentDocumentLink(
+            ContentDocumentId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :uploaded.Id]
+                .ContentDocumentId,
+            LinkedEntityId = leadRecord.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert link;
+
+        Test.startTest();
+        // The label is typed with an extension on purpose: viewers append the real one, so
+        // "W2 2025.pdf" would otherwise display as "W2 2025.pdf.pdf".
+        DocumentViewerController.applyUploadDetails(
+            new List<Id>{ uploaded.Id }, 'Income', 'W2 2025.pdf'
+        );
+        Test.stopTest();
+
+        ContentVersion filed = [
+            SELECT Title, Folder__c FROM ContentVersion WHERE Id = :uploaded.Id
+        ];
+        System.assertEquals('Income', filed.Folder__c, 'It lands in the folder that was chosen.');
+        System.assertEquals('W2 2025', filed.Title, 'The label names the document, without the extension.');
+    }
+
+    @IsTest
+    static void severalFilesAtOnceKeepTheirOwnNames() {
+        ContentVersion first = buildContentVersion('bank-jan.pdf', null, null);
+        ContentVersion second = buildContentVersion('bank-feb.pdf', null, null);
+
+        Test.startTest();
+        DocumentViewerController.applyUploadDetails(
+            new List<Id>{ first.Id, second.Id }, 'Asset', 'Bank Statements'
+        );
+        DocumentViewerController.applyUploadDetails(new List<Id>(), 'Asset', 'ignored');
+        DocumentViewerController.applyUploadDetails(null, 'Asset', 'ignored');
+        Test.stopTest();
+
+        List<ContentVersion> filed = [
+            SELECT Title, Folder__c FROM ContentVersion
+            WHERE Id IN (:first.Id, :second.Id) ORDER BY Title
+        ];
+        System.assertEquals('Asset', filed[0].Folder__c);
+        System.assertEquals('Asset', filed[1].Folder__c);
+        System.assertEquals(
+            'bank-feb.pdf',
+            filed[0].Title,
+            'One label cannot name two files, so each keeps its own.'
+        );
+    }
+
     private static Lead buildLead() {
         Lead leadRecord = new Lead(
             FirstName = 'Doc',

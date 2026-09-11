@@ -20,6 +20,17 @@
 					></lightning-button>
 				</div>
 
+				<template if:true={canAddDocument}>
+					<lightning-button-icon
+						icon-name="utility:upload"
+						alternative-text="Add Document"
+						title="Add Document"
+						class="slds-col"
+						onclick={openAddDocumentModal}
+						variant="inverse"
+					></lightning-button-icon>
+				</template>
+
 				<lightning-button-icon
 					icon-name="utility:download"
 					alternative-text="Download All"
@@ -55,6 +66,15 @@
 						onclick={handleFilterFiles}
 						class="toolbar__action-button"
 					></lightning-button>
+					<template if:true={canAddDocument}>
+						<lightning-button-icon
+							icon-name="utility:upload"
+							alternative-text="Add Document"
+							title="Add Document"
+							onclick={openAddDocumentModal}
+							variant="border-filled"
+						></lightning-button-icon>
+					</template>
 					<lightning-button-icon
 						icon-name="utility:download"
 						alternative-text="Download All"
@@ -453,6 +473,77 @@
 						disabled={relateConditionDisabled}
 					>
 						Relate
+					</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+	<template if:true={addDocumentModalOpen}>
+		<section
+			role="dialog"
+			tabindex="-1"
+			aria-labelledby="add-document-heading"
+			aria-modal="true"
+			aria-describedby="add-document-content"
+			class="slds-modal slds-fade-in-open document-viewer-modal"
+		>
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button
+						class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+						title="Close"
+						onclick={closeAddDocumentModal}
+					>
+						<lightning-icon
+							icon-name="utility:close"
+							alternative-text="close"
+							variant="inverse"
+							size="small"
+						></lightning-icon>
+						<span class="slds-assistive-text">Close</span>
+					</button>
+					<h2 id="add-document-heading" class="slds-text-heading_medium slds-hyphenate">Add Document</h2>
+				</header>
+
+				<div class="slds-modal__content slds-p-around_medium" id="add-document-content">
+					<lightning-combobox
+						label="Folder"
+						value={uploadFolder}
+						options={folderOptions}
+						onchange={handleUploadFolderChange}
+						required
+					></lightning-combobox>
+
+					<lightning-input
+						class="slds-m-top_small"
+						type="text"
+						label="Document Label"
+						value={uploadLabel}
+						field-level-help="Becomes the document name. Leave blank to keep the file name. Applies when you add one file at a time."
+						onchange={handleUploadLabelChange}
+					></lightning-input>
+
+					<div class="slds-m-top_medium add-document__drop-zone">
+						<lightning-file-upload
+							label="Drag a file here, or browse"
+							name="documentUpload"
+							record-id={recordId}
+							onuploadfinished={handleUploadFinished}
+							multiple
+						></lightning-file-upload>
+					</div>
+
+					<p class="slds-m-top_small add-document__hint">
+						The document is attached as soon as it finishes uploading, then filed under the
+						folder above.
+					</p>
+				</div>
+
+				<footer class="slds-modal__footer document-viewer-modal__footer">
+					<button class="slds-button slds-button_neutral" onclick={closeAddDocumentModal}>
+						Done
 					</button>
 				</footer>
 			</div>

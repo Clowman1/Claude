@@ -159,6 +159,60 @@ public without sharing class DocumentViewerController {
         }
     }
 
+    /**
+     * Finishes an upload made from the Documents tab: files the new version under the chosen
+     * folder and, for a single file, renames it to the label the user typed.
+     *
+     * lightning-file-upload commits the file the moment it is dropped, so the folder and label
+     * are applied straight afterwards rather than before the save.
+     */
+    @AuraEnabled
+    public static void applyUploadDetails(List<Id> contentVersionIds, String folderName, String documentLabel) {
+        try {
+            if (contentVersionIds == null || contentVersionIds.isEmpty()) {
+                return;
+            }
+            List<ContentVersion> versions = [
+                SELECT Id, Title, PathOnClient
+                FROM ContentVersion
+                WHERE Id IN :contentVersionIds
+                WITH SYSTEM_MODE
+            ];
+            if (versions.isEmpty()) {
+                return;
+            }
+
+            // A label only makes sense for one file; dropping five and naming them all the same
+            // would lose which is which, so those keep their own filenames.
+            Boolean renameToLabel = versions.size() == 1 && String.isNotBlank(documentLabel);
+            for (ContentVersion version : versions) {
+                if (String.isNotBlank(folderName)) {
+                    version.Folder__c = folderName;
+                }
+                if (renameToLabel) {
+                    version.Title = stripExtension(documentLabel.trim());
+                }
+            }
+            Database.update(versions, true, AccessLevel.SYSTEM_MODE);
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    // Viewers append the real FileExtension, so a label typed as "W2.pdf" would otherwise show
+    // as "W2.pdf.pdf".
+    @TestVisible
+    private static String stripExtension(String label) {
+        if (String.isBlank(label)) {
+            return label;
+        }
+        Integer dot = label.lastIndexOf('.');
+        if (dot <= 0 || label.length() - dot > 6) {
+            return label;
+        }
+        return label.substring(0, dot);
+    }
+
     @AuraEnabled
     public static void renameFile(Id fileId, String newFileName) {
         try {
