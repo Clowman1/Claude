@@ -179,7 +179,9 @@ public with sharing class LeadPreApprovalLetterController {
 
     @TestVisible
     private static String buildLetterHtml(Lead leadRecord, SignerOption signer, String docsReviewed) {
-        String borrowerName = buildBorrowerName(leadRecord);
+        List<String> applicantNames = buildApplicantNames(leadRecord);
+        String borrowerName = joinApplicantNames(applicantNames);
+        Boolean isJointApplication = applicantNames.size() > 1;
         String today = Datetime.now().format('MMMM d, yyyy').toUpperCase();
         String ltvSuffix = '';
         if (leadRecord.Purchase_Price__c != null && leadRecord.Purchase_Price__c != 0 && leadRecord.Loan_Amount__c != null) {
@@ -205,14 +207,15 @@ public with sharing class LeadPreApprovalLetterController {
             + '</tr></table></td></tr>'
 
             + '<tr><td style="padding:26px 0 10px 0;font-size:19px;font-weight:bold;color:#14284b;">'
-            + htmlEncode(borrowerName) + ' is pre-approved for mortgage financing.</td></tr>'
+            + htmlEncode(borrowerName)
+            + (isJointApplication ? ' are' : ' is') + ' pre-approved for mortgage financing.</td></tr>'
             + '<tr><td style="padding:0 0 12px 0;font-size:13px;line-height:20px;color:#33405c;">'
             + 'To whom it may concern:</td></tr>'
             + '<tr><td style="padding:0 0 20px 0;font-size:13px;line-height:20px;color:#33405c;">'
             + 'I have issued this Pre-Approval Letter to certify that the below applicant(s) is/are '
             + 'pre-approved for financing per Desktop Underwriter (DU) and/or Loan Prospector (LP).</td></tr>'
 
-            + '<tr><td>' + buildTermsTable(leadRecord, borrowerName, ltvSuffix) + '</td></tr>'
+            + '<tr><td>' + buildTermsTable(leadRecord, applicantNames, ltvSuffix) + '</td></tr>'
 
             + '<tr><td style="padding:22px 0 6px 0;font-size:12px;font-weight:bold;color:#1b6fc4;letter-spacing:0.5px;">QUALIFICATION REVIEW</td></tr>'
             + '<tr><td style="font-size:13px;line-height:20px;color:#33405c;">'
@@ -229,9 +232,22 @@ public with sharing class LeadPreApprovalLetterController {
             + '</table>';
     }
 
-    private static String buildTermsTable(Lead leadRecord, String borrowerName, String ltvSuffix) {
+    private static String buildApplicantCell(List<String> applicantNames) {
+        List<String> encoded = new List<String>();
+        for (String name : applicantNames) {
+            encoded.add(htmlEncode(name));
+        }
+        return String.join(encoded, '<br />');
+    }
+
+    private static String buildTermsTable(Lead leadRecord, List<String> applicantNames, String ltvSuffix) {
         List<String> rows = new List<String>();
-        rows.add(termRow('APPLICANT', htmlEncode(borrowerName), false, true));
+        rows.add(termRow(
+            applicantNames.size() > 1 ? 'APPLICANTS' : 'APPLICANT',
+            buildApplicantCell(applicantNames),
+            false,
+            true
+        ));
         rows.add(termRow('PURCHASE PRICE', formatCurrency(leadRecord.Purchase_Price__c), true, false));
         rows.add(termRow('LOAN AMOUNT', formatCurrency(leadRecord.Loan_Amount__c) + ltvSuffix, true, true));
         rows.add(termRow('FINANCING', htmlEncode(buildFinancingLabel(leadRecord)), false, false));
@@ -280,7 +296,9 @@ public with sharing class LeadPreApprovalLetterController {
             if (String.isNotBlank(trimmed)) {
                 items.add(
                     '<tr><td style="padding:5px 0;font-size:13px;color:#33405c;">'
-                    + '<span style="color:#2e7d5b;font-weight:bold;">&#10003;</span>&nbsp;&nbsp;'
+                    + '<span class="tick-screen" style="color:#2e7d5b;font-weight:bold;">&#10003;</span>'
+                    + '<span class="tick-print" style="color:#2e7d5b;font-family:ZapfDingbats;">4</span>'
+                    + '&nbsp;&nbsp;'
                     + htmlEncode(trimmed) + '</td></tr>'
                 );
             }
@@ -413,6 +431,51 @@ public with sharing class LeadPreApprovalLetterController {
         String fullName = ((leadRecord.FirstName == null ? '' : leadRecord.FirstName + ' ')
             + (leadRecord.LastName == null ? '' : leadRecord.LastName)).trim();
         return String.isBlank(fullName) ? leadRecord.Name : fullName;
+    }
+
+    /**
+     * Everyone the letter is issued for: the Lead, then any co-borrowers added to it.
+     *
+     * The primary borrower is never a Borrower__c row - that object holds the additional
+     * borrowers only - so the Lead always leads the list. Removed ones are excluded: taking a
+     * co-borrower off the lead has to take them off the letter too.
+     */
+    @TestVisible
+    private static List<String> buildApplicantNames(Lead leadRecord) {
+        List<String> names = new List<String>{ buildBorrowerName(leadRecord) };
+        if (!Schema.getGlobalDescribe().containsKey('Borrower__c')) {
+            return names;
+        }
+
+        Id leadId = leadRecord.Id;
+        for (SObject coBorrower : Database.query(
+            'SELECT First_Name__c, Last_Name__c FROM Borrower__c' +
+            ' WHERE Lead__c = :leadId AND Removed__c = FALSE' +
+            ' WITH SYSTEM_MODE ORDER BY CreatedDate'
+        )) {
+            String coName = (
+                (coBorrower.get('First_Name__c') == null ? '' : (String) coBorrower.get('First_Name__c') + ' ')
+                + (coBorrower.get('Last_Name__c') == null ? '' : (String) coBorrower.get('Last_Name__c'))
+            ).trim();
+            if (String.isNotBlank(coName)) {
+                names.add(coName);
+            }
+        }
+        return names;
+    }
+
+    // "A", "A and B", "A, B and C" - read aloud by a realtor, so it has to be a sentence.
+    @TestVisible
+    private static String joinApplicantNames(List<String> names) {
+        if (names == null || names.isEmpty()) {
+            return '';
+        }
+        if (names.size() == 1) {
+            return names[0];
+        }
+        List<String> allButLast = new List<String>(names);
+        String last = allButLast.remove(allButLast.size() - 1);
+        return String.join(allButLast, ', ') + ' and ' + last;
     }
 
     private static String formatCurrency(Decimal value) {

@@ -223,6 +223,72 @@ private class LeadPreApprovalLetterTest {
             'The message has to tell the Loan Officer what to do about it.');
     }
 
+    // Co-borrowers live on Borrower__c against the Lead; the primary borrower is never one of
+    // those rows, so the Lead always leads the list.
+    @IsTest
+    static void theLetterNamesEveryApplicantAndReadsAsASentence() {
+        Lead leadRecord = createLead();
+        insert new List<Borrower__c>{
+            new Borrower__c(Lead__c = leadRecord.Id, First_Name__c = 'Testina', Last_Name__c = 'Testiana'),
+            new Borrower__c(Lead__c = leadRecord.Id, First_Name__c = 'Testerillo', Last_Name__c = 'Testiana'),
+            // Taken off the lead, so it must be off the letter too.
+            new Borrower__c(Lead__c = leadRecord.Id, First_Name__c = 'Removed', Last_Name__c = 'Person', Removed__c = true)
+        };
+        LeadPreApprovalLetterController.LetterContext context =
+            LeadPreApprovalLetterController.getContext(leadRecord.Id);
+
+        Test.startTest();
+        String html = LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+            leadRecord.Id, 795000, 675750, 'Conventional', 'Single Family', null, 'Credit history',
+            context.defaultSignerId
+        );
+        Test.stopTest();
+
+        System.assertEquals(true, html.contains('Javine Roman, Testina Testiana and Testerillo Testiana'),
+            'Every applicant is named, joined so it can be read aloud.');
+        System.assertEquals(true, html.contains('are pre-approved for mortgage financing'),
+            'Three applicants take a plural verb.');
+        System.assertEquals(true, html.contains('APPLICANTS'), 'And the label follows suit.');
+        System.assertEquals(false, html.contains('Removed Person'),
+            'A co-borrower taken off the lead is off the letter.');
+    }
+
+    @IsTest
+    static void oneApplicantStillReadsInTheSingular() {
+        Lead leadRecord = createLead();
+        LeadPreApprovalLetterController.LetterContext context =
+            LeadPreApprovalLetterController.getContext(leadRecord.Id);
+
+        Test.startTest();
+        String html = LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+            leadRecord.Id, 500000, 400000, 'FHA', 'Condo', null, 'Credit history', context.defaultSignerId
+        );
+        Test.stopTest();
+
+        System.assertEquals(true, html.contains('Javine Roman is pre-approved'));
+        System.assertEquals(true, html.contains('APPLICANT<'), 'Singular label for a single applicant.');
+    }
+
+    // The PDF renderer has no glyph for the Unicode check, so the letter carries both marks and
+    // each medium hides the one it cannot draw.
+    @IsTest
+    static void reviewedItemsCarryACheckThePdfCanDraw() {
+        Lead leadRecord = createLead();
+        LeadPreApprovalLetterController.LetterContext context =
+            LeadPreApprovalLetterController.getContext(leadRecord.Id);
+
+        Test.startTest();
+        String html = LeadPreApprovalLetterController.saveDetailsAndBuildLetter(
+            leadRecord.Id, 500000, 400000, 'FHA', 'Condo', null, 'Bank statements', context.defaultSignerId
+        );
+        Test.stopTest();
+
+        System.assertEquals(true, html.contains('tick-screen'), 'The Unicode check, for the preview.');
+        System.assertEquals(true, html.contains('tick-print'), 'And a ZapfDingbats one for the PDF.');
+        System.assertEquals(true, html.contains('ZapfDingbats'),
+            'Named explicitly: it is one of the few fonts a PDF reader always has.');
+    }
+
     private static Lead createLead() {
         Lead leadRecord = createLead('Pre-Approval');
         return leadRecord;

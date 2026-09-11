@@ -112,3 +112,8 @@
     margin-top: 1.1rem;
     padding-top: 0.9rem;
 }
+/* The letter carries two check marks: a Unicode one for screens and a ZapfDingbats one the PDF
+   renderer can actually draw. Each medium hides the other's. */
+.letter-canvas .tick-print {
+    display: none;
+}
