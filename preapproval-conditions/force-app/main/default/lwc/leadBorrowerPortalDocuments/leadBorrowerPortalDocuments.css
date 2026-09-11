@@ -45,7 +45,7 @@ h4 {
 .portal-shell {
     background: linear-gradient(180deg, #334f8e 0%, #172847 100%);
     display: grid;
-    grid-template-columns: 76px minmax(0, 1fr) 210px;
+    grid-template-columns: 76px minmax(0, 1fr) 232px;
     min-height: 100vh;
 }
 
@@ -141,10 +141,11 @@ h4 {
 
 .team-email {
     color: #1B6FD8;
-    font-size: 12px;
-    line-height: 18px;
+    font-size: 11px;
+    line-height: 16px;
     margin-top: 6px;
     max-width: 100%;
+    /* Only breaks if an address is genuinely too long for the rail. */
     overflow-wrap: anywhere;
 }
 
