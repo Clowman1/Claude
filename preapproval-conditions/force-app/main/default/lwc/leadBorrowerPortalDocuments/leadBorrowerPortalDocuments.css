@@ -473,8 +473,8 @@ c-lead-borrower-portal-document-row {
 
 .how-it-works {
     align-items: flex-start;
-    background: #f7f9fc;
-    border: 1px solid #dbe5f7;
+    background: #fff8ec;
+    border: 1px solid #f2dcb6;
     border-radius: 10px;
     box-sizing: border-box;
     display: flex;
@@ -486,9 +486,9 @@ c-lead-borrower-portal-document-row {
 /* Small mark rather than a coloured slab: this is guidance, not a warning. */
 .how-it-works-icon {
     align-items: center;
-    background: #142342;
+    background: #ff9824;
     border-radius: 999px;
-    color: #ffffff;
+    color: #122242;
     display: flex;
     flex: 0 0 auto;
     font-size: 14px;
@@ -506,7 +506,7 @@ c-lead-borrower-portal-document-row {
 }
 
 .how-it-works-body {
-    color: #50607a;
+    color: #5c5140;
     font-size: 13px;
     line-height: 1.55;
     margin: 0;
