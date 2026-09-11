@@ -3,51 +3,40 @@
 		<h3 slot="title">Loan Documents</h3>
 
 		<template if:false={isCompactView}>
-			<div class="slds-grid slds-gutters_direct slds-gutters_direct-xx-small toolbar toolbar--desktop" slot="actions">
-				<div class="slds-grid slds-gutters slds-gutters_xx-small slds-col slds-col_bump-left">
+			<div class="toolbar toolbar--desktop" slot="actions">
+				<div class="toolbar__search">
 					<lightning-input
-						type="text"
+						type="search"
 						variant="label-hidden"
-						class="slds-col"
+						placeholder="Search documents"
+						class="toolbar__search-input"
 						value={filter}
 						onchange={handleFilterChange}
 					></lightning-input>
-					<lightning-button
-						variant="brand"
-						class="slds-col"
-						label="Search"
-						onclick={handleFilterFiles}
-					></lightning-button>
+					<button class="pill pill--search" onclick={handleFilterFiles}>
+						<lightning-icon icon-name="utility:search" size="xx-small" variant="inverse"></lightning-icon>
+						<span>Search</span>
+					</button>
 				</div>
 
-				<template if:true={canAddDocument}>
-					<lightning-button-icon
-						icon-name="utility:upload"
-						alternative-text="Add Document"
-						title="Add Document"
-						class="slds-col"
-						onclick={openAddDocumentModal}
-						variant="inverse"
-					></lightning-button-icon>
-				</template>
+				<div class="toolbar__actions">
+					<template if:true={canAddDocument}>
+						<button class="pill pill--primary" onclick={openAddDocumentModal} title="Add a document to this record">
+							<lightning-icon icon-name="utility:upload" size="xx-small"></lightning-icon>
+							<span>Add Document</span>
+						</button>
+					</template>
 
-				<lightning-button-icon
-					icon-name="utility:download"
-					alternative-text="Download All"
-					title="Download All"
-					class="slds-col"
-					onclick={downloadAllFiles}
-					variant="inverse"
-				></lightning-button-icon>
+					<button class="pill" onclick={downloadAllFiles} title="Download every document as a zip">
+						<lightning-icon icon-name="utility:download" size="xx-small"></lightning-icon>
+						<span>Download All</span>
+					</button>
 
-				<lightning-button-icon
-					icon-name="utility:refresh"
-					alternative-text="Refresh"
-					title="Refresh"
-					class="slds-col"
-					onclick={connectedCallback}
-					variant="inverse"
-				></lightning-button-icon>
+					<button class="pill" onclick={connectedCallback} title="Reload the document list">
+						<lightning-icon icon-name="utility:refresh" size="xx-small"></lightning-icon>
+						<span>Refresh</span>
+					</button>
+				</div>
 			</div>
 		</template>
 
@@ -60,35 +49,24 @@
 					onchange={handleFilterChange}
 				></lightning-input>
 				<div class="toolbar__actions">
-					<lightning-button
-						variant="brand"
-						label="Search"
-						onclick={handleFilterFiles}
-						class="toolbar__action-button"
-					></lightning-button>
+					<button class="pill pill--search" onclick={handleFilterFiles}>
+						<lightning-icon icon-name="utility:search" size="xx-small" variant="inverse"></lightning-icon>
+						<span>Search</span>
+					</button>
 					<template if:true={canAddDocument}>
-						<lightning-button-icon
-							icon-name="utility:upload"
-							alternative-text="Add Document"
-							title="Add Document"
-							onclick={openAddDocumentModal}
-							variant="border-filled"
-						></lightning-button-icon>
+						<button class="pill pill--primary" onclick={openAddDocumentModal}>
+							<lightning-icon icon-name="utility:upload" size="xx-small"></lightning-icon>
+							<span>Add Document</span>
+						</button>
 					</template>
-					<lightning-button-icon
-						icon-name="utility:download"
-						alternative-text="Download All"
-						title="Download All"
-						onclick={downloadAllFiles}
-						variant="border-filled"
-					></lightning-button-icon>
-					<lightning-button-icon
-						icon-name="utility:refresh"
-						alternative-text="Refresh"
-						title="Refresh"
-						onclick={connectedCallback}
-						variant="border-filled"
-					></lightning-button-icon>
+					<button class="pill" onclick={downloadAllFiles}>
+						<lightning-icon icon-name="utility:download" size="xx-small"></lightning-icon>
+						<span>Download All</span>
+					</button>
+					<button class="pill" onclick={connectedCallback}>
+						<lightning-icon icon-name="utility:refresh" size="xx-small"></lightning-icon>
+						<span>Refresh</span>
+					</button>
 				</div>
 			</div>
 		</template>

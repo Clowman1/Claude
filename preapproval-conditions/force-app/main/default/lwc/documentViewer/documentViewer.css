@@ -174,3 +174,86 @@
     font-size: 12px;
     line-height: 1.5;
 }
+/* Toolbar pills: each action says what it does rather than relying on an icon alone. */
+.toolbar--desktop {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.toolbar__search {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.toolbar__search-input {
+    min-width: 180px;
+}
+
+.pill {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #c7d0de;
+    border-radius: 999px;
+    color: #1c3155;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 7px;
+    line-height: 1;
+    padding: 8px 16px;
+    white-space: nowrap;
+}
+
+.pill:hover {
+    background: #f2f5fa;
+    border-color: #9fb0c9;
+}
+
+.pill:focus {
+    outline: 2px solid #1b6fd8;
+    outline-offset: 2px;
+}
+
+.pill lightning-icon {
+    --slds-c-icon-color-foreground-default: #1c3155;
+}
+
+/* The one action that creates something gets the brand fill. */
+.pill--primary {
+    background: #ff9824;
+    border-color: #ff9824;
+    color: #122242;
+}
+
+.pill--primary:hover {
+    background: #f08c14;
+    border-color: #f08c14;
+}
+
+.pill--primary lightning-icon {
+    --slds-c-icon-color-foreground-default: #122242;
+}
+
+.pill--search {
+    background: #1c3155;
+    border-color: #1c3155;
+    color: #ffffff;
+}
+
+.pill--search:hover {
+    background: #16273f;
+    border-color: #16273f;
+}
+
+@media (max-width: 768px) {
+    .pill {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+}
