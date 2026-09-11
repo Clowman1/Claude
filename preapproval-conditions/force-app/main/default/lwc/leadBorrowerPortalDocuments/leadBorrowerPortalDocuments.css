@@ -268,7 +268,7 @@ h4 {
 .imbus-table-row {
     border-collapse: collapse;
     display: grid;
-    grid-template-columns: minmax(0, .5fr) minmax(0, .25fr) minmax(0, 1fr) minmax(0, .75fr);
+    grid-template-columns: minmax(0, .5fr) minmax(146px, .4fr) minmax(0, 1fr) minmax(148px, .7fr);
     min-width: 100%;
 }
 

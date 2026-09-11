@@ -6,13 +6,18 @@
 .imbus-table-row {
     border-collapse: collapse;
     display: grid;
-    grid-template-columns: minmax(0, .5fr) minmax(0, .25fr) minmax(0, 1fr) minmax(0, .75fr);
+    grid-template-columns: minmax(0, .5fr) minmax(146px, .4fr) minmax(0, 1fr) minmax(148px, .7fr);
     min-width: 100%;
 }
 
 .imbus-table-row > div {
     align-items: flex-start;
     display: flex;
+}
+
+/* Pill above the file count, not beside it. */
+.status-cell {
+    flex-direction: column;
 }
 
 .imbus-status-text {

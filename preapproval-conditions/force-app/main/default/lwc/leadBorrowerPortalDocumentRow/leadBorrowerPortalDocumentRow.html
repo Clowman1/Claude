@@ -41,7 +41,7 @@
     <template lwc:else>
         <div class="imbus-table-row slds-grid slds-grid_vertical-align-center">
             <div class="slds-col">{request.name}</div>
-            <div class="slds-col">
+            <div class="slds-col status-cell">
                 <div class={statusClass}>{statusLabel}</div>
                 <template lwc:if={hasFiles}>
                     <div class="file-count">{fileCountLabel}</div>
