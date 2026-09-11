@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>image/png</contentType>
+    <description>Green check drawn beside each reviewed document on the Pre-Approval Letter. An image rather than a glyph: the PDF renderer has no font containing a check mark, so a character silently disappears from the download.</description>
+</StaticResource>

@@ -283,10 +283,8 @@ private class LeadPreApprovalLetterTest {
         );
         Test.stopTest();
 
-        System.assertEquals(true, html.contains('tick-screen'), 'The Unicode check, for the preview.');
-        System.assertEquals(true, html.contains('tick-print'), 'And a ZapfDingbats one for the PDF.');
-        System.assertEquals(true, html.contains('ZapfDingbats'),
-            'Named explicitly: it is one of the few fonts a PDF reader always has.');
+        System.assertEquals(true, html.contains('/resource/Reviewed_Check'),
+            'An image, not a glyph: the PDF fonts hold no check mark, so a character just vanishes.');
     }
 
     private static Lead createLead() {

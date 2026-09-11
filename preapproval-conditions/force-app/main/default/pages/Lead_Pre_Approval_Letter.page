@@ -20,12 +20,6 @@
             color: #1b2f5c;
             margin: 0;
         }
-
-        /* The preview draws a Unicode check; this renderer has no glyph for it in its base
-           fonts, so the mark silently vanished from the PDF. ZapfDingbats is always present and
-           its character 4 is a check, so the PDF shows that one and hides the other. */
-        .tick-screen { display: none; }
-        .tick-print { font-family: ZapfDingbats; }
     </style>
 </head>
 <body>

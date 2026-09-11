@@ -296,8 +296,7 @@ public with sharing class LeadPreApprovalLetterController {
             if (String.isNotBlank(trimmed)) {
                 items.add(
                     '<tr><td style="padding:5px 0;font-size:13px;color:#33405c;">'
-                    + '<span class="tick-screen" style="color:#2e7d5b;font-weight:bold;">&#10003;</span>'
-                    + '<span class="tick-print" style="color:#2e7d5b;font-family:ZapfDingbats;">4</span>'
+                    + '<img src="/resource/Reviewed_Check" alt="Reviewed" width="11" height="11" />'
                     + '&nbsp;&nbsp;'
                     + htmlEncode(trimmed) + '</td></tr>'
                 );
