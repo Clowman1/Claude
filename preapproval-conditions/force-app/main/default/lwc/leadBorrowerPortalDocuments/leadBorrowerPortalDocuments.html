@@ -48,6 +48,16 @@
                     <h3 class="imbus-title-description">The documents requested below help your loan team keep your file moving before your loan is converted to a transaction.</h3>
                 </div>
             </div>
+
+            <div class="how-it-works">
+                <p class="how-it-works-title">Upload everything you have, then press Submit</p>
+                <p class="how-it-works-body">
+                    Add as many documents as you like below - take your time and come back if you need to.
+                    <strong>Your loan team is not notified until you press the Submit Docs for Review
+                    button</strong>, so please remember to press it once you have finished uploading
+                    everything you have.
+                </p>
+            </div>
             <div class="imbus-document-table">
                 <template lwc:if={isPhone}>
                     <div class="imbus-table-header imbus-table-row">
@@ -90,10 +100,12 @@
 
             <template lwc:if={hasPendingSubmissions}>
                 <div class="submit-bar">
-                    <p class="submit-warning">
-                        Your loan team has not been notified yet. Add everything you have, then press
-                        Submit so they can start reviewing.
-                    </p>
+                    <div class="submit-bar-text">
+                        <p class="submit-bar-count">{pendingSummaryLabel}</p>
+                        <p class="submit-warning">
+                            Your loan team has not been notified yet.
+                        </p>
+                    </div>
                     <button
                         type="button"
                         class="submit-button"

@@ -236,10 +236,22 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
                 this.publishRequestUpdate(updated);
             }
 
+            // Confirm from what the server says it holds, not from the call returning. A message
+            // saying the document arrived when nothing was saved is worse than an error: the
+            // borrower stops trying and the loan team waits for a file that does not exist.
+            const savedCount = this.currentRequest?.pendingFiles?.length || 0;
+            if (savedCount === 0) {
+                this.localError =
+                    'We could not save that file. Please try again, or email it to your loan team.';
+                this.dispatchUploadError(new Error('Upload returned no stored document.'));
+                return;
+            }
+
             this.justUploaded = true;
             // Nothing is sent to the lead team here. The files sit in the basket until the
             // borrower submits, so one sitting produces one notification rather than one per
             // condition they touch.
+            this.dispatchEvent(new CustomEvent('basketchange', { bubbles: true, composed: true }));
         } catch (error) {
             this.localError = this.readableError(error);
             this.dispatchUploadError(error);

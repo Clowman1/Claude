@@ -119,7 +119,12 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
     }
 
     get submitButtonLabel() {
-        return `Submit uploaded items for review (${this.pendingSubmissionCount})`;
+        return `Submit Docs for Review (${this.pendingSubmissionCount})`;
+    }
+
+    get pendingSummaryLabel() {
+        const count = this.pendingSubmissionCount;
+        return count === 1 ? '1 document ready to send' : `${count} documents ready to send`;
     }
 
     // Removing a file from the basket changes the count without changing any request.

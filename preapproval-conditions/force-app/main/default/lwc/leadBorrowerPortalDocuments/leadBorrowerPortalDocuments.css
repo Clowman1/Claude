@@ -410,27 +410,38 @@ c-lead-borrower-portal-document-row {
 /* Submit bar: sticks to the bottom so it is reachable without scrolling past ten conditions. */
 .submit-bar {
     align-items: center;
-    background: #ffffff;
-    border: 1px solid #dbe5f7;
-    border-radius: 10px;
-    bottom: 12px;
-    box-shadow: 0 10px 24px rgba(12, 28, 56, 0.16);
+    background: #142342;
+    border-top: 3px solid #ff9824;
+    bottom: 0;
+    box-shadow: 0 -8px 24px rgba(12, 28, 56, 0.28);
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
     justify-content: space-between;
-    margin-top: 16px;
-    padding: 14px 18px;
-    position: sticky;
-    z-index: 5;
+    left: 0;
+    padding: 16px 28px;
+    position: fixed;
+    right: 0;
+    z-index: 30;
+}
+
+.submit-bar-text {
+    flex: 1 1 240px;
+}
+
+.submit-bar-count {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0;
 }
 
 .submit-warning {
-    color: #6b4c10;
-    flex: 1 1 260px;
+    color: #ffcf91;
     font-size: 13px;
-    line-height: 1.5;
-    margin: 0;
+    line-height: 1.4;
+    margin: 2px 0 0;
 }
 
 .submit-button {
@@ -441,14 +452,47 @@ c-lead-borrower-portal-document-row {
     cursor: pointer;
     flex: 0 0 auto;
     font-family: inherit;
-    font-size: 14px;
-    font-weight: 800;
-    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 900;
+    padding: 14px 32px;
+}
+
+.submit-button:hover {
+    background: #ffa845;
 }
 
 .submit-button:disabled {
     cursor: default;
     opacity: 0.6;
+}
+
+/* Room for the fixed bar so it never covers the last condition. */
+.imbus-main-container {
+    padding-bottom: 132px;
+}
+
+.how-it-works {
+    background: #fff7e8;
+    border: 1px solid #ffdca8;
+    border-left: 5px solid #ff9824;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 16px 20px;
+    width: 100%;
+}
+
+.how-it-works-title {
+    color: #142342;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 6px;
+}
+
+.how-it-works-body {
+    color: #4a4032;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
 }
 
 .submitted-banner {
