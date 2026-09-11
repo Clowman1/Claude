@@ -1,0 +1,15 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable" access="global">
+    <!--
+        Aura wrapper for the Pending Review LWC utility item. Exists solely so
+        we can call lightning:utilityBarAPI's setUtilityLabel from Aura - the
+        LWC equivalent (lightning/platformUtilityBarApi.setUtilityLabel) is
+        documented to work in both nav modes but does not visually update the
+        bar in standard navigation apps as of the writing of this comment.
+
+        The inner LWC dispatches an `activitychange` event whenever the wired
+        queue refreshes; we listen here and flip the bar label between the
+        idle and "new activity" variants.
+    -->
+    <lightning:utilityBarAPI aura:id="utilityBarAPI" />
+    <c:pendingReviewUtility onactivitychange="{!c.handleActivityChange}" />
+</aura:component>
