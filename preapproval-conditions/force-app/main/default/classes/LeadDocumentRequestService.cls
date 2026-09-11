@@ -8,6 +8,7 @@ public with sharing class LeadDocumentRequestService {
     private static final String REVIEW_PENDING = 'Pending Review';
     private static final String REVIEW_ACCEPTED = 'Accepted';
     private static final String REVIEW_REJECTED = 'Rejected';
+    private static final String REVIEW_NOT_NEEDED = 'Not Needed';
     private static final String FALLBACK_FOLDER = 'Conditions';
     private static final String NOT_NEEDED_FOLDER = 'Not Needed';
     private static final String REJECTION_TEMPLATE_DEVELOPER_NAME = 'Lead_Document_Rejection';
@@ -449,6 +450,60 @@ public with sharing class LeadDocumentRequestService {
 
         sendBorrowerRejectionEmail(leadRecord, requestId);
 
+        Decimal fileCount = LeadDocumentRequestRepository.getInstance()
+            .selectLinkedDocumentCountsByRequestIds(new Set<Id>{ requestId }).get(requestId);
+        return new RequestItem(requestRecord, fileCount);
+    }
+
+    /**
+     * Files a document under Not Needed and takes it off the condition.
+     *
+     * Unlike a rejection this asks nothing of the borrower - no reason, no email. It is for the
+     * upload that is simply not wanted: a duplicate, a page sent twice, something the Loan
+     * Officer asked for and no longer needs. The document stays on the Lead so the record of
+     * what arrived is intact.
+     */
+    public static RequestItem markRequestDocumentNotNeeded(
+        Id requestId,
+        Id contentDocumentId,
+        Boolean closeWhenNoneRemaining
+    ) {
+        if (requestId == null || contentDocumentId == null) {
+            throw new LeadDocumentRequestException('A document request and document are required.');
+        }
+
+        Lead_Document_Request__c requestRecord = LeadDocumentRequestRepository.getInstance()
+            .selectRequestForPortalUpload(requestId);
+        if (requestRecord == null) {
+            throw new LeadDocumentRequestException('Unable to locate the Lead document request.');
+        }
+        Lead leadRecord = getLeadOrThrow(requestRecord.Lead__c);
+        ensureLeadIsOpenForDocumentRequests(leadRecord);
+        ensureCanActOnRequest(leadRecord);
+
+        updateLatestContentVersionReviewStatus(
+            contentDocumentId,
+            REVIEW_NOT_NEEDED,
+            NOT_NEEDED_FOLDER,
+            null
+        );
+        removeDocumentLink(requestId, contentDocumentId);
+
+        String nextStatus;
+        if (countPendingDocuments(requestId) > 0) {
+            nextStatus = REVIEW_STATUS;
+        } else {
+            // Same question accepting the last document asks: the upload is dealt with, but only
+            // the Loan Officer knows whether the borrower still owes what was originally asked for.
+            nextStatus = closeWhenNoneRemaining == true ? CLEARED_STATUS : REQUESTED_STATUS;
+        }
+        Database.update(
+            new Lead_Document_Request__c(Id = requestId, Status__c = nextStatus),
+            true,
+            AccessLevel.SYSTEM_MODE
+        );
+
+        requestRecord.Status__c = nextStatus;
         Decimal fileCount = LeadDocumentRequestRepository.getInstance()
             .selectLinkedDocumentCountsByRequestIds(new Set<Id>{ requestId }).get(requestId);
         return new RequestItem(requestRecord, fileCount);

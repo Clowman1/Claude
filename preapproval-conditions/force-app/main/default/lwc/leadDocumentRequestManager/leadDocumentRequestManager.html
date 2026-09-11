@@ -449,7 +449,7 @@
 
                                 <template lwc:if={showCloseDecisionPrompt}>
                                     <section class="reject-form">
-                                        <h4 class="reject-title">Accept this document</h4>
+                                        <h4 class="reject-title">{closeDecisionTitle}</h4>
                                         <p class="close-decision-copy">
                                             This is the last document waiting on this request. Close the request, or keep it
                                             open if the borrower still owes what was originally asked for.
@@ -457,7 +457,7 @@
                                         <div class="reject-actions">
                                             <lightning-button label="Cancel" onclick={cancelCloseDecision}></lightning-button>
                                             <lightning-button label="Keep Open" onclick={confirmAcceptAndKeepOpen}></lightning-button>
-                                            <lightning-button label="Accept and Close" variant="success" onclick={confirmAcceptAndClose}></lightning-button>
+                                            <lightning-button label={closeDecisionConfirmLabel} variant="success" onclick={confirmAcceptAndClose}></lightning-button>
                                         </div>
                                     </section>
                                 </template>
@@ -497,6 +497,11 @@
                                                 label="Reject"
                                                 variant="destructive"
                                                 onclick={openRejectDocumentPrompt}>
+                                            </lightning-button>
+                                            <lightning-button
+                                                label="Not Needed"
+                                                title="File this document under Not Needed without telling the borrower"
+                                                onclick={handleNotNeededDocument}>
                                             </lightning-button>
                                         </div>
                                     </div>

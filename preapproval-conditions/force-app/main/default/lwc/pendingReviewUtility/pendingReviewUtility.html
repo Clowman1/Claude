@@ -267,6 +267,25 @@
                             <div class="pru-actions-section">
                                 <h3 class="pru-section-heading">Take Action on Selected Document</h3>
 
+                                <template if:true={isDecidingNotNeeded}>
+                                    <div class="pru-reject-form">
+                                        <p class="pru-checkbox-card-title">File as Not Needed</p>
+                                        <p class="pru-help-text">
+                                            This is the last document on this condition. Close the condition, or keep it
+                                            open if the borrower still owes what was originally asked for. Either way the
+                                            document is filed under Not Needed and the borrower is not told.
+                                        </p>
+                                        <div class="pru-button-grid">
+                                            <button type="button" class="pru-btn pru-btn-secondary" onclick={handleCancelNotNeeded}>Cancel</button>
+                                            <button type="button" class="pru-btn pru-btn-secondary" onclick={handleNotNeededKeepOpen}>Keep Open</button>
+                                        </div>
+                                        <button type="button" class="pru-btn pru-btn-primary pru-btn-block" onclick={handleNotNeededClose}>
+                                            <lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon>
+                                            File and Close Condition
+                                        </button>
+                                    </div>
+                                </template>
+
                                 <template if:true={isRejecting}>
                                     <div class="pru-reject-form">
                                         <label class="pru-checkbox-card">
@@ -321,6 +340,14 @@
                                                     Reject Document
                                                 </button>
                                             </div>
+                                            <template if:true={isPreApprovalCondition}>
+                                                <button type="button" class="pru-btn pru-btn-secondary pru-btn-block"
+                                                    onclick={handleStartNotNeeded}
+                                                    title="File under Not Needed without telling the borrower">
+                                                    <lightning-icon icon-name="utility:steps" size="xx-small"></lightning-icon>
+                                                    Not Needed
+                                                </button>
+                                            </template>
                                         </template>
                                         <template if:false={hasActiveDocuments}>
                                             <p class="pru-help-text">No documents attached. Clear the comment alert to remove it from your queue without changing the condition status.</p>
@@ -386,6 +413,13 @@
                                                                 title="Reject this document">
                                                                 Reject
                                                             </button>
+                                                            <template if:true={isPreApprovalCondition}>
+                                                                <button type="button" class="pru-doc-action-btn pru-doc-action-notneeded"
+                                                                    data-doc-id={doc.id} onclick={handleStartNotNeeded}
+                                                                    title="File this document under Not Needed; the borrower is not told">
+                                                                    Not Needed
+                                                                </button>
+                                                            </template>
                                                         </div>
                                                     </template>
                                                 </div>

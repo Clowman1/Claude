@@ -7,6 +7,7 @@ import getQueue from '@salesforce/apex/ConditionReviewQueueController.getQueue';
 import getConditionDocuments from '@salesforce/apex/ConditionReviewQueueController.getConditionDocuments';
 import approveDocument from '@salesforce/apex/ConditionReviewQueueController.approveDocument';
 import rejectDocument from '@salesforce/apex/ConditionReviewQueueController.rejectDocument';
+import markDocumentNotNeeded from '@salesforce/apex/LeadDocumentRequestController.markRequestDocumentNotNeeded';
 import moveDocumentToCondition from '@salesforce/apex/ConditionReviewQueueController.moveDocumentToCondition';
 import unassociateDocuments from '@salesforce/apex/ConditionReviewQueueController.unassociateDocuments';
 import renameFile from '@salesforce/apex/DocumentViewerController.renameFile';
@@ -43,7 +44,7 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     @track activeDocId;
     @track activeComments = [];
     @track isModalOpen = false;
-    @track decisionMode = 'idle'; // idle | rejecting
+    @track decisionMode = 'idle'; // idle | rejecting | notNeeded
     @track selectedDocsToRemove = new Set();
     @track rejectionReason = '';
     @track updatedConditionDescription = '';
@@ -666,6 +667,66 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
         }));
     }
 
+    // Not Needed: the document is filed under Not Needed and comes off the condition. No reason,
+    // no email - it is for the upload nobody wants rather than one the borrower must replace.
+    handleStartNotNeeded(event) {
+        if (event && event.currentTarget && event.currentTarget.dataset.docId) {
+            event.stopPropagation();
+            this.setActiveDocument(event.currentTarget.dataset.docId);
+        }
+        if (!this.activeDocId) {
+            this.fireToast('Select a document to file as Not Needed.', 'warning');
+            return;
+        }
+        // Only the last document raises the close question; before that the condition stays in
+        // review either way.
+        if (this.activeDocuments.length <= 1) {
+            this.decisionMode = 'notNeeded';
+            return;
+        }
+        this.fileNotNeeded(this.activeDocId, false);
+    }
+
+    handleCancelNotNeeded() {
+        this.decisionMode = 'idle';
+    }
+
+    handleNotNeededKeepOpen() {
+        this.fileNotNeeded(this.activeDocId, false);
+    }
+
+    handleNotNeededClose() {
+        this.fileNotNeeded(this.activeDocId, true);
+    }
+
+    async fileNotNeeded(documentId, closeWhenNoneRemaining) {
+        if (!documentId || !this.activeCondition) {
+            return;
+        }
+        try {
+            await markDocumentNotNeeded({
+                requestId: this.activeCondition.id,
+                contentDocumentId: documentId,
+                closeWhenNoneRemaining
+            });
+            this.removeActiveDocumentFromList(documentId);
+            const finalStatus = this.hasActiveDocuments
+                ? STATUS_REVIEW
+                : (closeWhenNoneRemaining ? STATUS_APPROVED : STATUS_REQUESTED);
+            this.resolvedStatus = this.hasActiveDocuments ? undefined : finalStatus;
+            this.setActiveStatus(finalStatus);
+            this.decisionMode = 'idle';
+            this.fireToast(
+                closeWhenNoneRemaining
+                    ? 'Filed under Not Needed \u2014 condition closed'
+                    : 'Filed under Not Needed',
+                'success'
+            );
+        } catch (e) {
+            this.fireToast('Error filing document: ' + this.extractErrorMessage(e), 'error');
+        }
+    }
+
     handleCancelReject() {
         this.decisionMode = 'idle';
         this.selectedDocsToRemove = new Set();
@@ -900,6 +961,16 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     }
 
     // Derived getters used by HTML
+    get isDecidingNotNeeded() {
+        return this.decisionMode === 'notNeeded';
+    }
+
+    // Not Needed is a pre-approval action; a Transaction condition has its own rules for a
+    // document nobody wants.
+    get isPreApprovalCondition() {
+        return !!(this.activeCondition && this.activeCondition.isPreApproval);
+    }
+
     get isRejecting() {
         return this.decisionMode === 'rejecting';
     }

@@ -45,6 +45,19 @@ public with sharing class LeadDocumentRequestController {
     }
 
     @AuraEnabled
+    public static LeadDocumentRequestService.RequestItem markRequestDocumentNotNeeded(
+        Id requestId,
+        Id contentDocumentId,
+        Boolean closeWhenNoneRemaining
+    ) {
+        return LeadDocumentRequestService.markRequestDocumentNotNeeded(
+            requestId,
+            contentDocumentId,
+            closeWhenNoneRemaining
+        );
+    }
+
+    @AuraEnabled
     public static LeadDocumentRequestService.RequestItem rejectRequestDocument(
         Id requestId,
         Id contentDocumentId,

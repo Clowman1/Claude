@@ -11,6 +11,7 @@ import getRequestDocuments from '@salesforce/apex/LeadDocumentRequestController.
 import renameFile from '@salesforce/apex/DocumentViewerController.renameFile';
 import approveRequestDocument from '@salesforce/apex/LeadDocumentRequestController.approveRequestDocument';
 import rejectRequestDocument from '@salesforce/apex/LeadDocumentRequestController.rejectRequestDocument';
+import markRequestDocumentNotNeeded from '@salesforce/apex/LeadDocumentRequestController.markRequestDocumentNotNeeded';
 import getEmailTemplateOptions from '@salesforce/apex/LeadDocumentRequestController.getEmailTemplateOptions';
 import getEmailTemplatePreview from '@salesforce/apex/LeadDocumentRequestController.getEmailTemplatePreview';
 import sendComposedRequestEmail from '@salesforce/apex/LeadDocumentRequestController.sendComposedRequestEmail';
@@ -107,6 +108,8 @@ export default class LeadDocumentRequestManager extends LightningElement {
     renameDraft = '';
     showCloseDecisionPrompt = false;
     pendingAcceptDocumentId = null;
+    // 'accept' or 'notNeeded'; both finish by asking whether to close the request.
+    pendingDecisionAction = 'accept';
     selectedPreviewDocumentId;
     previewRequestId;
     previewRequestKey;
@@ -752,21 +755,89 @@ export default class LeadDocumentRequestManager extends LightningElement {
         this.acceptDocument(contentDocumentId, false);
     }
 
+    get isNotNeededDecision() {
+        return this.pendingDecisionAction === 'notNeeded';
+    }
+
+    get closeDecisionTitle() {
+        return this.isNotNeededDecision ? 'File this document as Not Needed' : 'Accept this document';
+    }
+
+    get closeDecisionConfirmLabel() {
+        return this.isNotNeededDecision ? 'File and Close' : 'Accept and Close';
+    }
+
     confirmAcceptAndClose() {
         const contentDocumentId = this.pendingAcceptDocumentId;
+        const notNeeded = this.isNotNeededDecision;
         this.cancelCloseDecision();
+        if (notNeeded) {
+            this.fileDocumentAsNotNeeded(contentDocumentId, true);
+            return;
+        }
         this.acceptDocument(contentDocumentId, true);
     }
 
     confirmAcceptAndKeepOpen() {
         const contentDocumentId = this.pendingAcceptDocumentId;
+        const notNeeded = this.isNotNeededDecision;
         this.cancelCloseDecision();
+        if (notNeeded) {
+            this.fileDocumentAsNotNeeded(contentDocumentId, false);
+            return;
+        }
         this.acceptDocument(contentDocumentId, false);
     }
 
     cancelCloseDecision() {
         this.showCloseDecisionPrompt = false;
         this.pendingAcceptDocumentId = null;
+        this.pendingDecisionAction = 'accept';
+    }
+
+    // Not Needed is for an upload nobody wants: a duplicate, a page sent twice, something no
+    // longer required. It files under Not Needed and comes off the condition, and unlike a
+    // rejection it asks nothing of the borrower and sends no email.
+    handleNotNeededDocument(event) {
+        const contentDocumentId =
+            event?.currentTarget?.dataset?.documentId || this.selectedPreviewDocumentId;
+        if (!this.previewRequestId || !contentDocumentId) {
+            return;
+        }
+
+        if (this.pendingReviewDocumentCount <= 1) {
+            this.pendingAcceptDocumentId = contentDocumentId;
+            this.pendingDecisionAction = 'notNeeded';
+            this.showCloseDecisionPrompt = true;
+            return;
+        }
+
+        this.fileDocumentAsNotNeeded(contentDocumentId, false);
+    }
+
+    async fileDocumentAsNotNeeded(contentDocumentId, closeWhenNoneRemaining) {
+        if (!this.previewRequestId || !contentDocumentId) {
+            return;
+        }
+
+        this.isLoading = true;
+        try {
+            const updatedRow = await markRequestDocumentNotNeeded({
+                requestId: this.previewRequestId,
+                contentDocumentId,
+                closeWhenNoneRemaining
+            });
+            this.applyReviewedDocumentResult(updatedRow, contentDocumentId);
+            this.showToast(
+                closeWhenNoneRemaining
+                    ? 'Filed under Not Needed and request cleared.'
+                    : 'Filed under Not Needed.'
+            );
+        } catch (error) {
+            this.showError(error);
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     async acceptDocument(contentDocumentId, closeWhenNoneRemaining) {

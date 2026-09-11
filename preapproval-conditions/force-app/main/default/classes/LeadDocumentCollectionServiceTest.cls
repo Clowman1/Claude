@@ -1425,6 +1425,108 @@ private class LeadDocumentCollectionServiceTest {
         );
     }
 
+    // Not Needed files the upload away and takes it off the condition without asking anything
+    // of the borrower. Keeping the condition open is the caller's choice, same as accepting.
+    @IsTest
+    static void notNeededFilesTheDocumentAndLeavesTheConditionOpen() {
+        Lead leadRecord = createLead('not-needed-open@example.com');
+        Lead_Document_Request__c request = createRequest(leadRecord.Id, 'Bank Statements');
+        ContentVersion version = buildLinkedContentVersion(request.Id, leadRecord.Id);
+        Id contentDocumentId = [
+            SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id
+        ].ContentDocumentId;
+
+        Test.startTest();
+        LeadDocumentRequestService.markRequestDocumentNotNeeded(request.Id, contentDocumentId, false);
+        Test.stopTest();
+
+        ContentVersion filed = [
+            SELECT Folder__c, Condition_Document_Review_Status__c, Lead_Document_Request__c
+            FROM ContentVersion
+            WHERE ContentDocumentId = :contentDocumentId AND IsLatest = TRUE
+        ];
+        System.assertEquals('Not Needed', filed.Folder__c, 'It goes to the Not Needed folder.');
+        System.assertEquals('Not Needed', filed.Condition_Document_Review_Status__c,
+            'Recorded as not needed rather than rejected - nobody asked the borrower for anything.');
+
+        System.assertEquals(
+            'Requested',
+            [SELECT Status__c FROM Lead_Document_Request__c WHERE Id = :request.Id].Status__c,
+            'Keep Open leaves the condition waiting on the borrower.'
+        );
+        System.assertEquals(
+            0,
+            [
+                SELECT COUNT() FROM ContentDocumentLink
+                WHERE LinkedEntityId = :request.Id AND ContentDocumentId = :contentDocumentId
+            ],
+            'The document comes off the condition.'
+        );
+        System.assertEquals(
+            1,
+            [
+                SELECT COUNT() FROM ContentDocumentLink
+                WHERE LinkedEntityId = :leadRecord.Id AND ContentDocumentId = :contentDocumentId
+            ],
+            'But stays on the Lead, so the record of what arrived is intact.'
+        );
+    }
+
+    @IsTest
+    static void notNeededCanCloseTheConditionAndRejectsBadInput() {
+        Lead leadRecord = createLead('not-needed-close@example.com');
+        Lead_Document_Request__c request = createRequest(leadRecord.Id, 'Duplicate Page');
+        ContentVersion version = buildLinkedContentVersion(request.Id, leadRecord.Id);
+        Id contentDocumentId = [
+            SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id
+        ].ContentDocumentId;
+
+        Boolean refusedMissingInput = false;
+        Test.startTest();
+        LeadDocumentRequestService.markRequestDocumentNotNeeded(request.Id, contentDocumentId, true);
+        try {
+            LeadDocumentRequestService.markRequestDocumentNotNeeded(null, null, true);
+        } catch (Exception expected) {
+            refusedMissingInput = true;
+        }
+        Test.stopTest();
+
+        System.assertEquals(
+            'Cleared',
+            [SELECT Status__c FROM Lead_Document_Request__c WHERE Id = :request.Id].Status__c,
+            'File and Close clears the condition.'
+        );
+        System.assertEquals(true, refusedMissingInput);
+    }
+
+    private static ContentVersion buildLinkedContentVersion(Id requestId, Id leadId) {
+        ContentVersion version = new ContentVersion(
+            Title = 'not-needed-upload.pdf',
+            PathOnClient = 'not-needed-upload.pdf',
+            VersionData = Blob.valueOf('test body'),
+            Condition_Document_Review_Status__c = 'Pending Review'
+        );
+        insert version;
+        Id contentDocumentId = [
+            SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id
+        ].ContentDocumentId;
+        insert new List<ContentDocumentLink>{
+            new ContentDocumentLink(
+                ContentDocumentId = contentDocumentId,
+                LinkedEntityId = requestId,
+                ShareType = 'V',
+                Visibility = 'AllUsers'
+            ),
+            new ContentDocumentLink(
+                ContentDocumentId = contentDocumentId,
+                LinkedEntityId = leadId,
+                ShareType = 'V',
+                Visibility = 'AllUsers'
+            )
+        };
+        return version;
+    }
+
     private static Lead createLead(String email) {
         LeadDocumentRequestService.testLeadHomeUrlOverride = 'https://example.force.com/documents/s/lead';
         Lead leadRecord = new Lead(

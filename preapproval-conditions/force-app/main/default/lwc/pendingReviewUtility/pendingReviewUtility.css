@@ -764,3 +764,14 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 130, 203, 0.25);
 }
+
+/* Not Needed sits apart from Accept and Reject: it is a filing decision, not a verdict. */
+.pru-doc-action-notneeded {
+    border-color: #c7d0de;
+    color: #3b4a63;
+}
+
+.pru-doc-action-notneeded:hover {
+    background: #eef2f7;
+    border-color: #9fb0c9;
+}
