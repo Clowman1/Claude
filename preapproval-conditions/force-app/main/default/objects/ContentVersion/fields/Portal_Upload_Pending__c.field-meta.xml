@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Portal_Upload_Pending__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>True while a borrower upload is sitting in their portal basket: uploaded, but not yet submitted for review. Such a file is linked to nothing, so it is invisible in the Documents tab and the Pending Review tray until the borrower submits or the sweep submits for them.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Uploaded through the borrower portal but not yet submitted for review.</inlineHelpText>
+    <label>Portal Upload Pending</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

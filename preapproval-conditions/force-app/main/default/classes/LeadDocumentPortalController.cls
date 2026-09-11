@@ -44,17 +44,27 @@ public with sharing class LeadDocumentPortalController {
         }
     }
 
+    /**
+     * Submits everything in the borrower's basket and sends the lead team one email for the
+     * session. Returns the refreshed portal so the pills and counts settle in one round trip.
+     */
     @AuraEnabled
-    public static void notifyLeadTeamOfCompletedUpload(String hashFromURL, Id requestId, Integer fileCount) {
+    public static LeadDocumentPortalService.PortalData submitPendingDocuments(String hashFromURL) {
         try {
-            LeadDocumentPortalService.notifyLeadTeamOfCompletedUpload(hashFromURL, requestId, fileCount);
+            return LeadDocumentPortalService.submitPendingDocuments(hashFromURL);
         } catch (Exception ex) {
-            // The borrower's documents are already saved; a failed notification must not surface
-            // to them as a failed upload.
-            System.debug(LoggingLevel.ERROR,
-                'LeadDocumentPortalController.notifyLeadTeamOfCompletedUpload failed for requestId=' +
-                requestId + ' :: ' + ex.getTypeName() + ': ' + ex.getMessage()
-            );
+            throw new AuraHandledException(ex.getMessage());
+        }
+    }
+
+    // Removing is only ever possible before submitting, so the borrower can correct a mistake
+    // without the lead team having seen it.
+    @AuraEnabled
+    public static Integer removePendingDocument(String hashFromURL, Id contentDocumentId) {
+        try {
+            return LeadDocumentPortalService.removePendingDocument(hashFromURL, contentDocumentId);
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
         }
     }
 }

@@ -6,12 +6,16 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import pulseResources from '@salesforce/resourceUrl/PULSEResources';
 import reachInverseLogo from '@salesforce/resourceUrl/reachInverseLogo';
 import getData from '@salesforce/apex/LeadDocumentPortalController.initializeData';
+import submitPendingDocuments from '@salesforce/apex/LeadDocumentPortalController.submitPendingDocuments';
 
 export default class LeadBorrowerPortalDocuments extends LightningElement {
     @api tableHeaderColor;
     @api tableHeaderTextColor;
     _portalHash;
     @track hashRecordId;
+    @track pendingSubmissionCount = 0;
+    @track isSubmitting = false;
+    @track showSubmittedConfirmation = false;
     isPhone = false;
     requests = [];
     recordId;
@@ -87,16 +91,7 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
                 return;
             }
 
-            this.recordId = data.recordId;
-            this.borrowerName = data.borrowerName;
-            this.contacts = this.decorateContacts(data.contacts || []);
-            this.clearedRequests = this.decorateCleared(data.clearedRequests || []);
-            this.requests = this.sortRequests(data.requests || []);
-            this.documentStatus.approved = data.approvedDocuments;
-            this.documentStatus.needed = this.calculateDocumentsNeeded(this.requests);
-            this.documentStatus.requested = data.requestedDocuments;
-            this.documentStatus.pending = data.pendingReviewDocuments;
-            this.error = undefined;
+            this.applyPortalData(data);
         } catch (error) {
             this.error = error;
         } finally {
@@ -119,8 +114,59 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
         }
     }
 
+    get hasPendingSubmissions() {
+        return this.pendingSubmissionCount > 0;
+    }
+
+    get submitButtonLabel() {
+        return `Submit uploaded items for review (${this.pendingSubmissionCount})`;
+    }
+
+    // Removing a file from the basket changes the count without changing any request.
+    async handleBasketChange() {
+        try {
+            await this.refreshPortalData();
+        } catch (error) {
+            this.showError(error);
+        }
+    }
+
+    async handleSubmitPending() {
+        if (!this.hasPendingSubmissions || this.isSubmitting) {
+            return;
+        }
+        this.isSubmitting = true;
+        try {
+            const data = await submitPendingDocuments({ hashFromURL: this.hashRecordId });
+            this.applyPortalData(data);
+            this.showSubmittedConfirmation = true;
+        } catch (error) {
+            this.showError(error);
+        } finally {
+            this.isSubmitting = false;
+        }
+    }
+
+    dismissSubmittedConfirmation() {
+        this.showSubmittedConfirmation = false;
+    }
+
     handleUploadError(event) {
         this.showError(event.detail?.error);
+    }
+
+    applyPortalData(data) {
+        this.recordId = data.recordId;
+        this.borrowerName = data.borrowerName;
+        this.contacts = this.decorateContacts(data.contacts || []);
+        this.clearedRequests = this.decorateCleared(data.clearedRequests || []);
+        this.requests = this.sortRequests(data.requests || []);
+        this.documentStatus.approved = data.approvedDocuments;
+        this.documentStatus.needed = this.calculateDocumentsNeeded(this.requests);
+        this.documentStatus.requested = data.requestedDocuments;
+        this.documentStatus.pending = data.pendingReviewDocuments;
+        this.pendingSubmissionCount = data.pendingSubmissionCount || 0;
+        this.error = undefined;
     }
 
     async refreshPortalData() {

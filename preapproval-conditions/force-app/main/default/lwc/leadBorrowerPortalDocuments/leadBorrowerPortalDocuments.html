@@ -71,10 +71,36 @@
                         portal-hash={hashRecordId}
                         request={request}
                         onrequestupdated={handleRequestUpdated}
+                        onbasketchange={handleBasketChange}
                         onuploaderror={handleUploadError}>
                     </c-lead-borrower-portal-document-row>
                 </template>
             </div>
+
+            <template lwc:if={showSubmittedConfirmation}>
+                <div class="submitted-banner" role="status">
+                    <span class="submitted-check" aria-hidden="true">&#10003;</span>
+                    <div>
+                        <p class="submitted-title">Documents Submitted for Review</p>
+                        <p class="submitted-sub">Your loan team has been notified and will review them shortly.</p>
+                    </div>
+                    <button type="button" class="submitted-dismiss" onclick={dismissSubmittedConfirmation}>Dismiss</button>
+                </div>
+            </template>
+
+            <template lwc:if={hasPendingSubmissions}>
+                <div class="submit-bar">
+                    <p class="submit-warning">
+                        Your loan team has not been notified yet. Add everything you have, then press
+                        Submit so they can start reviewing.
+                    </p>
+                    <button
+                        type="button"
+                        class="submit-button"
+                        onclick={handleSubmitPending}
+                        disabled={isSubmitting}>{submitButtonLabel}</button>
+                </div>
+            </template>
             <template lwc:if={hasClearedRequests}>
                 <section class="cleared-section">
                     <button class="cleared-toggle" type="button" onclick={toggleCleared}>

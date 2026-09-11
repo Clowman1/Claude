@@ -168,3 +168,48 @@
     font-size: 0.8rem;
     color: #a8332b;
 }
+/* The basket: files added but not yet sent to the loan team. */
+.status-ready {
+    background: #eef4ff;
+    color: #1c4587;
+}
+
+.pending-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+}
+
+.pending-item {
+    align-items: center;
+    background: #f5f8ff;
+    border: 1px solid #dbe5f7;
+    border-radius: 6px;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.pending-name {
+    color: #22314f;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+.pending-remove {
+    background: none;
+    border: none;
+    color: #a03b43;
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.3rem;
+    text-decoration: underline;
+}
+
+.pending-remove:hover {
+    color: #7d2d34;
+}

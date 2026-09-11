@@ -30,8 +30,23 @@
             <template lwc:if={showConfirmation}>
                 <div class="upload-confirmation" role="status">
                     <span class="upload-check" aria-hidden="true">&#10003;</span>
-                    Received. Your loan team has been notified.
+                    Added. Press Submit below when you have added everything.
                 </div>
+            </template>
+            <template lwc:if={hasPendingFiles}>
+                <ul class="pending-list">
+                    <template for:each={pendingFiles} for:item="pendingFile">
+                        <li key={pendingFile.contentDocumentId} class="pending-item">
+                            <span class="pending-name">{pendingFile.name}</span>
+                            <button
+                                type="button"
+                                class="pending-remove"
+                                data-document-id={pendingFile.contentDocumentId}
+                                onclick={handleRemovePending}
+                                title="Remove this file">Remove</button>
+                        </li>
+                    </template>
+                </ul>
             </template>
             <template lwc:if={hasLocalError}>
                 <div class="upload-error" role="alert">{localError}</div>
@@ -43,6 +58,9 @@
             <div class="slds-col">{request.name}</div>
             <div class="slds-col status-cell">
                 <div class={statusClass}>{statusLabel}</div>
+                <template lwc:if={hasPendingFiles}>
+                    <div class="file-count">{pendingCountLabel}</div>
+                </template>
                 <template lwc:if={hasFiles}>
                     <div class="file-count">{fileCountLabel}</div>
                 </template>
@@ -70,8 +88,23 @@
                 <template lwc:if={showConfirmation}>
                     <div class="upload-confirmation" role="status">
                         <span class="upload-check" aria-hidden="true">&#10003;</span>
-                        Received. Your loan team has been notified.
+                        Added. Press Submit below when you have added everything.
                     </div>
+                </template>
+                <template lwc:if={hasPendingFiles}>
+                    <ul class="pending-list">
+                        <template for:each={pendingFiles} for:item="pendingFile">
+                            <li key={pendingFile.contentDocumentId} class="pending-item">
+                                <span class="pending-name">{pendingFile.name}</span>
+                                <button
+                                    type="button"
+                                    class="pending-remove"
+                                    data-document-id={pendingFile.contentDocumentId}
+                                    onclick={handleRemovePending}
+                                    title="Remove this file">Remove</button>
+                            </li>
+                        </template>
+                    </ul>
                 </template>
                 <template lwc:if={hasLocalError}>
                     <div class="upload-error" role="alert">{localError}</div>

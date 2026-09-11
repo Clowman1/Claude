@@ -1,7 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import FORM_FACTOR from '@salesforce/client/formFactor';
 import uploadBorrowerDocument from '@salesforce/apex/LeadDocumentPortalController.uploadBorrowerDocument';
-import notifyLeadTeamOfCompletedUpload from '@salesforce/apex/LeadDocumentPortalController.notifyLeadTeamOfCompletedUpload';
+import removePendingDocument from '@salesforce/apex/LeadDocumentPortalController.removePendingDocument';
 
 // Site guest users cannot upload through lightning-file-upload, so the borrower's browser reads
 // each file and sends it as base64 to Apex, which writes it in system mode. A plain input plus
@@ -49,6 +49,36 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         return count === 1 ? '1 file attached' : `${count} files attached`;
     }
 
+    get pendingFiles() {
+        return this.currentRequest?.pendingFiles || [];
+    }
+
+    get hasPendingFiles() {
+        return this.pendingFiles.length > 0;
+    }
+
+    get pendingCountLabel() {
+        const count = this.pendingFiles.length;
+        return count === 1 ? '1 file ready to submit' : `${count} files ready to submit`;
+    }
+
+    async handleRemovePending(event) {
+        const contentDocumentId = event.currentTarget?.dataset?.documentId;
+        if (!contentDocumentId) {
+            return;
+        }
+        this.localError = undefined;
+        try {
+            await removePendingDocument({
+                hashFromURL: this.portalHash,
+                contentDocumentId
+            });
+            this.dispatchEvent(new CustomEvent('basketchange', { bubbles: true, composed: true }));
+        } catch (error) {
+            this.localError = this.readableError(error);
+        }
+    }
+
     get isSubmitted() {
         return this.currentRequest?.status === 'Review';
     }
@@ -58,6 +88,11 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
     get statusLabel() {
         if (this.isUploading) {
             return 'Uploading...';
+        }
+        // The basket wins over the request status: what the borrower needs to know is that
+        // these files have not gone anywhere yet.
+        if (this.hasPendingFiles) {
+            return 'Ready to submit';
         }
         switch (this.currentRequest?.status) {
             case 'Review':
@@ -80,6 +115,9 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         }
         if (this.isSubmitted) {
             return `${base} status-submitted`;
+        }
+        if (this.hasPendingFiles) {
+            return `${base} status-ready`;
         }
         if (this.hasFiles) {
             return `${base} status-partial`;
@@ -199,14 +237,9 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             }
 
             this.justUploaded = true;
-            notifyLeadTeamOfCompletedUpload({
-                hashFromURL: this.portalHash,
-                requestId: this.currentRequest.id,
-                fileCount: uploadedCount
-            }).catch(() => {
-                // The documents are saved either way; the borrower should not see a notification
-                // problem as an upload failure.
-            });
+            // Nothing is sent to the lead team here. The files sit in the basket until the
+            // borrower submits, so one sitting produces one notification rather than one per
+            // condition they touch.
         } catch (error) {
             this.localError = this.readableError(error);
             this.dispatchUploadError(error);

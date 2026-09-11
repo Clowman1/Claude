@@ -407,3 +407,87 @@ c-lead-borrower-portal-document-row {
     font-size: 0.82rem;
     white-space: nowrap;
 }
+/* Submit bar: sticks to the bottom so it is reachable without scrolling past ten conditions. */
+.submit-bar {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #dbe5f7;
+    border-radius: 10px;
+    bottom: 12px;
+    box-shadow: 0 10px 24px rgba(12, 28, 56, 0.16);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding: 14px 18px;
+    position: sticky;
+    z-index: 5;
+}
+
+.submit-warning {
+    color: #6b4c10;
+    flex: 1 1 260px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.submit-button {
+    background: #ff9824;
+    border: none;
+    border-radius: 999px;
+    color: #122242;
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 12px 24px;
+}
+
+.submit-button:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.submitted-banner {
+    align-items: center;
+    background: #e8f5ee;
+    border: 1px solid #bfe0cd;
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 14px 18px;
+}
+
+.submitted-check {
+    color: #1c6f4d;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.submitted-title {
+    color: #14532d;
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.submitted-sub {
+    color: #3f6b52;
+    font-size: 13px;
+    margin: 2px 0 0;
+}
+
+.submitted-dismiss {
+    background: none;
+    border: none;
+    color: #3f6b52;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    margin-left: auto;
+    text-decoration: underline;
+}

@@ -13,6 +13,8 @@ public without sharing class LeadDocumentPortalService {
         @AuraEnabled public String description;
         @AuraEnabled public String notes;
         @AuraEnabled public Decimal fileCount;
+        // Files sitting in the borrower's basket for this request: uploaded, not yet submitted.
+        @AuraEnabled public List<PortalPendingFile> pendingFiles;
 
         public PortalRequest(Lead_Document_Request__c requestRecord, Decimal linkedFileCount) {
             id = requestRecord.Id;
@@ -22,6 +24,20 @@ public without sharing class LeadDocumentPortalService {
             description = requestRecord.Description__c;
             notes = requestRecord.Subject__c;
             fileCount = linkedFileCount == null ? 0 : linkedFileCount;
+            pendingFiles = new List<PortalPendingFile>();
+        }
+    }
+
+    // One pending upload, as the borrower sees it while the basket is still open.
+    public class PortalPendingFile {
+        @AuraEnabled public Id contentDocumentId;
+        @AuraEnabled public String name;
+        @AuraEnabled public Datetime uploadedAt;
+
+        public PortalPendingFile(ContentVersion version) {
+            contentDocumentId = version.ContentDocumentId;
+            name = String.isBlank(version.PathOnClient) ? version.Title : version.PathOnClient;
+            uploadedAt = version.CreatedDate;
         }
     }
 
@@ -62,6 +78,8 @@ public without sharing class LeadDocumentPortalService {
         @AuraEnabled public List<PortalRequest> requests;
         @AuraEnabled public List<PortalClearedRequest> clearedRequests;
         @AuraEnabled public List<PortalContact> contacts;
+        // Drives the submit bar: nothing reaches the lead team until this is zero again.
+        @AuraEnabled public Integer pendingSubmissionCount;
     }
 
     public static PortalData initializeData(String hashFromURL, Boolean isInSitePreview) {
@@ -99,9 +117,27 @@ public without sharing class LeadDocumentPortalService {
             .selectLinkedDocumentCountsByRequestIds(new Map<Id, Lead_Document_Request__c>(visibleRequests).keySet());
 
         applyRequestCounts(response, visibleRequests);
-        for (Lead_Document_Request__c requestRecord : visibleRequests) {
-            response.requests.add(new PortalRequest(requestRecord, fileCountsByRequestId.get(requestRecord.Id)));
+        Map<Id, List<PortalPendingFile>> pendingByRequestId = new Map<Id, List<PortalPendingFile>>();
+        for (ContentVersion version : selectPendingVersions(
+            new Map<Id, Lead_Document_Request__c>(visibleRequests).keySet()
+        )) {
+            if (!pendingByRequestId.containsKey(version.Lead_Document_Request__c)) {
+                pendingByRequestId.put(version.Lead_Document_Request__c, new List<PortalPendingFile>());
+            }
+            pendingByRequestId.get(version.Lead_Document_Request__c).add(new PortalPendingFile(version));
         }
+
+        Integer pendingCount = 0;
+        for (Lead_Document_Request__c requestRecord : visibleRequests) {
+            PortalRequest portalRequest =
+                new PortalRequest(requestRecord, fileCountsByRequestId.get(requestRecord.Id));
+            if (pendingByRequestId.containsKey(requestRecord.Id)) {
+                portalRequest.pendingFiles = pendingByRequestId.get(requestRecord.Id);
+                pendingCount += portalRequest.pendingFiles.size();
+            }
+            response.requests.add(portalRequest);
+        }
+        response.pendingSubmissionCount = pendingCount;
 
         for (Lead_Document_Request__c clearedRecord :
             LeadDocumentRequestRepository.getInstance().selectClearedByLeadId(leadRecord.Id)) {
@@ -232,22 +268,186 @@ public without sharing class LeadDocumentPortalService {
             Lead_Document_Request__c = requestId,
             Origin = 'H'
         );
+        version.Portal_Upload_Pending__c = true;
         Database.insert(version, true, AccessLevel.SYSTEM_MODE);
 
-        associateContentVersions(new Set<Id>{ version.Id }, requestId, leadRecord.Id);
-
-        if (requestRecord.Status__c != REVIEW_STATUS) {
-            Database.update(
-                new Lead_Document_Request__c(Id = requestId, Status__c = REVIEW_STATUS),
-                true,
-                AccessLevel.SYSTEM_MODE
-            );
-            requestRecord.Status__c = REVIEW_STATUS;
-        }
-
+        // Deliberately no ContentDocumentLink, no status change and no email. The file is in the
+        // borrower's basket: invisible in the Documents tab and the Pending Review tray until it
+        // is submitted, so nobody reviews half of a batch and one session sends one notification.
         Decimal fileCount = LeadDocumentRequestRepository.getInstance()
             .selectLinkedDocumentCountsByRequestIds(new Set<Id>{ requestId }).get(requestId);
-        return new PortalRequest(requestRecord, fileCount);
+        PortalRequest result = new PortalRequest(requestRecord, fileCount);
+        result.pendingFiles = buildPendingFiles(selectPendingVersions(new Set<Id>{ requestId }));
+        return result;
+    }
+
+    /**
+     * Removes one pending upload. Only ever a file the borrower put in their own basket: it is
+     * linked to nothing, nobody has seen it, and leaving it would orphan a file in an org already
+     * short of storage, so it is deleted outright.
+     */
+    public static Integer removePendingDocument(String hashFromURL, Id contentDocumentId) {
+        if (contentDocumentId == null) {
+            throw new LeadDocumentPortalException('A document is required.');
+        }
+        Lead leadRecord = getActivePortalLead(hashFromURL);
+
+        List<ContentVersion> versions = [
+            SELECT Id, ContentDocumentId, Lead_Document_Request__c
+            FROM ContentVersion
+            WHERE ContentDocumentId = :contentDocumentId
+            AND IsLatest = TRUE
+            AND Portal_Upload_Pending__c = TRUE
+            WITH SYSTEM_MODE
+        ];
+        if (versions.isEmpty()) {
+            throw new LeadDocumentPortalException(
+                'That document has already been submitted, so it can no longer be removed here.'
+            );
+        }
+        if (!requestIdsForLead(leadRecord.Id).contains(versions[0].Lead_Document_Request__c)) {
+            throw new LeadDocumentPortalException('That document does not belong to this portal session.');
+        }
+
+        Database.delete(new ContentDocument(Id = contentDocumentId), true, AccessLevel.SYSTEM_MODE);
+        return countPendingForLead(leadRecord.Id);
+    }
+
+    /**
+     * Submits everything in the basket: links each file to its request and to the Lead, moves
+     * those requests to Review, and sends the lead team a single email covering the session.
+     */
+    public static PortalData submitPendingDocuments(String hashFromURL) {
+        Lead leadRecord = getActivePortalLead(hashFromURL);
+        submitPendingForLead(leadRecord, false);
+        return initializeData(hashFromURL, false);
+    }
+
+    // Shared by the borrower pressing submit and by the sweep submitting on their behalf.
+    // The sweep works from Lead records it has already queried, so it needs a way in that does
+    // not start from a portal hash.
+    public static Integer submitPendingForLeadRecord(Lead leadRecord, Boolean submittedBySweep) {
+        return submitPendingForLead(leadRecord, submittedBySweep);
+    }
+
+    @TestVisible
+    private static Integer submitPendingForLead(Lead leadRecord, Boolean submittedBySweep) {
+        Set<Id> requestIds = requestIdsForLead(leadRecord.Id);
+        if (requestIds.isEmpty()) {
+            return 0;
+        }
+        List<ContentVersion> pending = selectPendingVersions(requestIds);
+        if (pending.isEmpty()) {
+            return 0;
+        }
+
+        Map<Id, List<ContentVersion>> versionsByRequestId = new Map<Id, List<ContentVersion>>();
+        List<ContentDocumentLink> linksToInsert = new List<ContentDocumentLink>();
+        List<ContentVersion> versionsToUpdate = new List<ContentVersion>();
+        Set<Id> leadLinkedDocumentIds = existingLeadDocumentIds(leadRecord.Id);
+
+        for (ContentVersion version : pending) {
+            if (!versionsByRequestId.containsKey(version.Lead_Document_Request__c)) {
+                versionsByRequestId.put(version.Lead_Document_Request__c, new List<ContentVersion>());
+            }
+            versionsByRequestId.get(version.Lead_Document_Request__c).add(version);
+
+            linksToInsert.add(new ContentDocumentLink(
+                ContentDocumentId = version.ContentDocumentId,
+                LinkedEntityId = version.Lead_Document_Request__c,
+                ShareType = 'V',
+                Visibility = 'AllUsers'
+            ));
+            if (!leadLinkedDocumentIds.contains(version.ContentDocumentId)) {
+                linksToInsert.add(new ContentDocumentLink(
+                    ContentDocumentId = version.ContentDocumentId,
+                    LinkedEntityId = leadRecord.Id,
+                    ShareType = 'V',
+                    Visibility = 'AllUsers'
+                ));
+                leadLinkedDocumentIds.add(version.ContentDocumentId);
+            }
+            versionsToUpdate.add(new ContentVersion(
+                Id = version.Id,
+                Portal_Upload_Pending__c = false
+            ));
+        }
+
+        Database.insert(linksToInsert, false, AccessLevel.SYSTEM_MODE);
+        Database.update(versionsToUpdate, false, AccessLevel.SYSTEM_MODE);
+
+        // A condition cleared while these sat in the basket is reopened: a document nobody has
+        // looked at must never end up silently parked against a closed request.
+        List<Lead_Document_Request__c> requestsToUpdate = new List<Lead_Document_Request__c>();
+        for (Lead_Document_Request__c requestRecord : [
+            SELECT Id, Name, Subject__c, Status__c
+            FROM Lead_Document_Request__c
+            WHERE Id IN :versionsByRequestId.keySet()
+            WITH SYSTEM_MODE
+        ]) {
+            if (requestRecord.Status__c != REVIEW_STATUS) {
+                requestsToUpdate.add(new Lead_Document_Request__c(
+                    Id = requestRecord.Id,
+                    Status__c = REVIEW_STATUS
+                ));
+            }
+        }
+        if (!requestsToUpdate.isEmpty()) {
+            Database.update(requestsToUpdate, false, AccessLevel.SYSTEM_MODE);
+        }
+
+        notifyLeadTeamOfSubmission(leadRecord, versionsByRequestId, submittedBySweep);
+        return pending.size();
+    }
+
+    @TestVisible
+    private static Set<Id> requestIdsForLead(Id leadId) {
+        Set<Id> requestIds = new Set<Id>();
+        for (Lead_Document_Request__c requestRecord : [
+            SELECT Id FROM Lead_Document_Request__c WHERE Lead__c = :leadId WITH SYSTEM_MODE
+        ]) {
+            requestIds.add(requestRecord.Id);
+        }
+        return requestIds;
+    }
+
+    private static List<ContentVersion> selectPendingVersions(Set<Id> requestIds) {
+        if (requestIds == null || requestIds.isEmpty()) {
+            return new List<ContentVersion>();
+        }
+        return [
+            SELECT Id, ContentDocumentId, Title, PathOnClient, CreatedDate, Lead_Document_Request__c
+            FROM ContentVersion
+            WHERE Lead_Document_Request__c IN :requestIds
+            AND IsLatest = TRUE
+            AND Portal_Upload_Pending__c = TRUE
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate
+        ];
+    }
+
+    private static Set<Id> existingLeadDocumentIds(Id leadId) {
+        Set<Id> documentIds = new Set<Id>();
+        for (ContentDocumentLink link : [
+            SELECT ContentDocumentId FROM ContentDocumentLink
+            WHERE LinkedEntityId = :leadId WITH SYSTEM_MODE
+        ]) {
+            documentIds.add(link.ContentDocumentId);
+        }
+        return documentIds;
+    }
+
+    private static List<PortalPendingFile> buildPendingFiles(List<ContentVersion> versions) {
+        List<PortalPendingFile> files = new List<PortalPendingFile>();
+        for (ContentVersion version : versions) {
+            files.add(new PortalPendingFile(version));
+        }
+        return files;
+    }
+
+    @TestVisible
+    private static Integer countPendingForLead(Id leadId) {
+        return selectPendingVersions(requestIdsForLead(leadId)).size();
     }
 
     // Called once after a borrower's batch of files finishes, so selecting four documents sends one
@@ -423,6 +623,141 @@ public without sharing class LeadDocumentPortalService {
         String fullName = ((userRecord.FirstName == null ? '' : userRecord.FirstName + ' ') +
             (userRecord.LastName == null ? '' : userRecord.LastName)).trim();
         return String.isBlank(fullName) ? userRecord.Name : fullName;
+    }
+
+    /**
+     * One email for one session, however many conditions it touched.
+     *
+     * Replaces the per-condition notification: Andrea Marino has ten conditions, so the old
+     * behaviour could put ten emails in a Loan Officer's inbox for one sitting. The tail listing
+     * what is still outstanding is the part an LO actually acts on.
+     */
+    private static void notifyLeadTeamOfSubmission(
+        Lead leadRecord,
+        Map<Id, List<ContentVersion>> versionsByRequestId,
+        Boolean submittedBySweep
+    ) {
+        List<String> recipients = collectLeadTeamEmails(leadRecord);
+        if (recipients.isEmpty() || versionsByRequestId.isEmpty()) {
+            return;
+        }
+
+        Integer fileTotal = 0;
+        for (List<ContentVersion> versions : versionsByRequestId.values()) {
+            fileTotal += versions.size();
+        }
+
+        Map<Id, Lead_Document_Request__c> submittedRequests = new Map<Id, Lead_Document_Request__c>([
+            SELECT Id, Name, Subject__c, Category__c
+            FROM Lead_Document_Request__c
+            WHERE Id IN :versionsByRequestId.keySet()
+            WITH SYSTEM_MODE
+        ]);
+
+        // What the borrower still owes after this session, so the email answers "is that everything?"
+        Integer stillOutstanding = [
+            SELECT COUNT()
+            FROM Lead_Document_Request__c
+            WHERE Lead__c = :leadRecord.Id
+            AND Status__c NOT IN :FINISHED_STATUSES
+            AND Id NOT IN :versionsByRequestId.keySet()
+            WITH SYSTEM_MODE
+        ];
+
+        Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+        email.setToAddresses(recipients);
+        email.setSubject(
+            'Documents submitted by ' + buildBorrowerName(leadRecord) + ' - ' + fileTotal +
+            (fileTotal == 1 ? ' item' : ' items')
+        );
+        email.setHtmlBody(buildSubmissionNotificationBody(
+            leadRecord, versionsByRequestId, submittedRequests, fileTotal, stillOutstanding, submittedBySweep
+        ));
+        email.setSaveAsActivity(false);
+
+        Id orgWideEmailAddressId = LeadDocumentRequestRepository.getInstance()
+            .selectOrgWideEmailAddressId(ORG_WIDE_FROM_ADDRESS);
+        if (orgWideEmailAddressId != null) {
+            email.setOrgWideEmailAddressId(orgWideEmailAddressId);
+        }
+
+        if (!Test.isRunningTest()) {
+            Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ email });
+        }
+    }
+
+    @TestVisible
+    private static String buildSubmissionNotificationBody(
+        Lead leadRecord,
+        Map<Id, List<ContentVersion>> versionsByRequestId,
+        Map<Id, Lead_Document_Request__c> submittedRequests,
+        Integer fileTotal,
+        Integer stillOutstanding,
+        Boolean submittedBySweep
+    ) {
+        String leadUrl = URL.getOrgDomainUrl().toExternalForm()
+            + '/lightning/r/Lead/' + leadRecord.Id + '/view';
+        String borrowerName = buildBorrowerName(leadRecord);
+        Integer conditionCount = versionsByRequestId.size();
+
+        String rows = '';
+        for (Id requestId : versionsByRequestId.keySet()) {
+            Lead_Document_Request__c requestRecord = submittedRequests.get(requestId);
+            String conditionLabel = requestRecord == null
+                ? 'Condition'
+                : (String.isNotBlank(requestRecord.Subject__c) ? requestRecord.Subject__c : requestRecord.Name);
+            String fileNames = '';
+            for (ContentVersion version : versionsByRequestId.get(requestId)) {
+                String fileName = String.isBlank(version.PathOnClient) ? version.Title : version.PathOnClient;
+                fileNames += '<div style="color:#475467;font-size:13px;line-height:1.6;font-family:Arial,sans-serif;">'
+                    + htmlEncode(fileName) + '</div>';
+            }
+            rows += '<tr><td style="padding:14px 0;border-bottom:1px solid #eceff4;">'
+                + '<div style="color:#142342;font-size:15px;font-weight:800;font-family:Arial,sans-serif;">'
+                + htmlEncode(conditionLabel) + '</div>' + fileNames + '</td></tr>';
+        }
+
+        String sweepNote = submittedBySweep == true
+            ? '<tr><td style="padding:0 30px 18px;">'
+              + '<div style="background:#fff7e8;border-left:4px solid #ffa534;border-radius:8px;padding:14px 18px;'
+              + 'color:#6b4c10;font-size:13px;line-height:1.6;font-family:Arial,sans-serif;">'
+              + 'Submitted automatically - the borrower did not press submit.'
+              + '</div></td></tr>'
+            : '';
+
+        return ''
+            + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;">'
+            + '<tr><td style="background:#1c3155;padding:26px 30px;">'
+            + '<div style="color:#ffa534;font-size:11px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Reach Home Loans</div>'
+            + '<div style="color:#ffffff;font-size:26px;font-weight:900;margin-top:8px;font-family:Arial,sans-serif;">Documents Submitted</div>'
+            + '</td></tr>'
+            + '<tr><td style="padding:28px 30px 8px;">'
+            + '<div style="color:#8290aa;font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;font-family:Arial,sans-serif;">Lead</div>'
+            + '<div style="color:#142342;font-size:22px;font-weight:900;margin-top:6px;font-family:Arial,sans-serif;">'
+            + htmlEncode(leadRecord.Name) + '</div></td></tr>'
+            + sweepNote
+            + '<tr><td style="padding:8px 30px 0;">'
+            + '<div style="color:#22314f;font-size:15px;line-height:1.65;font-family:Arial,sans-serif;">'
+            + htmlEncode(borrowerName) + ' submitted <strong>' + fileTotal
+            + (fileTotal == 1 ? ' document' : ' documents') + '</strong> across <strong>' + conditionCount
+            + (conditionCount == 1 ? ' condition' : ' conditions') + '</strong>.</div></td></tr>'
+            + '<tr><td style="padding:12px 30px 0;">'
+            + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">'
+            + rows + '</table></td></tr>'
+            + '<tr><td style="padding:18px 30px 0;">'
+            + '<div style="color:#475467;font-size:14px;line-height:1.6;font-family:Arial,sans-serif;">'
+            + (stillOutstanding > 0
+                ? '<strong>' + stillOutstanding + '</strong>'
+                  + (stillOutstanding == 1 ? ' condition is' : ' conditions are') + ' still outstanding on this lead.'
+                : 'Nothing else is outstanding on this lead.')
+            + '</div></td></tr>'
+            + '<tr><td align="center" style="padding:26px 30px 30px;">'
+            + '<a href="' + htmlEncode(leadUrl) + '" style="display:inline-block;background:#ff9824;color:#122242;font-size:15px;font-weight:900;font-family:Arial,sans-serif;text-decoration:none;padding:14px 34px;border-radius:999px;">Review in Salesforce</a>'
+            + '</td></tr>'
+            + '<tr><td style="background:#f4f6fa;padding:18px 30px;border-top:1px solid #e2e7f0;">'
+            + '<div style="color:#77839c;font-size:12px;line-height:1.6;font-family:Arial,sans-serif;">'
+            + 'You are receiving this because you are the Loan Officer or Loan Partner on this lead.'
+            + '</div></td></tr></table>';
     }
 
     // Both the Loan Officer and the Loan Partner are told about every borrower upload. One email
