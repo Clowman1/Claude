@@ -40,7 +40,7 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 	@track addDocumentModalOpen = false;
 	@track uploadFolder;
 	@track uploadLabel = '';
-	LEAD_ID_PREFIX = '00Q';
+	TRANSACTION_ID_PREFIX = 'a01';
 	DEFAULT_UPLOAD_FOLDER = 'Conditions';
 	isCompactView = FORM_FACTOR !== 'Large';
 	ERROR_TOAST_VARIANT = 'error';
@@ -294,10 +294,11 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		this.foldersToFilesMap = foldersToFilesMap;
 			}
 
-	// Adding documents is offered on the Lead only; on a Transaction the file goes in through
-	// the processing tools, which carry their own rules about where it belongs.
+	// Hidden on a Transaction, where documents come in through the processing tools with their
+	// own rules about placement. Written as "not a Transaction" rather than "is a Lead" so an
+	// unexpected or late-arriving recordId leaves the button visible rather than silently gone.
 	get canAddDocument() {
-		return typeof this.recordId === 'string' && this.recordId.startsWith(this.LEAD_ID_PREFIX);
+		return !(typeof this.recordId === 'string' && this.recordId.startsWith(this.TRANSACTION_ID_PREFIX));
 	}
 
 	get folderOptions() {
