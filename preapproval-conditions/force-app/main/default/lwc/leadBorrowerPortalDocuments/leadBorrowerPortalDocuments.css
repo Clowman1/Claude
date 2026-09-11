@@ -472,66 +472,42 @@ c-lead-borrower-portal-document-row {
 }
 
 .how-it-works {
-    background: #fff7e8;
-    border: 1px solid #ffdca8;
-    border-left: 5px solid #ff9824;
+    align-items: flex-start;
+    background: #f7f9fc;
+    border: 1px solid #dbe5f7;
     border-radius: 10px;
     box-sizing: border-box;
-    padding: 16px 20px;
-    width: 100%;
+    display: flex;
+    gap: 12px;
+    max-width: 680px;
+    padding: 14px 16px;
+}
+
+/* Small mark rather than a coloured slab: this is guidance, not a warning. */
+.how-it-works-icon {
+    align-items: center;
+    background: #142342;
+    border-radius: 999px;
+    color: #ffffff;
+    display: flex;
+    flex: 0 0 auto;
+    font-size: 14px;
+    font-weight: 800;
+    height: 26px;
+    justify-content: center;
+    width: 26px;
 }
 
 .how-it-works-title {
     color: #142342;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 800;
-    margin: 0 0 6px;
+    margin: 2px 0 4px;
 }
 
 .how-it-works-body {
-    color: #4a4032;
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.submitted-banner {
-    align-items: center;
-    background: #e8f5ee;
-    border: 1px solid #bfe0cd;
-    border-radius: 10px;
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-    padding: 14px 18px;
-}
-
-.submitted-check {
-    color: #1c6f4d;
-    font-size: 18px;
-    font-weight: 900;
-}
-
-.submitted-title {
-    color: #14532d;
-    font-size: 15px;
-    font-weight: 800;
-    margin: 0;
-}
-
-.submitted-sub {
-    color: #3f6b52;
+    color: #50607a;
     font-size: 13px;
-    margin: 2px 0 0;
-}
-
-.submitted-dismiss {
-    background: none;
-    border: none;
-    color: #3f6b52;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 12px;
-    margin-left: auto;
-    text-decoration: underline;
+    line-height: 1.55;
+    margin: 0;
 }

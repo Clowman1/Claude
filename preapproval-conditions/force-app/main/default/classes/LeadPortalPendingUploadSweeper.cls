@@ -38,7 +38,6 @@ public without sharing class LeadPortalPendingUploadSweeper implements Schedulab
             SELECT Id, CreatedDate, Lead_Document_Request__c, Lead_Document_Request__r.Lead__c
             FROM ContentVersion
             WHERE Portal_Upload_Pending__c = TRUE
-            AND IsLatest = TRUE
             AND Lead_Document_Request__c != NULL
             WITH SYSTEM_MODE
             ORDER BY CreatedDate

@@ -582,7 +582,7 @@ private class LeadDocumentCollectionServiceTest {
         // Uploading fills the basket only: the condition does not move and nothing is linked
         // until the borrower submits, which the test does a few lines above.
         System.assertEquals('Requested', response.status, 'An upload on its own leaves the condition alone.');
-        System.assertEquals(0, response.fileCount, 'Linked count stays at zero while the file is pending.');
+        System.assertEquals(1, response.fileCount, 'Linked to its request so the borrower can see it.');
         System.assertEquals(1, response.pendingFiles.size(), 'The borrower sees it waiting in their basket.');
         System.assertEquals('Review', updatedRequest.Status__c, 'Submitting is what moves the condition.');
         System.assertEquals('statement', storedVersion.Title, 'Title drops the extension so viewers do not render "statement.pdf.pdf".');

@@ -1,5 +1,7 @@
 public without sharing class LeadDocumentPortalService {
     private static final String REVIEW_STATUS = 'Review';
+    private static final String REVIEW_NOT_SUBMITTED = 'Not Submitted';
+    private static final String REVIEW_PENDING = 'Pending Review';
     private static final String ORG_WIDE_FROM_ADDRESS = 'reachus@reachhomeloans.com';
     private static final Set<String> FINISHED_STATUSES = new Set<String>{ 'Cleared', 'Approved', 'Completed' };
 
@@ -269,11 +271,16 @@ public without sharing class LeadDocumentPortalService {
             Origin = 'H'
         );
         version.Portal_Upload_Pending__c = true;
+        // Not Submitted keeps it out of every pending-review count: those treat blank or
+        // Pending Review as work waiting on the lead team, and this is neither yet.
+        version.Condition_Document_Review_Status__c = REVIEW_NOT_SUBMITTED;
         Database.insert(version, true, AccessLevel.SYSTEM_MODE);
 
-        // Deliberately no ContentDocumentLink, no status change and no email. The file is in the
-        // borrower's basket: invisible in the Documents tab and the Pending Review tray until it
-        // is submitted, so nobody reviews half of a batch and one session sends one notification.
+        // Linked to the request only: a guest user cannot see a file attached to nothing, so
+        // without this the borrower's own basket comes back empty. It is NOT linked to the Lead,
+        // which is what keeps it out of the Documents tab, and the pending flag keeps it out of
+        // the review queue. No status change and no email until they submit.
+        associateContentVersions(new Set<Id>{ version.Id }, requestId, null);
         Decimal fileCount = LeadDocumentRequestRepository.getInstance()
             .selectLinkedDocumentCountsByRequestIds(new Set<Id>{ requestId }).get(requestId);
         PortalRequest result = new PortalRequest(requestRecord, fileCount);
@@ -296,7 +303,6 @@ public without sharing class LeadDocumentPortalService {
             SELECT Id, ContentDocumentId, Lead_Document_Request__c
             FROM ContentVersion
             WHERE ContentDocumentId = :contentDocumentId
-            AND IsLatest = TRUE
             AND Portal_Upload_Pending__c = TRUE
             WITH SYSTEM_MODE
         ];
@@ -352,12 +358,8 @@ public without sharing class LeadDocumentPortalService {
             }
             versionsByRequestId.get(version.Lead_Document_Request__c).add(version);
 
-            linksToInsert.add(new ContentDocumentLink(
-                ContentDocumentId = version.ContentDocumentId,
-                LinkedEntityId = version.Lead_Document_Request__c,
-                ShareType = 'V',
-                Visibility = 'AllUsers'
-            ));
+            // The request link was made at upload time so the borrower could see the file; only
+            // the Lead link is new here, and that is what surfaces it in the Documents tab.
             if (!leadLinkedDocumentIds.contains(version.ContentDocumentId)) {
                 linksToInsert.add(new ContentDocumentLink(
                     ContentDocumentId = version.ContentDocumentId,
@@ -369,7 +371,8 @@ public without sharing class LeadDocumentPortalService {
             }
             versionsToUpdate.add(new ContentVersion(
                 Id = version.Id,
-                Portal_Upload_Pending__c = false
+                Portal_Upload_Pending__c = false,
+                Condition_Document_Review_Status__c = REVIEW_PENDING
             ));
         }
 
@@ -411,15 +414,34 @@ public without sharing class LeadDocumentPortalService {
         return requestIds;
     }
 
+    /**
+     * The basket, reached the way every working query in this feature reaches a file: through
+     * ContentDocumentLink to the request, then ContentVersion by ContentDocumentId.
+     *
+     * Querying ContentVersion by a custom field returns nothing for the site guest user even from
+     * without-sharing Apex, which is why the borrower saw "we could not save that file" over an
+     * upload that had in fact saved perfectly.
+     */
     private static List<ContentVersion> selectPendingVersions(Set<Id> requestIds) {
         if (requestIds == null || requestIds.isEmpty()) {
             return new List<ContentVersion>();
         }
+
+        Set<Id> documentIds = new Set<Id>();
+        for (ContentDocumentLink link : [
+            SELECT ContentDocumentId FROM ContentDocumentLink
+            WHERE LinkedEntityId IN :requestIds WITH SYSTEM_MODE
+        ]) {
+            documentIds.add(link.ContentDocumentId);
+        }
+        if (documentIds.isEmpty()) {
+            return new List<ContentVersion>();
+        }
+
         return [
             SELECT Id, ContentDocumentId, Title, PathOnClient, CreatedDate, Lead_Document_Request__c
             FROM ContentVersion
-            WHERE Lead_Document_Request__c IN :requestIds
-            AND IsLatest = TRUE
+            WHERE ContentDocumentId IN :documentIds
             AND Portal_Upload_Pending__c = TRUE
             WITH SYSTEM_MODE
             ORDER BY CreatedDate

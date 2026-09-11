@@ -41,10 +41,20 @@ private class LeadPortalSubmissionTest {
             [SELECT COUNT() FROM ContentDocumentLink WHERE LinkedEntityId = :leadRecord.Id],
             'Nothing is linked to the Lead yet, so it stays out of the Documents tab.'
         );
+        // Linked to the request on purpose: a guest user cannot see a file attached to nothing,
+        // so without this link the borrower's own basket comes back empty to them.
+        System.assertEquals(
+            1,
+            [SELECT COUNT() FROM ContentDocumentLink WHERE LinkedEntityId = :request.Id],
+            'The borrower can see their own basket.'
+        );
+        // What keeps it out of the review queue is the pending flag, not the absence of a link.
+        List<ConditionReviewQueueService.LoanQueueDto> queue =
+            ConditionReviewQueueService.buildLeadQueue(UserInfo.getUserId());
         System.assertEquals(
             0,
-            [SELECT COUNT() FROM ContentDocumentLink WHERE LinkedEntityId = :request.Id],
-            'And out of the Pending Review tray, which counts links on the request.'
+            queue.size(),
+            'An unsubmitted basket is not review work, so it stays out of the Pending Review tray.'
         );
     }
 
