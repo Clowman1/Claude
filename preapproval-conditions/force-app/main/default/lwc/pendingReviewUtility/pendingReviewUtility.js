@@ -961,6 +961,16 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     }
 
     // Derived getters used by HTML
+    get isDecisionIdle() {
+        return this.decisionMode === 'idle';
+    }
+
+    // Named in the question so it is obvious which file is being filed away.
+    get activeDocName() {
+        const active = (this.activeDocuments || []).find((d) => d.id === this.activeDocId);
+        return active && active.filename ? active.filename : 'This document';
+    }
+
     get isDecidingNotNeeded() {
         return this.decisionMode === 'notNeeded';
     }

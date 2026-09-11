@@ -755,6 +755,11 @@ export default class LeadDocumentRequestManager extends LightningElement {
         this.acceptDocument(contentDocumentId, false);
     }
 
+    // One question at a time: while either prompt is open the everyday action row stands down.
+    get showRequestActions() {
+        return !this.showCloseDecisionPrompt && !this.showRejectPrompt;
+    }
+
     get isNotNeededDecision() {
         return this.pendingDecisionAction === 'notNeeded';
     }

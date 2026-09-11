@@ -268,20 +268,23 @@
                                 <h3 class="pru-section-heading">Take Action on Selected Document</h3>
 
                                 <template if:true={isDecidingNotNeeded}>
-                                    <div class="pru-reject-form">
-                                        <p class="pru-checkbox-card-title">File as Not Needed</p>
+                                    <div class="pru-decision-panel">
+                                        <p class="pru-decision-title">Last document on this condition</p>
                                         <p class="pru-help-text">
-                                            This is the last document on this condition. Close the condition, or keep it
-                                            open if the borrower still owes what was originally asked for. Either way the
-                                            document is filed under Not Needed and the borrower is not told.
+                                            {activeDocName} will be filed under Not Needed. The borrower is not told.
+                                            Does this condition still need something from them?
                                         </p>
                                         <div class="pru-button-grid">
-                                            <button type="button" class="pru-btn pru-btn-secondary" onclick={handleCancelNotNeeded}>Cancel</button>
-                                            <button type="button" class="pru-btn pru-btn-secondary" onclick={handleNotNeededKeepOpen}>Keep Open</button>
+                                            <button type="button" class="pru-btn pru-btn-secondary" onclick={handleNotNeededKeepOpen}>
+                                                Yes, keep open
+                                            </button>
+                                            <button type="button" class="pru-btn pru-btn-primary" onclick={handleNotNeededClose}>
+                                                <lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon>
+                                                No, close it
+                                            </button>
                                         </div>
-                                        <button type="button" class="pru-btn pru-btn-primary pru-btn-block" onclick={handleNotNeededClose}>
-                                            <lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon>
-                                            File and Close Condition
+                                        <button type="button" class="pru-btn-cancel-link" onclick={handleCancelNotNeeded}>
+                                            Cancel
                                         </button>
                                     </div>
                                 </template>
@@ -321,7 +324,7 @@
                                     </div>
                                 </template>
 
-                                <template if:false={isRejecting}>
+                                <template if:true={isDecisionIdle}>
                                     <template if:true={isResolved}>
                                         <button type="button" class="pru-btn pru-btn-secondary pru-btn-block" onclick={handleReopen}>
                                             <lightning-icon icon-name="utility:refresh" size="xx-small"></lightning-icon>

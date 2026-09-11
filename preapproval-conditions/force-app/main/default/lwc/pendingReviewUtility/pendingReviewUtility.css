@@ -775,3 +775,37 @@
     background: #eef2f7;
     border-color: #9fb0c9;
 }
+
+/* The close-or-keep-open question. Stands alone: the everyday Accept/Reject/Not Needed row is
+   hidden while it is open, so there is one question and two answers on screen. */
+.pru-decision-panel {
+    background: #f7f9fc;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.85rem;
+}
+
+.pru-decision-title {
+    color: #142342;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.pru-btn-cancel-link {
+    align-self: center;
+    background: none;
+    border: none;
+    color: #5b6577;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.78rem;
+    padding: 0.15rem 0.4rem;
+    text-decoration: underline;
+}
+
+.pru-btn-cancel-link:hover {
+    color: #142342;
+}
