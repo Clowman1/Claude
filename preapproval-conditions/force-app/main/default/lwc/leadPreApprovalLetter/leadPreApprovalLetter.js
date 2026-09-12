@@ -229,20 +229,59 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
                 letterHtml: this.letterHtml
             });
 
+            const downloaded = this.deliverPdf(result);
+
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Pre-approval letter finalized',
-                message: 'The letter is opening in a new tab.',
+                message: downloaded
+                    ? 'The PDF has been downloaded.'
+                    : 'The letter is opening in a new tab.',
                 variant: 'success'
             }));
-
-            // Opened rather than downloaded directly: the PDF is rendered by a Visualforce page, and
-            // the browser's own viewer gives the Loan Officer print and save without extra plumbing.
-            window.open(result.pdfPath, '_blank');
             this.close();
         } catch (error) {
             this.errorMessage = this.readableError(error);
         } finally {
             this.isLoading = false;
+        }
+    }
+
+    /**
+     * Saves the PDF straight to the browser downloads.
+     *
+     * The bytes come back with the finalize call, so there is no second trip and no tab to
+     * close. If rendering them failed the page link is still there, and opening it is better
+     * than leaving the Loan Officer with a letter they cannot get hold of.
+     */
+    deliverPdf(result) {
+        if (!result?.pdfBase64) {
+            if (result?.pdfPath) {
+                window.open(result.pdfPath, '_blank');
+            }
+            return false;
+        }
+
+        try {
+            const binary = atob(result.pdfBase64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = result.fileName || 'Pre-Approval Letter.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            // Given back on the next tick so the click has taken the data.
+            window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+            return true;
+        } catch (downloadError) {
+            if (result.pdfPath) {
+                window.open(result.pdfPath, '_blank');
+            }
+            return false;
         }
     }
 

@@ -131,7 +131,12 @@ public with sharing class LeadPreApprovalLetterController {
     }
 
     public class FinalizeResult {
+        // Fallback route to the same letter if the bytes cannot be produced.
         @AuraEnabled public String pdfPath;
+        // The PDF itself, so the browser saves it straight to disk rather than opening a tab
+        // and leaving the Loan Officer to download it from there.
+        @AuraEnabled public String pdfBase64;
+        @AuraEnabled public String fileName;
     }
 
     /**
@@ -162,10 +167,50 @@ public with sharing class LeadPreApprovalLetterController {
 
             FinalizeResult result = new FinalizeResult();
             result.pdfPath = '/apex/Lead_Pre_Approval_Letter?id=' + leadId;
+            result.fileName = buildLetterFileName(leadId);
+            result.pdfBase64 = renderLetterPdf(leadId);
             return result;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+    }
+
+    /**
+     * Renders the stored letter to PDF bytes so the LWC can hand them straight to the browser.
+     *
+     * Returns null rather than throwing: the letter is saved by this point, and a rendering
+     * problem should leave the Loan Officer with the page link rather than an error over work
+     * that actually succeeded.
+     */
+    private static String renderLetterPdf(Id leadId) {
+        if (Test.isRunningTest()) {
+            // getContentAsPDF returns nothing useful under test.
+            return null;
+        }
+        try {
+            PageReference letterPage = Page.Lead_Pre_Approval_Letter;
+            letterPage.getParameters().put('id', leadId);
+            Blob pdf = letterPage.getContentAsPDF();
+            return pdf == null ? null : EncodingUtil.base64Encode(pdf);
+        } catch (Exception renderException) {
+            System.debug(
+                LoggingLevel.ERROR,
+                'Could not render the pre-approval letter PDF for ' + leadId + ': '
+                    + renderException.getMessage()
+            );
+            return null;
+        }
+    }
+
+    // Names the download after the borrower so a downloads folder stays legible.
+    @TestVisible
+    private static String buildLetterFileName(Id leadId) {
+        List<Lead> leads = [
+            SELECT FirstName, LastName, Name FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1
+        ];
+        String borrower = leads.isEmpty() ? 'Borrower' : buildBorrowerName(leads[0]);
+        String safeBorrower = borrower.replaceAll('[^a-zA-Z0-9]+', '_').removeEnd('_');
+        return 'Pre-Approval Letter - ' + safeBorrower + '.pdf';
     }
 
     @TestVisible

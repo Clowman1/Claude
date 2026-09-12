@@ -287,6 +287,30 @@ private class LeadPreApprovalLetterTest {
             'An image, not a glyph: the PDF fonts hold no check mark, so a character just vanishes.');
     }
 
+    // The PDF bytes travel back with the finalize call so the browser can save the file without
+    // opening a tab. getContentAsPDF does not work under test, so what is checked here is the
+    // naming and the fallback that keeps a letter reachable when rendering fails.
+    @IsTest
+    static void finalizingNamesTheFileAndKeepsAFallbackRoute() {
+        Lead leadRecord = createLead();
+
+        Test.startTest();
+        LeadPreApprovalLetterController.FinalizeResult result =
+            LeadPreApprovalLetterController.finalizeLetter(leadRecord.Id, '<p>Final letter</p>');
+        Test.stopTest();
+
+        System.assertEquals(
+            'Pre-Approval Letter - Javine_Roman.pdf',
+            result.fileName,
+            'The borrower is named in the file, so a downloads folder stays legible.'
+        );
+        System.assertEquals(
+            true,
+            result.pdfPath.contains('Lead_Pre_Approval_Letter'),
+            'The page link stays as the fallback when the bytes cannot be produced.'
+        );
+    }
+
     private static Lead createLead() {
         Lead leadRecord = createLead('Pre-Approval');
         return leadRecord;
