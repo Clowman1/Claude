@@ -137,6 +137,9 @@ public with sharing class LeadPreApprovalLetterController {
         // and leaving the Loan Officer to download it from there.
         @AuraEnabled public String pdfBase64;
         @AuraEnabled public String fileName;
+        // A real URL serving the same file as an attachment. iOS ignores a blob download, so
+        // an iPhone is sent here instead and Safari saves it through its download manager.
+        @AuraEnabled public String downloadUrl;
     }
 
     /**
@@ -169,6 +172,7 @@ public with sharing class LeadPreApprovalLetterController {
             result.pdfPath = '/apex/Lead_Pre_Approval_Letter?id=' + leadId;
             result.fileName = buildLetterFileName(leadId);
             result.pdfBase64 = renderLetterPdf(leadId);
+            result.downloadUrl = storeLetterFile(leadId, result.fileName, result.pdfBase64);
             return result;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
@@ -197,6 +201,54 @@ public with sharing class LeadPreApprovalLetterController {
                 LoggingLevel.ERROR,
                 'Could not render the pre-approval letter PDF for ' + leadId + ': '
                     + renderException.getMessage()
+            );
+            return null;
+        }
+    }
+
+    /**
+     * Keeps the issued letter on the Lead as a file and returns a URL that downloads it.
+     *
+     * Two reasons. A phone cannot save a blob, so it needs a real URL that arrives with
+     * attachment headers; and the letter that actually went out is worth keeping, since the
+     * stored HTML can be re-rendered but the issued PDF is the thing the realtor holds.
+     *
+     * Returns null on any failure: the letter is already saved, and losing the download is
+     * better than failing the finalize over it.
+     */
+    private static String storeLetterFile(Id leadId, String fileName, String pdfBase64) {
+        if (String.isBlank(pdfBase64)) {
+            return null;
+        }
+        try {
+            ContentVersion version = new ContentVersion(
+                Title = fileName.removeEnd('.pdf'),
+                PathOnClient = fileName,
+                VersionData = EncodingUtil.base64Decode(pdfBase64),
+                Origin = 'H'
+            );
+            Database.insert(version, true, AccessLevel.SYSTEM_MODE);
+
+            Id contentDocumentId = [
+                SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id WITH SYSTEM_MODE
+            ].ContentDocumentId;
+            Database.insert(
+                new ContentDocumentLink(
+                    ContentDocumentId = contentDocumentId,
+                    LinkedEntityId = leadId,
+                    ShareType = 'V',
+                    Visibility = 'AllUsers'
+                ),
+                true,
+                AccessLevel.SYSTEM_MODE
+            );
+
+            return '/sfc/servlet.shepherd/version/download/' + version.Id;
+        } catch (Exception storeException) {
+            System.debug(
+                LoggingLevel.ERROR,
+                'Could not store the pre-approval letter file for ' + leadId + ': '
+                    + storeException.getMessage()
             );
             return null;
         }

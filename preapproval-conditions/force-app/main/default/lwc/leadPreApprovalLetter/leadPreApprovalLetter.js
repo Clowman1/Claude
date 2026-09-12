@@ -254,7 +254,19 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
      * than leaving the Loan Officer with a letter they cannot get hold of.
      */
     deliverPdf(result) {
+        // iOS ignores the download attribute and cannot save a blob, so an iPhone goes to the
+        // stored file instead: Safari sees attachment headers on a real URL and saves it
+        // through its own download manager.
+        if (this.isAppleTouchDevice && result?.downloadUrl) {
+            window.location.assign(result.downloadUrl);
+            return true;
+        }
+
         if (!result?.pdfBase64) {
+            if (result?.downloadUrl) {
+                window.location.assign(result.downloadUrl);
+                return true;
+            }
             if (result?.pdfPath) {
                 window.open(result.pdfPath, '_blank');
             }
@@ -278,11 +290,24 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
             window.setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
             return true;
         } catch (downloadError) {
+            if (result.downloadUrl) {
+                window.location.assign(result.downloadUrl);
+                return true;
+            }
             if (result.pdfPath) {
                 window.open(result.pdfPath, '_blank');
             }
             return false;
         }
+    }
+
+    // iPadOS reports itself as a Mac, so touch points are what separate a tablet from a
+    // desktop that happens to have a touchscreen attached.
+    get isAppleTouchDevice() {
+        const ua = navigator.userAgent || "";
+        const isIphoneOrIpod = /iPad|iPhone|iPod/.test(ua);
+        const isIpadOnMacUa = ua.includes("Macintosh") && navigator.maxTouchPoints > 1;
+        return isIphoneOrIpod || isIpadOnMacUa;
     }
 
     handleCancel() {
