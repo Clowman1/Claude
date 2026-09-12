@@ -96,6 +96,63 @@ private class BorrowerPersonAccountServiceTest {
     }
 
     @IsTest
+    static void sharedHouseholdEmailDoesNotMergeTwoBorrowers() {
+        Account spouse = new Account(
+            RecordTypeId = personAccountRecordTypeId(),
+            FirstName = 'Dana',
+            LastName = 'Whitfield',
+            PersonEmail = 'whitfields@example.invalid'
+        );
+        insert spouse;
+
+        Transaction__c txn = newTransaction();
+        Lead theLead = newConvertedLead(txn.Id);
+        // Same address as Dana, different person: the classic married-couple case.
+        insert new Borrower__c(
+            Lead__c = theLead.Id,
+            First_Name__c = 'Rory',
+            Last_Name__c = 'Whitfield',
+            Email__c = 'whitfields@example.invalid'
+        );
+
+        Test.startTest();
+        BorrowerPersonAccountService.linkForTransactions(
+            new List<BorrowerPersonAccountService.Request>{
+                new BorrowerPersonAccountService.Request(txn.Id)
+            }
+        );
+        Test.stopTest();
+
+        Borrower__c saved = [SELECT Account__c, Account__r.FirstName FROM Borrower__c LIMIT 1];
+        Assert.areNotEqual(
+            spouse.Id,
+            saved.Account__c,
+            'A shared household email must not merge Rory onto Dana\'s Person Account'
+        );
+        Assert.areEqual('Rory', saved.Account__r.FirstName, 'Rory should get his own Person Account');
+    }
+
+    @IsTest
+    static void borrowerWithoutEmailOrPhoneStillGetsAnAccount() {
+        Transaction__c txn = newTransaction();
+        Lead theLead = newConvertedLead(txn.Id);
+        insert new Borrower__c(Lead__c = theLead.Id, First_Name__c = 'Nameonly', Last_Name__c = 'Borrower');
+
+        Test.startTest();
+        BorrowerPersonAccountService.linkForTransactions(
+            new List<BorrowerPersonAccountService.Request>{
+                new BorrowerPersonAccountService.Request(txn.Id)
+            }
+        );
+        Test.stopTest();
+
+        Borrower__c saved = [SELECT Account__c, Transaction__c, Name FROM Borrower__c LIMIT 1];
+        Assert.isNotNull(saved.Account__c, 'Name alone is enough to create a Person Account');
+        Assert.areEqual(txn.Id, saved.Transaction__c);
+        Assert.areEqual('Nameonly Borrower', saved.Name);
+    }
+
+    @IsTest
     static void skipsRowWithoutLastNameWithoutFailing() {
         Transaction__c txn = newTransaction();
         Lead theLead = newConvertedLead(txn.Id);

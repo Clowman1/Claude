@@ -151,16 +151,18 @@ public with sharing class BorrowerPersonAccountService {
             return;
         }
 
-        Map<String, Id> accountByEmail = new Map<String, Id>();
+        // Matching is on email AND name, never email alone: spouses commonly share one address, and
+        // matching on it by itself would collapse two borrowers onto a single Person Account.
+        Map<String, Id> accountByKey = new Map<String, Id>();
         if (!emails.isEmpty()) {
             // Ascending, so the most recently modified match ends up in the map.
             for (Account existing : [
-                SELECT Id, PersonEmail
+                SELECT Id, PersonEmail, FirstName, LastName
                 FROM Account
                 WHERE IsPersonAccount = TRUE AND PersonEmail != NULL AND PersonEmail IN :emails
                 ORDER BY LastModifiedDate ASC
             ]) {
-                accountByEmail.put(existing.PersonEmail.toLowerCase(), existing.Id);
+                accountByKey.put(matchKey(existing.PersonEmail, existing.FirstName, existing.LastName), existing.Id);
             }
         }
 
@@ -173,9 +175,12 @@ public with sharing class BorrowerPersonAccountService {
         List<Borrower__c> awaitingInsert = new List<Borrower__c>();
 
         for (Borrower__c row : needAccount) {
-            String key = String.isBlank(row.Email__c) ? null : row.Email__c.toLowerCase();
-            if (key != null && accountByEmail.containsKey(key)) {
-                row.Account__c = accountByEmail.get(key);
+            // No email means no way to match safely, so a new Person Account is always created.
+            String key = String.isBlank(row.Email__c)
+                ? null
+                : matchKey(row.Email__c, row.First_Name__c, row.Last_Name__c);
+            if (key != null && accountByKey.containsKey(key)) {
+                row.Account__c = accountByKey.get(key);
                 continue;
             }
             toInsert.add(
@@ -198,6 +203,18 @@ public with sharing class BorrowerPersonAccountService {
         for (Integer i = 0; i < awaitingInsert.size(); i++) {
             awaitingInsert[i].Account__c = toInsert[i].Id;
         }
+    }
+
+    /** Email plus name, lowercased and trimmed, so a shared household address cannot merge people. */
+    private static String matchKey(String email, String firstName, String lastName) {
+        return String.join(
+            new List<String>{
+                String.isBlank(email) ? '' : email.trim().toLowerCase(),
+                String.isBlank(firstName) ? '' : firstName.trim().toLowerCase(),
+                String.isBlank(lastName) ? '' : lastName.trim().toLowerCase()
+            },
+            '|'
+        );
     }
 
     private static String buildName(Borrower__c row) {

@@ -7,7 +7,10 @@ import FORM_FACTOR from '@salesforce/client/formFactor';
 
 const MAX_BORROWERS = 4;
 const LEAD = 'Lead';
-const EDITABLE_FIELDS = ['First_Name__c', 'Last_Name__c', 'Email__c', 'Phone__c'];
+// Only the name is required. Spouses routinely share an email address or a phone, and an added
+// borrower often has neither at entry time. Email is what gates inclusion in borrower emails, so
+// the LO supplies it when they want that, not to satisfy the form.
+const REQUIRED_FIELDS = ['First_Name__c', 'Last_Name__c'];
 
 const LEAD_OPTIONAL = ['Lead.FirstName', 'Lead.LastName', 'Lead.Name', 'Lead.Email', 'Lead.Phone'];
 
@@ -199,9 +202,9 @@ export default class BorrowerPanel extends LightningElement {
     }
 
     async handleSaveNew() {
-        const missing = EDITABLE_FIELDS.filter((field) => !(this.draft[field] || '').trim());
+        const missing = REQUIRED_FIELDS.filter((field) => !(this.draft[field] || '').trim());
         if (missing.length) {
-            this.toast('First name, last name, email and phone are all required.', 'error');
+            this.toast('First and last name are required.', 'error');
             return;
         }
 
@@ -210,8 +213,8 @@ export default class BorrowerPanel extends LightningElement {
         const fields = {
             First_Name__c: first,
             Last_Name__c: last,
-            Email__c: this.draft.Email__c.trim(),
-            Phone__c: this.draft.Phone__c.trim(),
+            Email__c: (this.draft.Email__c || '').trim() || null,
+            Phone__c: (this.draft.Phone__c || '').trim() || null,
             Name: (first + ' ' + last).slice(0, 80)
         };
         fields[this.isLead ? 'Lead__c' : 'Transaction__c'] = this.recordId;

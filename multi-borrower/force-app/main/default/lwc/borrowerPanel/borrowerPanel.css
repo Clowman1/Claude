@@ -1,11 +1,13 @@
-/* Matches leadRecordHero so the panel reads as the bottom half of the same banner. */
+/* Matches leadRecordHero so the panel reads as the bottom half of the same banner.
+   Collapsed rows sit on the navy; anything containing form fields sits on a light card, because
+   SLDS input labels are dark by design and are illegible on a dark ground. */
 .panel {
     background: linear-gradient(110deg, #142342 0%, #1c3155 58%, #2b3f5e 100%);
     border-radius: 14px;
     box-shadow: 0 12px 28px rgba(17, 31, 56, 0.18);
     color: #fff;
     margin: -6px 0 14px;
-    padding: 18px 24px 20px;
+    padding: 16px 20px 18px;
 }
 
 .panel-head {
@@ -43,8 +45,8 @@
 
 .cap-note,
 .empty {
-    color: #aebbd0;
-    font-size: 0.76rem;
+    color: #c3cfe2;
+    font-size: 0.78rem;
     font-weight: 700;
 }
 
@@ -62,9 +64,9 @@
 }
 
 .row {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
     overflow: hidden;
 }
 
@@ -91,21 +93,48 @@
 }
 
 .row-role {
-    color: #aebbd0;
-    font-size: 0.66rem;
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    color: #e4ecf8;
+    font-size: 0.62rem;
     font-weight: 900;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.09em;
+    padding: 4px 9px;
     text-transform: uppercase;
 }
 
 .row-chevron {
-    --slds-c-icon-color-foreground-default: #aebbd0;
+    --slds-c-icon-color-foreground-default: #cdd9ec;
     margin-left: auto;
 }
 
+/* ---- light surfaces: everything with labels or field text ---- */
+
+.row-body,
+.draft {
+    background: #f6f8fc;
+    color: #142342;
+}
+
 .row-body {
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    padding: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 16px 14px;
+}
+
+.draft {
+    border: 1px solid #d5dde9;
+    border-radius: 12px;
+    margin-top: 10px;
+    padding: 16px 14px;
+}
+
+.draft-title {
+    color: #5a6b85;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    margin: 0 0 12px;
+    text-transform: uppercase;
 }
 
 .field-grid {
@@ -122,61 +151,47 @@
 }
 
 .read-grid dt {
-    color: #aebbd0;
+    color: #5a6b85;
     font-size: 0.66rem;
     font-weight: 900;
     letter-spacing: 0.1em;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     text-transform: uppercase;
 }
 
 .read-grid dd {
+    color: #142342;
+    font-size: 0.95rem;
+    font-weight: 700;
     margin: 0;
 }
 
 .read-grid a {
-    color: #ffc066;
-    font-weight: 800;
+    color: #0b5cab;
+    font-weight: 700;
 }
 
 .remove-btn {
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: #fff;
+    border: 1px solid #d8a2a2;
     border-radius: 999px;
-    color: #ffd0d0;
+    color: #a4262c;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.76rem;
     font-weight: 800;
-    margin-top: 14px;
-    padding: 6px 13px;
+    margin-top: 16px;
+    padding: 7px 14px;
 }
 
 .remove-btn:hover {
-    background: rgba(255, 90, 90, 0.18);
-    border-color: rgba(255, 120, 120, 0.6);
-}
-
-.draft {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 13px;
-    margin-top: 10px;
-    padding: 14px;
-}
-
-.draft-title {
-    color: #ffa534;
-    font-size: 0.7rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    margin: 0 0 12px;
-    text-transform: uppercase;
+    background: #fdf1f1;
+    border-color: #a4262c;
 }
 
 .draft-actions {
     display: flex;
     gap: 10px;
-    margin-top: 14px;
+    margin-top: 16px;
 }
 
 @media (max-width: 900px) {
