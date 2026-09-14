@@ -229,6 +229,37 @@ private class BorrowerPersonAccountServiceTest {
     }
 
     @IsTest
+    static void conditionCountsDriveTheWarningAndTheRemovalRule() {
+        Transaction__c txn = newTransaction();
+        Lead theLead = newConvertedLead(txn.Id);
+        Borrower__c withConditions = new Borrower__c(
+            Lead__c = theLead.Id,
+            First_Name__c = 'Has',
+            Last_Name__c = 'Conditions'
+        );
+        Borrower__c withoutConditions = new Borrower__c(
+            Lead__c = theLead.Id,
+            First_Name__c = 'No',
+            Last_Name__c = 'Conditions'
+        );
+        insert new List<Borrower__c>{ withConditions, withoutConditions };
+        insert new List<Lead_Document_Request__c>{
+            new Lead_Document_Request__c(Lead__c = theLead.Id, Name = 'W-2', Borrower__c = withConditions.Id),
+            new Lead_Document_Request__c(Lead__c = theLead.Id, Name = 'Bank', Borrower__c = withConditions.Id),
+            new Lead_Document_Request__c(Lead__c = theLead.Id, Name = 'Shared contract')
+        };
+
+        Test.startTest();
+        Map<Id, Integer> counts = BorrowerPersonAccountService.getConditionCounts(theLead.Id);
+        Test.stopTest();
+
+        Assert.areEqual(2, counts.get(withConditions.Id), 'Both assigned conditions are counted');
+        Assert.isNull(counts.get(withoutConditions.Id), 'A borrower with nothing assigned is absent');
+        Assert.areEqual(1, counts.size(), 'The shared condition belongs to nobody and is not counted');
+        Assert.isTrue(BorrowerPersonAccountService.getConditionCounts(null).isEmpty());
+    }
+
+    @IsTest
     static void findOrCreateResolvesByIdForTheEmailPath() {
         Transaction__c txn = newTransaction();
         Lead theLead = newConvertedLead(txn.Id);

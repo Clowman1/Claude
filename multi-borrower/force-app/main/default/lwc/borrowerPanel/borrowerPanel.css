@@ -103,6 +103,16 @@
     text-transform: uppercase;
 }
 
+.row-warning {
+    background: rgba(255, 176, 74, 0.18);
+    border: 1px solid rgba(255, 176, 74, 0.5);
+    border-radius: 999px;
+    color: #ffd79a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 4px 10px;
+}
+
 .row-chevron {
     --slds-c-icon-color-foreground-default: #cdd9ec;
     margin-left: auto;

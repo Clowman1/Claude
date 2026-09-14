@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Source_Change_Restricted</fullName>
+    <active>true</active>
+    <description>Locks Lead Source once set. Only the Owner, the Loan Partner, or a holder of the Lead Source Change permission may change it, automation included. ISCHANGED is false on insert, so creation and filling a blank later still work.</description>
+    <errorConditionFormula>AND(
+    ISCHANGED(LeadSource),
+    NOT(ISBLANK(TEXT(PRIORVALUE(LeadSource)))),
+    $User.Id &lt;&gt; OwnerId,
+    $User.Id &lt;&gt; Loan_Partner__c,
+    NOT($Permission.Lead_Source_Change)
+)</errorConditionFormula>
+    <errorDisplayField>LeadSource</errorDisplayField>
+    <errorMessage>Lead Source is locked once it has been set. Only the Lead Owner, the assigned Loan Partner, or an Admin can change it. Please contact an Admin if this Lead Source is wrong.</errorMessage>
+</ValidationRule>

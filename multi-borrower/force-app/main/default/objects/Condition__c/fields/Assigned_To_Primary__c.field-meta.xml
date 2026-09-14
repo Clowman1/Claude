@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assigned_To_Primary__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Assigns this condition to the primary borrower alone, carried forward from the Lead at conversion. Blank Borrower + this unchecked = shared with the whole file; blank Borrower + this checked = primary only; Borrower set = that borrower only.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checked means only the primary borrower sees this item.</inlineHelpText>
+    <label>Assigned To Primary</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

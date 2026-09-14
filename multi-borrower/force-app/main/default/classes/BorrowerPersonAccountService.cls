@@ -100,6 +100,37 @@ public with sharing class BorrowerPersonAccountService {
         return rows;
     }
 
+    /** How many live conditions each borrower owns, so the panel can warn and removal can decide. */
+    @AuraEnabled(cacheable=true)
+    public static Map<Id, Integer> getConditionCounts(Id recordId) {
+        Map<Id, Integer> counts = new Map<Id, Integer>();
+        if (recordId == null) {
+            return counts;
+        }
+        String parentType = String.valueOf(recordId.getSObjectType());
+
+        if (parentType == 'Lead') {
+            for (AggregateResult row : [
+                SELECT Borrower__c borrowerId, COUNT(Id) total
+                FROM Lead_Document_Request__c
+                WHERE Lead__c = :recordId AND Borrower__c != NULL
+                GROUP BY Borrower__c
+            ]) {
+                counts.put((Id) row.get('borrowerId'), (Integer) row.get('total'));
+            }
+        } else if (parentType == 'Transaction__c') {
+            for (AggregateResult row : [
+                SELECT Borrower__c borrowerId, COUNT(Id) total
+                FROM Condition__c
+                WHERE Transaction__c = :recordId AND Borrower__c != NULL
+                GROUP BY Borrower__c
+            ]) {
+                counts.put((Id) row.get('borrowerId'), (Integer) row.get('total'));
+            }
+        }
+        return counts;
+    }
+
     /**
      * Find-or-create the Person Account for each borrower. Returns borrower Id -> Account Id.
      * Used by the email path, where the Account must exist before the message is built.

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Portal_Hash_Parameter__c</fullName>
+    <description>This borrower's own document portal token, an AES-encrypted Borrower record Id. Minted when an email address is saved and cleared when one is removed, because the email is what makes someone a portal participant. Mirrors Lead.Portal_Hash_Parameter__c, which stays the primary borrower's token. TextArea rather than LongTextArea because the portal resolves the token by exact SOQL match and long text areas cannot be filtered. Possession of the link is the whole authorisation model: there is no expiry.</description>
+    <label>Portal Hash Parameter</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

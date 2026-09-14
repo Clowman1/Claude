@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Lead_Source_Change</name>
+    </customPermissions>
+    <description>Allows changing Lead Source on a Lead after it has been set, regardless of whether the user is the Owner or Loan Partner. Assigned to Admins only.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Lead Source Change</label>
+</PermissionSet>

@@ -26,6 +26,9 @@
                     >
                         <span class="row-name">{row.name}</span>
                         <span class="row-role">{row.role}</span>
+                        <template lwc:if={row.warning}>
+                            <span class="row-warning">{row.warning}</span>
+                        </template>
                         <lightning-icon icon-name={row.chevron} size="xx-small" class="row-chevron"></lightning-icon>
                     </button>
 

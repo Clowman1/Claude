@@ -2684,7 +2684,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>columnsToShow</name>
-                    <value>Name,Description__c,Status__c,CreatedDate,Requested_Date__c,ETA__c,Assigned_To__c</value>
+                    <value>Name,Description__c,Borrower__r.Name,Status__c,CreatedDate,Requested_Date__c,ETA__c,Assigned_To__c</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>conditionFiltersByStatus</name>
@@ -2731,7 +2731,7 @@
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>columnsToShow</name>
-                    <value>Name,Status__c,CreatedDate,Requested_Date__c,ETA__c,Assigned_To__c</value>
+                    <value>Name,Borrower__r.Name,Status__c,CreatedDate,Requested_Date__c,ETA__c,Assigned_To__c</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>conditionFiltersByStatus</name>

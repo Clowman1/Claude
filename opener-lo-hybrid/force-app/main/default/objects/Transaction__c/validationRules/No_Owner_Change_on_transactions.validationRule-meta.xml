@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Owner_Change_on_transactions</fullName>
+    <active>true</active>
+    <description>Blocks Loan Officer Profile users from changing Transaction ownership, unless they hold the Transaction Owner Reassignment custom permission (openers carrying an LO profile).</description>
+    <errorConditionFormula>ISCHANGED( OwnerId ) &amp;&amp;  $User.ProfileId  = &quot;00ef2000001wwBC&quot;  &amp;&amp;  $User.Id  &lt;&gt; &quot;005f2000009NwSs&quot;  &amp;&amp;  NOT($Permission.Transaction_Owner_Reassignment)</errorConditionFormula>
+    <errorMessage>You do not have permission to change record ownership for this record.</errorMessage>
+</ValidationRule>

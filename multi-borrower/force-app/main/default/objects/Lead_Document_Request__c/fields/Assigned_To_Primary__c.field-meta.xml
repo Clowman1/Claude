@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assigned_To_Primary__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Assigns this condition to the primary borrower alone. The primary is the Lead itself, never a Borrower__c row, so a lookup cannot point at them - and a blank lookup already means "the whole file". Blank lookup + this unchecked = shared with everyone; blank lookup + this checked = primary only; lookup set = that borrower only.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checked means only the primary borrower sees this item. Leave both this and Borrower blank for an item the whole file shares.</inlineHelpText>
+    <label>Assigned To Primary</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

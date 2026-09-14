@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Borrower__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Which borrower owes this condition, carried forward from the Lead at conversion. Blank means the condition belongs to the whole file. All 28,209 conditions that predate this field are blank and keep behaving exactly as before.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Leave blank if this item belongs to the whole file rather than one borrower.</inlineHelpText>
+    <label>Borrower</label>
+    <referenceTo>Borrower__c</referenceTo>
+    <relationshipLabel>Conditions</relationshipLabel>
+    <relationshipName>Conditions</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

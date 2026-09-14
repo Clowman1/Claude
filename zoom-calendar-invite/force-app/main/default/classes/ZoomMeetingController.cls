@@ -487,6 +487,7 @@ public with sharing class ZoomMeetingController {
             '<td style="vertical-align:top;padding-top:2px;">' +
                 '<div style="margin:0 0 4px;color:#16325c;font-size:16px;line-height:20px;font-weight:700;">' + sender.Name.escapeHtml4() + '</div>' +
                 titleLine + nmlsLine + phoneLine +
+                '<div style="margin:0;color:#40546b;font-size:12px;line-height:17px;">Company NMLS # 2266637</div>' +
                 '<div style="margin:5px 0 0;color:#40546b;font-size:12px;line-height:17px;">Reach Home Loans</div>' +
             '</td></tr></table>';
     }

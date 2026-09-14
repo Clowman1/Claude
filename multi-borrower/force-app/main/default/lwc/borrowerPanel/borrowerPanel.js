@@ -2,6 +2,7 @@ import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue, createRecord, updateRecord, deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getBorrowers from '@salesforce/apex/BorrowerPersonAccountService.getBorrowers';
+import getConditionCounts from '@salesforce/apex/BorrowerPersonAccountService.getConditionCounts';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import FORM_FACTOR from '@salesforce/client/formFactor';
 
@@ -50,6 +51,7 @@ export default class BorrowerPanel extends LightningElement {
 
     parentRecord;
     borrowerResult;
+    countsResult;
 
     connectedCallback() {
         this.isLead = this.objectApiName === LEAD;
@@ -82,6 +84,15 @@ export default class BorrowerPanel extends LightningElement {
         this.borrowerResult = result;
     }
 
+    @wire(getConditionCounts, { recordId: '$recordId' })
+    wiredCounts(result) {
+        this.countsResult = result;
+    }
+
+    get conditionCounts() {
+        return (this.countsResult && this.countsResult.data) || {};
+    }
+
     get primary() {
         if (!this.parentRecord) {
             return null;
@@ -110,21 +121,35 @@ export default class BorrowerPanel extends LightningElement {
 
     get coBorrowers() {
         const records = (this.borrowerResult && this.borrowerResult.data) || [];
-        return records.map((record) => ({
-            key: record.Id,
-            id: record.Id,
-            name: record.Name,
-            firstName: record.First_Name__c,
-            lastName: record.Last_Name__c,
-            email: record.Email__c,
-            phone: record.Phone__c,
-            role: 'Co-Borrower',
-            editable: this.isEditable,
-            removable: this.isEditable,
-            // Once a Person Account exists the row is soft-flagged rather than deleted.
-            hasAccount: !!record.Account__c,
-            isOpen: !!this.expanded[record.Id]
-        }));
+        const counts = this.conditionCounts;
+        return records.map((record) => {
+            const conditionCount = counts[record.Id] || 0;
+            return {
+                key: record.Id,
+                id: record.Id,
+                name: record.Name,
+                firstName: record.First_Name__c,
+                lastName: record.Last_Name__c,
+                email: record.Email__c,
+                phone: record.Phone__c,
+                role: 'Co-Borrower',
+                editable: this.isEditable,
+                removable: this.isEditable,
+                conditionCount,
+                // Conditions assigned to someone with no email can never be requested or seen,
+                // so the panel says so where the cause is - and where it gets fixed.
+                warning:
+                    !record.Email__c && conditionCount > 0
+                        ? `No email — ${conditionCount} assigned condition${
+                              conditionCount === 1 ? '' : 's'
+                          } cannot be requested`
+                        : null,
+                // A borrower carrying history is flagged, never deleted: hard-deleting would strip
+                // the assignment off their conditions and turn private documents into shared ones.
+                hasHistory: !!record.Account__c || conditionCount > 0,
+                isOpen: !!this.expanded[record.Id]
+            };
+        });
     }
 
     // Legacy __pc co-borrower, shown read-only only when this file has no Borrower__c rows at all.
@@ -265,13 +290,15 @@ export default class BorrowerPanel extends LightningElement {
         }
 
         try {
-            if (row.hasAccount) {
-                // Soft-flag, so emails and conditions already tied to this person are not orphaned.
+            if (row.hasHistory) {
+                // Soft-flag, so emails and conditions already tied to this person are not orphaned
+                // and their documents never fall back to being shared with everyone else.
                 await updateRecord({ fields: { Id: id, Removed__c: true } });
             } else {
                 await deleteRecord(id);
             }
             await refreshApex(this.borrowerResult);
+            await refreshApex(this.countsResult);
             this.toast('Borrower removed.', 'success');
         } catch (error) {
             this.toast(this.message(error), 'error');
