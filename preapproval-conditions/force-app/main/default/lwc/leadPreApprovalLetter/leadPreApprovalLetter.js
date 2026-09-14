@@ -3,6 +3,7 @@ import { CloseActionScreenEvent } from 'lightning/actions';
 import { FlowNavigationFinishEvent } from 'lightning/flowSupport';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
+import FORM_FACTOR from '@salesforce/client/formFactor';
 import getContext from '@salesforce/apex/LeadPreApprovalLetterController.getContext';
 import saveDetailsAndBuildLetter from '@salesforce/apex/LeadPreApprovalLetterController.saveDetailsAndBuildLetter';
 import finalizeLetter from '@salesforce/apex/LeadPreApprovalLetterController.finalizeLetter';
@@ -231,11 +232,16 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
 
             const downloaded = this.deliverPdf(result);
 
+            let message = "The letter is opening in a new tab.";
+            if (downloaded === "preview") {
+                message = "The letter is open - use the download icon to save it to your phone.";
+            } else if (downloaded) {
+                message = "The PDF has been downloaded.";
+            }
+
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Pre-approval letter finalized',
-                message: downloaded
-                    ? 'The PDF has been downloaded.'
-                    : 'The letter is opening in a new tab.',
+                message,
                 variant: 'success'
             }));
             this.close();
@@ -254,9 +260,21 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
      * than leaving the Loan Officer with a letter they cannot get hold of.
      */
     deliverPdf(result) {
-        // iOS ignores the download attribute and cannot save a blob, so an iPhone goes to the
-        // stored file instead: Safari sees attachment headers on a real URL and saves it
-        // through its own download manager.
+        // A phone or tablet - and the Salesforce mobile app in particular - cannot save a
+        // blob and will not follow a download URL out of its webview. Opening the stored
+        // file in the native preview puts a save action in front of the user instead, which
+        // is as close to a download as that container allows.
+        if (FORM_FACTOR !== 'Large' && result?.contentDocumentId) {
+            this[NavigationMixin.Navigate]({
+                type: 'standard__namedPage',
+                attributes: { pageName: 'filePreview' },
+                state: { selectedRecordId: result.contentDocumentId }
+            });
+            return 'preview';
+        }
+
+        // A desktop browser that is nonetheless an Apple touch device still ignores the
+        // download attribute, so send it to the attachment URL.
         if (this.isAppleTouchDevice && result?.downloadUrl) {
             window.location.assign(result.downloadUrl);
             return true;

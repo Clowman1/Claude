@@ -140,6 +140,9 @@ public with sharing class LeadPreApprovalLetterController {
         // A real URL serving the same file as an attachment. iOS ignores a blob download, so
         // an iPhone is sent here instead and Safari saves it through its download manager.
         @AuraEnabled public String downloadUrl;
+        // The stored file. The Salesforce mobile app is a webview that will not follow a
+        // download URL, but it does open its own file preview, which carries a save action.
+        @AuraEnabled public Id contentDocumentId;
     }
 
     /**
@@ -172,7 +175,9 @@ public with sharing class LeadPreApprovalLetterController {
             result.pdfPath = '/apex/Lead_Pre_Approval_Letter?id=' + leadId;
             result.fileName = buildLetterFileName(leadId);
             result.pdfBase64 = renderLetterPdf(leadId);
-            result.downloadUrl = storeLetterFile(leadId, result.fileName, result.pdfBase64);
+            StoredLetter stored = storeLetterFile(leadId, result.fileName, result.pdfBase64);
+            result.downloadUrl = stored.downloadUrl;
+            result.contentDocumentId = stored.contentDocumentId;
             return result;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
@@ -216,9 +221,15 @@ public with sharing class LeadPreApprovalLetterController {
      * Returns null on any failure: the letter is already saved, and losing the download is
      * better than failing the finalize over it.
      */
-    private static String storeLetterFile(Id leadId, String fileName, String pdfBase64) {
+    private class StoredLetter {
+        String downloadUrl;
+        Id contentDocumentId;
+    }
+
+    private static StoredLetter storeLetterFile(Id leadId, String fileName, String pdfBase64) {
+        StoredLetter stored = new StoredLetter();
         if (String.isBlank(pdfBase64)) {
-            return null;
+            return stored;
         }
         try {
             ContentVersion version = new ContentVersion(
@@ -229,12 +240,12 @@ public with sharing class LeadPreApprovalLetterController {
             );
             Database.insert(version, true, AccessLevel.SYSTEM_MODE);
 
-            Id contentDocumentId = [
+            stored.contentDocumentId = [
                 SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id WITH SYSTEM_MODE
             ].ContentDocumentId;
             Database.insert(
                 new ContentDocumentLink(
-                    ContentDocumentId = contentDocumentId,
+                    ContentDocumentId = stored.contentDocumentId,
                     LinkedEntityId = leadId,
                     ShareType = 'V',
                     Visibility = 'AllUsers'
@@ -243,14 +254,15 @@ public with sharing class LeadPreApprovalLetterController {
                 AccessLevel.SYSTEM_MODE
             );
 
-            return '/sfc/servlet.shepherd/version/download/' + version.Id;
+            stored.downloadUrl = '/sfc/servlet.shepherd/version/download/' + version.Id;
+            return stored;
         } catch (Exception storeException) {
             System.debug(
                 LoggingLevel.ERROR,
                 'Could not store the pre-approval letter file for ' + leadId + ': '
                     + storeException.getMessage()
             );
-            return null;
+            return stored;
         }
     }
 
