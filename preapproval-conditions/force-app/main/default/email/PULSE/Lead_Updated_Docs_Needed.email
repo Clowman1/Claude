@@ -1,4 +1,4 @@
-<messaging:emailTemplate subject="Items Needed - {!recipient.LastName} Mortgage Pre-Approval" recipientType="Lead">
+<messaging:emailTemplate subject="Updated Items Needed for your Pre-Approval" recipientType="Lead">
 <messaging:htmlEmailBody >
 <html>
 <head>
@@ -24,12 +24,14 @@
 <span class="container"></span>
 <p>Hi {{BORROWER_FIRST_NAME}},<br />
 <br />
-It was nice speaking with you earlier! As discussed, below are the items needed to bring you one step closer to purchasing a home! Please gather and upload them to the secure portal I've provided a link to below, and once received, I'll review them and reconnect with you to discuss the next steps to complete your pre-approval. Thank you in advance!</p>
+Good news first: you are already pre-approved, and nothing about that has changed. A few of the documents on file have simply aged out or need refreshing so your approval stays current and ready when you find the right home.</p>
+<p>Here is what I need from you:</p>
 {{REQUESTED_DOCUMENT_LIST}}
 <br />
-<p>Here is a link to your secure portal</p>
+<p>You can upload everything in one place:</p>
 <div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></div>
 <br />
+<p>Once these are in, I will refresh your approval and send you an updated letter. If anything on the list no longer applies, or your situation has changed since we last spoke, just reply and let me know.</p>
 <span class="end-container"></span>
 <p>{{SENDER_SIGNATURE}}</p>
 </body>

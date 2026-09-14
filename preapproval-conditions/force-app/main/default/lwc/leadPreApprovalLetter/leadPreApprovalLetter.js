@@ -7,6 +7,7 @@ import FORM_FACTOR from '@salesforce/client/formFactor';
 import getContext from '@salesforce/apex/LeadPreApprovalLetterController.getContext';
 import saveDetailsAndBuildLetter from '@salesforce/apex/LeadPreApprovalLetterController.saveDetailsAndBuildLetter';
 import finalizeLetter from '@salesforce/apex/LeadPreApprovalLetterController.finalizeLetter';
+import deliverFinalizedLetter from '@salesforce/apex/LeadPreApprovalLetterController.deliverFinalizedLetter';
 
 const STEP_DETAILS = 'details';
 const STEP_PREVIEW = 'preview';
@@ -225,9 +226,17 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
         this.isLoading = true;
         this.errorMessage = '';
         try {
-            const result = await finalizeLetter({
+            await finalizeLetter({
                 leadId: this.recordId,
                 letterHtml: this.letterHtml
+            });
+
+            // Second call on purpose: the PDF is rendered by a page that cannot see the save until
+            // it has committed, which only happens once the first call returns. The email is asked
+            // for only where it is the sole way to get the file - a phone.
+            const result = await deliverFinalizedLetter({
+                leadId: this.recordId,
+                emailCopy: this.isMobileClient
             });
 
             const downloaded = this.deliverPdf(result);
@@ -269,7 +278,7 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
         // blob and will not follow a download URL out of its webview. Opening the stored
         // file in the native preview puts a save action in front of the user instead, which
         // is as close to a download as that container allows.
-        if (FORM_FACTOR !== 'Large' && result?.contentDocumentId) {
+        if (this.isMobileClient && result?.contentDocumentId) {
             this[NavigationMixin.Navigate]({
                 type: 'standard__namedPage',
                 attributes: { pageName: 'filePreview' },
@@ -326,6 +335,12 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
 
     // iPadOS reports itself as a Mac, so touch points are what separate a tablet from a
     // desktop that happens to have a touchscreen attached.
+    // Salesforce form factor rather than the user agent: it is right in the mobile app, in
+    // mobile Safari, and on a desktop pretending to be neither.
+    get isMobileClient() {
+        return FORM_FACTOR !== 'Large';
+    }
+
     get isAppleTouchDevice() {
         const ua = navigator.userAgent || "";
         const isIphoneOrIpod = /iPad|iPhone|iPod/.test(ua);

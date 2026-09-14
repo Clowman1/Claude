@@ -329,6 +329,37 @@ private class LeadPreApprovalLetterTest {
         );
     }
 
+    // Delivery is a second call because the PDF page cannot see the finalize save until it has
+    // committed. Under test the render returns nothing, so what is checked is that the call
+    // survives that and still hands back a usable name and fallback link.
+    @IsTest
+    static void deliveryRunsAfterFinalizeAndSkipsTheEmailOnDesktop() {
+        Lead leadRecord = createLead();
+        LeadPreApprovalLetterController.finalizeLetter(leadRecord.Id, '<p>Final letter</p>');
+
+        Test.startTest();
+        LeadPreApprovalLetterController.FinalizeResult delivered =
+            LeadPreApprovalLetterController.deliverFinalizedLetter(leadRecord.Id, false);
+        Test.stopTest();
+
+        System.assertEquals('Pre-Approval Letter - Javine_Roman.pdf', delivered.fileName);
+        System.assertEquals(
+            null,
+            delivered.emailedTo,
+            'A desktop saves the file itself, so no copy is emailed.'
+        );
+        System.assertEquals(
+            true,
+            delivered.pdfPath.contains('Lead_Pre_Approval_Letter'),
+            'The page link remains as the last resort.'
+        );
+        System.assertEquals(
+            '<p>Final letter</p>',
+            [SELECT Pre_Approval_Letter_HTML__c FROM Lead WHERE Id = :leadRecord.Id].Pre_Approval_Letter_HTML__c,
+            'And the letter itself was saved by the first call.'
+        );
+    }
+
     private static Lead createLead() {
         Lead leadRecord = createLead('Pre-Approval');
         return leadRecord;

@@ -102,7 +102,21 @@ public with sharing class LeadDocumentRequestController {
         return LeadDocumentRequestService.sendEditedRequestEmail(leadId, subject, htmlBody);
     }
 
-    // Separate name rather than an overload: @AuraEnabled methods cannot be overloaded.
+    /**
+     * One email per borrower, each listing only their own items plus anything shared with the file.
+     * Returns a per-recipient summary so the sender can see who actually received what.
+     */
+    /** Read-only preview of the shared wording, without any one borrower's item list. */
+    @AuraEnabled
+    public static String getSharedTemplatePreview(Id leadId, String templateDeveloperName) {
+        return LeadDocumentRequestService.getSharedTemplatePreview(leadId, templateDeveloperName);
+    }
+
+    @AuraEnabled
+    public static List<String> sendPerBorrowerRequestEmails(Id leadId, String subject, String templateDeveloperName) {
+        return LeadDocumentRequestService.sendPerBorrowerRequestEmails(leadId, subject, templateDeveloperName);
+    }
+
     @AuraEnabled
     public static String sendComposedRequestEmail(
         Id leadId,

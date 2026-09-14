@@ -1,4 +1,4 @@
-<messaging:emailTemplate subject="Items Needed - {!recipient.LastName} Mortgage Pre-Approval" recipientType="Lead">
+<messaging:emailTemplate subject="Items Needed for your Refinance" recipientType="Lead">
 <messaging:htmlEmailBody >
 <html>
 <head>
@@ -24,12 +24,13 @@
 <span class="container"></span>
 <p>Hi {{BORROWER_FIRST_NAME}},<br />
 <br />
-It was nice speaking with you earlier! As discussed, below are the items needed to bring you one step closer to purchasing a home! Please gather and upload them to the secure portal I've provided a link to below, and once received, I'll review them and reconnect with you to discuss the next steps to complete your pre-approval. Thank you in advance!</p>
+It was good speaking with you! Below are the items I need to get your refinance underway. Once you have uploaded them to the secure portal, I will review everything and come back to you with your options and next steps.</p>
 {{REQUESTED_DOCUMENT_LIST}}
 <br />
-<p>Here is a link to your secure portal</p>
+<p>Here is a link to your secure portal:</p>
 <div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Upload Files</a></div>
 <br />
+<p>Send over whatever you have to hand and we can work through the rest together. If any item does not apply to your situation, just reply and let me know so I can take it off the list.</p>
 <span class="end-container"></span>
 <p>{{SENDER_SIGNATURE}}</p>
 </body>

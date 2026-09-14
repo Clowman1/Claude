@@ -15,6 +15,10 @@ import markRequestDocumentNotNeeded from '@salesforce/apex/LeadDocumentRequestCo
 import getEmailTemplateOptions from '@salesforce/apex/LeadDocumentRequestController.getEmailTemplateOptions';
 import getEmailTemplatePreview from '@salesforce/apex/LeadDocumentRequestController.getEmailTemplatePreview';
 import sendComposedRequestEmail from '@salesforce/apex/LeadDocumentRequestController.sendComposedRequestEmail';
+import sendPerBorrowerRequestEmails from '@salesforce/apex/LeadDocumentRequestController.sendPerBorrowerRequestEmails';
+import getSharedTemplatePreview from '@salesforce/apex/LeadDocumentRequestController.getSharedTemplatePreview';
+import getBorrowerOptions from '@salesforce/apex/LeadDocumentRequestService.getBorrowerOptions';
+import getBorrowerPortalLinks from '@salesforce/apex/LeadDocumentRequestService.getBorrowerPortalLinks';
 import IS_CONVERTED_FIELD from '@salesforce/schema/Lead.IsConverted';
 import CONVERTED_TRANSACTION_FIELD from '@salesforce/schema/Lead.Converted_Transaction_ID__c';
 
@@ -78,6 +82,27 @@ export default class LeadDocumentRequestManager extends LightningElement {
     }
 
     @track rows = [];
+    @track borrowerOptions = [];
+    @track portalLinks = [];
+    borrowerLabelsByValue = {};
+    copiedLinkKey = null;
+    sharedTemplatePreview = '';
+
+    // The shared wording, refreshed whenever the template changes so the preview never lags the
+    // dropdown. Item lists are deliberately absent: they differ per borrower.
+    async loadSharedTemplatePreview() {
+        if (!this.hasAssignableCoBorrowers || !this.recordId) {
+            return;
+        }
+        try {
+            this.sharedTemplatePreview = await getSharedTemplatePreview({
+                leadId: this.recordId,
+                templateDeveloperName: this.selectedEmailTemplate
+            });
+        } catch (error) {
+            this.sharedTemplatePreview = '';
+        }
+    }
     @track draftRows = [];
     leadName;
     borrowerLastName;
@@ -221,6 +246,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
             this.isConverted = data.isConverted;
             this.convertedTransactionId = data.convertedTransactionId;
             this.rows = this.decorateRequests(data.requests);
+            this.loadPortalLinks();
             if (this.isConverted || this.convertedTransactionId) {
                 this.applyConvertedState(this.convertedTransactionId);
             }
@@ -1138,6 +1164,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
                 throw new Error('No Lead document email templates are configured.');
             }
             await this.loadSelectedEmailTemplate();
+            await this.loadSharedTemplatePreview();
             this.showEmailModal = true;
         } catch (error) {
             this.showError(error);
@@ -1159,6 +1186,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
         this.isLoading = true;
         try {
             await this.loadSelectedEmailTemplate();
+            await this.loadSharedTemplatePreview();
         } catch (error) {
             this.showError(error);
         } finally {
@@ -1224,13 +1252,28 @@ export default class LeadDocumentRequestManager extends LightningElement {
             this.showError(new Error('Email body is required before sending.'));
             return;
         }
-        if (!this.emailToAddresses || !this.emailToAddresses.trim()) {
+        // The per-borrower path resolves its own recipients, so there is no To field to validate.
+        if (!this.hasAssignableCoBorrowers && (!this.emailToAddresses || !this.emailToAddresses.trim())) {
             this.showError(new Error('At least one To recipient is required before sending.'));
             return;
         }
 
         this.isLoading = true;
         try {
+            // With assignable co-borrowers the single composed body would send every borrower's
+            // items to the primary, so each person gets their own email listing only theirs.
+            if (this.hasAssignableCoBorrowers) {
+                const outcomes = await sendPerBorrowerRequestEmails({
+                    leadId: this.recordId,
+                    subject: this.emailSubjectLine,
+                    templateDeveloperName: this.selectedEmailTemplate
+                });
+                this.showToast((outcomes || []).join(' · ') || 'Nothing to send.');
+                this.closeEmailModal();
+                await this.loadData();
+                return;
+            }
+
             const warning = await sendComposedRequestEmail({
                 leadId: this.recordId,
                 subject: this.emailSubjectLine,
@@ -1439,7 +1482,8 @@ export default class LeadDocumentRequestManager extends LightningElement {
             type: row.type,
             includeInEmail: row.includeInEmail,
             canBorrowerSee: row.canBorrowerSee,
-            referenceId: row.referenceId
+            referenceId: row.referenceId,
+            assignment: row.assignment
         }));
     }
 
@@ -1478,6 +1522,142 @@ export default class LeadDocumentRequestManager extends LightningElement {
         }));
     }
 
+    // Options come from Apex so the primary is included: the primary is the Lead, not a Borrower__c
+    // row, and borrowers without an email are marked unassignable rather than dropped.
+    @wire(getBorrowerOptions, { leadId: '$recordId' })
+    wiredBorrowerOptions({ data }) {
+        if (data) {
+            this.borrowerOptions = data
+                .filter(option => option.assignable)
+                .map(option => ({
+                    label: option.isPrimary ? `${option.label} (primary)` : option.label,
+                    value: option.value,
+                    email: option.email
+                }));
+            this.borrowerLabelsByValue = {};
+            data.forEach(option => {
+                this.borrowerLabelsByValue[option.value] = option.isPrimary
+                    ? `${option.label} (primary)`
+                    : option.label;
+            });
+            this.rows = this.decorateRequests(this.rows);
+        }
+    }
+
+    get hasAssignableCoBorrowers() {
+        return this.borrowerOptions.length > 2;
+    }
+
+    // Each borrower who can have a portal gets their own link. Minting and revoking happen inside
+    // this Apex call, so opening the tab is what keeps the tokens in step with the email addresses.
+    async loadPortalLinks() {
+        if (!this.recordId) {
+            return;
+        }
+        try {
+            const links = await getBorrowerPortalLinks({ leadId: this.recordId });
+            this.portalLinks = (links || []).map(entry => ({
+                key: entry.value,
+                label: entry.isPrimary ? `${entry.label} (primary)` : entry.label,
+                link: entry.link,
+                copyLabel: this.copiedLinkKey === entry.value ? 'Copied' : 'Copy',
+                copyIcon:
+                    this.copiedLinkKey === entry.value ? 'utility:check' : 'utility:copy_to_clipboard',
+                copyTitle: `Copy ${entry.label}'s portal link as a hyperlink`
+            }));
+        } catch (error) {
+            // A missing portal link should never stop the conditions table rendering.
+            this.portalLinks = [];
+        }
+    }
+
+    get hasPortalLinks() {
+        return this.portalLinks.length > 0;
+    }
+
+    /**
+     * Who will actually receive an email and how many items each will be asked for. Counted from
+     * the same rule the server uses: your own conditions, plus anything shared with the file.
+     */
+    get emailRecipientSummary() {
+        const emailable = this.rows.filter(row => row.includeInEmail);
+        return this.borrowerOptions
+            .filter(option => option.value !== 'ALL')
+            .map(option => {
+                const mine = emailable.filter(row =>
+                    row.assignment === option.value || row.assignment === 'ALL'
+                ).length;
+                return {
+                    key: option.value,
+                    name: option.label,
+                    email: option.email,
+                    countLabel: mine === 0 ? 'nothing outstanding' : `${mine} item${mine === 1 ? '' : 's'}`
+                };
+            });
+    }
+
+    async handleCopyBorrowerLink(event) {
+        const key = event.currentTarget.dataset.key;
+        const entry = this.portalLinks.find(candidate => candidate.key === key);
+        if (!entry || !entry.link) {
+            return;
+        }
+
+        const label = `${entry.label} Document Portal`;
+        const html = `<a href="${entry.link}">${label}</a>`;
+        try {
+            if (navigator.clipboard && window.ClipboardItem) {
+                await navigator.clipboard.write([
+                    new ClipboardItem({
+                        'text/html': new Blob([html], { type: 'text/html' }),
+                        'text/plain': new Blob([entry.link], { type: 'text/plain' })
+                    })
+                ]);
+            } else {
+                this.copyHtmlFallback(html);
+            }
+            this.copiedLinkKey = key;
+            this.showToast(`Copied as "${label}".`);
+            await this.loadPortalLinks();
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                this.copiedLinkKey = null;
+                this.loadPortalLinks();
+            }, 2500);
+        } catch (error) {
+            try {
+                this.copyHtmlFallback(html);
+                this.showToast(`Copied as "${label}".`);
+            } catch (fallbackError) {
+                this.showError(fallbackError);
+            }
+        }
+    }
+
+    get headerRowClass() {
+        return this.hasAssignableCoBorrowers
+            ? 'request-table-row request-table-header has-borrower-column'
+            : 'request-table-row request-table-header';
+    }
+
+    get bodyRowClass() {
+        return this.hasAssignableCoBorrowers
+            ? 'request-table-row request-table-body-row has-borrower-column'
+            : 'request-table-row request-table-body-row';
+    }
+
+    async handleAssignmentChange(event) {
+        const clientKey = event.currentTarget.dataset.key;
+        const assignment = event.detail.value;
+        const row = this.rows.find(candidate => candidate.clientKey === clientKey);
+        if (!row || row.assignment === assignment) {
+            return;
+        }
+        const updatedRow = this.decorateRequest({ ...row, assignment });
+        this.rows = this.rows.map(candidate => (candidate.clientKey === clientKey ? updatedRow : candidate));
+        await this.persistRequestRows([updatedRow]);
+    }
+
     decorateRequest(request) {
         const includeInEmail = request.includeInEmail === true;
         const canBorrowerSee = request.canBorrowerSee === true;
@@ -1486,10 +1666,16 @@ export default class LeadDocumentRequestManager extends LightningElement {
         const isDescriptionEditing = isInlineEditing && this.inlineEditField === 'Description__c';
         const isStatusEditing = isInlineEditing && this.inlineEditField === 'Status__c';
         const editingClass = ' request-table-cell--editing';
+        const assignment = request.assignment || 'ALL';
         return {
             ...request,
             includeInEmail,
             canBorrowerSee,
+            assignment,
+            assignmentLabel: this.borrowerLabelsByValue[assignment] || 'All borrowers',
+            // Flags a condition owed by someone with no email: nothing can be requested from them
+            // until an address is added, so the row warns rather than looking fine.
+            showBorrowerWarning: request.borrowerMissingEmail === true,
             emailActionClass: includeInEmail
                 ? 'round-action action-email action-active'
                 : 'round-action action-email',

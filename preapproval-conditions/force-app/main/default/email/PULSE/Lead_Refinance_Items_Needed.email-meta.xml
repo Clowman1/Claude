@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Initial document request for a refinance. Mirrors the purchase pre-approval template but avoids purchase and pre-approval language, talking about options and next steps instead.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Refinance Items Needed</name>
+    <style>none</style>
+    <subject>Items Needed for your Refinance</subject>
+    <type>visualforce</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

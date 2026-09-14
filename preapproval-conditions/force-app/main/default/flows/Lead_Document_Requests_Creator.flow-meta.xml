@@ -12,6 +12,12 @@
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
+            <name>assignment</name>
+            <value>
+                <elementReference>assignment</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>leadId</name>
             <value>
                 <elementReference>recordId</elementReference>
@@ -43,6 +49,12 @@
             <targetReference>Another_Custom_Request_Screen</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>assignment</name>
+            <value>
+                <elementReference>assignment</elementReference>
+            </value>
+        </inputParameters>
         <inputParameters>
             <name>canBorrowerSee</name>
             <value>
@@ -97,6 +109,12 @@
             <name>leadId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>assignment</name>
+            <value>
+                <elementReference>assignment</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -898,7 +916,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Lead_Request_Choice_Value</targetReference>
+            <targetReference>Borrower_Assignment</targetReference>
         </connector>
         <fields>
             <name>LeadChoiceCards</name>
@@ -906,6 +924,40 @@
             <fieldType>ComponentInstance</fieldType>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Which borrower these conditions are for. The component skips itself when the lead has no co-borrower with an email, so single-borrower leads never see it.</description>
+        <name>Borrower_Assignment</name>
+        <label>Assign To Borrower</label>
+        <locationX>704</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <!-- Matches Lead_Request_Choice exactly. With allowFinish and allowPause false the runtime
+             reports BACK as the only available action and rejects FlowNavigationNextEvent, even
+             though this screen has a valid connector onward. -->
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Lead_Request_Choice_Value</targetReference>
+        </connector>
+        <fields>
+            <name>BorrowerPicker</name>
+            <extensionName>c:leadConditionBorrowerPicker</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>assignment</assignToReference>
+                <name>assignment</name>
+            </outputParameters>
         </fields>
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
@@ -941,6 +993,12 @@
             <name>PresetConditionSelectorComponent</name>
             <extensionName>c:leadPresetConditionSelector</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>assignment</name>
+                <value>
+                    <elementReference>assignment</elementReference>
+                </value>
+            </inputParameters>
             <inputParameters>
                 <name>recordId</name>
                 <value>
@@ -1065,5 +1123,16 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Which borrower the conditions being created belong to. ALL means the whole file, PRIMARY the primary borrower alone, otherwise a Borrower record Id. Defaults to ALL so an untouched run behaves exactly as it did before per-borrower assignment existed.</description>
+        <name>assignment</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>ALL</stringValue>
+        </value>
     </variables>
 </Flow>

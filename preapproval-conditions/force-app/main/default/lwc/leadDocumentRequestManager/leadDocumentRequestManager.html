@@ -50,7 +50,28 @@
                         <span class="toolbar-label">Primary Email</span>
                         <span class="toolbar-value">{borrowerEmail}</span>
                     </div>
-                    <template lwc:if={portalLink}>
+                    <template lwc:if={hasPortalLinks}>
+                        <template for:each={portalLinks} for:item="portal">
+                            <div key={portal.key} class="portal-pill">
+                                <a class="portal-anchor" href={portal.link} target="_blank">{portal.label}</a>
+                                <button
+                                    class="portal-copy"
+                                    type="button"
+                                    title={portal.copyTitle}
+                                    data-key={portal.key}
+                                    onclick={handleCopyBorrowerLink}
+                                >
+                                    <lightning-icon
+                                        icon-name={portal.copyIcon}
+                                        size="xx-small"
+                                        alternative-text={portal.copyTitle}
+                                    ></lightning-icon>
+                                    <span>{portal.copyLabel}</span>
+                                </button>
+                            </div>
+                        </template>
+                    </template>
+                    <template lwc:elseif={portalLink}>
                         <a class="portal-anchor" href={portalLink} target="_blank">Lead Portal Link</a>
                         <button class="portal-copy" type="button" title={copyLinkTitle} onclick={handleCopyPortalLink}>
                             <lightning-icon icon-name={copyLinkIcon} size="xx-small" alternative-text={copyLinkTitle}></lightning-icon>
@@ -96,7 +117,7 @@
 
                     <div class={table.wrapperClass}>
                         <div class="request-table-content">
-                            <div class="request-table-row request-table-header">
+                            <div class={headerRowClass}>
                                 <div class="request-table-cell">
                                     <lightning-input
                                         type="checkbox"
@@ -109,6 +130,9 @@
                                 </div>
                                 <div class="request-table-cell">Condition</div>
                                 <div class="request-table-cell">Description</div>
+                                <template lwc:if={hasAssignableCoBorrowers}>
+                                    <div class="request-table-cell">Borrower</div>
+                                </template>
                                 <div class="request-table-cell">Status</div>
                                 <div class="request-table-cell">Created Date</div>
                                 <div class="request-table-cell">Requested Date</div>
@@ -120,7 +144,7 @@
                             <template for:each={table.rows} for:item="row">
                                 <section
                                     key={row.clientKey}
-                                    class="request-table-row request-table-body-row"
+                                    class={bodyRowClass}
                                     data-row-key={row.clientKey}>
                                     <div class="request-table-cell">
                                         <lightning-input
@@ -185,6 +209,27 @@
                                             </span>
                                         </template>
                                     </div>
+                                    <template lwc:if={hasAssignableCoBorrowers}>
+                                        <div class="request-table-cell borrower-cell">
+                                            <lightning-combobox
+                                                variant="label-hidden"
+                                                label="Borrower"
+                                                value={row.assignment}
+                                                options={borrowerOptions}
+                                                data-key={row.clientKey}
+                                                onchange={handleAssignmentChange}
+                                            ></lightning-combobox>
+                                            <template lwc:if={row.showBorrowerWarning}>
+                                                <lightning-icon
+                                                    icon-name="utility:warning"
+                                                    size="xx-small"
+                                                    variant="warning"
+                                                    alternative-text="This borrower has no email address"
+                                                    title="This borrower has no email address, so this item cannot be requested from them."
+                                                ></lightning-icon>
+                                            </template>
+                                        </div>
+                                    </template>
                                     <div class={row.statusCellClass}>
                                         <template lwc:if={row.isStatusEditing}>
                                             <lightning-record-edit-form
@@ -355,13 +400,34 @@
                             options={emailTemplateOptions}
                             onchange={handleEmailTemplateChange}>
                         </lightning-combobox>
-                        <lightning-input
-                            label="To"
-                            type="text"
-                            value={emailToAddresses}
-                            field-level-help="Separate multiple addresses with a comma."
-                            onchange={handleEmailToChange}>
-                        </lightning-input>
+                        <template lwc:if={hasAssignableCoBorrowers}>
+                            <div class="per-borrower-notice">
+                                <p class="per-borrower-title">Each borrower gets their own email</p>
+                                <p class="per-borrower-copy">
+                                    Every borrower below receives only the conditions assigned to them,
+                                    plus anything shared with the whole file, and their own portal link.
+                                </p>
+                                <ul class="per-borrower-list">
+                                    <template for:each={emailRecipientSummary} for:item="recipient">
+                                        <li key={recipient.key}>
+                                            <strong>{recipient.name}</strong>
+                                            <span class="per-borrower-email">{recipient.email}</span>
+                                            <span class="per-borrower-count">{recipient.countLabel}</span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+
+                        <template lwc:else>
+                            <lightning-input
+                                label="To"
+                                type="text"
+                                value={emailToAddresses}
+                                field-level-help="Separate multiple addresses with a comma."
+                                onchange={handleEmailToChange}>
+                            </lightning-input>
+                        </template>
                         <lightning-input
                             label="CC"
                             type="text"
@@ -375,12 +441,26 @@
                             value={emailSubjectLine}
                             onchange={handleEmailSubjectChange}>
                         </lightning-input>
-                        <lightning-input-rich-text
-                            class="email-body-editor"
-                            value={emailBody}
-                            formats={emailEditorFormats}
-                            onchange={handleEmailBodyChange}>
-                        </lightning-input-rich-text>
+                        <template lwc:if={hasAssignableCoBorrowers}>
+                            <p class="per-borrower-copy shared-body-caption">
+                                This is the wording every borrower receives, greeted by their own name.
+                                Each person's own item list and portal link are added underneath when
+                                the email is sent, so they are not shown here.
+                            </p>
+                            <div class="shared-body-preview">
+                                <lightning-formatted-rich-text
+                                    value={sharedTemplatePreview}
+                                ></lightning-formatted-rich-text>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <lightning-input-rich-text
+                                class="email-body-editor"
+                                value={emailBody}
+                                formats={emailEditorFormats}
+                                onchange={handleEmailBodyChange}>
+                            </lightning-input-rich-text>
+                        </template>
                     </div>
                     <footer class="slds-modal__footer">
                         <lightning-button label="Cancel" onclick={closeEmailModal}></lightning-button>

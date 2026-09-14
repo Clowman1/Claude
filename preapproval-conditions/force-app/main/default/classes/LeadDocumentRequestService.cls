@@ -14,10 +14,16 @@ public with sharing class LeadDocumentRequestService {
     private static final String REJECTION_TEMPLATE_DEVELOPER_NAME = 'Lead_Document_Rejection';
     private static final String EMAIL_TEMPLATE_DEVELOPER_NAME = 'Lead_Initial_Documents_Needed';
     private static final String FOLLOW_UP_TEMPLATE_DEVELOPER_NAME = 'Lead_Documents_Follow_Up';
+    private static final String UPDATED_DOCS_TEMPLATE_DEVELOPER_NAME = 'Lead_Updated_Docs_Needed';
+    private static final String REFINANCE_TEMPLATE_DEVELOPER_NAME = 'Lead_Refinance_Items_Needed';
     private static final String REQUESTED_DOCUMENT_LIST_PLACEHOLDER = '{{REQUESTED_DOCUMENT_LIST}}';
     private static final String OWNER_SIGNATURE_PLACEHOLDER = '{{OWNER_SIGNATURE}}';
     private static final String SENDER_SIGNATURE_PLACEHOLDER = '{{SENDER_SIGNATURE}}';
     private static final String LEAD_PORTAL_LINK_PLACEHOLDER = '{{LEAD_PORTAL_LINK}}';
+    // Use this in a template greeting instead of {!recipient.FirstName}. These are Visualforce
+    // templates declared recipientType="Lead", so {!recipient.*} only binds when the whoId is a
+    // Lead - it renders empty for a co-borrower, whose merge target is a Person Contact.
+    private static final String BORROWER_FIRST_NAME_PLACEHOLDER = '{{BORROWER_FIRST_NAME}}';
     @TestVisible private static String testLeadHomeUrlOverride;
     @TestVisible private static Map<Id, String> testLeadPortalHashesByLeadId = new Map<Id, String>();
 
@@ -61,6 +67,9 @@ public with sharing class LeadDocumentRequestService {
         @AuraEnabled public Boolean includeInEmail { get; set; }
         @AuraEnabled public Boolean canBorrowerSee { get; set; }
         @AuraEnabled public Id referenceId { get; set; }
+        // 'ALL' (or blank) = the whole file, 'PRIMARY' = the primary borrower alone, otherwise a
+        // Borrower__c Id. Blank on an update means "leave the existing assignment alone".
+        @AuraEnabled public String assignment { get; set; }
     }
 
     public class RequestItem {
@@ -80,6 +89,11 @@ public with sharing class LeadDocumentRequestService {
         @AuraEnabled public Id convertedConditionId;
         @AuraEnabled public Id referenceId;
         @AuraEnabled public Decimal fileCount;
+        @AuraEnabled public String assignment;
+        @AuraEnabled public String borrowerName;
+        // True when this condition is assigned to a borrower who has no email address, so the
+        // table can flag that it cannot actually be requested from anyone.
+        @AuraEnabled public Boolean borrowerMissingEmail;
 
         public RequestItem(Lead_Document_Request__c requestRecord, Decimal linkedFileCount) {
             id = requestRecord.Id;
@@ -98,6 +112,27 @@ public with sharing class LeadDocumentRequestService {
             convertedConditionId = requestRecord.Converted_Condition__c;
             referenceId = requestRecord.Lead_Document_Request_Reference__c;
             fileCount = linkedFileCount == null ? 0 : linkedFileCount;
+            // Several queries in this package select narrower field sets, so read the assignment
+            // only when it was actually queried rather than forcing every caller to widen its SOQL.
+            Map<String, Object> populated = requestRecord.getPopulatedFieldsAsMap();
+            if (!populated.containsKey('Borrower__c') && !populated.containsKey('Assigned_To_Primary__c')) {
+                assignment = null;
+                borrowerName = null;
+                borrowerMissingEmail = false;
+            } else if (requestRecord.Borrower__c != null) {
+                assignment = String.valueOf(requestRecord.Borrower__c);
+                borrowerName = requestRecord.Borrower__r == null ? null : requestRecord.Borrower__r.Name;
+                borrowerMissingEmail =
+                    requestRecord.Borrower__r != null && String.isBlank(requestRecord.Borrower__r.Email__c);
+            } else if (requestRecord.Assigned_To_Primary__c == true) {
+                assignment = ASSIGNMENT_PRIMARY;
+                borrowerName = null;
+                borrowerMissingEmail = false;
+            } else {
+                assignment = ASSIGNMENT_ALL;
+                borrowerName = null;
+                borrowerMissingEmail = false;
+            }
         }
     }
 
@@ -224,6 +259,11 @@ public with sharing class LeadDocumentRequestService {
                 Can_Borrower_See__c = input.canBorrowerSee == true,
                 Lead_Document_Request_Reference__c = input.referenceId
             );
+            // On an update a blank token means the caller is not touching assignment, so the
+            // existing Borrower__c is left as it is rather than being silently reset to shared.
+            if (input.id == null || String.isNotBlank(input.assignment)) {
+                applyAssignment(requestRecord, input.assignment);
+            }
             if (requestRecord.Id == null) {
                 recordsToInsert.add(requestRecord);
             } else {
@@ -250,11 +290,107 @@ public with sharing class LeadDocumentRequestService {
         return initializeInternalData(leadId).requests;
     }
 
+    /**
+     * One assignable party on the file. The primary is not a Borrower__c row - it is the Lead
+     * itself - so it is synthesised here with a null id, which is also the "whole file" value.
+     */
+    // The three assignment states, carried as one token so the flow, the invocable and the preset
+    // selector all pass a single value instead of an Id plus a flag.
+    public static final String ASSIGNMENT_ALL = 'ALL';
+    public static final String ASSIGNMENT_PRIMARY = 'PRIMARY';
+
+    public class BorrowerOption {
+        @AuraEnabled public String value;
+        @AuraEnabled public String label;
+        @AuraEnabled public String email;
+        @AuraEnabled public Boolean isPrimary;
+        // Without an email there is no portal and nothing can be requested, so the picker
+        // lists them as ineligible rather than silently dropping them.
+        @AuraEnabled public Boolean assignable;
+
+        public BorrowerOption(String value, String label, String email, Boolean isPrimary) {
+            this.value = value;
+            this.label = label;
+            this.email = email;
+            this.isPrimary = isPrimary;
+            this.assignable = String.isNotBlank(email);
+        }
+    }
+
+    /** Resolves an assignment token onto a record. ALL leaves both fields empty. */
+    private static void applyAssignment(Lead_Document_Request__c requestRecord, String assignment) {
+        Boolean isPrimary = ASSIGNMENT_PRIMARY.equalsIgnoreCase(assignment);
+        requestRecord.Assigned_To_Primary__c = isPrimary;
+        requestRecord.Borrower__c = (isPrimary || String.isBlank(assignment) || ASSIGNMENT_ALL.equalsIgnoreCase(assignment))
+            ? null
+            : (Id) assignment;
+    }
+
+    /**
+     * Every party who can own a condition on this Lead: the primary first, then additional
+     * borrowers in the order they were added. Callers decide what to do with the ineligible ones.
+     */
+    @AuraEnabled(cacheable=true)
+    public static List<BorrowerOption> getBorrowerOptions(Id leadId) {
+        List<BorrowerOption> options = new List<BorrowerOption>();
+        if (leadId == null) {
+            return options;
+        }
+
+        Lead leadRecord = getLeadOrThrow(leadId);
+        String primaryName = String.join(
+            new List<String>{
+                String.isBlank(leadRecord.FirstName) ? '' : leadRecord.FirstName,
+                String.isBlank(leadRecord.LastName) ? '' : leadRecord.LastName
+            },
+            ' '
+        ).trim();
+        options.add(new BorrowerOption(ASSIGNMENT_ALL, 'All borrowers', null, false));
+        options.get(0).assignable = true;
+        options.add(
+            new BorrowerOption(
+                ASSIGNMENT_PRIMARY,
+                String.isBlank(primaryName) ? 'Primary Borrower' : primaryName,
+                leadRecord.Email,
+                true
+            )
+        );
+
+        for (Borrower__c row : [
+            SELECT Id, Name, First_Name__c, Last_Name__c, Email__c
+            FROM Borrower__c
+            WHERE Lead__c = :leadId AND Removed__c = FALSE
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate
+        ]) {
+            String rowName = String.isNotBlank(row.Name)
+                ? row.Name
+                : String.join(
+                      new List<String>{
+                          String.isBlank(row.First_Name__c) ? '' : row.First_Name__c,
+                          String.isBlank(row.Last_Name__c) ? '' : row.Last_Name__c
+                      },
+                      ' '
+                  ).trim();
+            options.add(new BorrowerOption(String.valueOf(row.Id), rowName, row.Email__c, false));
+        }
+        return options;
+    }
+
     public static List<RequestItem> createRequestsFromReferences(Id leadId, List<Id> referenceIds) {
-        return createRequestsFromReferences(leadId, referenceIds, 'Loan Officer');
+        return createRequestsFromReferences(leadId, referenceIds, 'Loan Officer', null);
     }
 
     public static List<RequestItem> createRequestsFromReferences(Id leadId, List<Id> referenceIds, String requestType) {
+        return createRequestsFromReferences(leadId, referenceIds, requestType, null);
+    }
+
+    public static List<RequestItem> createRequestsFromReferences(
+        Id leadId,
+        List<Id> referenceIds,
+        String requestType,
+        String assignment
+    ) {
         Lead leadRecord = getLeadOrThrow(leadId);
         ensureLeadIsOpenForDocumentRequests(leadRecord);
         Set<Id> uniqueReferenceIds = referenceIds == null ? new Set<Id>() : new Set<Id>(referenceIds);
@@ -270,7 +406,7 @@ public with sharing class LeadDocumentRequestService {
             if (referenceRecord == null || referenceRecord.Active__c != true) {
                 continue;
             }
-            recordsToInsert.add(buildRequestFromReference(leadId, referenceRecord, requestType));
+            recordsToInsert.add(buildRequestFromReference(leadId, referenceRecord, requestType, assignment));
         }
         if (recordsToInsert.isEmpty()) {
             throw new LeadDocumentRequestException('No active document package items were found to create.');
@@ -527,8 +663,12 @@ public with sharing class LeadDocumentRequestService {
     }
 
     public static List<EmailTemplateOption> getEmailTemplateOptions() {
+        // Explicit list, not a folder query: the PULSE folder also holds the Transaction-side
+        // templates, which must never be offered here. A new Lead template needs a line added.
         return new List<EmailTemplateOption>{
             new EmailTemplateOption('Pre-Approval Docs Needed', EMAIL_TEMPLATE_DEVELOPER_NAME),
+            new EmailTemplateOption('Pre-Approval - Updated Docs Needed', UPDATED_DOCS_TEMPLATE_DEVELOPER_NAME),
+            new EmailTemplateOption('Refinance Items Needed', REFINANCE_TEMPLATE_DEVELOPER_NAME),
             new EmailTemplateOption('Follow Up - Resend Link', FOLLOW_UP_TEMPLATE_DEVELOPER_NAME)
         };
     }
@@ -577,6 +717,294 @@ public with sharing class LeadDocumentRequestService {
      * Sends the request email and returns null when everything committed cleanly, or a warning
      * for the sender when the email left but Salesforce could not finish the record updates.
      */
+    /** One borrower's send: who it goes to, what they can be shown, and how it is deduped. */
+    public class BorrowerSendTarget {
+        public Id borrowerId;
+        public String name;
+        public String email;
+        public String portalLink;
+        // Contact/Lead/User the message is logged against. Messaging only accepts those three, so a
+        // co-borrower needs their Person Account creating first - which is why Person Accounts are
+        // minted on first email rather than at conversion.
+        public Id targetObjectId;
+    }
+
+    /**
+     * Sends one email per borrower, each listing only that borrower's conditions plus anything
+     * shared with the whole file. Returns a per-recipient summary for the UI.
+     *
+     * The double-send guard is keyed on the logged activity's WhoId, which is now the recipient
+     * rather than always the Lead - so a second borrower is no longer silently swallowed for having
+     * a near-identical subject, while a genuine double-click on one person is still refused.
+     */
+    public static List<String> sendPerBorrowerRequestEmails(
+        Id leadId,
+        String subject,
+        String templateDeveloperName
+    ) {
+        Lead leadRecord = getLeadOrThrow(leadId);
+        ensureLeadIsOpenForDocumentRequests(leadRecord);
+        List<Lead_Document_Request__c> allRequests =
+            LeadDocumentRequestRepository.getInstance().selectIncludedForEmail(leadId);
+        if (allRequests.isEmpty()) {
+            throw new LeadDocumentRequestException('At least one document request must be included in the email.');
+        }
+
+        List<BorrowerSendTarget> targets = buildSendTargets(leadRecord);
+        if (targets.isEmpty()) {
+            throw new LeadDocumentRequestException(
+                'No borrower on this lead has an email address, so there is nobody to send to.'
+            );
+        }
+
+        List<String> outcomes = new List<String>();
+        for (BorrowerSendTarget target : targets) {
+            List<Lead_Document_Request__c> theirs = new List<Lead_Document_Request__c>();
+            for (Lead_Document_Request__c request : allRequests) {
+                if (isRequestForBorrower(request, target)) {
+                    theirs.add(request);
+                }
+            }
+            if (theirs.isEmpty()) {
+                outcomes.add(target.name + ': nothing outstanding, not emailed');
+                continue;
+            }
+            if (findRecentSend(target.targetObjectId, subject) != null) {
+                outcomes.add(target.name + ': skipped, the same email went out in the last few minutes');
+                continue;
+            }
+
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setTargetObjectId(target.targetObjectId);
+            mail.setTreatTargetObjectAsRecipient(false);
+            mail.setToAddresses(new List<String>{ target.email });
+            List<String> ccAddresses = buildDefaultCcAddresses(leadRecord);
+            if (!ccAddresses.isEmpty()) {
+                mail.setCcAddresses(ccAddresses);
+            }
+            mail.setSubject(subject);
+            mail.setHtmlBody(buildTemplatedBorrowerBody(target, theirs, templateDeveloperName));
+            mail.setSaveAsActivity(true);
+
+            if (!Test.isRunningTest()) {
+                try {
+                    Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ mail });
+                } catch (Exception sendException) {
+                    if (!isRowLockFailure(sendException)) {
+                        throw sendException;
+                    }
+                }
+            }
+            outcomes.add(target.name + ': sent to ' + target.email + ' (' + theirs.size() + ' items)');
+        }
+        return outcomes;
+    }
+
+    private static Boolean isRequestForBorrower(Lead_Document_Request__c request, BorrowerSendTarget target) {
+        if (request.Borrower__c != null) {
+            return request.Borrower__c == target.borrowerId;
+        }
+        if (request.Assigned_To_Primary__c == true) {
+            return target.borrowerId == null;
+        }
+        return true;
+    }
+
+    private static List<BorrowerSendTarget> buildSendTargets(Lead leadRecord) {
+        List<BorrowerSendTarget> targets = new List<BorrowerSendTarget>();
+
+        if (String.isNotBlank(leadRecord.Email)) {
+            ensurePortalHash(leadRecord.Id);
+            Lead refreshed = getLeadOrThrow(leadRecord.Id);
+            BorrowerSendTarget primary = new BorrowerSendTarget();
+            primary.borrowerId = null;
+            primary.name = buildBorrowerDisplayName(refreshed);
+            primary.email = refreshed.Email;
+            primary.portalLink = buildLeadPortalLink(refreshed);
+            primary.targetObjectId = refreshed.Id;
+            targets.add(primary);
+        }
+
+        List<Borrower__c> rows = [
+            SELECT Id, Name, Email__c, Account__c, Portal_Hash_Parameter__c
+            FROM Borrower__c
+            WHERE Lead__c = :leadRecord.Id AND Removed__c = FALSE AND Email__c != NULL
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate
+        ];
+        if (rows.isEmpty()) {
+            return targets;
+        }
+
+        Set<Id> needAccount = new Set<Id>();
+        for (Borrower__c row : rows) {
+            if (row.Account__c == null) {
+                needAccount.add(row.Id);
+            }
+        }
+        if (!needAccount.isEmpty()) {
+            BorrowerPersonAccountService.findOrCreate(needAccount);
+            rows = [
+                SELECT Id, Name, Email__c, Account__c, Portal_Hash_Parameter__c
+                FROM Borrower__c
+                WHERE Id IN :rows
+                WITH SYSTEM_MODE
+                ORDER BY CreatedDate
+            ];
+        }
+
+        Map<Id, Account> accountsById = new Map<Id, Account>();
+        Set<Id> accountIds = new Set<Id>();
+        for (Borrower__c row : rows) {
+            if (row.Account__c != null) {
+                accountIds.add(row.Account__c);
+            }
+        }
+        if (!accountIds.isEmpty()) {
+            accountsById = new Map<Id, Account>(
+                [SELECT Id, PersonContactId FROM Account WHERE Id IN :accountIds WITH SYSTEM_MODE]
+            );
+        }
+
+        String configuredUrl = resolveLeadPortalPageUrl();
+        for (Borrower__c row : rows) {
+            Account personAccount = row.Account__c == null ? null : accountsById.get(row.Account__c);
+            if (personAccount == null || personAccount.PersonContactId == null) {
+                // Without a Person Contact there is no legal target for the message, so skip rather
+                // than send something that cannot be logged against anyone.
+                continue;
+            }
+            BorrowerSendTarget target = new BorrowerSendTarget();
+            target.borrowerId = row.Id;
+            target.name = row.Name;
+            target.email = row.Email__c;
+            target.targetObjectId = personAccount.PersonContactId;
+            if (String.isNotBlank(row.Portal_Hash_Parameter__c) && String.isNotBlank(configuredUrl)) {
+                String separator = configuredUrl.contains('?') ? '&' : '?';
+                target.portalLink = configuredUrl + separator +
+                    'id=' + EncodingUtil.urlEncode(row.Portal_Hash_Parameter__c, 'UTF-8');
+            }
+            targets.add(target);
+        }
+        return targets;
+    }
+
+    private static String buildBorrowerDisplayName(Lead leadRecord) {
+        String built = (String.isBlank(leadRecord.FirstName) ? '' : leadRecord.FirstName + ' ') +
+            (String.isBlank(leadRecord.LastName) ? '' : leadRecord.LastName);
+        return String.isBlank(built.trim()) ? 'Borrower' : built.trim();
+    }
+
+    /**
+     * The wording every borrower will read, with the per-borrower item list left out, so the sender
+     * can review the verbiage before sending several personalised copies. Rendered against the Lead,
+     * so {!recipient.*} shows the primary's name as a representative example.
+     */
+    @AuraEnabled
+    public static String getSharedTemplatePreview(Id leadId, String templateDeveloperName) {
+        Lead leadRecord = getLeadOrThrow(leadId);
+        String resolvedName = String.isBlank(templateDeveloperName)
+            ? EMAIL_TEMPLATE_DEVELOPER_NAME
+            : templateDeveloperName;
+        EmailTemplate template = LeadDocumentRequestRepository.getInstance()
+            .selectEmailTemplateByDeveloperName(resolvedName);
+        if (template == null) {
+            return '';
+        }
+        try {
+            Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
+                template.Id,
+                leadRecord.Id,
+                null
+            );
+            String body = rendered.getHtmlBody();
+            if (String.isBlank(body)) {
+                return '';
+            }
+            // Drop the item-list token rather than filling it: the list differs per borrower and
+            // showing one borrower's items here would misrepresent what the others receive.
+            body = body.replace(REQUESTED_DOCUMENT_LIST_PLACEHOLDER, '');
+            if (body.contains(LEAD_PORTAL_LINK_PLACEHOLDER)) {
+                body = body.replace(LEAD_PORTAL_LINK_PLACEHOLDER, '#');
+            }
+            // Shows the primary's name as a representative example; each borrower's own send
+            // resolves to theirs.
+            body = applyBorrowerFirstName(body, leadRecord.FirstName);
+            return addSenderSignature(body);
+        } catch (Exception renderException) {
+            return '';
+        }
+    }
+
+    /**
+     * The same stored template the single-borrower path uses, rendered once per borrower.
+     *
+     * {!recipient.*} resolves off the whoId passed to renderStoredEmailTemplate, and every borrower
+     * now has one - the Lead for the primary, their Person Contact for a co-borrower - so the
+     * template greets each person correctly without any hand-built body. Only the item list and the
+     * portal link are swapped for that borrower's own.
+     */
+    private static String buildTemplatedBorrowerBody(
+        BorrowerSendTarget target,
+        List<Lead_Document_Request__c> requests,
+        String templateDeveloperName
+    ) {
+        String resolvedName = String.isBlank(templateDeveloperName)
+            ? EMAIL_TEMPLATE_DEVELOPER_NAME
+            : templateDeveloperName;
+        EmailTemplate template = LeadDocumentRequestRepository.getInstance()
+            .selectEmailTemplateByDeveloperName(resolvedName);
+        if (template != null) {
+            try {
+                Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
+                    template.Id,
+                    target.targetObjectId,
+                    null
+                );
+                String renderedHtmlBody = rendered.getHtmlBody();
+                if (String.isNotBlank(renderedHtmlBody)) {
+                    return prepareRenderedHtmlBodyFor(renderedHtmlBody, target.portalLink, requests, target);
+                }
+            } catch (Exception renderException) {
+                // Fall through to the plain body rather than failing the send outright.
+            }
+        }
+        return buildBorrowerEmailBody(target, requests);
+    }
+
+    /** Fallback only, for when the chosen template is missing or will not render. */
+    private static String buildBorrowerEmailBody(
+        BorrowerSendTarget target,
+        List<Lead_Document_Request__c> requests
+    ) {
+        List<String> parts = new List<String>();
+        parts.add('<p>Hi ' + String.escapeSingleQuotes(target.name) + ',</p>');
+        parts.add('<p>We need the following from you to complete your pre-approval:</p><ul>');
+        for (Lead_Document_Request__c request : requests) {
+            String label = String.isNotBlank(request.Subject__c) ? request.Subject__c : request.Name;
+            parts.add(
+                '<li><strong>' + (request.Category__c == null ? 'Item' : request.Category__c) +
+                '</strong> - ' + label + '</li>'
+            );
+        }
+        parts.add('</ul>');
+        if (String.isNotBlank(target.portalLink)) {
+            // Styles are inline, not a <style> block: this body is assembled here rather than
+            // rendered from a template, and most mail clients strip document-level CSS. Matches
+            // the .myButton rule in the Lead_Initial_Documents_Needed template.
+            parts.add(
+                '<p style="margin:22px 0;"><a href="' + target.portalLink + '"' +
+                ' style="display:inline-block;vertical-align:middle;padding:12px 24px;' +
+                'border-radius:8px;background:#0082cb;font:normal normal bold 20px arial;' +
+                'color:#ffffff;text-decoration:none;">Upload Your Documents</a></p>' +
+                '<p>This link is yours: it shows only the items we need from you.</p>'
+            );
+        }
+        parts.add('<p>Thank you!</p>');
+        // Every outbound email carries the sending user's signature card, same as the composed path.
+        return addSenderSignature(String.join(parts, ''));
+    }
+
     public static String sendEditedRequestEmail(
         Id leadId,
         String subject,
@@ -683,7 +1111,12 @@ public with sharing class LeadDocumentRequestService {
         return message != null && message.contains('UNABLE_TO_LOCK_ROW');
     }
 
-    private static Datetime findRecentSend(Id leadId, String subject) {
+    /**
+     * whoId is whoever the activity is logged against - the Lead for the primary, a co-borrower's
+     * Person Contact for them - so the guard scopes per recipient rather than per file.
+     */
+    private static Datetime findRecentSend(Id whoId, String subject) {
+        Id leadId = whoId;
         if (leadId == null || String.isBlank(subject)) {
             return null;
         }
@@ -967,11 +1400,12 @@ public with sharing class LeadDocumentRequestService {
     private static Lead_Document_Request__c buildRequestFromReference(
         Id leadId,
         Lead_Document_Request_Reference__c referenceRecord,
-        String requestType
+        String requestType,
+        String assignment
     ) {
         String resolvedItemDescription = resolveReferenceItemDescription(referenceRecord);
         String resolvedCategoryName = resolveReferenceConditionName(referenceRecord, resolvedItemDescription);
-        return new Lead_Document_Request__c(
+        Lead_Document_Request__c requestRecord = new Lead_Document_Request__c(
             Lead__c = leadId,
             Name = resolvedCategoryName,
             Subject__c = resolvedItemDescription,
@@ -989,6 +1423,8 @@ public with sharing class LeadDocumentRequestService {
             Can_Borrower_See__c = referenceRecord.Can_Borrower_See__c,
             Lead_Document_Request_Reference__c = referenceRecord.Id
         );
+        applyAssignment(requestRecord, assignment);
+        return requestRecord;
     }
 
     private static String resolveReferenceRequestName(Lead_Document_Request_Reference__c referenceRecord) {
@@ -1282,8 +1718,43 @@ public with sharing class LeadDocumentRequestService {
         List<Lead_Document_Request__c> requestRecords
     ) {
         String bodyWithPortalLink = addLeadPortalLink(htmlBody, leadRecord);
-        String bodyWithDocuments = addRequestedDocumentList(bodyWithPortalLink, requestRecords);
+        // The same token the per-borrower path fills, so a template works on either path.
+        String bodyWithName = applyBorrowerFirstName(bodyWithPortalLink, leadRecord.FirstName);
+        String bodyWithDocuments = addRequestedDocumentList(bodyWithName, requestRecords);
         return addSenderSignature(bodyWithDocuments);
+    }
+
+    /**
+     * Same as prepareRenderedHtmlBody but with an explicit portal link, so a co-borrower's template
+     * carries their own link and their own item list rather than the primary's.
+     */
+    private static String prepareRenderedHtmlBodyFor(
+        String htmlBody,
+        String portalLink,
+        List<Lead_Document_Request__c> requestRecords,
+        BorrowerSendTarget target
+    ) {
+        String body = htmlBody;
+        if (body.contains(LEAD_PORTAL_LINK_PLACEHOLDER) && String.isNotBlank(portalLink)) {
+            body = body.replace(LEAD_PORTAL_LINK_PLACEHOLDER, portalLink.escapeHtml4());
+        }
+        body = applyBorrowerFirstName(body, firstNameOf(target));
+        return addSenderSignature(addRequestedDocumentList(body, requestRecords));
+    }
+
+    /** First word of the borrower's name, which is what a greeting wants. */
+    private static String firstNameOf(BorrowerSendTarget target) {
+        if (target == null || String.isBlank(target.name)) {
+            return '';
+        }
+        return target.name.trim().split(' ')[0];
+    }
+
+    private static String applyBorrowerFirstName(String htmlBody, String firstName) {
+        if (!htmlBody.contains(BORROWER_FIRST_NAME_PLACEHOLDER)) {
+            return htmlBody;
+        }
+        return htmlBody.replace(BORROWER_FIRST_NAME_PLACEHOLDER, String.isBlank(firstName) ? 'there' : firstName);
     }
 
     private static String addLeadPortalLink(String htmlBody, Lead leadRecord) {
@@ -1464,6 +1935,7 @@ public with sharing class LeadDocumentRequestService {
         if (String.isNotBlank(nmls)) {
             detailLines.add('<div style="font-size:13px;line-height:18px;color:#4b5563;">NMLS #' + nmls + '</div>');
         }
+        detailLines.add('<div style="font-size:13px;line-height:18px;color:#4b5563;">Company NMLS #2266637</div>');
 
         // Headshot_URL__c holds a public file.force.com delivery link, so it renders for external
         // borrowers. Senders without a headshot simply get the text-only card.
@@ -1510,6 +1982,110 @@ public with sharing class LeadDocumentRequestService {
             return (String) leadRecord.get('Portal_Hash_Parameter__c');
         }
         return Test.isRunningTest() ? testLeadPortalHashesByLeadId.get(leadRecord.Id) : null;
+    }
+
+    /** A borrower and the portal link they can be sent, for the pills in the conditions modal. */
+    public class BorrowerPortalLink {
+        @AuraEnabled public String value;
+        @AuraEnabled public String label;
+        @AuraEnabled public String link;
+        @AuraEnabled public Boolean isPrimary;
+
+        public BorrowerPortalLink(String value, String label, String link, Boolean isPrimary) {
+            this.value = value;
+            this.label = label;
+            this.link = link;
+            this.isPrimary = isPrimary;
+        }
+    }
+
+    /**
+     * Links for everyone on the file who can have a portal. Minting and revoking happen here rather
+     * than in a trigger: the panel writes Borrower__c through the UI API, so this is the first Apex
+     * that sees the change, and it mirrors populateMissingPortalHashes for Leads.
+     *
+     * An email is what makes someone a portal participant, so a borrower who gains one gets a token
+     * and a borrower who loses one has theirs cleared, which kills their existing link.
+     */
+    @AuraEnabled
+    public static List<BorrowerPortalLink> getBorrowerPortalLinks(Id leadId) {
+        List<BorrowerPortalLink> links = new List<BorrowerPortalLink>();
+        if (leadId == null) {
+            return links;
+        }
+
+        Lead leadRecord = getLeadOrThrow(leadId);
+        if (String.isNotBlank(leadRecord.Email)) {
+            ensurePortalHash(leadId);
+            leadRecord = getLeadOrThrow(leadId);
+            String primaryName = (String.isBlank(leadRecord.FirstName) ? '' : leadRecord.FirstName + ' ') +
+                (String.isBlank(leadRecord.LastName) ? '' : leadRecord.LastName);
+            links.add(
+                new BorrowerPortalLink(
+                    ASSIGNMENT_PRIMARY,
+                    String.isBlank(primaryName.trim()) ? 'Primary Borrower' : primaryName.trim(),
+                    buildLeadPortalLink(leadRecord),
+                    true
+                )
+            );
+        }
+
+        List<Borrower__c> rows = [
+            SELECT Id, Name, Email__c, Portal_Hash_Parameter__c
+            FROM Borrower__c
+            WHERE Lead__c = :leadId AND Removed__c = FALSE
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate
+        ];
+        List<Borrower__c> toUpdate = new List<Borrower__c>();
+        for (Borrower__c row : rows) {
+            Boolean hasEmail = String.isNotBlank(row.Email__c);
+            if (hasEmail && String.isBlank(row.Portal_Hash_Parameter__c)) {
+                row.Portal_Hash_Parameter__c = BorrowerPortalEncryptionService.encryptString(String.valueOf(row.Id));
+                toUpdate.add(row);
+            } else if (!hasEmail && String.isNotBlank(row.Portal_Hash_Parameter__c)) {
+                // Revoked: removing the email address takes the portal away with it.
+                row.Portal_Hash_Parameter__c = null;
+                toUpdate.add(row);
+            }
+        }
+        if (!toUpdate.isEmpty()) {
+            Database.update(toUpdate, true, AccessLevel.SYSTEM_MODE);
+        }
+
+        String configuredUrl = resolveLeadPortalPageUrl();
+        for (Borrower__c row : rows) {
+            if (String.isBlank(row.Portal_Hash_Parameter__c) || String.isBlank(configuredUrl)) {
+                continue;
+            }
+            String separator = configuredUrl.contains('?') ? '&' : '?';
+            links.add(
+                new BorrowerPortalLink(
+                    String.valueOf(row.Id),
+                    row.Name,
+                    configuredUrl + separator + 'id=' + EncodingUtil.urlEncode(row.Portal_Hash_Parameter__c, 'UTF-8'),
+                    false
+                )
+            );
+        }
+        return links;
+    }
+
+    /**
+     * The site setting stores the Experience Cloud root ending in /s, but the portal is a
+     * Visualforce page, not an Experience Builder page. Lead_Portal_Link_As_URL__c does this
+     * substitution declaratively for the primary; co-borrower links have to do the same or they
+     * land on a path that is not the portal.
+     */
+    private static String resolveLeadPortalPageUrl() {
+        String configuredUrl = getConfiguredLeadHomeUrl();
+        if (String.isBlank(configuredUrl)) {
+            return null;
+        }
+        String trimmed = configuredUrl.endsWith('/') ? configuredUrl.removeEnd('/') : configuredUrl;
+        return trimmed.endsWith('/s')
+            ? trimmed.removeEnd('/s') + '/apex/LeadBorrowerDocumentPortal'
+            : trimmed;
     }
 
     public static String buildLeadPortalLink(Lead leadRecord) {

@@ -85,14 +85,21 @@ public without sharing class LeadDocumentPortalService {
     }
 
     public static PortalData initializeData(String hashFromURL, Boolean isInSitePreview) {
-        Lead leadRecord = isInSitePreview
-            ? getPreviewLead()
-            : LeadDocumentRequestRepository.getInstance().selectLeadByPortalHash(hashFromURL);
-        if (leadRecord == null && Test.isRunningTest()) {
-            Id testLeadId = LeadDocumentRequestService.getTestLeadIdForPortalHash(hashFromURL);
-            if (testLeadId != null) {
-                leadRecord = LeadDocumentRequestRepository.getInstance()
-                    .selectLeadsByIds(new Set<Id>{ testLeadId }).get(testLeadId);
+        Lead leadRecord;
+        Id viewerBorrowerId = null;
+        Boolean viewerIsPrimary = true;
+        String viewerName;
+
+        if (isInSitePreview) {
+            leadRecord = getPreviewLead();
+            viewerName = leadRecord == null ? null : buildBorrowerName(leadRecord);
+        } else {
+            PortalViewer viewer = resolveViewer(hashFromURL);
+            if (viewer != null) {
+                leadRecord = viewer.leadRecord;
+                viewerBorrowerId = viewer.borrowerId;
+                viewerIsPrimary = viewer.isPrimary;
+                viewerName = viewer.displayName;
             }
         }
 
@@ -102,7 +109,8 @@ public without sharing class LeadDocumentPortalService {
 
         PortalData response = new PortalData();
         response.recordId = leadRecord.Id;
-        response.borrowerName = buildBorrowerName(leadRecord);
+        // The greeting names whoever opened the link, not the primary on the file.
+        response.borrowerName = String.isBlank(viewerName) ? buildBorrowerName(leadRecord) : viewerName;
         response.requests = new List<PortalRequest>();
         response.clearedRequests = new List<PortalClearedRequest>();
         response.contacts = new List<PortalContact>();
@@ -113,8 +121,16 @@ public without sharing class LeadDocumentPortalService {
             return response;
         }
 
-        List<Lead_Document_Request__c> visibleRequests =
-            LeadDocumentRequestRepository.getInstance().selectVisibleByLeadId(leadRecord.Id);
+        PortalViewer scope = new PortalViewer();
+        scope.borrowerId = viewerBorrowerId;
+        scope.isPrimary = viewerIsPrimary;
+        List<Lead_Document_Request__c> visibleRequests = new List<Lead_Document_Request__c>();
+        for (Lead_Document_Request__c candidate :
+            LeadDocumentRequestRepository.getInstance().selectVisibleByLeadId(leadRecord.Id)) {
+            if (isVisibleToViewer(candidate, scope)) {
+                visibleRequests.add(candidate);
+            }
+        }
         Map<Id, Decimal> fileCountsByRequestId = LeadDocumentRequestRepository.getInstance()
             .selectLinkedDocumentCountsByRequestIds(new Map<Id, Lead_Document_Request__c>(visibleRequests).keySet());
 
@@ -234,7 +250,8 @@ public without sharing class LeadDocumentPortalService {
             throw new LeadDocumentPortalException('The file came through empty. Please try uploading it again.');
         }
 
-        Lead leadRecord = getActivePortalLead(hashFromURL);
+        PortalViewer viewer = getActivePortalViewer(hashFromURL);
+        Lead leadRecord = viewer.leadRecord;
         Lead_Document_Request__c requestRecord = LeadDocumentRequestRepository.getInstance()
             .selectRequestForPortalUpload(requestId);
         if (requestRecord == null) {
@@ -242,6 +259,11 @@ public without sharing class LeadDocumentPortalService {
         }
         if (requestRecord.Lead__c != leadRecord.Id) {
             throw new LeadDocumentPortalException('The document request does not belong to this lead portal session.');
+        }
+        // Belonging to the same Lead is no longer sufficient. Without this, a co-borrower holding a
+        // valid token could upload against another borrower's condition by guessing its Id.
+        if (!isVisibleToViewer(requestRecord, viewer)) {
+            throw new LeadDocumentPortalException('That document request is not part of this portal session.');
         }
 
         Blob fileBody;
@@ -324,8 +346,10 @@ public without sharing class LeadDocumentPortalService {
      * those requests to Review, and sends the lead team a single email covering the session.
      */
     public static PortalData submitPendingDocuments(String hashFromURL) {
-        Lead leadRecord = getActivePortalLead(hashFromURL);
-        submitPendingForLead(leadRecord, false);
+        PortalViewer viewer = getActivePortalViewer(hashFromURL);
+        // The uploader is whoever holds this token, which is the only record of who acted: every
+        // portal upload runs as the same site guest user, so CreatedById identifies nobody.
+        submitPendingForLead(viewer.leadRecord, false, viewer.displayName);
         return initializeData(hashFromURL, false);
     }
 
@@ -333,11 +357,20 @@ public without sharing class LeadDocumentPortalService {
     // The sweep works from Lead records it has already queried, so it needs a way in that does
     // not start from a portal hash.
     public static Integer submitPendingForLeadRecord(Lead leadRecord, Boolean submittedBySweep) {
-        return submitPendingForLead(leadRecord, submittedBySweep);
+        // The sweep has no portal session, so it cannot know which borrower left the files.
+        return submitPendingForLead(leadRecord, submittedBySweep, null);
     }
 
     @TestVisible
     private static Integer submitPendingForLead(Lead leadRecord, Boolean submittedBySweep) {
+        return submitPendingForLead(leadRecord, submittedBySweep, null);
+    }
+
+    private static Integer submitPendingForLead(
+        Lead leadRecord,
+        Boolean submittedBySweep,
+        String uploadedByName
+    ) {
         Set<Id> requestIds = requestIdsForLead(leadRecord.Id);
         if (requestIds.isEmpty()) {
             return 0;
@@ -399,7 +432,7 @@ public without sharing class LeadDocumentPortalService {
             Database.update(requestsToUpdate, false, AccessLevel.SYSTEM_MODE);
         }
 
-        notifyLeadTeamOfSubmission(leadRecord, versionsByRequestId, submittedBySweep);
+        notifyLeadTeamOfSubmission(leadRecord, versionsByRequestId, submittedBySweep, uploadedByName);
         return pending.size();
     }
 
@@ -528,22 +561,82 @@ public without sharing class LeadDocumentPortalService {
         return LeadDocumentRequestRepository.getInstance().selectFirstLeadWithPortalHash();
     }
 
-    private static Lead getActivePortalLead(String hashFromURL) {
+    /**
+     * Who is holding this link. A Lead token is the primary borrower; a Borrower__c token is that
+     * co-borrower. borrowerId null with isPrimary true means the primary.
+     */
+    public class PortalViewer {
+        public Lead leadRecord;
+        public Id borrowerId;
+        public Boolean isPrimary;
+        public String displayName;
+    }
+
+    /**
+     * Resolves a portal token. The Lead is tried first so every link already in circulation keeps
+     * working unchanged; only if that misses do we look for a co-borrower's own token.
+     */
+    private static PortalViewer resolveViewer(String hashFromURL) {
+        PortalViewer viewer = new PortalViewer();
         Lead leadRecord = LeadDocumentRequestRepository.getInstance().selectLeadByPortalHash(hashFromURL);
-        if (leadRecord == null && Test.isRunningTest()) {
+        if (leadRecord != null) {
+            viewer.leadRecord = leadRecord;
+            viewer.borrowerId = null;
+            viewer.isPrimary = true;
+            viewer.displayName = buildBorrowerName(leadRecord);
+            return viewer;
+        }
+
+        Borrower__c borrowerRecord = LeadDocumentRequestRepository.getInstance()
+            .selectBorrowerByPortalHash(hashFromURL);
+        if (borrowerRecord != null && borrowerRecord.Lead__c != null) {
+            viewer.leadRecord = LeadDocumentRequestRepository.getInstance()
+                .selectPortalLeadById(borrowerRecord.Lead__c);
+            viewer.borrowerId = borrowerRecord.Id;
+            viewer.isPrimary = false;
+            viewer.displayName = borrowerRecord.Name;
+            return viewer;
+        }
+
+        if (Test.isRunningTest()) {
             Id testLeadId = LeadDocumentRequestService.getTestLeadIdForPortalHash(hashFromURL);
             if (testLeadId != null) {
-                leadRecord = LeadDocumentRequestRepository.getInstance()
-                    .selectLeadsByIds(new Set<Id>{ testLeadId }).get(testLeadId);
+                viewer.leadRecord = LeadDocumentRequestRepository.getInstance()
+                    .selectLeadsByIds(new Set<Id>{ testLeadId })
+                    .get(testLeadId);
+                viewer.borrowerId = null;
+                viewer.isPrimary = true;
+                viewer.displayName = buildBorrowerName(viewer.leadRecord);
+                return viewer;
             }
         }
-        if (leadRecord == null) {
+        return null;
+    }
+
+    private static Lead getActivePortalLead(String hashFromURL) {
+        return getActivePortalViewer(hashFromURL).leadRecord;
+    }
+
+    /** Mirrors the scoping in selectVisibleByLeadId: your own items, plus anything file-wide. */
+    private static Boolean isVisibleToViewer(Lead_Document_Request__c requestRecord, PortalViewer viewer) {
+        if (requestRecord.Borrower__c != null) {
+            return requestRecord.Borrower__c == viewer.borrowerId;
+        }
+        if (requestRecord.Assigned_To_Primary__c == true) {
+            return viewer.isPrimary == true;
+        }
+        return true;
+    }
+
+    private static PortalViewer getActivePortalViewer(String hashFromURL) {
+        PortalViewer viewer = resolveViewer(hashFromURL);
+        if (viewer == null || viewer.leadRecord == null) {
             throw new LeadDocumentPortalException('Unable to locate a lead document portal record.');
         }
-        if (leadRecord.Converted_Transaction_ID__c != null) {
+        if (viewer.leadRecord.Converted_Transaction_ID__c != null) {
             throw new LeadDocumentPortalException('Lead document uploads are no longer accepted after conversion.');
         }
-        return leadRecord;
+        return viewer;
     }
 
     private static String buildConvertedTransactionRedirectUrl(Id transactionId) {
@@ -657,7 +750,8 @@ public without sharing class LeadDocumentPortalService {
     private static void notifyLeadTeamOfSubmission(
         Lead leadRecord,
         Map<Id, List<ContentVersion>> versionsByRequestId,
-        Boolean submittedBySweep
+        Boolean submittedBySweep,
+        String uploadedByName
     ) {
         List<String> recipients = collectLeadTeamEmails(leadRecord);
         if (recipients.isEmpty() || versionsByRequestId.isEmpty()) {
@@ -688,12 +782,16 @@ public without sharing class LeadDocumentPortalService {
 
         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
         email.setToAddresses(recipients);
+        // Names the borrower who actually uploaded, not the primary on the file. Falls back to the
+        // Lead when there was no portal session to identify anyone, such as the overnight sweep.
+        String submitterName = String.isBlank(uploadedByName) ? buildBorrowerName(leadRecord) : uploadedByName;
         email.setSubject(
-            'Documents submitted by ' + buildBorrowerName(leadRecord) + ' - ' + fileTotal +
+            'Documents submitted by ' + submitterName + ' - ' + fileTotal +
             (fileTotal == 1 ? ' item' : ' items')
         );
         email.setHtmlBody(buildSubmissionNotificationBody(
-            leadRecord, versionsByRequestId, submittedRequests, fileTotal, stillOutstanding, submittedBySweep
+            leadRecord, versionsByRequestId, submittedRequests, fileTotal, stillOutstanding,
+            submittedBySweep, uploadedByName
         ));
         email.setSaveAsActivity(false);
 
@@ -708,6 +806,7 @@ public without sharing class LeadDocumentPortalService {
         }
     }
 
+    /** Kept so callers that do not know who uploaded still compile; falls back to the Lead name. */
     @TestVisible
     private static String buildSubmissionNotificationBody(
         Lead leadRecord,
@@ -717,9 +816,25 @@ public without sharing class LeadDocumentPortalService {
         Integer stillOutstanding,
         Boolean submittedBySweep
     ) {
+        return buildSubmissionNotificationBody(
+            leadRecord, versionsByRequestId, submittedRequests, fileTotal, stillOutstanding,
+            submittedBySweep, null
+        );
+    }
+
+    private static String buildSubmissionNotificationBody(
+        Lead leadRecord,
+        Map<Id, List<ContentVersion>> versionsByRequestId,
+        Map<Id, Lead_Document_Request__c> submittedRequests,
+        Integer fileTotal,
+        Integer stillOutstanding,
+        Boolean submittedBySweep,
+        String uploadedByName
+    ) {
         String leadUrl = URL.getOrgDomainUrl().toExternalForm()
             + '/lightning/r/Lead/' + leadRecord.Id + '/view';
-        String borrowerName = buildBorrowerName(leadRecord);
+        // Who uploaded, which on a joint file is not necessarily the name on the Lead.
+        String borrowerName = String.isBlank(uploadedByName) ? buildBorrowerName(leadRecord) : uploadedByName;
         Integer conditionCount = versionsByRequestId.size();
 
         String rows = '';

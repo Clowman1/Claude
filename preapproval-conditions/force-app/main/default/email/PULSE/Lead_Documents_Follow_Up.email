@@ -22,7 +22,7 @@
 </head>
 <body style="height: auto; min-height: auto;">
 <span class="container"></span>
-<p>Hi {!recipient.FirstName},<br />
+<p>Hi {{BORROWER_FIRST_NAME}},<br />
 <br />
 Circling back on the items below. Once these are in, I can keep everything moving on your pre-approval, so if you are able to get them over in the next day or two that would be a big help.</p>
 {{REQUESTED_DOCUMENT_LIST}}

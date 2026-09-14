@@ -29,6 +29,9 @@ public with sharing class LeadDocRequestCreateInvocable {
 
         @InvocableVariable
         public Boolean canBorrowerSee;
+
+        @InvocableVariable(label='Assignment' description='ALL or blank for the whole file, PRIMARY for the primary borrower alone, otherwise a Borrower record Id.')
+        public String assignment;
     }
 
     public class Response {
@@ -63,7 +66,8 @@ public with sharing class LeadDocRequestCreateInvocable {
                     ? LeadDocumentRequestService.createRequestsFromReferences(
                         request.leadId,
                         collectReferenceIds(request),
-                        request.type
+                        request.type,
+                        request.assignment
                     )
                     : LeadDocumentRequestService.saveRequests(
                         request == null ? null : request.leadId,
@@ -127,6 +131,7 @@ public with sharing class LeadDocRequestCreateInvocable {
         input.type = String.isBlank(request.type) ? 'Loan Officer' : request.type;
         input.includeInEmail = request.includeInEmail == null ? true : request.includeInEmail;
         input.canBorrowerSee = request.canBorrowerSee == null ? true : request.canBorrowerSee;
+        input.assignment = request.assignment;
         return input;
     }
 }

@@ -174,14 +174,44 @@ public with sharing class LeadPreApprovalLetterController {
                 AccessLevel.SYSTEM_MODE
             );
 
+            // Rendering happens in deliverFinalizedLetter, a separate call: getContentAsPDF renders
+            // the page in its own request, which cannot see this save until it has committed.
+            FinalizeResult result = new FinalizeResult();
+            result.pdfPath = '/apex/Lead_Pre_Approval_Letter?id=' + leadId;
+            result.fileName = buildLetterFileName(leadId);
+            return result;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    /**
+     * Renders, stores and - only when the client asks - emails the letter, once the finalize save
+     * has committed.
+     *
+     * This cannot live inside finalizeLetter. getContentAsPDF renders the Visualforce page in a
+     * separate request that cannot see uncommitted DML, so calling it in the same transaction as
+     * the save produced a PDF of the "no letter has been finalized" fallback rather than the
+     * letter.
+     *
+     * emailCopy comes from the client because only it knows the device: a desktop saves the file
+     * directly and does not need a copy in its inbox, while a phone cannot save anything at all.
+     */
+    @AuraEnabled
+    public static FinalizeResult deliverFinalizedLetter(Id leadId, Boolean emailCopy) {
+        try {
             FinalizeResult result = new FinalizeResult();
             result.pdfPath = '/apex/Lead_Pre_Approval_Letter?id=' + leadId;
             result.fileName = buildLetterFileName(leadId);
             result.pdfBase64 = renderLetterPdf(leadId);
+
             StoredLetter stored = storeLetterFile(leadId, result.fileName, result.pdfBase64);
             result.downloadUrl = stored.downloadUrl;
             result.contentDocumentId = stored.contentDocumentId;
-            result.emailedTo = emailLetterToFinalizer(leadId, result.fileName, result.pdfBase64);
+
+            if (emailCopy == true) {
+                result.emailedTo = emailLetterToFinalizer(leadId, result.fileName, result.pdfBase64);
+            }
             return result;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

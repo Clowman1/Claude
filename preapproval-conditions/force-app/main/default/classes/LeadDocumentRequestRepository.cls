@@ -38,6 +38,39 @@ public inherited sharing class LeadDocumentRequestRepository {
         return leads.isEmpty() ? null : leads[0];
     }
 
+    /**
+     * A co-borrower's own token. Checked only after the Lead lookup misses, so the primary's
+     * existing links keep resolving exactly as they always have.
+     */
+    /**
+     * The Lead behind a co-borrower's token. Deliberately SYSTEM_MODE, matching
+     * selectLeadByPortalHash: the site guest user cannot read Leads, so the USER_MODE
+     * selectLeadsByIds returns nothing and the portal fails to resolve. That method keeps its
+     * user-mode enforcement for internal callers.
+     */
+    public Lead selectPortalLeadById(Id leadId) {
+        if (leadId == null) {
+            return null;
+        }
+        String query = buildLeadPortalQuery('Id = :leadId', 'WITH SYSTEM_MODE LIMIT 1');
+        List<Lead> leads = (List<Lead>) Database.query(query);
+        return leads.isEmpty() ? null : leads[0];
+    }
+
+    public Borrower__c selectBorrowerByPortalHash(String portalHash) {
+        if (String.isBlank(portalHash)) {
+            return null;
+        }
+        List<Borrower__c> rows = [
+            SELECT Id, Name, First_Name__c, Last_Name__c, Email__c, Lead__c, Removed__c
+            FROM Borrower__c
+            WHERE Portal_Hash_Parameter__c = :portalHash AND Removed__c = FALSE
+            WITH SYSTEM_MODE
+            LIMIT 1
+        ];
+        return rows.isEmpty() ? null : rows[0];
+    }
+
     public List<Lead_Document_Request__c> selectByLeadIds(Set<Id> leadIds) {
         if (leadIds == null || leadIds.isEmpty()) {
             return new List<Lead_Document_Request__c>();
@@ -47,7 +80,8 @@ public inherited sharing class LeadDocumentRequestRepository {
             SELECT Id, Name, Lead__c, Owner.Name, Status__c, Description__c, Rejection_Notes__c, Subject__c, Category__c,
                    Type__c, Requested_Date__c, Include_In_Email__c, Can_Borrower_See__c,
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
-                   Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate
+                   Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate,
+                   Borrower__c, Borrower__r.Name, Borrower__r.Email__c, Assigned_To_Primary__c
             FROM Lead_Document_Request__c
             WHERE Lead__c IN :leadIds
             WITH SYSTEM_MODE
@@ -55,6 +89,11 @@ public inherited sharing class LeadDocumentRequestRepository {
         ];
     }
 
+    /**
+     * Everything on the file a borrower could see. Person scoping is applied afterwards in
+     * LeadDocumentPortalService.isVisibleToViewer, so the rule that decides what a borrower may
+     * read is the same one that decides what they may upload against.
+     */
     public List<Lead_Document_Request__c> selectVisibleByLeadId(Id leadId) {
         if (leadId == null) {
             return new List<Lead_Document_Request__c>();
@@ -64,7 +103,8 @@ public inherited sharing class LeadDocumentRequestRepository {
             SELECT Id, Name, Lead__c, Owner.Name, Status__c, Description__c, Rejection_Notes__c, Subject__c, Category__c,
                    Type__c, Requested_Date__c, Include_In_Email__c, Can_Borrower_See__c,
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
-                   Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate
+                   Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate,
+                   Borrower__c, Assigned_To_Primary__c
             FROM Lead_Document_Request__c
             WHERE Lead__c = :leadId
             AND Can_Borrower_See__c = TRUE
@@ -102,7 +142,8 @@ public inherited sharing class LeadDocumentRequestRepository {
             SELECT Id, Name, Lead__c, Owner.Name, Status__c, Description__c, Rejection_Notes__c, Subject__c, Category__c,
                    Type__c, Requested_Date__c, Include_In_Email__c, Can_Borrower_See__c,
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
-                   Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate
+                   Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate,
+                   Borrower__c, Assigned_To_Primary__c
             FROM Lead_Document_Request__c
             WHERE Id = :requestId
             WITH SYSTEM_MODE
@@ -131,6 +172,7 @@ public inherited sharing class LeadDocumentRequestRepository {
                    Type__c, Requested_Date__c, Include_In_Email__c, Can_Borrower_See__c,
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
                    Lead_Document_Request_Reference__r.Condition_Group_Key__c
+                   , Borrower__c, Assigned_To_Primary__c
             FROM Lead_Document_Request__c
             WHERE Lead__c = :leadId
             AND Include_In_Email__c = TRUE
@@ -148,7 +190,8 @@ public inherited sharing class LeadDocumentRequestRepository {
             SELECT Id, Name, Lead__c, Status__c, Description__c, Rejection_Notes__c, Subject__c, Category__c,
                    Type__c, Requested_Date__c, Include_In_Email__c, Can_Borrower_See__c,
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
-                   Lead_Document_Request_Reference__r.Condition_Group_Key__c
+                   Lead_Document_Request_Reference__r.Condition_Group_Key__c,
+                   Borrower__c, Assigned_To_Primary__c
             FROM Lead_Document_Request__c
             WHERE Lead__c IN :leadIds
             AND Converted_Condition__c = NULL

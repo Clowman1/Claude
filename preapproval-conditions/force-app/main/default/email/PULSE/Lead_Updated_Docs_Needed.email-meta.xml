@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>For a client who is already pre-approved and needs documents refreshed because they have expired or their situation changed. Opens by confirming the approval still stands, so the request does not read as a problem.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>Pre-Approval - Updated Docs Needed</name>
+    <style>none</style>
+    <subject>Updated Items Needed for your Pre-Approval</subject>
+    <type>visualforce</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

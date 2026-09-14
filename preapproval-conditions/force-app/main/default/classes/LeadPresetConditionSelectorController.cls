@@ -65,8 +65,18 @@ public with sharing class LeadPresetConditionSelectorController {
         return response;
     }
 
-    @AuraEnabled
+    /** Apex-only shim; @AuraEnabled methods cannot be overloaded, so only the 3-arg form is exposed. */
     public static SaveResponse createSelectedConditionKeys(Id leadId, List<String> selectedKeys) {
+        return createSelectedConditionKeys(leadId, selectedKeys, null);
+    }
+
+    /** assignment: 'ALL' (or blank) for the whole file, 'PRIMARY', or a Borrower__c Id. */
+    @AuraEnabled
+    public static SaveResponse createSelectedConditionKeys(
+        Id leadId,
+        List<String> selectedKeys,
+        String assignment
+    ) {
         Set<Id> referenceIds = new Set<Id>();
         Boolean includeRealEstateOwned = false;
         for (String selectedKey : selectedKeys == null ? new List<String>() : selectedKeys) {
@@ -89,13 +99,14 @@ public with sharing class LeadPresetConditionSelectorController {
             created.addAll(LeadDocumentRequestService.createRequestsFromReferences(
                 leadId,
                 new List<Id>(referenceIds),
-                'Loan Officer'
+                'Loan Officer',
+                assignment
             ));
         }
         if (includeRealEstateOwned) {
             created.addAll(LeadDocumentRequestService.saveRequests(
                 leadId,
-                buildRealEstateOwnedRequests()
+                buildRealEstateOwnedRequests(assignment)
             ));
         }
         if (referenceIds.isEmpty() && !includeRealEstateOwned) {
@@ -282,6 +293,14 @@ public with sharing class LeadPresetConditionSelectorController {
         item.defaultSelected = false;
         item.sortOrder = 900000;
         return item;
+    }
+
+    private static List<LeadDocumentRequestService.RequestInput> buildRealEstateOwnedRequests(String assignment) {
+        List<LeadDocumentRequestService.RequestInput> inputs = buildRealEstateOwnedRequests();
+        for (LeadDocumentRequestService.RequestInput input : inputs) {
+            input.assignment = assignment;
+        }
+        return inputs;
     }
 
     private static List<LeadDocumentRequestService.RequestInput> buildRealEstateOwnedRequests() {

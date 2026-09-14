@@ -102,7 +102,11 @@ public with sharing class LeadDocumentCarryForwardService {
             Lead_Document_Request_Reference__c = requestRecord.Lead_Document_Request_Reference__c,
             Condition_Group_Key__c = requestRecord.Lead_Document_Request_Reference__r == null
                 ? null
-                : requestRecord.Lead_Document_Request_Reference__r.Condition_Group_Key__c
+                : requestRecord.Lead_Document_Request_Reference__r.Condition_Group_Key__c,
+            // The Borrower__c row survives conversion - it gains a Transaction__c stamp rather than
+            // being recreated - so the assignment carries across unchanged.
+            Borrower__c = requestRecord.Borrower__c,
+            Assigned_To_Primary__c = requestRecord.Assigned_To_Primary__c
         );
     }
 
