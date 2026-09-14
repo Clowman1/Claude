@@ -311,6 +311,24 @@ private class LeadPreApprovalLetterTest {
         );
     }
 
+    // The emailed copy is what makes this work on a phone, so its wording is pinned here.
+    @IsTest
+    static void theEmailedCopyNamesTheBorrowerAndLinksTheLead() {
+        Lead leadRecord = createLead();
+
+        Test.startTest();
+        String body = LeadPreApprovalLetterController.buildLetterEmailBody(leadRecord.Id, 'Javine Roman');
+        Test.stopTest();
+
+        System.assertEquals(true, body.contains('Javine Roman'), 'It says whose letter it is.');
+        System.assertEquals(true, body.contains('Pre-Approval Letter'));
+        System.assertEquals(
+            true,
+            body.contains('/lightning/r/Lead/' + leadRecord.Id),
+            'And links back to the Lead it came from.'
+        );
+    }
+
     private static Lead createLead() {
         Lead leadRecord = createLead('Pre-Approval');
         return leadRecord;

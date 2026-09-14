@@ -234,9 +234,14 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
 
             let message = "The letter is opening in a new tab.";
             if (downloaded === "preview") {
-                message = "The letter is open - use the download icon to save it to your phone.";
+                message = "The letter is open - use the download icon to save it.";
             } else if (downloaded) {
                 message = "The PDF has been downloaded.";
+            }
+            // The emailed copy is the part that works on every device, so it is said plainly
+            // rather than assumed.
+            if (result?.emailedTo) {
+                message += ` A copy has been emailed to ${result.emailedTo}.`;
             }
 
             this.dispatchEvent(new ShowToastEvent({

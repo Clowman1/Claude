@@ -143,6 +143,9 @@ public with sharing class LeadPreApprovalLetterController {
         // The stored file. The Salesforce mobile app is a webview that will not follow a
         // download URL, but it does open its own file preview, which carries a save action.
         @AuraEnabled public Id contentDocumentId;
+        // Where the copy was emailed, or null if it could not be sent. A phone cannot be made
+        // to save a file from a webview, but it can always open an attachment in Mail.
+        @AuraEnabled public String emailedTo;
     }
 
     /**
@@ -178,6 +181,7 @@ public with sharing class LeadPreApprovalLetterController {
             StoredLetter stored = storeLetterFile(leadId, result.fileName, result.pdfBase64);
             result.downloadUrl = stored.downloadUrl;
             result.contentDocumentId = stored.contentDocumentId;
+            result.emailedTo = emailLetterToFinalizer(leadId, result.fileName, result.pdfBase64);
             return result;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
@@ -221,6 +225,93 @@ public with sharing class LeadPreApprovalLetterController {
      * Returns null on any failure: the letter is already saved, and losing the download is
      * better than failing the finalize over it.
      */
+    /**
+     * Emails the finalized letter to whoever pressed the button, with the PDF attached.
+     *
+     * This is the one delivery route that works on every device: a phone cannot be made to
+     * write a file from inside a webview, but it can always open an attachment in Mail and
+     * save or forward it from there.
+     *
+     * Returns the address it went to, or null. The letter is saved either way, so a mail
+     * problem must not fail the finalize - but the caller is told, rather than the toast
+     * promising an email that never left.
+     */
+    private static String emailLetterToFinalizer(Id leadId, String fileName, String pdfBase64) {
+        if (String.isBlank(pdfBase64)) {
+            return null;
+        }
+        String recipient = UserInfo.getUserEmail();
+        if (String.isBlank(recipient)) {
+            return null;
+        }
+
+        try {
+            List<Lead> leads = [
+                SELECT Id, Name, FirstName, LastName FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1
+            ];
+            String borrower = leads.isEmpty() ? 'the borrower' : buildBorrowerName(leads[0]);
+
+            Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+            attachment.setFileName(fileName);
+            attachment.setContentType('application/pdf');
+            attachment.setBody(EncodingUtil.base64Decode(pdfBase64));
+
+            Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+            email.setToAddresses(new List<String>{ recipient });
+            email.setSubject('Pre-Approval Letter - ' + borrower);
+            email.setHtmlBody(buildLetterEmailBody(leadId, borrower));
+            email.setFileAttachments(new List<Messaging.EmailFileAttachment>{ attachment });
+            email.setSaveAsActivity(false);
+
+            Id orgWideId = resolveOrgWideAddressId();
+            if (orgWideId != null) {
+                email.setOrgWideEmailAddressId(orgWideId);
+            }
+
+            if (!Test.isRunningTest()) {
+                Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ email });
+            }
+            return recipient;
+        } catch (Exception emailException) {
+            System.debug(
+                LoggingLevel.ERROR,
+                'Could not email the pre-approval letter for ' + leadId + ': '
+                    + emailException.getMessage()
+            );
+            return null;
+        }
+    }
+
+    private static Id resolveOrgWideAddressId() {
+        List<OrgWideEmailAddress> addresses = [
+            SELECT Id FROM OrgWideEmailAddress WHERE Address = 'reachus@reachhomeloans.com'
+            WITH SYSTEM_MODE LIMIT 1
+        ];
+        return addresses.isEmpty() ? null : addresses[0].Id;
+    }
+
+    @TestVisible
+    private static String buildLetterEmailBody(Id leadId, String borrower) {
+        String leadUrl = URL.getOrgDomainUrl().toExternalForm() + '/lightning/r/Lead/' + leadId + '/view';
+        return ''
+            + '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;">'
+            + '<tr><td style="background:#1c3155;padding:26px 30px;">'
+            + '<div style="color:#ffa534;font-size:11px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;font-family:Arial,sans-serif;">Reach Home Loans</div>'
+            + '<div style="color:#ffffff;font-size:26px;font-weight:900;margin-top:8px;font-family:Arial,sans-serif;">Pre-Approval Letter</div>'
+            + '</td></tr>'
+            + '<tr><td style="padding:28px 30px 0;">'
+            + '<div style="color:#22314f;font-size:15px;line-height:1.65;font-family:Arial,sans-serif;">'
+            + 'Your pre-approval letter for <strong>' + htmlEncode(borrower)
+            + '</strong> is attached, ready to send on or save to your phone.</div></td></tr>'
+            + '<tr><td align="center" style="padding:26px 30px 30px;">'
+            + '<a href="' + htmlEncode(leadUrl) + '" style="display:inline-block;background:#ff9824;color:#122242;font-size:15px;font-weight:900;font-family:Arial,sans-serif;text-decoration:none;padding:14px 34px;border-radius:999px;">Open the Lead</a>'
+            + '</td></tr>'
+            + '<tr><td style="background:#f4f6fa;padding:18px 30px;border-top:1px solid #e2e7f0;">'
+            + '<div style="color:#77839c;font-size:12px;line-height:1.6;font-family:Arial,sans-serif;">'
+            + 'You are receiving this because you finalized this letter. A copy is also kept on the Lead.'
+            + '</div></td></tr></table>';
+    }
+
     private class StoredLetter {
         String downloadUrl;
         Id contentDocumentId;
