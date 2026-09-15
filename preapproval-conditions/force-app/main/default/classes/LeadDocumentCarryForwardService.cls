@@ -92,7 +92,7 @@ public with sharing class LeadDocumentCarryForwardService {
             Subject__c = requestRecord.Subject__c,
             Category__c = resolveConditionPicklistValue(
                 Condition__c.Category__c,
-                CONDITION_CATEGORY_BY_REQUEST_CATEGORY.get(requestRecord.Category__c),
+                resolveConditionCategory(requestRecord),
                 'Generic'
             ),
             Type__c = resolveConditionPicklistValue(
@@ -197,6 +197,19 @@ public with sharing class LeadDocumentCarryForwardService {
         private void insertLinks(List<ContentDocumentLink> links) {
             Database.insert(links, false, AccessLevel.SYSTEM_MODE);
         }
+    }
+
+    /**
+     * Name is the grouping label the Loan Officer and the borrower both see, and the catalogue
+     * sets it independently of the four-value category. The two oldest ID entries in that
+     * catalogue were filed under Other, which would land a photo ID in Generic rather than ID.
+     * Those rows are corrected, but requests raised from them before that still exist.
+     */
+    private static String resolveConditionCategory(Lead_Document_Request__c requestRecord) {
+        if ('Identification'.equalsIgnoreCase(requestRecord.Name)) {
+            return 'ID';
+        }
+        return CONDITION_CATEGORY_BY_REQUEST_CATEGORY.get(requestRecord.Category__c);
     }
 
     private static String resolveConditionPicklistValue(
