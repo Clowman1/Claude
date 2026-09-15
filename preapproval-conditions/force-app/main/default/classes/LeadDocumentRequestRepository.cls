@@ -336,7 +336,8 @@ public inherited sharing class LeadDocumentRequestRepository {
 
     private static String buildLeadPortalQuery(String whereClause, String accessAndLimitClause) {
         List<String> fields = new List<String>{
-            'Id', 'Name', 'FirstName', 'LastName', 'Email', 'OwnerId', 'IsConverted', 'Converted_Transaction_ID__c'
+            'Id', 'Name', 'FirstName', 'LastName', 'Email', 'OwnerId', 'IsConverted', 'Converted_Transaction_ID__c',
+            'CreatedDate', 'ConvertedAccountId'
         };
         if (hasLeadField('Portal_Hash_Parameter__c')) {
             fields.add('Portal_Hash_Parameter__c');

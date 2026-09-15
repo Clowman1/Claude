@@ -17,6 +17,10 @@ public with sharing class LeadDocumentCarryForwardService {
         }
 
         Map<Id, Lead> leadsById = LeadDocumentRequestRepository.getInstance().selectLeadsByIds(leadIds);
+        // Runs first and unconditionally: a Lead can have documents on it without a single
+        // condition ever having been raised.
+        carryForwardLeadFiles(leadsById);
+
         List<Lead_Document_Request__c> requestRecords =
             LeadDocumentRequestRepository.getInstance().selectUnconvertedByLeadIds(leadsById.keySet());
         if (requestRecords.isEmpty()) {
@@ -110,6 +114,91 @@ public with sharing class LeadDocumentCarryForwardService {
         );
     }
 
+    /**
+     * The Documents tab's own files - the ones added straight to the Lead rather than against a
+     * condition.
+     *
+     * Lead conversion reparents those files to the new Person Account as part of the convert
+     * itself, seconds before the Transaction exists, so nothing downstream can still find them on
+     * the Lead. They are picked back up from the Account instead, bounded to documents created
+     * after the Lead was: that keeps a repeat borrower's earlier loan out of the new file.
+     */
+    private static void carryForwardLeadFiles(Map<Id, Lead> leadsById) {
+        Map<Id, Lead> leadsBySourceEntityId = new Map<Id, Lead>();
+        Set<Id> transactionIds = new Set<Id>();
+        for (Lead leadRecord : leadsById.values()) {
+            if (leadRecord.Converted_Transaction_ID__c == null) {
+                continue;
+            }
+            transactionIds.add(leadRecord.Converted_Transaction_ID__c);
+            // The Lead first, in case this runs before the reparenting, and the Account after.
+            leadsBySourceEntityId.put(leadRecord.Id, leadRecord);
+            if (leadRecord.ConvertedAccountId != null) {
+                leadsBySourceEntityId.put(leadRecord.ConvertedAccountId, leadRecord);
+            }
+        }
+        if (leadsBySourceEntityId.isEmpty()) {
+            return;
+        }
+
+        List<ContentDocumentLink> sourceLinks = LeadDocumentRequestRepository.getInstance()
+            .selectDocumentLinksByEntityIds(leadsBySourceEntityId.keySet());
+        if (sourceLinks.isEmpty()) {
+            return;
+        }
+
+        Set<Id> candidateDocumentIds = new Set<Id>();
+        for (ContentDocumentLink sourceLink : sourceLinks) {
+            candidateDocumentIds.add(sourceLink.ContentDocumentId);
+        }
+        Map<Id, Datetime> createdDateByDocumentId = new Map<Id, Datetime>();
+        for (ContentDocument document : [
+            SELECT Id, CreatedDate FROM ContentDocument WHERE Id IN :candidateDocumentIds WITH SYSTEM_MODE
+        ]) {
+            createdDateByDocumentId.put(document.Id, document.CreatedDate);
+        }
+
+        Set<String> existingPairs = new Set<String>();
+        for (ContentDocumentLink existingLink : LeadDocumentRequestRepository.getInstance()
+            .selectDocumentLinksByEntityIds(transactionIds)) {
+            existingPairs.add(existingLink.LinkedEntityId + ':' + existingLink.ContentDocumentId);
+        }
+
+        List<ContentDocumentLink> linksToInsert = new List<ContentDocumentLink>();
+        for (ContentDocumentLink sourceLink : sourceLinks) {
+            Lead leadRecord = leadsBySourceEntityId.get(sourceLink.LinkedEntityId);
+            if (leadRecord == null) {
+                continue;
+            }
+            Datetime documentCreated = createdDateByDocumentId.get(sourceLink.ContentDocumentId);
+            Boolean fromTheAccount = sourceLink.LinkedEntityId == leadRecord.ConvertedAccountId;
+            if (fromTheAccount && (documentCreated == null || documentCreated < leadRecord.CreatedDate)) {
+                continue;
+            }
+            addLinkIfMissing(
+                linksToInsert,
+                existingPairs,
+                sourceLink.ContentDocumentId,
+                leadRecord.Converted_Transaction_ID__c
+            );
+        }
+
+        if (!linksToInsert.isEmpty()) {
+            new FileLinker().insertLinks(linksToInsert);
+        }
+    }
+
+    /**
+     * Borrower uploads are owned by the portal guest user, and the Loan Officer doing the
+     * conversion has no share on them. Sharing, not field access, is what blocks the link, so this
+     * has to be a without-sharing class rather than a SYSTEM_MODE call.
+     */
+    private without sharing class FileLinker {
+        private void insertLinks(List<ContentDocumentLink> links) {
+            Database.insert(links, false, AccessLevel.SYSTEM_MODE);
+        }
+    }
+
     private static String resolveConditionPicklistValue(
         Schema.SObjectField fieldToken,
         String requestedValue,
@@ -168,7 +257,7 @@ public with sharing class LeadDocumentCarryForwardService {
         }
 
         if (!linksToInsert.isEmpty()) {
-            Database.insert(linksToInsert, false, AccessLevel.SYSTEM_MODE);
+            new FileLinker().insertLinks(linksToInsert);
         }
 
         stampContentVersions(contextsByRequestId, sourceLinks, contentDocumentIds);
