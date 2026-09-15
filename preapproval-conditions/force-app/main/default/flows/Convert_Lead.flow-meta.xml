@@ -10,6 +10,9 @@
         <connector>
             <targetReference>Is_Create_Transaction</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Conversion_Blocked</targetReference>
+        </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>recordIds</name>
@@ -244,12 +247,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>FB_Click_ID__c</field>
-            <value>
-                <elementReference>Select_lead.FB_Click_ID__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>First_UTM_Campaign__c</field>
             <value>
                 <elementReference>Select_lead.First_UTM_Campaign__c</elementReference>
@@ -280,33 +277,15 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Form_Name__c</field>
-            <value>
-                <elementReference>Select_lead.Form_Name__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Gift_Opt_In__c</field>
             <value>
                 <elementReference>Select_lead.Opt_In__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Hyros_Ad_ID__c</field>
-            <value>
-                <elementReference>Select_lead.Hyros_Ad_ID__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>In_Person_Preapproval__c</field>
             <value>
                 <elementReference>Select_lead.In_Person_Preapproval__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Landing_Page__c</field>
-            <value>
-                <elementReference>Select_lead.Landing_Page__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -336,7 +315,7 @@
         <inputAssignments>
             <field>Last_UTM_Term__c</field>
             <value>
-                <elementReference>Select_lead.Last_UTM_Term__c</elementReference>
+                <elementReference>Select_lead.Last_UTM_Source__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -364,24 +343,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Meta_Ad_ID__c</field>
-            <value>
-                <elementReference>Select_lead.Meta_Ad_ID__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Meta_Adset_ID__c</field>
-            <value>
-                <elementReference>Select_lead.Meta_Adset_ID__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Meta_Campaign_ID__c</field>
-            <value>
-                <elementReference>Select_lead.Meta_Campaign_ID__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Name</field>
             <value>
                 <elementReference>transactionName</elementReference>
@@ -403,24 +364,6 @@
             <field>RecordTypeId</field>
             <value>
                 <stringValue>012AJ0000004InLYAU</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Referral_Source__c</field>
-            <value>
-                <elementReference>Select_lead.Referral_Source__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Referrer__c</field>
-            <value>
-                <elementReference>Select_lead.Referrer__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Source_URL__c</field>
-            <value>
-                <elementReference>Select_lead.Source_URL__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -450,28 +393,6 @@
         <object>Transaction__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>Get_Fresh_Converted_Lead</name>
-        <label>Get Fresh Converted Lead</label>
-        <locationX>446</locationX>
-        <locationY>1286</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Update_Transaction_Webinar_Date</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Lead</object>
-        <queriedFields>Webinar_Date__c</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>Select_lead</name>
         <label>Select lead</label>
@@ -581,7 +502,7 @@
         <locationX>446</locationX>
         <locationY>1232</locationY>
         <connector>
-            <targetReference>Get_Fresh_Converted_Lead</targetReference>
+            <targetReference>Update_Transaction_Webinar_Date</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -628,7 +549,7 @@
         <inputAssignments>
             <field>Webinar_Date__c</field>
             <value>
-                <elementReference>Get_Fresh_Converted_Lead.Webinar_Date__c</elementReference>
+                <elementReference>Select_lead.Webinar_Date__c</elementReference>
             </value>
         </inputAssignments>
         <object>Transaction__c</object>
@@ -712,6 +633,27 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>Conversion_Blocked</name>
+        <label>Conversion Blocked</label>
+        <locationX>930</locationX>
+        <locationY>1030</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Conversion_Blocked_Message</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;This Lead cannot be converted yet.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Unable to convert to Transaction with outstanding Pre-Approval Conditions and Documents. All conditions must be cleared and documents decisioned before a Lead can be converted.&lt;/p&gt;&lt;p&gt;Open the Pre-Approval Conditions tab, decision every uploaded document, and clear the remaining conditions. Then convert again.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Conversion_Blocked_Detail</name>
+            <fieldText>&lt;p&gt;&lt;small&gt;If every condition is already cleared, something else stopped the conversion. The details are here: {!$Flow.FaultMessage}&lt;/small&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
         <locationX>606</locationX>
         <locationY>0</locationY>
@@ -719,7 +661,7 @@
             <targetReference>Select_lead</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>accountId</name>
         <dataType>String</dataType>

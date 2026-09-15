@@ -7,6 +7,9 @@ import removePendingDocument from '@salesforce/apex/LeadDocumentPortalController
 // each file and sends it as base64 to Apex, which writes it in system mode. A plain input plus
 // drag-and-drop handlers replaces the component entirely.
 const MAX_FILE_BYTES = 3500000;
+// A phone that offers a size when sharing produces 320x240 on Small and 640x480 on Medium.
+// Either is unreadable as a paystub; Large is 1280x960 and is fine, so the line sits between.
+const MIN_READABLE_EDGE = 1000;
 
 export default class LeadBorrowerPortalDocumentRow extends LightningElement {
     @api leadId;
@@ -19,6 +22,7 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
     uploadProgress = '';
     justUploaded = false;
     localError = '';
+    lowResWarning = '';
 
     @api
     get request() {
@@ -147,6 +151,10 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         return this.justUploaded && !this.isUploading;
     }
 
+    get hasLowResWarning() {
+        return Boolean(this.lowResWarning);
+    }
+
     get hasLocalError() {
         return Boolean(this.localError);
     }
@@ -206,12 +214,24 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         }
 
         this.localError = '';
+        this.lowResWarning = '';
         this.justUploaded = false;
 
         const oversized = files.filter(file => file.size > MAX_FILE_BYTES);
         if (oversized.length) {
             this.localError = `${oversized[0].name} is larger than 3.5 MB. Please upload a smaller file, or email it to your loan team.`;
             return;
+        }
+
+        // Measured before anything is sent, so the borrower is told about a thumbnail while the
+        // photo is still in front of them rather than after the loan team gives up on it.
+        const tooSmall = [];
+        for (const file of files) {
+            // eslint-disable-next-line no-await-in-loop
+            const size = await this.imageDimensions(file);
+            if (size && Math.max(size.width, size.height) < MIN_READABLE_EDGE) {
+                tooSmall.push({ name: file.name, ...size });
+            }
         }
 
         this.isUploading = true;
@@ -248,6 +268,9 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             }
 
             this.justUploaded = true;
+            // Said after the upload rather than instead of it: the file is theirs to replace,
+            // and a small photo is still better than no photo while they find a better one.
+            this.lowResWarning = this.describeSmallImages(tooSmall);
             // Nothing is sent to the lead team here. The files sit in the basket until the
             // borrower submits, so one sitting produces one notification rather than one per
             // condition they touch.
@@ -259,6 +282,41 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             this.isUploading = false;
             this.uploadProgress = '';
         }
+    }
+
+    /** Pixel size of an image the browser can decode, or null for anything else. */
+    imageDimensions(file) {
+        if (!String(file.type || '').startsWith('image/')) {
+            return Promise.resolve(null);
+        }
+        const objectUrl = URL.createObjectURL(file);
+        return new Promise(resolve => {
+            const probe = new Image();
+            // A format this browser cannot decode - HEIC on most desktops - measures as nothing
+            // rather than as a small photo, so it never triggers the warning.
+            probe.onload = () => {
+                resolve({ width: probe.naturalWidth, height: probe.naturalHeight });
+                URL.revokeObjectURL(objectUrl);
+            };
+            probe.onerror = () => {
+                resolve(null);
+                URL.revokeObjectURL(objectUrl);
+            };
+            probe.src = objectUrl;
+        });
+    }
+
+    describeSmallImages(smallImages) {
+        if (!smallImages.length) {
+            return '';
+        }
+        const first = smallImages[0];
+        const measured = `${first.name} came through at ${first.width} x ${first.height} pixels`;
+        const subject = smallImages.length === 1
+            ? measured
+            : `${measured}, and ${smallImages.length - 1} more are about the same`;
+        return `${subject}. That is usually too small for us to read. If your phone asked you to`
+            + ' pick a size when you attached it, choose Actual Size or Large and add it again.';
     }
 
     readAsBase64(file) {

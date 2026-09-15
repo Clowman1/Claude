@@ -163,6 +163,18 @@
     font-weight: 700;
 }
 
+/* Not an error: the file was accepted. It is a nudge to send a better one. */
+.upload-warning {
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: #8a5a00;
+    background: #fff8ec;
+    border: 1px solid #f2dcb6;
+    border-radius: 6px;
+}
+
 .upload-error {
     margin-top: 0.4rem;
     font-size: 0.8rem;

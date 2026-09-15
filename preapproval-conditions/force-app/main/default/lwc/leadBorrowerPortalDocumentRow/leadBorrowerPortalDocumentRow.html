@@ -48,6 +48,9 @@
                     </template>
                 </ul>
             </template>
+            <template lwc:if={hasLowResWarning}>
+                <div class="upload-warning" role="status">{lowResWarning}</div>
+            </template>
             <template lwc:if={hasLocalError}>
                 <div class="upload-error" role="alert">{localError}</div>
             </template>
@@ -105,6 +108,9 @@
                             </li>
                         </template>
                     </ul>
+                </template>
+                <template lwc:if={hasLowResWarning}>
+                    <div class="upload-warning" role="status">{lowResWarning}</div>
                 </template>
                 <template lwc:if={hasLocalError}>
                     <div class="upload-error" role="alert">{localError}</div>
