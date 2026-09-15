@@ -216,7 +216,7 @@
                             <div class="pru-preview-stage">
                                 <template if:true={hasActiveDocSelected}>
                                     <div class="pru-preview-frame-wrap">
-                                        <template if:true={activeDocumentIsImage}>
+                                        <template if:true={showRenditionPreview}>
                                             <div class="pru-preview-image-wrap">
                                                 <img
                                                     class="pru-preview-image"
@@ -224,13 +224,29 @@
                                                     alt={activeDocumentPreviewTitle}
                                                 />
                                             </div>
+                                            <button
+                                                type="button"
+                                                class="pru-open-full"
+                                                onclick={handleOpenFullDocument}
+                                            >Open full document</button>
                                         </template>
-                                        <template if:false={activeDocumentIsImage}>
-                                            <iframe
-                                                class="pru-preview-frame"
-                                                src={activeDocumentPreviewUrl}
-                                                title={activeDocumentPreviewTitle}
-                                            ></iframe>
+                                        <template if:false={showRenditionPreview}>
+                                            <template if:true={activeDocumentIsImage}>
+                                                <div class="pru-preview-image-wrap">
+                                                    <img
+                                                        class="pru-preview-image"
+                                                        src={activeDocumentPreviewUrl}
+                                                        alt={activeDocumentPreviewTitle}
+                                                    />
+                                                </div>
+                                            </template>
+                                            <template if:false={activeDocumentIsImage}>
+                                                <iframe
+                                                    class="pru-preview-frame"
+                                                    src={activeDocumentPreviewUrl}
+                                                    title={activeDocumentPreviewTitle}
+                                                ></iframe>
+                                            </template>
                                         </template>
                                         <div class="pru-preview-frame-footer">
                                             <p class="pru-preview-card-name">{activeDocumentLabel}</p>
@@ -306,13 +322,17 @@
                                                 <p class="pru-help-text">A reason is required when emailing the borrower.</p>
                                             </template>
                                         </div>
-                                        <div>
-                                            <label class="pru-input-label">Updated condition description</label>
-                                            <textarea rows="3" class="pru-textarea" value={updatedConditionDescription}
-                                                placeholder="Update what the borrower sees for this condition..."
-                                                oninput={handleConditionDescriptionChange}></textarea>
-                                            <p class="pru-help-text">This updates the condition description shown to the borrower.</p>
-                                        </div>
+                                        <!-- Rewriting what we are asking a borrower for is drafting work, and a phone is where
+                                             that gets done badly. The reason above already tells them what was wrong. -->
+                                        <template if:false={isPhone}>
+                                            <div>
+                                                <label class="pru-input-label">Updated condition description</label>
+                                                <textarea rows="3" class="pru-textarea" value={updatedConditionDescription}
+                                                    placeholder="Update what the borrower sees for this condition..."
+                                                    oninput={handleConditionDescriptionChange}></textarea>
+                                                <p class="pru-help-text">This updates the condition description shown to the borrower.</p>
+                                            </div>
+                                        </template>
                                         <p class="pru-help-text">{rejectingHelpText}</p>
                                         <div class="pru-button-grid">
                                             <button type="button" class="pru-btn pru-btn-secondary" onclick={handleCancelReject}>Cancel</button>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomNotificationType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customNotifTypeName>Lead_Documents_Submitted</customNotifTypeName>
+    <desktop>false</desktop>
+    <description>Borrower submitted documents for review. Mobile only - the lead team already receives an email at the desk.</description>
+    <masterLabel>Documents Submitted for Review</masterLabel>
+    <mobile>true</mobile>
+</CustomNotificationType>

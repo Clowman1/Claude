@@ -815,3 +815,69 @@
 .pru-btn-cancel-link:hover {
     color: #142342;
 }
+
+/* The full-document hand-off. Only ever rendered on a phone, where the inline image is a
+   glance rather than a read. */
+.pru-open-full {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-top: 1px solid var(--slate-200);
+    background: #f8fafc;
+    color: #1c4587;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.pru-open-full:active { background: #eef4ff; }
+
+/* Phone. The 1024px rules above already stack the modal; these are the pieces that still
+   assume a mouse and a wide window. */
+@media (max-width: 600px) {
+    /* Two decision buttons side by side leave ~150px each, which truncates "Not Needed". */
+    .pru-button-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 3rem of side padding is a tenth of the screen. */
+    .pru-header-inner,
+    .pru-main {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .pru-actions-section {
+        padding: 1rem 0.75rem;
+    }
+
+    /* Anchored to the right of its trigger with no viewport clamp, so it runs off the edge
+       whenever the trigger sits left of centre. */
+    .pru-popover {
+        position: fixed;
+        left: 0.75rem;
+        right: 0.75rem;
+        width: auto;
+    }
+
+    /* 24rem of preview pushes the decision buttons off the bottom of the screen. The
+       rendition is a glance; the full read happens in the native viewer. */
+    .pru-preview-frame,
+    .pru-preview-image-wrap {
+        min-height: 12rem;
+    }
+
+    .pru-preview-stage {
+        padding: 0.5rem;
+    }
+
+    .pru-modal-backdrop {
+        padding: 0;
+    }
+
+    .pru-modal {
+        border-radius: 0;
+    }
+}

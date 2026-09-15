@@ -9,4 +9,14 @@
         <target>lightning__HomePage</target>
         <target>lightning__UtilityBar</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <property
+                name="leadConditionsOnly"
+                type="Boolean"
+                default="false"
+                label="Pre-approval conditions only"
+                description="Hide Transaction conditions. Used by the phone app, where Loan Officers only work pre-approval." />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

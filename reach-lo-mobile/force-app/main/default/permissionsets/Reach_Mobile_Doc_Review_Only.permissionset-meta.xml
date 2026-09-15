@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Reach Mobile - Doc Review Only</label>
+    <description>The phone app for someone who reviews documents but carries no pipeline. Grants the app and the Doc Review tab only - the four Loan Officer lists filter on Loan_Officer__c or OwnerId, so they would be permanently empty for a Loan Partner.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <applicationVisibilities>
+        <application>Reach_Mobile_LO</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <tabSettings>
+        <tab>LO_Mobile_Doc_Review</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

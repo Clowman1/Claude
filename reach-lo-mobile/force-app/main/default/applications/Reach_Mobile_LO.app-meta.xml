@@ -16,6 +16,7 @@
     <label>Reach Mobile - LO</label>
     <navType>Standard</navType>
     <tabs>LO_Mobile_Dashboard</tabs>
+    <tabs>LO_Mobile_Doc_Review</tabs>
     <tabs>LO_Mobile_Active_Transactions</tabs>
     <tabs>LO_Mobile_Pre_Approved_Leads</tabs>
     <tabs>LO_Mobile_Closed_Transactions</tabs>

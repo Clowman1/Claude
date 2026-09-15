@@ -804,6 +804,60 @@ public without sharing class LeadDocumentPortalService {
         if (!Test.isRunningTest()) {
             Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ email });
         }
+
+        pushSubmissionNotification(leadRecord, fileTotal, submitterName);
+    }
+
+    /**
+     * The phone half of the same news.
+     *
+     * The email covers the desk; this covers the road. A mobile nav tab cannot carry a count
+     * badge, so without a push nothing ever tells a Loan Officer that something is waiting.
+     *
+     * Wrapped end to end on purpose: a borrower pressing Submit must never fail because a
+     * notification could not be delivered.
+     */
+    private static void pushSubmissionNotification(Lead leadRecord, Integer fileTotal, String submitterName) {
+        try {
+            Set<Id> recipientIds = collectLeadTeamUserIds(leadRecord);
+            if (recipientIds.isEmpty()) {
+                return;
+            }
+            // send() takes the ids as strings, not as a Set<Id>.
+            Set<String> recipients = new Set<String>();
+            for (Id recipientId : recipientIds) {
+                recipients.add(String.valueOf(recipientId));
+            }
+
+            List<CustomNotificationType> types = [
+                SELECT Id FROM CustomNotificationType
+                WHERE DeveloperName = 'Lead_Documents_Submitted'
+                LIMIT 1
+            ];
+            if (types.isEmpty()) {
+                return;
+            }
+
+            Messaging.CustomNotification notification = new Messaging.CustomNotification();
+            notification.setNotificationTypeId(types[0].Id);
+            notification.setTitle(
+                submitterName + ' submitted ' + fileTotal + (fileTotal == 1 ? ' document' : ' documents')
+            );
+            notification.setBody('Tap to review and decision them.');
+            // Targets the Lead rather than the review tab: that tab exists only in the phone app,
+            // and a notification that lands nowhere on desktop is worse than one that lands on
+            // the file itself.
+            notification.setTargetId(leadRecord.Id);
+
+            if (!Test.isRunningTest()) {
+                notification.send(recipients);
+            }
+        } catch (Exception notificationFailure) {
+            System.debug(
+                LoggingLevel.WARN,
+                'Submission notification failed for Lead ' + leadRecord.Id + ': ' + notificationFailure.getMessage()
+            );
+        }
     }
 
     /** Kept so callers that do not know who uploaded still compile; falls back to the Lead name. */
@@ -925,7 +979,8 @@ public without sharing class LeadDocumentPortalService {
         }
     }
 
-    private static List<String> collectLeadTeamEmails(Lead leadRecord) {
+    /** The Lead Owner and the Loan Partner, minus the integration user. */
+    private static Set<Id> collectLeadTeamUserIds(Lead leadRecord) {
         Set<Id> userIds = new Set<Id>();
         if (leadRecord.OwnerId != null && String.valueOf(leadRecord.OwnerId).startsWith('005')) {
             userIds.add(leadRecord.OwnerId);
@@ -934,6 +989,11 @@ public without sharing class LeadDocumentPortalService {
         if (loanPartnerId != null) {
             userIds.add(loanPartnerId);
         }
+        return userIds;
+    }
+
+    private static List<String> collectLeadTeamEmails(Lead leadRecord) {
+        Set<Id> userIds = collectLeadTeamUserIds(leadRecord);
         if (userIds.isEmpty()) {
             return new List<String>();
         }

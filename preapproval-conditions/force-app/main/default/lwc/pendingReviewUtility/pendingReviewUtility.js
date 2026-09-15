@@ -1,5 +1,6 @@
-import { LightningElement, track, wire } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
+import FORM_FACTOR from '@salesforce/client/formFactor';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -57,12 +58,16 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     @track lastRejectEmailSent;
     @track hasRejectedDocumentInSession = false;
 
+    // Set by the phone app. Loan Officers do not work Transaction conditions - those belong to
+    // Processing - so the mobile tab shows pre-approval work only.
+    @api leadConditionsOnly = false;
+
     @wire(getQueue)
     wiredGetQueue(result) {
         this.wiredQueueResult = result;
         this.isLoading = !this.hasLoadedQueue && !this.isAutoRefreshing;
         if (result.data) {
-            this.loans = this.normalizeLoans(result.data);
+            this.loans = this.normalizeLoans(this.applyScope(result.data));
             this.hasLoadedQueue = true;
             this.isLoading = false;
             this.error = undefined;
@@ -141,6 +146,14 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
             return refreshApex(this.wiredQueueResult);
         }
         return Promise.resolve();
+    }
+
+    // A loan is either a Lead or a Transaction, never both, so the first condition settles it.
+    applyScope(rawLoans) {
+        if (!this.leadConditionsOnly) {
+            return rawLoans;
+        }
+        return (rawLoans || []).filter(loan => loan.conditions?.[0]?.isPreApproval);
     }
 
     normalizeLoans(rawLoans) {
@@ -940,6 +953,12 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     handleDownloadActiveDoc() {
         const doc = this.activeDocuments.find((d) => d.id === this.activeDocId);
         if (!doc) return;
+        // A phone cannot save a download URL out of the webview - the tap simply does nothing -
+        // so the native preview, which carries its own share and save, stands in for it.
+        if (this.isPhone) {
+            this.handleOpenFullDocument();
+            return;
+        }
         const url = '/sfc/servlet.shepherd/document/download/' + doc.id;
         window.open(url, '_blank');
     }
@@ -1044,7 +1063,41 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
     get activeDocumentPreviewUrl() {
         const d = this.activeDocuments.find((x) => x.id === this.activeDocId);
         if (!d || !d.contentVersionId) return '';
+        // A phone gets the rendered preview image instead. The download URL below is what a
+        // desktop iframe renders happily, and what the mobile webview refuses outright - leaving
+        // a blank frame and no error.
+        if (this.isPhone) {
+            return '/sfc/servlet.shepherd/version/renditionDownload?rendition=THUMB720BY480&versionId='
+                + d.contentVersionId;
+        }
         return '/sfc/servlet.shepherd/version/download/' + d.contentVersionId;
+    }
+
+    get isPhone() {
+        return FORM_FACTOR === 'Small';
+    }
+
+    get showRenditionPreview() {
+        return this.isPhone && this.hasActiveDocSelected;
+    }
+
+    /**
+     * Hands the document to the native file preview.
+     *
+     * The rendition above is a glance - enough to recognise a paystub, not to read one. This is
+     * the only viewer in the mobile app that reliably renders a PDF and lets you pinch-zoom a
+     * photograph. The reviewer is still behind it when they come back.
+     */
+    handleOpenFullDocument() {
+        const doc = this.activeDocuments.find((d) => d.id === this.activeDocId);
+        if (!doc) {
+            return;
+        }
+        this[NavigationMixin.Navigate]({
+            type: 'standard__namedPage',
+            attributes: { pageName: 'filePreview' },
+            state: { selectedRecordId: doc.id }
+        });
     }
     get activeDocumentIsImage() {
         const d = this.activeDocuments.find((x) => x.id === this.activeDocId);
