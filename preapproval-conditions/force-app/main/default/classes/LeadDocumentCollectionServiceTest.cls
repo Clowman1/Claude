@@ -1067,6 +1067,57 @@ private class LeadDocumentCollectionServiceTest {
         ]);
     }
 
+    // A document that was renamed and filed on the Lead has to arrive on the Transaction under
+    // that same label and that same folder. Both live on the file itself rather than on the link,
+    // so this is really a guard against anyone later "helpfully" restamping them.
+    @IsTest
+    static void carryForwardKeepsTheLabelAndTheFolder() {
+        Transaction__c transactionRecord = createTransaction('Label Loan', 'LD-LABEL');
+        Lead leadRecord = createLead('label-carry@example.com');
+        leadRecord.Converted_Transaction_ID__c = transactionRecord.Id;
+        update leadRecord;
+        Lead_Document_Request__c requestRecord = createRequest(leadRecord.Id, 'Bank Statement');
+
+        ContentVersion version = createContentVersion('scan-0417.pdf');
+        // The Loan Officer renamed it and moved it into Credit while it was still on the Lead.
+        update new ContentVersion(
+            Id = version.Id,
+            Title = 'Ashwin - Photo ID',
+            Folder__c = 'Credit'
+        );
+        Id contentDocumentId = [
+            SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id
+        ].ContentDocumentId;
+        insert new ContentDocumentLink(
+            ContentDocumentId = contentDocumentId,
+            LinkedEntityId = requestRecord.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+
+        Test.startTest();
+        LeadDocumentCarryForwardService.carryForward(new Set<Id>{ leadRecord.Id });
+        Test.stopTest();
+
+        ContentVersion carried = [
+            SELECT Title, Folder__c FROM ContentVersion WHERE Id = :version.Id
+        ];
+        System.assertEquals(
+            'Ashwin - Photo ID',
+            carried.Title,
+            'The label the Loan Officer gave it on the Lead is the label on the Transaction.'
+        );
+        System.assertEquals(
+            'Credit',
+            carried.Folder__c,
+            'And it stays in the folder it was filed into, rather than being refiled on arrival.'
+        );
+        System.assertEquals(1, [
+            SELECT COUNT() FROM ContentDocumentLink
+            WHERE LinkedEntityId = :transactionRecord.Id AND ContentDocumentId = :contentDocumentId
+        ], 'The file reached the Transaction.');
+    }
+
     @IsTest
     static void carryForwardFallsBackForPackageBucketType() {
         Transaction__c transactionRecord = createTransaction('Fallback Type Loan', 'LD-FALLBACK');
