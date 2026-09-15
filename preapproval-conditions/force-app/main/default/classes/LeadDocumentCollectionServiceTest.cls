@@ -197,6 +197,56 @@ private class LeadDocumentCollectionServiceTest {
         );
     }
 
+    // A refinance borrower is asked for documents by a different template, but it is the same
+    // moment in the file: the first ask moves the Lead to Documents Requested either way.
+    @IsTest
+    static void theRefinanceTemplateAlsoMovesTheStatusOnce() {
+        Lead leadRecord = createLead('refi-status@example.com');
+        createRequest(leadRecord.Id, 'Mortgage Statement');
+
+        Test.startTest();
+        LeadDocumentRequestService.sendEditedRequestEmail(
+            leadRecord.Id,
+            'Items Needed for your Refinance',
+            '<p>Here is what we need.</p>',
+            null,
+            null,
+            'Lead_Refinance_Items_Needed'
+        );
+        Test.stopTest();
+
+        Lead afterSend = [
+            SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals('Documents Requested', afterSend.Status);
+        System.assertNotEquals(null, afterSend.Initial_Docs_Requested_Date__c);
+
+        // Same guarantee the purchase template has: a resend must not drag a Lead back a stage.
+        update new Lead(Id = leadRecord.Id, Status = 'Working');
+        LeadDocumentRequestService.sendEditedRequestEmail(
+            leadRecord.Id,
+            'Items Needed for your Refinance',
+            '<p>Here it is again.</p>',
+            null,
+            null,
+            'Lead_Refinance_Items_Needed'
+        );
+
+        Lead afterResend = [
+            SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals(
+            'Working',
+            afterResend.Status,
+            'A resend leaves the Lead where the team has since moved it.'
+        );
+        System.assertEquals(
+            afterSend.Initial_Docs_Requested_Date__c,
+            afterResend.Initial_Docs_Requested_Date__c,
+            'And the stamp still records the first ask, not the latest.'
+        );
+    }
+
     @IsTest
     static void followUpTemplateLeavesTheLeadStatusAlone() {
         Lead leadRecord = createLead('status-followup@example.com');

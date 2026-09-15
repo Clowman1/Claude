@@ -1131,16 +1131,21 @@ public with sharing class LeadDocumentRequestService {
         return recentSends.isEmpty() ? null : recentSends[0].CreatedDate;
     }
 
-    // The first Pre-Approval Docs Needed email moves the Lead to Documents Requested. Only the
-    // first: a Lead that has since reached Pre-Approval must not be dragged back a stage because
-    // someone resent the request, and the follow-up template never touches status at all.
-    // Initial_Docs_Requested_Date__c exists purely to make "first" detectable, rather than
-    // inferring it from a status the Lead may have already moved past.
+    // The first request for documents moves the Lead to Documents Requested, whether it went out
+    // as the purchase template or the refinance one: both are the moment the borrower was first
+    // asked for anything. Only the first: a Lead that has since reached Pre-Approval must not be
+    // dragged back a stage because someone resent the request, and the follow-up template never
+    // touches status at all. Initial_Docs_Requested_Date__c exists purely to make "first"
+    // detectable, rather than inferring it from a status the Lead may have already moved past.
     private static final String DOCS_REQUESTED_STATUS = 'Documents Requested';
+    private static final Set<String> INITIAL_REQUEST_TEMPLATES = new Set<String>{
+        EMAIL_TEMPLATE_DEVELOPER_NAME,
+        REFINANCE_TEMPLATE_DEVELOPER_NAME
+    };
 
     @TestVisible
     private static void stampInitialDocsRequested(Lead leadRecord, String templateDeveloperName) {
-        if (leadRecord == null || templateDeveloperName != EMAIL_TEMPLATE_DEVELOPER_NAME) {
+        if (leadRecord == null || !INITIAL_REQUEST_TEMPLATES.contains(templateDeveloperName)) {
             return;
         }
         if (!hasLeadField('Initial_Docs_Requested_Date__c')) {
