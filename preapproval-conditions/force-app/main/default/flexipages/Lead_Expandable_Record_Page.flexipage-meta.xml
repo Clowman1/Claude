@@ -61,16 +61,6 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>LendwizeIframe</componentName>
-                <identifier>c_LendwizeIframe</identifier>
-            </componentInstance>
-        </itemInstances>
-        <name>Facet-3a7542ad-3de7-44d1-86cd-2aa848fa0059</name>
-        <type>Facet</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
                 <componentName>EnhancedNotes</componentName>
                 <identifier>c_EnhancedNotes</identifier>
             </componentInstance>
@@ -167,20 +157,6 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:tab</componentName>
                 <identifier>flexipage_tab2</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentInstanceProperties>
-                    <name>body</name>
-                    <value>Facet-3a7542ad-3de7-44d1-86cd-2aa848fa0059</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>title</name>
-                    <value>ARIVE</value>
-                </componentInstanceProperties>
-                <componentName>flexipage:tab</componentName>
-                <identifier>flexipage_tab3</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
@@ -343,6 +319,12 @@
             <componentInstance>
                 <componentName>leadRecordHero</componentName>
                 <identifier>leadRecordHero</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>borrowerPanel</componentName>
+                <identifier>borrowerPanel</identifier>
             </componentInstance>
         </itemInstances>
         <name>header</name>

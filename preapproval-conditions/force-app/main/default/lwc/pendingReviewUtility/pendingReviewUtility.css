@@ -251,9 +251,11 @@
     border-radius: 0.75rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     width: 100%;
-    /* Reading the document is the job, so the modal takes the screen it is given. */
-    max-width: min(96vw, 1800px);
-    height: 96vh;
+    /* Reading the document is the job, so the modal takes whatever it is given. 100% rather
+       than a vh figure because this renders inside the utility panel, which is shorter than
+       the window: a viewport height would simply overflow the panel and be clipped. */
+    max-width: min(100%, 1800px);
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>cardTitle</name>
+                    <value>Active Leads</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>iconName</name>
+                    <value>standard:lead</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mode</name>
+                    <value>active</value>
+                </componentInstanceProperties>
+                <componentName>loanOfficerLeads</componentName>
+                <identifier>dash_leads</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>cardTitle</name>
+                    <value>Active Transactions</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>iconName</name>
+                    <value>standard:opportunity</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>mode</name>
+                    <value>active</value>
+                </componentInstanceProperties>
+                <componentName>loanOfficerTransactions</componentName>
+                <identifier>dash_txns</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>LO Dashboard</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

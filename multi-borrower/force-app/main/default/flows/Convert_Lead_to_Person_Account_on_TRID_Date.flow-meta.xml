@@ -10,6 +10,9 @@
         <connector>
             <targetReference>Create_Transaction</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Notify_Owner_Conversion_Blocked</targetReference>
+        </faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordIds</name>
@@ -22,6 +25,39 @@
             <assignToReference>accountId</assignToReference>
             <name>output</name>
         </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Notify_Owner_Conversion_Blocked</name>
+        <label>Notify Owner Conversion Blocked</label>
+        <locationX>930</locationX>
+        <locationY>323</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.Owner:User.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Conversion_Blocked_Subject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>Conversion_Blocked_Body</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>DefaultWorkflowUser</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <assignments>
@@ -426,6 +462,25 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <textTemplates>
+        <name>Conversion_Blocked_Body</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>{!$Record.Name} reached Loan Setup in Arive, but could not be converted to a Transaction.
+
+This is almost always because Pre-Approval Conditions are still open on the Lead. Open the Lead,
+go to the Pre-Approval Conditions tab, decision any uploaded documents, and clear or remove the
+conditions that are left. The file will convert on the next update from Arive, or you can convert
+it yourself once the conditions are finished.
+
+Nothing else was lost - the update from Arive saved normally.
+
+Details: {!$Flow.FaultMessage}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Conversion_Blocked_Subject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Action needed: {!$Record.Name} could not convert to a Transaction</text>
+    </textTemplates>
     <triggerOrder>1300</triggerOrder>
     <variables>
         <name>accountId</name>
