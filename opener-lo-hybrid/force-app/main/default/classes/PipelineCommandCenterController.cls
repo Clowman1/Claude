@@ -108,6 +108,13 @@ public with sharing class PipelineCommandCenterController {
     };
     private static final String BRANDON_BROTSKY_USERNAME = 'bbrotsky@reachhomeloans.com';
     private static final String ZACHARY_FRITZ_USERNAME = 'zfritz@reachhomeloans.com';
+    private static final String MEGAN_STRAIGHT_USERNAME = 'mstraight@reachhomeloans.com';
+    private static final String JOE_OLMSTED_USERNAME = 'jolmsted@reachhomeloans.com';
+    // Ben is temporarily covering Megan's Pre-Approval Follow Ups queue. He gets a read-alike copy
+    // of her tab and his logged calls satisfy the cadence, so both lists stay identical.
+    // Remove BEN_COVERING_FOR_MEGAN (and the tab it adds to Ben's Home) when the coverage ends.
+    private static final String BEN_BONDAREVSKY_USERNAME = 'benjamin@reachhomeloans.com';
+    private static final Boolean BEN_COVERING_FOR_MEGAN = true;
     private static final List<String> PAST_CLIENT_VIEW_USERNAMES = new List<String>{
         'benjamin@reachhomeloans.com'
     };
@@ -448,6 +455,7 @@ public with sharing class PipelineCommandCenterController {
             data.pipelineTabs = hybridTabs;
         }
         applyLatestProcessorNotesToTransactionTabs(data.pipelineTabs);
+        hydratePipelineRowCatalogFields(data.pipelineTabs, data.pipelineRows);
         data.quickButtons = (ceoPipeline || pastClientPipeline)
             ? new List<QuickButton>()
             : (nickleyRealtorHost ? nickleyRealtorHostQuickButtons() : getUserQuickButtons());
@@ -994,11 +1002,12 @@ public with sharing class PipelineCommandCenterController {
         }
         Map<Id, Datetime> lastLeadDateByAccountId = nickleyRealtorLastLeadSentDates(accountIds);
         Map<Id, EventCell> nextEventByAccountId = nickleyRealtorNextEvents(accountIds);
+        Map<String, Id> accountIdByPhoneDigits = nickleyRealtorAccountIdsByPhoneDigits(realtorAccounts);
         Map<Id, Datetime> lastCallByAccountId = new Map<Id, Datetime>();
         Map<Id, Datetime> lastTextByAccountId = new Map<Id, Datetime>();
         try {
-            lastCallByAccountId = nickleyRealtorLastRingCentralActivityByViewer(accountIds, accountIdByPersonContactId, 'Call');
-            lastTextByAccountId = nickleyRealtorLastRingCentralActivityByViewer(accountIds, accountIdByPersonContactId, 'Sms');
+            lastCallByAccountId = nickleyRealtorLastRingCentralActivityByViewer(accountIds, accountIdByPersonContactId, accountIdByPhoneDigits, 'Call');
+            lastTextByAccountId = nickleyRealtorLastRingCentralActivityByViewer(accountIds, accountIdByPersonContactId, accountIdByPhoneDigits, 'Sms');
         } catch (Exception ignoredActivityLookupError) {
             // The assigned Realtor list must remain available even if one viewer's RingCentral
             // activity data contains an unexpected record. Missing history falls into red review.
@@ -1109,12 +1118,58 @@ public with sharing class PipelineCommandCenterController {
         return nextEventByAccountId;
     }
 
+    // Last 10 digits of every scoped realtor's phone, so a RingCentral Task can be attributed by the
+    // number actually dialled. A number shared by two realtors in the same list is dropped rather
+    // than guessed -- attributing a call to the wrong realtor is worse than leaving the row blank.
+    private static Map<String, Id> nickleyRealtorAccountIdsByPhoneDigits(List<Account> realtorAccounts) {
+        Map<String, Id> accountIdByPhoneDigits = new Map<String, Id>();
+        Set<String> ambiguousDigits = new Set<String>();
+        if (realtorAccounts == null) {
+            return accountIdByPhoneDigits;
+        }
+        for (Account realtorAccount : realtorAccounts) {
+            for (String phoneValue : new List<String>{ realtorAccount.Phone, realtorAccount.PersonMobilePhone }) {
+                String digits = lastTenPhoneDigits(phoneValue);
+                if (String.isBlank(digits)) {
+                    continue;
+                }
+                Id existingAccountId = accountIdByPhoneDigits.get(digits);
+                if (existingAccountId != null && existingAccountId != realtorAccount.Id) {
+                    ambiguousDigits.add(digits);
+                    continue;
+                }
+                accountIdByPhoneDigits.put(digits, realtorAccount.Id);
+            }
+        }
+        for (String digits : ambiguousDigits) {
+            accountIdByPhoneDigits.remove(digits);
+        }
+        return accountIdByPhoneDigits;
+    }
+
+    private static String lastTenPhoneDigits(String phoneValue) {
+        if (String.isBlank(phoneValue)) {
+            return '';
+        }
+        String digits = phoneValue.replaceAll('[^0-9]', '');
+        return digits.length() < 10 ? '' : digits.substring(digits.length() - 10);
+    }
+
     // RingCentral creates Tasks with its source timestamp and InteractionType populated. Restricting
     // the query to the current user makes these values viewer-specific (for example, Rhett sees only
     // Rhett's calls/texts while Joe sees only Joe's).
+    //
+    // Matching on WhoId/WhatId ALONE loses real activity: RingCentral attributes a number to whichever
+    // record it matched first, so a realtor with a duplicate Person Account -- or whose number also
+    // sits on a Lead -- has their Tasks land off the scoped row, which then renders blank and falsely
+    // red. rcsfl__from_number__c / rcsfl__to_number__c always carry the real number, so a digit match
+    // recovers those, plus Tasks RingCentral never associated to any record at all.
+    // RingCentral writes these two fields in E.164, so the match is an exact indexed IN rather than a
+    // scan of the viewer's history -- the query still returns only Tasks that involve these realtors.
     private static Map<Id, Datetime> nickleyRealtorLastRingCentralActivityByViewer(
         Set<Id> accountIds,
         Map<Id, Id> accountIdByPersonContactId,
+        Map<String, Id> accountIdByPhoneDigits,
         String interactionType
     ) {
         Map<Id, Datetime> activityByAccountId = new Map<Id, Datetime>();
@@ -1125,19 +1180,39 @@ public with sharing class PipelineCommandCenterController {
         Set<Id> personContactIds = accountIdByPersonContactId == null
             ? new Set<Id>()
             : accountIdByPersonContactId.keySet();
+        Map<String, Id> phoneDigitsMap = accountIdByPhoneDigits == null
+            ? new Map<String, Id>()
+            : accountIdByPhoneDigits;
+        Set<String> realtorNumbers = new Set<String>();
+        for (String digits : phoneDigitsMap.keySet()) {
+            realtorNumbers.add('+1' + digits);
+            realtorNumbers.add(digits);
+        }
         for (Task taskRecord : [
-            SELECT WhatId, WhoId, CreatedDate, rcsfl__call_start_time__c
+            SELECT WhatId, WhoId, CreatedDate, rcsfl__call_start_time__c,
+                rcsfl__from_number__c, rcsfl__to_number__c
             FROM Task
-            WHERE (WhatId IN :accountIds OR WhoId IN :personContactIds)
-            AND OwnerId = :currentUserId
+            WHERE OwnerId = :currentUserId
             AND InteractionType__c = :interactionType
             AND rcsfl__call_start_time__c != NULL
+            AND (
+                WhatId IN :accountIds
+                OR WhoId IN :personContactIds
+                OR rcsfl__to_number__c IN :realtorNumbers
+                OR rcsfl__from_number__c IN :realtorNumbers
+            )
             ORDER BY rcsfl__call_start_time__c DESC, CreatedDate DESC
             LIMIT 50000
         ]) {
             Id accountId = accountIds.contains(taskRecord.WhatId)
                 ? taskRecord.WhatId
                 : accountIdByPersonContactId.get(taskRecord.WhoId);
+            if (accountId == null) {
+                accountId = phoneDigitsMap.get(lastTenPhoneDigits(taskRecord.rcsfl__from_number__c));
+            }
+            if (accountId == null) {
+                accountId = phoneDigitsMap.get(lastTenPhoneDigits(taskRecord.rcsfl__to_number__c));
+            }
             if (accountId != null && !activityByAccountId.containsKey(accountId)) {
                 activityByAccountId.put(accountId, taskRecord.rcsfl__call_start_time__c);
             }
@@ -4916,8 +4991,18 @@ public with sharing class PipelineCommandCenterController {
         Map<String, User> assistedUsersByUsername = getAssistedLoanOfficersByUsername();
         Id currentUserId = UserInfo.getUserId();
         List<PipelineTab> tabs = new List<PipelineTab>();
-        tabs.addAll(buildAssistedLoanOfficerTabs(assistedUsersByUsername.get('jolmsted@reachhomeloans.com'), 'joeOlmsted', 'Joe Olmsted'));
-        tabs.addAll(buildAssistedLoanOfficerTabs(assistedUsersByUsername.get('zfritz@reachhomeloans.com'), 'zachFritz', 'Zach Fritz', currentUserId));
+        User joeOlmsted = assistedUsersByUsername.get(JOE_OLMSTED_USERNAME);
+        tabs.addAll(buildAssistedLoanOfficerTabs(joeOlmsted, 'joeOlmsted', 'Joe Olmsted'));
+        tabs.addAll(buildAssistedLoanOfficerTabs(assistedUsersByUsername.get(ZACHARY_FRITZ_USERNAME), 'zachFritz', 'Zach Fritz', currentUserId));
+        if (joeOlmsted != null) {
+            tabs.add(buildPreApprovalFollowUpTab(
+                'joeOlmstedPreApprovalFollowUps',
+                'Pre-Approval Follow Ups',
+                'Joe Olmsted pre-approved leads that are due for a follow-up call: nothing appears until 7 days after pre-approval, then every 6 days through day 30, every 14 days for days 31-60. Calls you log as his Loan Partner count.',
+                new Set<Id>{ joeOlmsted.Id },
+                new Set<Id>{ currentUserId }
+            ));
+        }
         return tabs;
     }
 
@@ -4972,8 +5057,26 @@ public with sharing class PipelineCommandCenterController {
             tabs.add(new PipelineTab('zachFritzActiveTransactions', 'Zach Active Transactions', 'Zachary Fritz transactions where you are the Loan Partner and the file is still active.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(new Set<Id>(), zachUserId, meganUserId, true, 'active', 100)), transactionColumns));
             tabs.add(new PipelineTab('zachFritzClosedThisMonth', 'Zach Transactions Closed this Month', 'Zachary Fritz funded, review, and post-closed files this month where you are the Loan Partner.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(new Set<Id>(), zachUserId, meganUserId, true, 'closedThisMonth', 100)), transactionColumns));
         }
-        tabs.add(buildMeganPreApprovalFollowUpTab(meganUserId, brandonUserId, zachUserId));
+        tabs.add(buildPreApprovalFollowUpTab(
+            'meganPreApprovalFollowUps',
+            'Pre-Approval Follow Ups',
+            PRE_APPROVAL_FOLLOW_UP_CADENCE_SUBTITLE,
+            userIdSet(new List<Id>{ meganUserId, brandonUserId, zachUserId }),
+            meganFollowUpPartnerIds(meganUserId)
+        ));
         return tabs;
+    }
+
+    private static final String PRE_APPROVAL_FOLLOW_UP_CADENCE_SUBTITLE =
+        'Pre-approved leads owned by Megan, Zach, or Brandon that are due for a follow-up call: nothing appears until 7 days after pre-approval, then every 6 days through day 30, every 14 days for days 31-60.';
+
+    // Megan's queue and Ben's covering copy must resolve the same partner set, or the two tabs
+    // would show different lists. Drop the BEN_COVERING_FOR_MEGAN branch when coverage ends.
+    private static Set<Id> meganFollowUpPartnerIds(Id meganUserId) {
+        return userIdSet(new List<Id>{
+            meganUserId,
+            BEN_COVERING_FOR_MEGAN ? activeUserIdByUsername(BEN_BONDAREVSKY_USERNAME) : null
+        });
     }
 
     private static List<PipelineTab> buildPastClientPipelineTabs() {
@@ -5028,6 +5131,23 @@ public with sharing class PipelineCommandCenterController {
             'Brandon Brotsky',
             'Brandon'
         ));
+        // Temporary: Ben is covering Megan's follow-up cadence. Same list, same Pass action.
+        if (BEN_COVERING_FOR_MEGAN) {
+            Id meganUserId = activeUserIdByUsername(MEGAN_STRAIGHT_USERNAME);
+            if (meganUserId != null) {
+                tabs.add(buildPreApprovalFollowUpTab(
+                    'benPreApprovalFollowUpsMegan',
+                    'Pre-Approval Follow Ups (Megan)',
+                    PRE_APPROVAL_FOLLOW_UP_CADENCE_SUBTITLE,
+                    userIdSet(new List<Id>{
+                        meganUserId,
+                        activeUserIdByUsername(BRANDON_BROTSKY_USERNAME),
+                        activeUserIdByUsername(ZACHARY_FRITZ_USERNAME)
+                    }),
+                    meganFollowUpPartnerIds(meganUserId)
+                ));
+            }
+        }
         tabs.add(buildBenAssignedWebinarLeadTab());
         tabs.add(buildRealtorLeadTab('benRealtorMeetingComplete', 'Realtor - Meeting Complete', 'Realtor leads owned by Ben in Meeting Complete status.', 'Meeting Complete'));
         tabs.add(buildRealtorLeadTab('benRealtorActive', 'Realtor - Active', 'Realtor leads owned by Ben in Active status.', 'Active'));
@@ -5127,21 +5247,44 @@ public with sharing class PipelineCommandCenterController {
     // Megan's "Pre-Approval Follow Ups" cadence queue. Leads re-surface on a tightening schedule
     // measured from Pre_Approval_Date__c: every 6 days through day 30, every 14 days for days 31-60.
     // Past day 60 the lead leaves this queue entirely and becomes Ben's aged pre-approval work.
+    //
+    // A freshly pre-approved lead is left alone for its first week: nothing enters the queue until
+    // the pre-approval is MEGAN_FOLLOW_UP_MIN_AGE_DAYS old, and only then do the call-gap rules
+    // start applying. The gate is measured from Pre_Approval_Date__c, the same clock the rest of
+    // the cadence uses -- not from the Lead's CreatedDate.
+    private static final Integer MEGAN_FOLLOW_UP_MIN_AGE_DAYS = 7;
     private static final Integer MEGAN_FOLLOW_UP_EARLY_STAGE_MAX_AGE_DAYS = 30;
     private static final Integer MEGAN_FOLLOW_UP_MAX_AGE_DAYS = 60;
     private static final Integer MEGAN_FOLLOW_UP_EARLY_CALL_GAP_DAYS = 6;
     private static final Integer MEGAN_FOLLOW_UP_LATE_CALL_GAP_DAYS = 14;
 
-    private static PipelineTab buildMeganPreApprovalFollowUpTab(Id meganUserId, Id brandonUserId, Id zachUserId) {
-        List<PipelineRow> rows = buildMeganPreApprovalFollowUpRows(meganUserId, brandonUserId, zachUserId);
+    // The tab key must contain 'PreApprovalFollowUps' -- the LWC keys the Pass action off that.
+    private static PipelineTab buildPreApprovalFollowUpTab(
+        String key,
+        String label,
+        String subtitle,
+        Set<Id> ownerIds,
+        Set<Id> partnerUserIds
+    ) {
         return new PipelineTab(
-            'meganPreApprovalFollowUps',
-            'Pre-Approval Follow Ups',
-            'Pre-approved leads owned by Megan, Zach, or Brandon that are due for a follow-up call: every 6 days through day 30 after pre-approval, every 14 days for days 31-60.',
+            key,
+            label,
+            subtitle,
             'Lead',
-            rows,
+            buildPreApprovalFollowUpRows(ownerIds, partnerUserIds),
             buildMeganPreApprovalFollowUpColumns()
         );
+    }
+
+    private static Id activeUserIdByUsername(String username) {
+        User matchedUser = getActiveUserByUsername(username);
+        return matchedUser == null ? null : matchedUser.Id;
+    }
+
+    private static Set<Id> userIdSet(List<Id> userIds) {
+        Set<Id> ids = new Set<Id>(userIds);
+        ids.remove(null);
+        return ids;
     }
 
     private static List<TableColumn> buildMeganPreApprovalFollowUpColumns() {
@@ -5158,22 +5301,17 @@ public with sharing class PipelineCommandCenterController {
         };
     }
 
-    private static List<PipelineRow> buildMeganPreApprovalFollowUpRows(Id meganUserId, Id brandonUserId, Id zachUserId) {
-        Set<Id> ownerIds = new Set<Id>();
-        if (meganUserId != null) {
-            ownerIds.add(meganUserId);
-        }
-        if (brandonUserId != null) {
-            ownerIds.add(brandonUserId);
-        }
-        if (zachUserId != null) {
-            ownerIds.add(zachUserId);
-        }
-        if (ownerIds.isEmpty() || meganUserId == null) {
+    private static List<PipelineRow> buildPreApprovalFollowUpRows(Set<Id> rawOwnerIds, Set<Id> rawPartnerUserIds) {
+        Set<Id> ownerIds = rawOwnerIds == null ? new Set<Id>() : new Set<Id>(rawOwnerIds);
+        ownerIds.remove(null);
+        Set<Id> partnerUserIds = rawPartnerUserIds == null ? new Set<Id>() : new Set<Id>(rawPartnerUserIds);
+        partnerUserIds.remove(null);
+        if (ownerIds.isEmpty()) {
             return new List<PipelineRow>();
         }
 
         Date oldestPreApprovalDate = Date.today().addDays(-MEGAN_FOLLOW_UP_MAX_AGE_DAYS);
+        Date newestPreApprovalDate = Date.today().addDays(-MEGAN_FOLLOW_UP_MIN_AGE_DAYS);
         List<Lead> preApprovedLeads = [
             SELECT Id,
                 Name,
@@ -5196,6 +5334,7 @@ public with sharing class PipelineCommandCenterController {
             AND Status = 'Pre-Approval'
             AND Pre_Approval_Date__c != null
             AND Pre_Approval_Date__c >= :oldestPreApprovalDate
+            AND Pre_Approval_Date__c <= :newestPreApprovalDate
             ORDER BY Pre_Approval_Date__c ASC, Name ASC
             LIMIT 500
         ];
@@ -5208,13 +5347,13 @@ public with sharing class PipelineCommandCenterController {
         Map<Id, Datetime> lastCallByLeadId = leadLastContactByOwnerOrPartner(
             ownerIdByLeadId,
             relevantTaskOwnerIds,
-            meganUserId,
+            partnerUserIds,
             true
         );
         Map<Id, Datetime> lastSmsByLeadId = leadLastContactByOwnerOrPartner(
             ownerIdByLeadId,
             relevantTaskOwnerIds,
-            meganUserId,
+            partnerUserIds,
             false
         );
 
@@ -5226,7 +5365,7 @@ public with sharing class PipelineCommandCenterController {
                 continue;
             }
             Integer ageInDays = preApprovalDate.daysBetween(today);
-            if (ageInDays < 0 || ageInDays > MEGAN_FOLLOW_UP_MAX_AGE_DAYS) {
+            if (ageInDays < MEGAN_FOLLOW_UP_MIN_AGE_DAYS || ageInDays > MEGAN_FOLLOW_UP_MAX_AGE_DAYS) {
                 continue;
             }
             Integer requiredCallGapDays = ageInDays <= MEGAN_FOLLOW_UP_EARLY_STAGE_MAX_AGE_DAYS
@@ -5252,11 +5391,12 @@ public with sharing class PipelineCommandCenterController {
         return rows;
     }
 
-    // Last call (or SMS) logged on each lead by either that lead's own owner or the loan partner.
+    // Last call (or SMS) logged on each lead by either that lead's own owner or a loan partner
+    // (more than one when someone is temporarily covering the queue).
     private static Map<Id, Datetime> leadLastContactByOwnerOrPartner(
         Map<Id, Id> ownerIdByLeadId,
         Set<Id> taskOwnerIds,
-        Id partnerUserId,
+        Set<Id> partnerUserIds,
         Boolean wantCallTasks
     ) {
         Map<Id, Datetime> lastContactByLeadId = new Map<Id, Datetime>();
@@ -5264,10 +5404,10 @@ public with sharing class PipelineCommandCenterController {
             return lastContactByLeadId;
         }
         Set<Id> leadIds = ownerIdByLeadId.keySet();
+        Set<Id> partners = partnerUserIds == null ? new Set<Id>() : partnerUserIds;
         Set<Id> eligibleTaskOwnerIds = new Set<Id>(taskOwnerIds);
-        if (partnerUserId != null) {
-            eligibleTaskOwnerIds.add(partnerUserId);
-        }
+        eligibleTaskOwnerIds.addAll(partners);
+        eligibleTaskOwnerIds.remove(null);
         for (Task taskRecord : [
             SELECT WhoId, OwnerId, CreatedDate, Subject, Description, TaskSubtype, CallType, InteractionType__c
             FROM Task
@@ -5277,7 +5417,7 @@ public with sharing class PipelineCommandCenterController {
             LIMIT 50000
         ]) {
             Id leadOwnerId = ownerIdByLeadId.get(taskRecord.WhoId);
-            Boolean loggedByOwnerOrPartner = taskRecord.OwnerId == leadOwnerId || taskRecord.OwnerId == partnerUserId;
+            Boolean loggedByOwnerOrPartner = taskRecord.OwnerId == leadOwnerId || partners.contains(taskRecord.OwnerId);
             if (!loggedByOwnerOrPartner) {
                 continue;
             }
@@ -5515,6 +5655,140 @@ public with sharing class PipelineCommandCenterController {
     // The Command Center must reflect the newest note in the Transaction Notes > Notes subtab,
     // even when that note was created outside of the Command Center note action. Processor_Note__c
     // remains useful as a cached field elsewhere, but is not authoritative for this display.
+    // Each tab's own SOQL selects only the fields that tab was designed around, but the column
+    // editor offers every user the whole COMMAND_CENTER_COLUMNS catalog. safeSObjectValue returns
+    // null for a field the tab's query never selected, so a column a user adds himself renders
+    // silently blank (reported against Biz Dev on a Lead tab). Rather than widen 100+ inline
+    // queries and keep them in sync forever, re-read the catalog fields once per object here.
+    //
+    // Only fields that are still null are filled, so a builder that deliberately sets a value
+    // keeps it. displayDate and detail are never hydrated at all: builders overload displayDate
+    // with a tab-specific date, and detail is owned by applyLatestProcessorNotesToTransactionTabs.
+    private static final Integer HYDRATE_MAX_RECORDS_PER_OBJECT = 4000;
+
+    private static void hydratePipelineRowCatalogFields(List<PipelineTab> tabs, List<PipelineRow> looseRows) {
+        Map<Id, List<PipelineRow>> rowsByRecordId = new Map<Id, List<PipelineRow>>();
+        List<List<PipelineRow>> rowGroups = new List<List<PipelineRow>>();
+        if (looseRows != null) {
+            rowGroups.add(looseRows);
+        }
+        if (tabs != null) {
+            for (PipelineTab tab : tabs) {
+                if (tab != null && tab.rows != null) {
+                    rowGroups.add(tab.rows);
+                }
+            }
+        }
+        for (List<PipelineRow> rows : rowGroups) {
+            for (PipelineRow row : rows) {
+                if (row == null || row.id == null) {
+                    continue;
+                }
+                if (!rowsByRecordId.containsKey(row.id)) {
+                    rowsByRecordId.put(row.id, new List<PipelineRow>());
+                }
+                rowsByRecordId.get(row.id).add(row);
+            }
+        }
+        if (rowsByRecordId.isEmpty()) {
+            return;
+        }
+        Set<Id> leadIds = new Set<Id>();
+        Set<Id> transactionIds = new Set<Id>();
+        for (Id recordId : rowsByRecordId.keySet()) {
+            Schema.SObjectType recordType = recordId.getSObjectType();
+            if (recordType == Lead.SObjectType) {
+                if (leadIds.size() < HYDRATE_MAX_RECORDS_PER_OBJECT) {
+                    leadIds.add(recordId);
+                }
+            } else if (recordType == Transaction__c.SObjectType) {
+                if (transactionIds.size() < HYDRATE_MAX_RECORDS_PER_OBJECT) {
+                    transactionIds.add(recordId);
+                }
+            }
+        }
+        if (!leadIds.isEmpty()) {
+            for (Lead leadRecord : [
+                SELECT Id, Name, Status, Phone, Email, CreatedDate, LastActivityDate, LeadSource,
+                    Biz_Dev__c, Loan_Amount__c, Loan_Purpose__c, Loan_Details__c,
+                    Appointment_Date_Time__c, Pre_Approval_Date__c,
+                    Last_Call_Attempt_RingCentral__c, Last_SMS_Attempt_RingCentral__c,
+                    Owner.Name, Loan_Partner__r.Name, Realtor_Buying_Agent__r.Name
+                FROM Lead
+                WHERE Id IN :leadIds
+            ]) {
+                PipelineRow complete = new PipelineRow(leadRecord);
+                for (PipelineRow row : rowsByRecordId.get(leadRecord.Id)) {
+                    fillMissingLeadCatalogFields(row, complete);
+                }
+            }
+        }
+        if (!transactionIds.isEmpty()) {
+            for (Transaction__c transactionRecord : [
+                SELECT Id, Name, Status__c, Biz_Dev__c, Loan_Amount_1st__c, Loan_Purpose__c,
+                    Loan_Type_1st_TD__c, Loan_Commitment_Date__c, Funding_Date__c,
+                    Rate_Lock_Exp_Date__c, Ease_Link__c, Property_Address__c, Property_City__c,
+                    Property_State__c, Last_Processor_RC_SMS__c, Last_Processor_RC_Call__c,
+                    Lender_lookup__r.Name, Loan_Officer__r.Name, Loan_Partner__r.Name,
+                    Processor__r.Name, Owner.Name, Borrower_Name__r.PersonEmail,
+                    Borrower_Name__r.Corrected_Mobile__pc, Borrower_Name__r.PersonMobilePhone,
+                    Borrower_Name__r.Phone, Borrower_Name__r.Corrected_Phone__pc
+                FROM Transaction__c
+                WHERE Id IN :transactionIds
+            ]) {
+                PipelineRow complete = new PipelineRow(transactionRecord);
+                for (PipelineRow row : rowsByRecordId.get(transactionRecord.Id)) {
+                    fillMissingTransactionCatalogFields(row, complete);
+                }
+            }
+        }
+    }
+
+    private static void fillMissingLeadCatalogFields(PipelineRow row, PipelineRow complete) {
+        if (row.name == null) { row.name = complete.name; }
+        if (row.status == null) { row.status = complete.status; }
+        if (row.phone == null) { row.phone = complete.phone; }
+        if (row.email == null) { row.email = complete.email; }
+        if (row.createdDateTime == null) { row.createdDateTime = complete.createdDateTime; }
+        if (row.lastActivityDate == null) { row.lastActivityDate = complete.lastActivityDate; }
+        if (row.leadSource == null) { row.leadSource = complete.leadSource; }
+        if (row.bizDev == null) { row.bizDev = complete.bizDev; }
+        if (row.loanAmount == null) { row.loanAmount = complete.loanAmount; }
+        if (row.loanPurpose == null) { row.loanPurpose = complete.loanPurpose; }
+        if (row.loanDetails == null) { row.loanDetails = complete.loanDetails; }
+        if (row.appointmentDateTime == null) { row.appointmentDateTime = complete.appointmentDateTime; }
+        if (row.preApprovalDate == null) { row.preApprovalDate = complete.preApprovalDate; }
+        if (row.lastLoanOfficerRingCentralCall == null) { row.lastLoanOfficerRingCentralCall = complete.lastLoanOfficerRingCentralCall; }
+        if (row.lastLoanOfficerRingCentralSms == null) { row.lastLoanOfficerRingCentralSms = complete.lastLoanOfficerRingCentralSms; }
+        if (row.ownerName == null) { row.ownerName = complete.ownerName; }
+        if (row.loanOfficerName == null) { row.loanOfficerName = complete.loanOfficerName; }
+        if (row.loanPartnerName == null) { row.loanPartnerName = complete.loanPartnerName; }
+        if (row.realtorBuyingAgentName == null) { row.realtorBuyingAgentName = complete.realtorBuyingAgentName; }
+    }
+
+    private static void fillMissingTransactionCatalogFields(PipelineRow row, PipelineRow complete) {
+        if (row.name == null) { row.name = complete.name; }
+        if (row.status == null) { row.status = complete.status; }
+        if (row.phone == null) { row.phone = complete.phone; }
+        if (row.email == null) { row.email = complete.email; }
+        if (row.bizDev == null) { row.bizDev = complete.bizDev; }
+        if (row.loanAmount == null) { row.loanAmount = complete.loanAmount; }
+        if (row.loanPurpose == null) { row.loanPurpose = complete.loanPurpose; }
+        if (row.loanType == null) { row.loanType = complete.loanType; }
+        if (row.loanCommitmentDate == null) { row.loanCommitmentDate = complete.loanCommitmentDate; }
+        if (row.fundingDate == null) { row.fundingDate = complete.fundingDate; }
+        if (row.rateLockExpDate == null) { row.rateLockExpDate = complete.rateLockExpDate; }
+        if (row.easeLink == null) { row.easeLink = complete.easeLink; }
+        if (row.propertyAddress == null) { row.propertyAddress = complete.propertyAddress; }
+        if (row.lastProcessorSms == null) { row.lastProcessorSms = complete.lastProcessorSms; }
+        if (row.lastProcessorCall == null) { row.lastProcessorCall = complete.lastProcessorCall; }
+        if (row.lenderName == null) { row.lenderName = complete.lenderName; }
+        if (row.loanOfficerName == null) { row.loanOfficerName = complete.loanOfficerName; }
+        if (row.loanPartnerName == null) { row.loanPartnerName = complete.loanPartnerName; }
+        if (row.processorName == null) { row.processorName = complete.processorName; }
+        if (row.ownerName == null) { row.ownerName = complete.ownerName; }
+    }
+
     private static void applyLatestProcessorNotesToTransactionTabs(List<PipelineTab> tabs) {
         if (tabs == null) {
             return;

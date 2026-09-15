@@ -85,6 +85,17 @@
 	outline: none;
 }
 
+.mobile-file-card__thumb {
+	border: 1px solid #d0d5dd;
+	border-radius: 4px;
+	background: #f8fafc;
+	flex-shrink: 0;
+	height: 54px;
+	object-fit: cover;
+	object-position: top center;
+	width: 42px;
+}
+
 .mobile-file-card__identity {
 	align-items: flex-start;
 	display: flex;

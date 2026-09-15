@@ -65,11 +65,13 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 				onclick: '{handlePreview}'
 			}
 		},
-		{label: 'File Type', hideDefaultActions: true, fixedWidth: 75,
-			cellAttributes: {
-				iconName: { fieldName: 'fileTypeIcon' },
-				iconPosition: 'right'
-			},
+		// A picture of the document beats an icon telling you it is a PDF.
+		{label: 'Document', type: 'thumbnail', fieldName: 'thumbnailUrl', hideDefaultActions: true,
+			fixedWidth: 100,
+			typeAttributes: {
+				alt: { fieldName: 'fileNameWithType' },
+				fallbackIcon: { fieldName: 'fileTypeIcon' }
+			}
 		},
 		{label: 'Name', fieldName:'fileNameWithType', hideDefaultActions: true}, 
 		{label: 'Condition Name', fieldName:'conditionName', hideDefaultActions: true}, 
@@ -172,6 +174,9 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		for (const doc of docs) {
 			doc.url = `/sfc/servlet.shepherd/document/download/${doc.id}`;
 			doc.fileNameWithType = doc.fileName + '.' + doc.fileType;
+			doc.thumbnailUrl = doc.versionId
+				? `/sfc/servlet.shepherd/version/renditionDownload?rendition=THUMB240BY180&versionId=${doc.versionId}`
+				: null;
 			doc.formattedCreatedDate = this.formatCreatedDate(doc.createdDate);
 			parsedDocs.push(doc);
 		}

@@ -589,7 +589,7 @@
                                     <template for:each={activePipelineRows} for:item="row">
                                         <tr key={row.key} class={row.rowClass}>
                                             <template for:each={row.visibleCustomCells} for:item="cell">
-                                                <td key={cell.key} title={cell.value}>
+                                                <td key={cell.key} title={cell.value} class={cell.cellClass}>
                                                     <template if:true={cell.isRecordLink}>
                                                         <a href="#" data-record-id={row.id} onclick={openRecord}>{cell.value}</a>
                                                     </template>
@@ -756,7 +756,7 @@
                                             <td>{row.leadSource}</td>
                                             <td>{row.realtorBuyingAgentName}</td>
                                             <td>{row.loanOfficerName}</td>
-                                            <td>{row.formattedAppointmentDateTime}</td>
+                                            <td class={row.appointmentTodayClass}>{row.formattedAppointmentDateTime}</td>
                                             <td>{row.loanDetails}</td>
                                         </tr>
                                     </template>

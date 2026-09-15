@@ -578,8 +578,8 @@
 }
 
 .document-review-modal-container {
-    max-width: 1200px;
-    width: 96%;
+    max-width: min(96vw, 1800px);
+    width: 96vw;
 }
 
 .email-modal-container {
@@ -626,7 +626,22 @@
     display: grid;
     gap: 22px;
     grid-template-columns: minmax(0, 1fr) 420px;
-    min-height: 720px;
+    /* Fill the window rather than a fixed box: the document is what people are here to read. */
+    height: calc(94vh - 140px);
+    max-height: none;
+}
+
+/* Narrow screens cannot hold the two columns side by side, and a fixed viewport height
+   there just squeezes the review controls off the bottom. */
+@media only screen and (max-width: 1024px) {
+    .document-review-content {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+    }
+
+    .document-preview-pane {
+        min-height: 60vh;
+    }
 }
 
 .upload-modal-content {
@@ -651,14 +666,14 @@
 .document-preview-pane {
     align-items: stretch;
     display: flex;
-    min-height: 680px;
+    min-height: 0;
 }
 
 .document-preview-frame {
     border: 1px solid #d0d5dd;
     border-radius: 8px;
     height: 100%;
-    min-height: 680px;
+    min-height: 0;
     width: 100%;
 }
 
@@ -671,6 +686,8 @@
     flex-direction: column;
     justify-content: center;
     min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .review-request-title {

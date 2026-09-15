@@ -386,6 +386,8 @@ public without sharing class DocumentViewerController {
 
     public class DocumentWrapper {
         @AuraEnabled public Id id;
+        // The thumbnail rendition is addressed by version, not by document.
+        @AuraEnabled public Id versionId;
         @AuraEnabled public String fileName;
         @AuraEnabled public String fileType;
         @AuraEnabled public String fileTypeIcon;
@@ -397,6 +399,7 @@ public without sharing class DocumentViewerController {
 
         public DocumentWrapper(ContentDocument file, String iconName) {
             id = file.Id;
+            versionId = file.LatestPublishedVersionId;
             fileName = file.Title;
             fileType = file.FileExtension;
             fileTypeIcon = iconName;

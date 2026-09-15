@@ -101,7 +101,7 @@
 					</lightning-button-menu>
 
 					<template if:false={isCompactView}>
-						<lightning-datatable
+						<c-document-thumbnail-datatable
 							key={folder}
 							key-field="id"
 							data={folder.data}
@@ -109,7 +109,7 @@
 							onrowaction={handleRowAction}
 							resize-column-disabled
 							hide-checkbox-column
-						></lightning-datatable>
+						></c-document-thumbnail-datatable>
 					</template>
 
 					<template if:true={isCompactView}>
@@ -130,6 +130,15 @@
 												alternative-text="Preview"
 											></lightning-icon>
 										</button>
+
+										<template if:true={file.thumbnailUrl}>
+											<img
+												class="mobile-file-card__thumb"
+												src={file.thumbnailUrl}
+												alt={file.fileNameWithType}
+												loading="lazy"
+											/>
+										</template>
 
 										<div class="mobile-file-card__identity">
 											<template if:true={file.fileTypeIcon}>

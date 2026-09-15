@@ -2292,3 +2292,7 @@ th:hover .pcc-column-move,
     right: 0;
     top: -1px;
 }
+/* Appointment scheduled for today: light red on that cell only. */
+td.pcc-appt-today {
+    background: #fde2e2 !important;
+}

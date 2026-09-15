@@ -1872,10 +1872,15 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             customCells: (row.customCells || []).map((cell) => {
                 const cleanValue = this.cleanRichText(cell.value);
                 const isPhoneLink = this.isPhoneCell(cell.key, cleanValue);
+                // decorateTabs re-runs on already-decorated tabs (master-tab selection, column
+                // saves, tab reorder). Key off rawKey when present, or the second pass would
+                // produce `${row.id}-${row.id}-<key}` and cellForColumn would stop matching --
+                // every custom cell would silently fall back to the standard renderer.
+                const sourceKey = cell.rawKey || cell.key;
                 return {
                     ...cell,
-                    rawKey: cell.key,
-                    key: `${row.id}-${cell.key}`,
+                    rawKey: sourceKey,
+                    key: `${row.id}-${sourceKey}`,
                     value: cleanValue,
                     hasValue: !!cleanValue,
                     isPhoneLink,
@@ -1931,7 +1936,8 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             propertyAddress: row.propertyAddress || '',
             hasEaseLink: this.hasEaseLink(row),
             statusLabel: this.statusLabel(row.status),
-            statusClass: this.statusClass(row.status)
+            statusClass: this.statusClass(row.status),
+            appointmentTodayClass: this.appointmentTodayCellClass('appointmentDateTime', row.appointmentDateTime)
         };
     }
 
@@ -3099,15 +3105,12 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         };
     }
 
+    // Apex-supplied cells and the standard fallback BOTH land here and BOTH need the same display
+    // decoration -- returning a custom cell raw is what silently dropped the status pills on every
+    // tab whose rows carry customCells.
     cellForColumn(row, column) {
         const customCell = (row.customCells || []).find((cell) => cell.rawKey === column.key || cell.key === column.key);
-        if (customCell) {
-            return {
-                ...customCell,
-                key: `${row.id}-${column.key}`
-            };
-        }
-        const cell = this.standardCellForColumn(row, column);
+        const cell = customCell || this.standardCellForColumn(row, column);
         return {
             ...cell,
             key: `${row.id}-${column.key}`,
@@ -3117,7 +3120,8 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             statusClass: column.key === 'status' ? row.statusClass : '',
             isPhoneLink: cell.isPhoneLink === true,
             phoneHref: cell.phoneHref || '',
-            isPreviewable: this.isPreviewableCustomCell(column.key, cell.value)
+            isPreviewable: this.isPreviewableCustomCell(column.key, cell.value),
+            cellClass: this.appointmentTodayCellClass(column.key, cell.sortValue || cell.value)
         };
     }
 
@@ -3370,7 +3374,9 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
     }
 
     get showPassAction() {
-        return this.activePipelineTabKey === 'meganPreApprovalFollowUps';
+        // Every Pre-Approval Follow Ups tab key carries this substring (Megan's, Ben's covering
+        // copy, Joey's Joe Olmsted copy).
+        return (this.activePipelineTabKey || '').includes('PreApprovalFollowUps');
     }
 
     get isActionablePipelineTab() {
@@ -3915,6 +3921,27 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             day: 'numeric',
             year: 'numeric'
         }).format(new Date(`${value}T00:00:00`));
+    }
+
+    // Light-red highlight on an appointment cell whose scheduled datetime is today. Apex cells
+    // carry epoch millis in sortValue, standard cells carry an ISO string -- both parse here.
+    appointmentTodayCellClass(cellKey, value) {
+        if (cellKey !== 'appointmentDateTime' && cellKey !== 'nextAppointment') {
+            return '';
+        }
+        const raw = value === null || value === undefined ? '' : String(value);
+        if (!raw) {
+            return '';
+        }
+        const parsed = new Date(/^[0-9]+$/.test(raw) ? Number(raw) : raw);
+        if (isNaN(parsed.getTime())) {
+            return '';
+        }
+        const now = new Date();
+        const isToday = parsed.getFullYear() === now.getFullYear()
+            && parsed.getMonth() === now.getMonth()
+            && parsed.getDate() === now.getDate();
+        return isToday ? 'pcc-appt-today' : '';
     }
 
     formatDateTimeOrDate(dateTimeValue, dateValue) {

@@ -1,0 +1,12 @@
+<template>
+    <template lwc:if={value}>
+        <img class="doc-thumb" src={value} alt={typeAttributes.alt} loading="lazy" />
+    </template>
+    <template lwc:else>
+        <lightning-icon
+            icon-name={typeAttributes.fallbackIcon}
+            size="small"
+            alternative-text={typeAttributes.alt}
+        ></lightning-icon>
+    </template>
+</template>
