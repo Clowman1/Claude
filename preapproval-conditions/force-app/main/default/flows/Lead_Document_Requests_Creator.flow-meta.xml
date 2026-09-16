@@ -777,6 +777,37 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <description>Which borrower these conditions are for. The component skips itself when the lead has no co-borrower with an email, so single-borrower leads never see it.</description>
+        <name>Borrower_Assignment</name>
+        <label>Assign To Borrower</label>
+        <locationX>704</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Lead_Request_Choice_Value</targetReference>
+        </connector>
+        <fields>
+            <name>BorrowerPicker</name>
+            <extensionName>c:leadConditionBorrowerPicker</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>assignment</assignToReference>
+                <name>assignment</name>
+            </outputParameters>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Custom_Request_Screen</name>
         <label>Custom Condition Screen</label>
         <locationX>1056</locationX>
@@ -929,40 +960,6 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <description>Which borrower these conditions are for. The component skips itself when the lead has no co-borrower with an email, so single-borrower leads never see it.</description>
-        <name>Borrower_Assignment</name>
-        <label>Assign To Borrower</label>
-        <locationX>704</locationX>
-        <locationY>458</locationY>
-        <allowBack>true</allowBack>
-        <!-- Matches Lead_Request_Choice exactly. With allowFinish and allowPause false the runtime
-             reports BACK as the only available action and rejects FlowNavigationNextEvent, even
-             though this screen has a valid connector onward. -->
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Lead_Request_Choice_Value</targetReference>
-        </connector>
-        <fields>
-            <name>BorrowerPicker</name>
-            <extensionName>c:leadConditionBorrowerPicker</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>recordId</name>
-                <value>
-                    <elementReference>recordId</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>assignment</assignToReference>
-                <name>assignment</name>
-            </outputParameters>
-        </fields>
-        <showFooter>false</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
         <name>Missing_Self_Employment_Type_Screen</name>
         <label>Missing Self Employment Type Screen</label>
         <locationX>50</locationX>
@@ -1102,6 +1099,17 @@
         <objectType>Lead_Document_Request_Reference__c</objectType>
     </variables>
     <variables>
+        <description>Which borrower the conditions being created belong to. ALL means the whole file, PRIMARY the primary borrower alone, otherwise a Borrower record Id. Defaults to ALL so an untouched run behaves exactly as it did before per-borrower assignment existed.</description>
+        <name>assignment</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>ALL</stringValue>
+        </value>
+    </variables>
+    <variables>
         <name>combinedReferences</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
@@ -1123,16 +1131,5 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <description>Which borrower the conditions being created belong to. ALL means the whole file, PRIMARY the primary borrower alone, otherwise a Borrower record Id. Defaults to ALL so an untouched run behaves exactly as it did before per-borrower assignment existed.</description>
-        <name>assignment</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <stringValue>ALL</stringValue>
-        </value>
     </variables>
 </Flow>

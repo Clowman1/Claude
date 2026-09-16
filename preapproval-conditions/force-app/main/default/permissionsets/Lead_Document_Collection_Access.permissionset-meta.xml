@@ -115,6 +115,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Spanish_Communications__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Initial_Docs_Requested_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>

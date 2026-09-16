@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Borrower_Label_ES__c</fullName>
+    <description>Spanish wording for Borrower Label. Blank falls back to English.</description>
+    <inlineHelpText>Spanish version of the Borrower Label. Blank falls back to English.</inlineHelpText>
+    <label>Borrower Label (ES)</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

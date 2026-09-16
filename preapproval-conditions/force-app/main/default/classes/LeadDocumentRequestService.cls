@@ -1410,12 +1410,18 @@ public with sharing class LeadDocumentRequestService {
     ) {
         String resolvedItemDescription = resolveReferenceItemDescription(referenceRecord);
         String resolvedCategoryName = resolveReferenceConditionName(referenceRecord, resolvedItemDescription);
+        String spanishItemDescription = resolveReferenceItemDescriptionES(referenceRecord);
         Lead_Document_Request__c requestRecord = new Lead_Document_Request__c(
             Lead__c = leadId,
             Name = resolvedCategoryName,
             Subject__c = resolvedItemDescription,
             Status__c = DEFAULT_STATUS,
             Description__c = resolvedItemDescription,
+            // Copied now rather than looked up later: a Loan Officer who edits either language
+            // keeps their edit, and the wording a borrower was actually shown survives a later
+            // change to the catalogue.
+            Subject_ES__c = spanishItemDescription,
+            Description_ES__c = spanishItemDescription,
             Category__c = resolveRuntimePicklistValue(
                 Lead_Document_Request__c.Category__c,
                 referenceRecord.Category__c
@@ -1430,6 +1436,36 @@ public with sharing class LeadDocumentRequestService {
         );
         applyAssignment(requestRecord, assignment);
         return requestRecord;
+    }
+
+    /**
+     * The Spanish wording for a catalogue item, or null when nobody has translated it yet.
+     *
+     * Null rather than the English on purpose: every reader already falls back, and returning
+     * English here would make a translated and an untranslated condition indistinguishable in
+     * the data - which is the thing you most want to be able to query for.
+     */
+    private static String resolveReferenceItemDescriptionES(Lead_Document_Request_Reference__c referenceRecord) {
+        if (referenceRecord == null) {
+            return null;
+        }
+        String spanishLabel = referenceRecord.Borrower_Label_ES__c;
+        String spanishDescription = referenceRecord.Borrower_Description_ES__c;
+
+        if (referenceRecord.Package__c == 'Special Income Types') {
+            if (String.isBlank(spanishLabel) || String.isBlank(spanishDescription)) {
+                return null;
+            }
+            return spanishLabel + ' - ' + formatChecklistText(spanishDescription);
+        }
+
+        // Mirrors resolveReferenceRequestName: the bucket labels carry no useful prose, so the
+        // description is what the borrower reads.
+        if (new Set<String>{ 'ID', 'Income', 'Assets', 'Gift Letter', 'WVOE' }
+                .contains(referenceRecord.Borrower_Label__c)) {
+            return String.isBlank(spanishDescription) ? null : spanishDescription;
+        }
+        return String.isBlank(spanishLabel) ? spanishDescription : spanishLabel;
     }
 
     private static String resolveReferenceRequestName(Lead_Document_Request_Reference__c referenceRecord) {

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Zapier_Webhook</name>
+        <label>Send Zapier Webhook</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>TxnPostCloseZapierHook</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>transactionId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>TxnPostCloseZapierHook</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>63.0</apiVersion>
+    <description>Send the Zapier webhook once when a Reach purchase transaction reaches Post-Closed.</description>
+    <environments>Default</environments>
+    <interviewLabel>Transaction Send Zapier Webhook On Post Closed {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Transaction Send Zapier Webhook On Post Closed</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Send_Zapier_Webhook</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>1 AND 2 AND 3 AND 4</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Post-Closed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Biz_Dev__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Biz Dev - Reach</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Loan_Purpose__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Purchase</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Zapier_Post_Closed_Webhook_Sent_At__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Transaction__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

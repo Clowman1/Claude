@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Borrower_Description_ES__c</fullName>
+    <description>Spanish wording for Borrower Description. Left blank, the borrower sees the English - which is the correct behaviour for a catalogue item added before anyone has translated it.</description>
+    <inlineHelpText>Spanish version of the Borrower Description. Blank falls back to English.</inlineHelpText>
+    <label>Borrower Description (ES)</label>
+    <length>32768</length>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

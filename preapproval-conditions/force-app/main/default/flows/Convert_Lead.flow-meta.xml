@@ -556,6 +556,27 @@
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
+        <name>Conversion_Blocked</name>
+        <label>Conversion Blocked</label>
+        <locationX>930</locationX>
+        <locationY>1030</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Conversion_Blocked_Message</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;This Lead cannot be converted yet.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Unable to convert to Transaction with outstanding Pre-Approval Conditions and Documents. All conditions must be cleared and documents decisioned before a Lead can be converted.&lt;/p&gt;&lt;p&gt;Open the Pre-Approval Conditions tab, decision every uploaded document, and clear the remaining conditions. Then convert again.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Conversion_Blocked_Detail</name>
+            <fieldText>&lt;p&gt;&lt;small&gt;If every condition is already cleared, something else stopped the conversion. The details are here: {!$Flow.FaultMessage}&lt;/small&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Fill_Required_Fields</name>
         <label>Fill Required Fields</label>
         <locationX>534</locationX>
@@ -628,27 +649,6 @@
         <fields>
             <name>Attention</name>
             <fieldText>&lt;p&gt;Please fill all fields from screen&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Conversion_Blocked</name>
-        <label>Conversion Blocked</label>
-        <locationX>930</locationX>
-        <locationY>1030</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>Conversion_Blocked_Message</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;This Lead cannot be converted yet.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Unable to convert to Transaction with outstanding Pre-Approval Conditions and Documents. All conditions must be cleared and documents decisioned before a Lead can be converted.&lt;/p&gt;&lt;p&gt;Open the Pre-Approval Conditions tab, decision every uploaded document, and clear the remaining conditions. Then convert again.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Conversion_Blocked_Detail</name>
-            <fieldText>&lt;p&gt;&lt;small&gt;If every condition is already cleared, something else stopped the conversion. The details are here: {!$Flow.FaultMessage}&lt;/small&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

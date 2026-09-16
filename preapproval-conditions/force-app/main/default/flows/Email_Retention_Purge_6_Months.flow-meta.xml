@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <decisions>
+        <name>Any_Found</name>
+        <label>Any Found?</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Aged_Emails</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Delete_Aged_Emails</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>Deletes EmailMessage records older than 6 months. Outlook is the system of record for email; Salesforce retains a 6-month working window only. Runs daily.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>CutoffDateTime</name>
+        <dataType>DateTime</dataType>
+        <expression>DATETIMEVALUE(TEXT({!$Flow.CurrentDate} - 180) &amp; &quot; 00:00:00&quot;)</expression>
+    </formulas>
+    <interviewLabel>Email Retention Purge 6 Months {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Email Retention Purge - 6 Months</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordDeletes>
+        <name>Delete_Aged_Emails</name>
+        <label>Delete Aged Emails</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <inputReference>Get_Aged_Emails</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <name>Get_Aged_Emails</name>
+        <label>Get Aged Emails</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Any_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CreatedDate</field>
+            <operator>LessThan</operator>
+            <value>
+                <elementReference>CutoffDateTime</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>EmailMessage</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Aged_Emails</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2026-08-19</startDate>
+            <startTime>09:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

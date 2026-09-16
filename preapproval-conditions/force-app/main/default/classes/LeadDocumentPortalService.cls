@@ -19,12 +19,20 @@ public without sharing class LeadDocumentPortalService {
         @AuraEnabled public List<PortalPendingFile> pendingFiles;
 
         public PortalRequest(Lead_Document_Request__c requestRecord, Decimal linkedFileCount) {
+            this(requestRecord, linkedFileCount, false);
+        }
+
+        public PortalRequest(
+            Lead_Document_Request__c requestRecord,
+            Decimal linkedFileCount,
+            Boolean useSpanish
+        ) {
             id = requestRecord.Id;
             parentId = requestRecord.Lead__c;
-            name = requestRecord.Name;
+            name = useSpanish == true ? spanishConditionName(requestRecord.Name) : requestRecord.Name;
             status = requestRecord.Status__c;
-            description = requestRecord.Description__c;
-            notes = requestRecord.Subject__c;
+            description = preferred(requestRecord.Description_ES__c, requestRecord.Description__c, useSpanish);
+            notes = preferred(requestRecord.Subject_ES__c, requestRecord.Subject__c, useSpanish);
             fileCount = linkedFileCount == null ? 0 : linkedFileCount;
             pendingFiles = new List<PortalPendingFile>();
         }
@@ -45,6 +53,66 @@ public without sharing class LeadDocumentPortalService {
 
     // Finished items stay on the portal in a collapsed list so the borrower can see progress
     // rather than watching items silently disappear.
+    /**
+     * Spanish when the borrower is flagged for it and someone has written it, English otherwise.
+     *
+     * The fallback is the whole safety net for this feature: an untranslated condition reads in
+     * English rather than arriving blank, which is also what should happen the day someone adds
+     * a new catalogue item and has not translated it yet.
+     */
+    /**
+     * Reads the switch without assuming the field exists, so the portal keeps working in an org
+     * - or a test - where it has not been deployed. hasLeadField's describe guard is why the
+     * Lead query itself is assembled the same way.
+     */
+    @TestVisible
+    private static Boolean speaksSpanish(Lead leadRecord) {
+        if (leadRecord == null) {
+            return false;
+        }
+        // Asking for a field the query never selected throws, and the Lead query only adds this
+        // one when it exists - so the populated map, not get(), is what can answer safely.
+        Object flag = leadRecord.getPopulatedFieldsAsMap().get('Spanish_Communications__c');
+        return flag == true;
+    }
+
+    @TestVisible
+    private static String preferred(String spanishValue, String englishValue, Boolean useSpanish) {
+        if (useSpanish == true && String.isNotBlank(spanishValue)) {
+            return spanishValue;
+        }
+        return englishValue;
+    }
+
+    /**
+     * The grouping words shown as the Document Name column.
+     *
+     * These never came from the catalogue - resolveReferenceConditionName generates them in
+     * Apex - so they are invisible to anyone translating the catalogue and highly visible to the
+     * borrower. Anything unrecognised is returned untouched.
+     */
+    @TestVisible
+    private static String spanishConditionName(String englishName) {
+        Map<String, String> byEnglishName = new Map<String, String>{
+            'Identification' => 'Identificacion',
+            'Income' => 'Ingresos',
+            'Asset' => 'Activos',
+            'Assets' => 'Activos',
+            'Credit' => 'Credito',
+            'Gift Letter' => 'Carta de Regalo',
+            'WVOE' => 'Verificacion de Empleo',
+            'Other Items' => 'Otros Documentos',
+            'Other' => 'Otros',
+            'Condition' => 'Requisito',
+            'Document Request' => 'Documento Solicitado'
+        };
+        if (String.isBlank(englishName)) {
+            return englishName;
+        }
+        String translated = byEnglishName.get(englishName);
+        return translated == null ? englishName : translated;
+    }
+
     public class PortalClearedRequest {
         @AuraEnabled public Id id;
         @AuraEnabled public String name;
@@ -148,7 +216,7 @@ public without sharing class LeadDocumentPortalService {
         Integer pendingCount = 0;
         for (Lead_Document_Request__c requestRecord : visibleRequests) {
             PortalRequest portalRequest =
-                new PortalRequest(requestRecord, fileCountsByRequestId.get(requestRecord.Id));
+                new PortalRequest(requestRecord, fileCountsByRequestId.get(requestRecord.Id), speaksSpanish(leadRecord));
             if (pendingByRequestId.containsKey(requestRecord.Id)) {
                 portalRequest.pendingFiles = pendingByRequestId.get(requestRecord.Id);
                 pendingCount += portalRequest.pendingFiles.size();

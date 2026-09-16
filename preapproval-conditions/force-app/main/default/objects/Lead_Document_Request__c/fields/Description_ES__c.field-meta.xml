@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Description_ES__c</fullName>
+    <description>Spanish wording, copied from the catalogue when the condition is created. Stored rather than looked up at render time so that a Loan Officer editing either language keeps their edit, and so the wording the borrower saw survives a later catalogue change.</description>
+    <inlineHelpText>Spanish version of the Description. Blank falls back to English.</inlineHelpText>
+    <label>Description (ES)</label>
+    <length>32768</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

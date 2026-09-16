@@ -11,6 +11,7 @@ public inherited sharing class LeadDocumentRequestReferenceRepository {
     public List<Lead_Document_Request_Reference__c> selectActiveReferences() {
         return [
             SELECT Id, Name, Active__c, Borrower_Label__c, Borrower_Description__c,
+                   Borrower_Label_ES__c, Borrower_Description_ES__c,
                    Category__c, Package__c, Type__c, Condition_Group_Key__c,
                    Loan_Purpose__c, Loan_Type__c, Employment_Type__c, Self_Employment_Type__c,
                    Reference_Id__c, Sort_Order__c, Include_In_Email__c, Can_Borrower_See__c
@@ -28,6 +29,7 @@ public inherited sharing class LeadDocumentRequestReferenceRepository {
 
         return [
             SELECT Id, Name, Active__c, Borrower_Label__c, Borrower_Description__c,
+                   Borrower_Label_ES__c, Borrower_Description_ES__c,
                    Category__c, Package__c, Type__c, Condition_Group_Key__c,
                    Loan_Purpose__c, Loan_Type__c, Employment_Type__c, Self_Employment_Type__c,
                    Reference_Id__c, Sort_Order__c, Include_In_Email__c, Can_Borrower_See__c
@@ -46,6 +48,7 @@ public inherited sharing class LeadDocumentRequestReferenceRepository {
 
         return new Map<Id, Lead_Document_Request_Reference__c>([
             SELECT Id, Name, Active__c, Borrower_Label__c, Borrower_Description__c,
+                   Borrower_Label_ES__c, Borrower_Description_ES__c,
                    Category__c, Package__c, Type__c, Condition_Group_Key__c,
                    Loan_Purpose__c, Loan_Type__c, Employment_Type__c, Self_Employment_Type__c,
                    Reference_Id__c, Sort_Order__c, Include_In_Email__c, Can_Borrower_See__c

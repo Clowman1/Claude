@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subject_ES__c</fullName>
+    <description>Spanish wording for Subject, which is the document name used in emails and summaries. Blank falls back to English.</description>
+    <inlineHelpText>Spanish version of the Subject. Blank falls back to English.</inlineHelpText>
+    <label>Subject (ES)</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
