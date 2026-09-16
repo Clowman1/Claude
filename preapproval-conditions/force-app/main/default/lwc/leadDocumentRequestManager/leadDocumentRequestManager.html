@@ -50,6 +50,21 @@
                         <span class="toolbar-label">Primary Email</span>
                         <span class="toolbar-value">{borrowerEmail}</span>
                     </div>
+                    <!-- Set here rather than only on the Lead detail: this is where the Loan
+                         Officer is standing when they realise the borrower needs Spanish. -->
+                    <div class="toolbar-info-pill">
+                        <span class="toolbar-label">Language</span>
+                        <lightning-input
+                            type="toggle"
+                            label="Spanish"
+                            variant="label-hidden"
+                            message-toggle-active="Espanol"
+                            message-toggle-inactive="English"
+                            checked={spanishCommunications}
+                            disabled={isConverted}
+                            onchange={handleSpanishToggle}
+                            class="language-toggle"></lightning-input>
+                    </div>
                     <template lwc:if={hasPortalLinks}>
                         <template for:each={portalLinks} for:item="portal">
                             <div key={portal.key} class="portal-pill">

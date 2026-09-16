@@ -1070,6 +1070,63 @@ private class LeadDocumentCollectionServiceTest {
     // A document that was renamed and filed on the Lead has to arrive on the Transaction under
     // that same label and that same folder. Both live on the file itself rather than on the link,
     // so this is really a guard against anyone later "helpfully" restamping them.
+    // The toggle in the conditions tab. It must write the language flag and nothing else - the
+    // lookalike intake picklist drives Lead assignment, and nothing here may move a lead.
+    @IsTest
+    static void theSpanishToggleWritesOnlyTheLanguageFlag() {
+        Lead leadRecord = createLead('spanish-toggle@example.com');
+        Id originalOwnerId = [SELECT OwnerId FROM Lead WHERE Id = :leadRecord.Id].OwnerId;
+
+        Test.startTest();
+        Boolean turnedOn = LeadDocumentRequestController.setSpanishCommunications(leadRecord.Id, true);
+        Test.stopTest();
+
+        System.assertEquals(true, turnedOn, 'The saved value is returned, not the requested one.');
+        Lead afterOn = [
+            SELECT OwnerId, Spanish_Communications__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals(true, afterOn.Spanish_Communications__c);
+        System.assertEquals(
+            originalOwnerId,
+            afterOn.OwnerId,
+            'Changing the language must never reassign the Lead.'
+        );
+
+        LeadDocumentRequestController.setSpanishCommunications(leadRecord.Id, false);
+        System.assertEquals(
+            false,
+            [SELECT Spanish_Communications__c FROM Lead WHERE Id = :leadRecord.Id].Spanish_Communications__c,
+            'And it switches back.'
+        );
+    }
+
+    // Every borrower-facing surface reads the flag through this one method, and it has to cope
+    // with a Lead that was queried without the field - which is exactly what threw before.
+    @IsTest
+    static void theLanguageFlagIsReadSafely() {
+        Lead leadRecord = createLead('spanish-context@example.com');
+        LeadDocumentRequestController.setSpanishCommunications(leadRecord.Id, true);
+
+        Lead withField = [
+            SELECT Id, Spanish_Communications__c FROM Lead WHERE Id = :leadRecord.Id
+        ];
+        System.assertEquals(
+            true,
+            LeadDocumentRequestService.prefersSpanish(withField),
+            'A Lead carrying the field reports the language it is set to.'
+        );
+
+        Lead withoutField = [SELECT Id FROM Lead WHERE Id = :leadRecord.Id];
+        System.assertEquals(
+            false,
+            LeadDocumentRequestService.prefersSpanish(withoutField),
+            'And one queried without it falls back to English instead of throwing.'
+        );
+
+        // Still exercised so the component keeps loading for a Spanish borrower.
+        LeadDocumentRequestController.initializeData(leadRecord.Id);
+    }
+
     @IsTest
     static void carryForwardKeepsTheLabelAndTheFolder() {
         Transaction__c transactionRecord = createTransaction('Label Loan', 'LD-LABEL');

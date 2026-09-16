@@ -5,6 +5,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import initializeData from '@salesforce/apex/LeadDocumentRequestController.initializeData';
 import saveRequests from '@salesforce/apex/LeadDocumentRequestController.saveRequests';
 import deleteRequest from '@salesforce/apex/LeadDocumentRequestController.deleteRequest';
+import setSpanishCommunications from '@salesforce/apex/LeadDocumentRequestController.setSpanishCommunications';
 import saveNotes from '@salesforce/apex/LeadDocumentRequestController.saveNotes';
 import handleInternalFileUpload from '@salesforce/apex/LeadDocumentRequestController.handleInternalFileUpload';
 import getRequestDocuments from '@salesforce/apex/LeadDocumentRequestController.getRequestDocuments';
@@ -110,6 +111,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
     borrowerEmail;
     portalLink;
     isConverted = false;
+    spanishCommunications = false;
     convertedTransactionId;
     isLoading = false;
     showCreateModal = false;
@@ -190,6 +192,32 @@ export default class LeadDocumentRequestManager extends LightningElement {
         }
     }
 
+    /**
+     * Saves immediately rather than waiting for a Save button.
+     *
+     * The toggle is optimistic: it flips, then reverts if the write fails, because a switch
+     * that looks set but is not would send the next email in the wrong language.
+     */
+    async handleSpanishToggle(event) {
+        const requested = event.target.checked;
+        this.spanishCommunications = requested;
+        try {
+            const saved = await setSpanishCommunications({
+                leadId: this.recordId,
+                useSpanish: requested
+            });
+            this.spanishCommunications = saved === true;
+            this.showToast(
+                requested
+                    ? 'Spanish - conditions, request emails and the portal will be in Spanish.'
+                    : 'English - conditions, request emails and the portal will be in English.'
+            );
+        } catch (error) {
+            this.spanishCommunications = !requested;
+            this.showError(error);
+        }
+    }
+
     loadDataIfReady() {
         if (!this.recordId || this.loadedRecordId === this.recordId || this.loadingRecordId === this.recordId) {
             return;
@@ -242,6 +270,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
             this.leadName = data.leadName;
             this.borrowerLastName = data.borrowerLastName;
             this.borrowerEmail = data.borrowerEmail;
+            this.spanishCommunications = data.spanishCommunications === true;
             this.portalLink = data.portalLink;
             this.isConverted = data.isConverted;
             this.convertedTransactionId = data.convertedTransactionId;

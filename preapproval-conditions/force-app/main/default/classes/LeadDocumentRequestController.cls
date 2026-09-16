@@ -13,6 +13,15 @@ public with sharing class LeadDocumentRequestController {
     }
 
     @AuraEnabled
+    public static Boolean setSpanishCommunications(Id leadId, Boolean useSpanish) {
+        try {
+            return LeadDocumentRequestService.setSpanishCommunications(leadId, useSpanish);
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
     public static void deleteRequest(Id requestId) {
         LeadDocumentRequestService.deleteRequest(requestId);
     }

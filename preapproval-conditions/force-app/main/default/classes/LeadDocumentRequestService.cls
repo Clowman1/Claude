@@ -73,6 +73,25 @@ public with sharing class LeadDocumentRequestService {
         return flag == true;
     }
 
+    /**
+     * Switches this borrower to Spanish, from the conditions tab rather than the Lead detail.
+     *
+     * Deliberately writes only this one field. The lookalike Spanish Speaker? (Intake Form)
+     * picklist drives Lead assignment, and nothing here should be able to move a lead.
+     */
+    public static Boolean setSpanishCommunications(Id leadId, Boolean useSpanish) {
+        Lead leadRecord = getLeadOrThrow(leadId);
+        ensureLeadIsOpenForDocumentRequests(leadRecord);
+        ensureCanActOnRequest(leadRecord);
+        if (!Schema.SObjectType.Lead.fields.getMap().containsKey('Spanish_Communications__c')) {
+            return false;
+        }
+        Lead leadUpdate = new Lead(Id = leadId);
+        leadUpdate.put('Spanish_Communications__c', useSpanish == true);
+        Database.update(leadUpdate, true, AccessLevel.USER_MODE);
+        return useSpanish == true;
+    }
+
     public static String resolveGroupingName(String category) {
         return String.isBlank(category) ? 'Other' : category;
     }
@@ -174,6 +193,7 @@ public with sharing class LeadDocumentRequestService {
         @AuraEnabled public String borrowerEmail;
         @AuraEnabled public String portalLink;
         @AuraEnabled public Boolean isConverted;
+        @AuraEnabled public Boolean spanishCommunications;
         @AuraEnabled public Id convertedTransactionId;
         @AuraEnabled public List<RequestItem> requests;
     }
@@ -246,6 +266,7 @@ public with sharing class LeadDocumentRequestService {
         data.borrowerEmail = leadRecord.Email;
         data.portalLink = buildLeadPortalLink(leadRecord);
         data.isConverted = leadRecord.IsConverted;
+        data.spanishCommunications = prefersSpanish(leadRecord);
         data.convertedTransactionId = leadRecord.Converted_Transaction_ID__c;
         data.requests = new List<RequestItem>();
         for (Lead_Document_Request__c requestRecord : requestRecords) {
