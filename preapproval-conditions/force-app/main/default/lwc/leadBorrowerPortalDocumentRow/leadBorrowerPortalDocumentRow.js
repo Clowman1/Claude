@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import FORM_FACTOR from '@salesforce/client/formFactor';
 import uploadBorrowerDocument from '@salesforce/apex/LeadDocumentPortalController.uploadBorrowerDocument';
 import removePendingDocument from '@salesforce/apex/LeadDocumentPortalController.removePendingDocument';
+import { t, uploadingOne, uploadingMany, tooLarge, tooSmall } from 'c/leadBorrowerPortalLabels';
 
 // Site guest users cannot upload through lightning-file-upload, so the borrower's browser reads
 // each file and sends it as base64 to Apex, which writes it in system mode. A plain input plus
@@ -14,8 +15,21 @@ const MIN_READABLE_EDGE = 1000;
 export default class LeadBorrowerPortalDocumentRow extends LightningElement {
     @api leadId;
     @api portalHash;
+    // Set by the parent from the Lead. Only switches wording.
+    @api spanish = false;
 
     @track currentRequest;
+
+    get labels() {
+        const es = this.spanish;
+        return {
+            dragOrBrowse: t('Drag a file here, or browse', es),
+            addAnother: t('Add another file', es),
+            remove: t('Remove', es),
+            removeThisFile: t('Remove this file', es),
+            added: t('Added. Press Submit below when you have added everything.', es)
+        };
+    }
     isPhone = false;
     isDragging = false;
     isUploading = false;
@@ -90,25 +104,26 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
     // What the borrower reads in the status column. "Requested" means nothing to them; whether we
     // have their document does.
     get statusLabel() {
+        const es = this.spanish;
         if (this.isUploading) {
-            return 'Uploading...';
+            return t('Uploading...', es);
         }
         // The basket wins over the request status: what the borrower needs to know is that
         // these files have not gone anywhere yet.
         if (this.hasPendingFiles) {
-            return 'Ready to submit';
+            return t('Ready to submit', es);
         }
         switch (this.currentRequest?.status) {
             case 'Review':
-                return 'Submitted for review';
+                return t('Submitted for review', es);
             case 'Cleared':
             case 'Approved':
             case 'Completed':
-                return 'Accepted';
+                return t('Accepted', es);
             case 'In Progress':
-                return 'More needed';
+                return t('More needed', es);
             default:
-                return 'Needed';
+                return t('Needed', es);
         }
     }
 
@@ -142,9 +157,9 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
 
     get dropZoneLabel() {
         if (this.isUploading) {
-            return this.uploadProgress || 'Uploading...';
+            return this.uploadProgress || t('Uploading...', this.spanish);
         }
-        return this.hasFiles ? 'Add another file' : 'Drag a file here, or browse';
+        return this.hasFiles ? this.labels.addAnother : this.labels.dragOrBrowse;
     }
 
     get showConfirmation() {
@@ -219,7 +234,7 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
 
         const oversized = files.filter(file => file.size > MAX_FILE_BYTES);
         if (oversized.length) {
-            this.localError = `${oversized[0].name} is larger than 3.5 MB. Please upload a smaller file, or email it to your loan team.`;
+            this.localError = tooLarge(oversized[0].name, this.spanish);
             return;
         }
 
@@ -240,8 +255,8 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         try {
             for (let index = 0; index < files.length; index++) {
                 this.uploadProgress = files.length === 1
-                    ? `Uploading ${files[index].name}...`
-                    : `Uploading ${index + 1} of ${files.length}...`;
+                    ? uploadingOne(files[index].name, this.spanish)
+                    : uploadingMany(index + 1, files.length, this.spanish);
                 // Sequential on purpose: each file is its own Apex transaction, and a borrower on a
                 // phone connection fares better with one request at a time than with a burst.
                 // eslint-disable-next-line no-await-in-loop
@@ -261,8 +276,7 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             // borrower stops trying and the loan team waits for a file that does not exist.
             const savedCount = this.currentRequest?.pendingFiles?.length || 0;
             if (savedCount === 0) {
-                this.localError =
-                    'We could not save that file. Please try again, or email it to your loan team.';
+                this.localError = t('We could not save that file. Please try again, or email it to your loan team.', this.spanish);
                 this.dispatchUploadError(new Error('Upload returned no stored document.'));
                 return;
             }
@@ -311,12 +325,8 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             return '';
         }
         const first = smallImages[0];
-        const measured = `${first.name} came through at ${first.width} x ${first.height} pixels`;
-        const subject = smallImages.length === 1
-            ? measured
-            : `${measured}, and ${smallImages.length - 1} more are about the same`;
-        return `${subject}. That is usually too small for us to read. If your phone asked you to`
-            + ' pick a size when you attached it, choose Actual Size or Large and add it again.';
+        // Only the first file is named. Listing six filenames on a phone helps nobody.
+        return tooSmall(first.name, first.width, first.height, this.spanish);
     }
 
     readAsBase64(file) {
@@ -327,7 +337,7 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
                 const commaIndex = result.indexOf(',');
                 resolve(commaIndex >= 0 ? result.substring(commaIndex + 1) : result);
             };
-            reader.onerror = () => reject(reader.error || new Error('That file could not be read.'));
+            reader.onerror = () => reject(reader.error || new Error(t('That file could not be read.', this.spanish)));
             reader.readAsDataURL(file);
         });
     }
@@ -336,7 +346,7 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         return (
             error?.body?.message ||
             error?.message ||
-            'Something went wrong uploading that file. Please try again.'
+            t('Something went wrong uploading that file. Please try again.', this.spanish)
         );
     }
 

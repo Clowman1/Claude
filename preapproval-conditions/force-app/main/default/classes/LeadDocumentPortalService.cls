@@ -150,6 +150,8 @@ public without sharing class LeadDocumentPortalService {
         @AuraEnabled public List<PortalContact> contacts;
         // Drives the submit bar: nothing reaches the lead team until this is zero again.
         @AuraEnabled public Integer pendingSubmissionCount;
+        // Switches the page chrome. The condition text arrives already translated.
+        @AuraEnabled public Boolean spanish;
     }
 
     public static PortalData initializeData(String hashFromURL, Boolean isInSitePreview) {
@@ -177,6 +179,7 @@ public without sharing class LeadDocumentPortalService {
 
         PortalData response = new PortalData();
         response.recordId = leadRecord.Id;
+        response.spanish = speaksSpanish(leadRecord);
         // The greeting names whoever opened the link, not the primary on the file.
         response.borrowerName = String.isBlank(viewerName) ? buildBorrowerName(leadRecord) : viewerName;
         response.requests = new List<PortalRequest>();

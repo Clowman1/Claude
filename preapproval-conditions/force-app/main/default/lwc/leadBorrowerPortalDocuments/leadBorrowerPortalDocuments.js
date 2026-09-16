@@ -6,6 +6,7 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import pulseResources from '@salesforce/resourceUrl/PULSEResources';
 import reachInverseLogo from '@salesforce/resourceUrl/reachInverseLogo';
 import getData from '@salesforce/apex/LeadDocumentPortalController.initializeData';
+import { t, documentsReadyToSend, showCompleted, submitButton } from 'c/leadBorrowerPortalLabels';
 import submitPendingDocuments from '@salesforce/apex/LeadDocumentPortalController.submitPendingDocuments';
 
 export default class LeadBorrowerPortalDocuments extends LightningElement {
@@ -118,13 +119,34 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
         return this.pendingSubmissionCount > 0;
     }
 
+    get labels() {
+        const es = this.spanish;
+        return {
+            welcomeBack: t('Welcome Back', es),
+            manageHere: t('You can manage your documents here', es),
+            documentsNeeded: t('Documents Needed', es),
+            documentsUploaded: t('Documents Uploaded', es),
+            documentsApproved: t('Documents Approved', es),
+            documentsRequired: t('Documents Required', es),
+            intro: t('The documents requested below help your loan team keep your file moving before your loan is converted to a transaction.', es),
+            documentName: t('Document Name', es),
+            documentDescription: t('Document Description', es),
+            status: t('Status', es),
+            actions: t('Actions', es),
+            submittedTitle: t('Documents Submitted for Review', es),
+            submittedSub: t('Your loan team has been notified and will review them shortly.', es),
+            dismiss: t('Dismiss', es),
+            howToTitle: t('Upload everything, then press Submit', es),
+            howToBody: t('Add as many documents as you like - take your time and come back if you need to. Your loan team is not notified until you press Submit Docs for Review, so please remember to press it when you have finished.', es)
+        };
+    }
+
     get submitButtonLabel() {
-        return `Submit Docs for Review (${this.pendingSubmissionCount})`;
+        return submitButton(this.pendingSubmissionCount, this.spanish);
     }
 
     get pendingSummaryLabel() {
-        const count = this.pendingSubmissionCount;
-        return count === 1 ? '1 document ready to send' : `${count} documents ready to send`;
+        return documentsReadyToSend(this.pendingSubmissionCount, this.spanish);
     }
 
     // Removing a file from the basket changes the count without changing any request.
@@ -160,8 +182,13 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
         this.showError(event.detail?.error);
     }
 
+    spanish = false;
+
     applyPortalData(data) {
         this.recordId = data.recordId;
+        // Set by the Lead. The condition text arrives already translated; this only switches
+        // the page chrome around it.
+        this.spanish = data.spanish === true;
         this.borrowerName = data.borrowerName;
         this.contacts = this.decorateContacts(data.contacts || []);
         this.clearedRequests = this.decorateCleared(data.clearedRequests || []);
@@ -196,8 +223,8 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
 
     showToast() {
         this.dispatchEvent(new ShowToastEvent({
-            title: 'File Upload Complete',
-            message: 'Your file(s) have been successfully uploaded.',
+            title: t('File Upload Complete', this.spanish),
+            message: t('Your file(s) have been successfully uploaded.', this.spanish),
             variant: 'success',
             mode: 'dismissable'
         }));
@@ -205,7 +232,7 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
 
     showError(error) {
         this.dispatchEvent(new ShowToastEvent({
-            title: 'Upload Failed',
+            title: t('Upload Failed', this.spanish),
             message: this.reduceError(error),
             variant: 'error',
             mode: 'sticky'
@@ -216,7 +243,8 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
         if (Array.isArray(error?.body)) {
             return error.body.map(item => item.message).join(', ');
         }
-        return error?.body?.message || error?.message || 'Your upload could not be processed. Please try again or contact your loan team.';
+        return error?.body?.message || error?.message
+            || t('Your upload could not be processed. Please try again or contact your loan team.', this.spanish);
     }
 
     get displayBorrowerName() {
@@ -234,9 +262,9 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
     }
 
     get clearedToggleLabel() {
-        const count = this.clearedRequests.length;
-        const noun = count === 1 ? 'document' : 'documents';
-        return this.showCleared ? 'Hide completed' : `Show ${count} completed ${noun}`;
+        return this.showCleared
+            ? t('Hide completed', this.spanish)
+            : showCompleted(this.clearedRequests.length, this.spanish);
     }
 
     toggleCleared() {

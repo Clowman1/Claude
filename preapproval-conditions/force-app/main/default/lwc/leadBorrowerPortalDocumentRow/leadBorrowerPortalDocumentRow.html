@@ -30,7 +30,7 @@
             <template lwc:if={showConfirmation}>
                 <div class="upload-confirmation" role="status">
                     <span class="upload-check" aria-hidden="true">&#10003;</span>
-                    Added. Press Submit below when you have added everything.
+                    {labels.added}
                 </div>
             </template>
             <template lwc:if={hasPendingFiles}>
@@ -43,7 +43,7 @@
                                 class="pending-remove"
                                 data-document-id={pendingFile.contentDocumentId}
                                 onclick={handleRemovePending}
-                                title="Remove this file">Remove</button>
+                                title={labels.removeThisFile}>{labels.remove}</button>
                         </li>
                     </template>
                 </ul>
@@ -91,7 +91,7 @@
                 <template lwc:if={showConfirmation}>
                     <div class="upload-confirmation" role="status">
                         <span class="upload-check" aria-hidden="true">&#10003;</span>
-                        Added. Press Submit below when you have added everything.
+                        {labels.added}
                     </div>
                 </template>
                 <template lwc:if={hasPendingFiles}>
@@ -104,7 +104,7 @@
                                     class="pending-remove"
                                     data-document-id={pendingFile.contentDocumentId}
                                     onclick={handleRemovePending}
-                                    title="Remove this file">Remove</button>
+                                    title={labels.removeThisFile}>{labels.remove}</button>
                             </li>
                         </template>
                     </ul>

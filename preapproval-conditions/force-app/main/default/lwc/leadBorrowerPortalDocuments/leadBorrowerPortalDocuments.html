@@ -6,14 +6,14 @@
         <main class="imbus-main-container">
             <div class="imbus-main-container-header hero-header">
                 <div class="imbus-title">
-                    <h1 class="imbus-title-greeting">Welcome Back, {displayBorrowerName}</h1>
-                    <h4 class="imbus-title-description">You can manage your documents here</h4>
+                    <h1 class="imbus-title-greeting">{labels.welcomeBack}, {displayBorrowerName}</h1>
+                    <h4 class="imbus-title-description">{labels.manageHere}</h4>
                 </div>
             </div>
             <div class="imbus-stats-container">
                 <div class="imbus-stat-card">
                     <div class="imbus-stat-title">
-                        <div class="imbus-stat-text">Documents Needed</div>
+                        <div class="imbus-stat-text">{labels.documentsNeeded}</div>
                     </div>
                     <div class="imbus-stat-number-container">
                         <div class="imbus-stat-number">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="imbus-stat-card">
                     <div class="imbus-stat-title">
-                        <div class="imbus-stat-text">Documents Uploaded</div>
+                        <div class="imbus-stat-text">{labels.documentsUploaded}</div>
                     </div>
                     <div class="imbus-stat-number-container">
                         <div class="imbus-stat-number">
@@ -33,7 +33,7 @@
                 </div>
                 <div class="imbus-stat-card">
                     <div class="imbus-stat-title">
-                        <div class="imbus-stat-text">Documents Approved</div>
+                        <div class="imbus-stat-text">{labels.documentsApproved}</div>
                     </div>
                     <div class="imbus-stat-number-container">
                         <div class="imbus-stat-number">
@@ -44,36 +44,32 @@
             </div>
             <div class="imbus-main-container-header">
                 <div class="imbus-title">
-                    <h2 class="imbus-title-greeting">Documents Required</h2>
-                    <h3 class="imbus-title-description">The documents requested below help your loan team keep your file moving before your loan is converted to a transaction.</h3>
+                    <h2 class="imbus-title-greeting">{labels.documentsRequired}</h2>
+                    <h3 class="imbus-title-description">{labels.intro}</h3>
                 </div>
             </div>
 
             <div class="how-it-works">
                 <span class="how-it-works-icon" aria-hidden="true">&#8593;</span>
                 <div>
-                    <p class="how-it-works-title">Upload everything, then press Submit</p>
-                    <p class="how-it-works-body">
-                        Add as many documents as you like - take your time and come back if you need to.
-                        <strong>Your loan team is not notified until you press Submit Docs for Review</strong>,
-                        so please remember to press it when you have finished.
-                    </p>
+                    <p class="how-it-works-title">{labels.howToTitle}</p>
+                    <p class="how-it-works-body">{labels.howToBody}</p>
                 </div>
             </div>
             <div class="imbus-document-table">
                 <template lwc:if={isPhone}>
                     <div class="imbus-table-header imbus-table-row">
-                        <div class="column-title">Document Name</div>
-                        <div class="column-title">Document Description</div>
-                        <div class="column-title">Actions</div>
+                        <div class="column-title">{labels.documentName}</div>
+                        <div class="column-title">{labels.documentDescription}</div>
+                        <div class="column-title">{labels.actions}</div>
                     </div>
                 </template>
                 <template lwc:else>
                     <div class="imbus-table-header imbus-table-row">
-                        <div class="column-title">Document Name</div>
-                        <div class="column-title">Status</div>
-                        <div class="column-title">Document Description</div>
-                        <div class="column-title">Actions</div>
+                        <div class="column-title">{labels.documentName}</div>
+                        <div class="column-title">{labels.status}</div>
+                        <div class="column-title">{labels.documentDescription}</div>
+                        <div class="column-title">{labels.actions}</div>
                     </div>
                 </template>
                 <template for:each={requests} for:item="request">
@@ -81,6 +77,7 @@
                         key={request.id}
                         lead-id={recordId}
                         portal-hash={hashRecordId}
+                        spanish={spanish}
                         request={request}
                         onrequestupdated={handleRequestUpdated}
                         onbasketchange={handleBasketChange}
@@ -93,10 +90,10 @@
                 <div class="submitted-banner" role="status">
                     <span class="submitted-check" aria-hidden="true">&#10003;</span>
                     <div>
-                        <p class="submitted-title">Documents Submitted for Review</p>
-                        <p class="submitted-sub">Your loan team has been notified and will review them shortly.</p>
+                        <p class="submitted-title">{labels.submittedTitle}</p>
+                        <p class="submitted-sub">{labels.submittedSub}</p>
                     </div>
-                    <button type="button" class="submitted-dismiss" onclick={dismissSubmittedConfirmation}>Dismiss</button>
+                    <button type="button" class="submitted-dismiss" onclick={dismissSubmittedConfirmation}>{labels.dismiss}</button>
                 </div>
             </template>
 
