@@ -1,0 +1,38 @@
+<messaging:emailTemplate subject="Documentos Necesarios - Pre-Aprobación Hipotecaria {!recipient.LastName}" recipientType="Lead">
+<messaging:htmlEmailBody >
+<html>
+<head>
+<style type="text/css">
+.myButton {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #0082cb;
+    font: normal normal bold 20px arial;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.myButton:hover,
+.myButton:focus {
+    background: #142850;
+    cursor: pointer;
+}
+</style>
+</head>
+<body style="height: auto; min-height: auto;">
+<span class="container"></span>
+<p>Hola {{BORROWER_FIRST_NAME}}:<br />
+<br />
+Fue un gusto hablar con usted. Como conversamos, a continuación encontrará los documentos necesarios para dar un paso más hacia la compra de su casa. Por favor reúnalos y súbalos al portal seguro usando el enlace que aparece abajo. Una vez recibidos, los revisaré y me comunicaré con usted para hablar de los siguientes pasos para completar su pre-aprobación. ¡Gracias de antemano!</p>
+{{REQUESTED_DOCUMENT_LIST}}
+<br />
+<p>Aquí está el enlace a su portal seguro</p>
+<div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Subir Documentos</a></div>
+<br />
+<span class="end-container"></span>
+<p>{{SENDER_SIGNATURE}}</p>
+</body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

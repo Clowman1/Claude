@@ -1,0 +1,39 @@
+<messaging:emailTemplate subject="Seguimiento - Documentos Necesarios para su Pre-Aprobación" recipientType="Lead">
+<messaging:htmlEmailBody >
+<html>
+<head>
+<style type="text/css">
+.myButton {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #0082cb;
+    font: normal normal bold 20px arial;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.myButton:hover,
+.myButton:focus {
+    background: #142850;
+    cursor: pointer;
+}
+</style>
+</head>
+<body style="height: auto; min-height: auto;">
+<span class="container"></span>
+<p>Hola {{BORROWER_FIRST_NAME}}:<br />
+<br />
+Le escribo para dar seguimiento a los documentos que aparecen abajo. En cuanto los reciba, podré seguir avanzando con su pre-aprobación, así que si puede enviarlos en el próximo día o dos sería de gran ayuda.</p>
+{{REQUESTED_DOCUMENT_LIST}}
+<br />
+<p>Todo lo que ya subió sigue guardado, por lo que no hay necesidad de enviar nada dos veces. Aquí está nuevamente su portal seguro:</p>
+<div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Subir Documentos</a></div>
+<br />
+<p>En cuanto los tenga, revisaré todo y me comunicaré con usted para darle los siguientes pasos.</p>
+<span class="end-container"></span>
+<p>{{SENDER_SIGNATURE}}</p>
+</body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

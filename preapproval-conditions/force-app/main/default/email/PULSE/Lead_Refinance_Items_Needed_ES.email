@@ -1,0 +1,39 @@
+<messaging:emailTemplate subject="Documentos Necesarios para su Refinanciamiento" recipientType="Lead">
+<messaging:htmlEmailBody >
+<html>
+<head>
+<style type="text/css">
+.myButton {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #0082cb;
+    font: normal normal bold 20px arial;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.myButton:hover,
+.myButton:focus {
+    background: #142850;
+    cursor: pointer;
+}
+</style>
+</head>
+<body style="height: auto; min-height: auto;">
+<span class="container"></span>
+<p>Hola {{BORROWER_FIRST_NAME}}:<br />
+<br />
+¡Fue un gusto hablar con usted! A continuación encontrará los documentos que necesito para iniciar su refinanciamiento. Una vez que los suba al portal seguro, revisaré todo y le presentaré sus opciones y los siguientes pasos.</p>
+{{REQUESTED_DOCUMENT_LIST}}
+<br />
+<p>Aquí está el enlace a su portal seguro:</p>
+<div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Subir Documentos</a></div>
+<br />
+<p>Envíe lo que tenga a la mano y podemos avanzar con el resto juntos. Si algún documento no aplica a su situación, solo responda y avíseme para quitarlo de la lista.</p>
+<span class="end-container"></span>
+<p>{{SENDER_SIGNATURE}}</p>
+</body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

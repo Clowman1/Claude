@@ -1,0 +1,40 @@
+<messaging:emailTemplate subject="Documentos Actualizados Necesarios para su Pre-Aprobación" recipientType="Lead">
+<messaging:htmlEmailBody >
+<html>
+<head>
+<style type="text/css">
+.myButton {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #0082cb;
+    font: normal normal bold 20px arial;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+.myButton:hover,
+.myButton:focus {
+    background: #142850;
+    cursor: pointer;
+}
+</style>
+</head>
+<body style="height: auto; min-height: auto;">
+<span class="container"></span>
+<p>Hola {{BORROWER_FIRST_NAME}}:<br />
+<br />
+Primero la buena noticia: usted ya cuenta con su pre-aprobación y eso no ha cambiado. Simplemente algunos de los documentos en su expediente han vencido o necesitan actualizarse para que su aprobación se mantenga vigente y lista para cuando encuentre la casa indicada.</p>
+<p>Esto es lo que necesito de usted:</p>
+{{REQUESTED_DOCUMENT_LIST}}
+<br />
+<p>Puede subir todo en un solo lugar:</p>
+<div><a class="myButton" href="{{LEAD_PORTAL_LINK}}">Subir Documentos</a></div>
+<br />
+<p>Una vez que los reciba, actualizaré su aprobación y le enviaré una carta nueva. Si algún documento de la lista ya no aplica, o si su situación ha cambiado desde la última vez que hablamos, solo responda a este correo y avíseme.</p>
+<span class="end-container"></span>
+<p>{{SENDER_SIGNATURE}}</p>
+</body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

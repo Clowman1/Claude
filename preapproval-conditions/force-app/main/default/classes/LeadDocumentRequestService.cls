@@ -42,6 +42,37 @@ public with sharing class LeadDocumentRequestService {
     // verbatim. Renaming Credit to Identification here made the table disagree with the choice they
     // had just made. Catalog-derived conditions keep their own friendlier labels in
     // resolveReferenceConditionName.
+    private static final String SPANISH_TEMPLATE_SUFFIX = '_ES';
+
+    /**
+     * The Spanish twin of a template when the borrower is flagged for Spanish and the twin
+     * exists, otherwise the English one.
+     *
+     * Resolved once at the entry point rather than at each lookup, so everything downstream -
+     * preview included - simply uses the name it was handed. A Loan Officer previewing a send
+     * therefore sees the Spanish they are about to send, which is the one place internal UI
+     * should not stay English.
+     */
+    private static String templateForLead(String developerName, Lead leadRecord) {
+        if (String.isBlank(developerName) || !prefersSpanish(leadRecord)) {
+            return developerName;
+        }
+        String spanishName = developerName + SPANISH_TEMPLATE_SUFFIX;
+        EmailTemplate spanishTemplate = LeadDocumentRequestRepository.getInstance()
+            .selectEmailTemplateByDeveloperName(spanishName);
+        return spanishTemplate == null ? developerName : spanishName;
+    }
+
+    /** Asking for a field the query never selected throws, so the populated map answers it. */
+    @TestVisible
+    private static Boolean prefersSpanish(Lead leadRecord) {
+        if (leadRecord == null) {
+            return false;
+        }
+        Object flag = leadRecord.getPopulatedFieldsAsMap().get('Spanish_Communications__c');
+        return flag == true;
+    }
+
     public static String resolveGroupingName(String category) {
         return String.isBlank(category) ? 'Other' : category;
     }
@@ -750,6 +781,8 @@ public with sharing class LeadDocumentRequestService {
             throw new LeadDocumentRequestException('At least one document request must be included in the email.');
         }
 
+        // Resolved once for the whole send: every borrower on a Lead shares its language.
+        String resolvedBorrowerTemplateName = templateForLead(templateDeveloperName, leadRecord);
         List<BorrowerSendTarget> targets = buildSendTargets(leadRecord);
         if (targets.isEmpty()) {
             throw new LeadDocumentRequestException(
@@ -783,7 +816,7 @@ public with sharing class LeadDocumentRequestService {
                 mail.setCcAddresses(ccAddresses);
             }
             mail.setSubject(subject);
-            mail.setHtmlBody(buildTemplatedBorrowerBody(target, theirs, templateDeveloperName));
+            mail.setHtmlBody(buildTemplatedBorrowerBody(target, theirs, resolvedBorrowerTemplateName));
             mail.setSaveAsActivity(true);
 
             if (!Test.isRunningTest()) {
@@ -903,9 +936,10 @@ public with sharing class LeadDocumentRequestService {
     @AuraEnabled
     public static String getSharedTemplatePreview(Id leadId, String templateDeveloperName) {
         Lead leadRecord = getLeadOrThrow(leadId);
-        String resolvedName = String.isBlank(templateDeveloperName)
-            ? EMAIL_TEMPLATE_DEVELOPER_NAME
-            : templateDeveloperName;
+        String resolvedName = templateForLead(
+            String.isBlank(templateDeveloperName) ? EMAIL_TEMPLATE_DEVELOPER_NAME : templateDeveloperName,
+            leadRecord
+        );
         EmailTemplate template = LeadDocumentRequestRepository.getInstance()
             .selectEmailTemplateByDeveloperName(resolvedName);
         if (template == null) {
@@ -1278,7 +1312,9 @@ public with sharing class LeadDocumentRequestService {
             );
         }
         EmailTemplate template = LeadDocumentRequestRepository.getInstance()
-            .selectEmailTemplateByDeveloperName(REJECTION_TEMPLATE_DEVELOPER_NAME);
+            .selectEmailTemplateByDeveloperName(
+                templateForLead(REJECTION_TEMPLATE_DEVELOPER_NAME, leadRecord)
+            );
         if (template == null) {
             throw new LeadDocumentRequestException(
                 'The borrower follow-up email template is missing, so no email was sent.'
@@ -1365,9 +1401,10 @@ public with sharing class LeadDocumentRequestService {
         List<Lead_Document_Request__c> requestRecords,
         String templateDeveloperName
     ) {
-        String resolvedTemplateDeveloperName = String.isBlank(templateDeveloperName)
-            ? EMAIL_TEMPLATE_DEVELOPER_NAME
-            : templateDeveloperName;
+        String resolvedTemplateDeveloperName = templateForLead(
+            String.isBlank(templateDeveloperName) ? EMAIL_TEMPLATE_DEVELOPER_NAME : templateDeveloperName,
+            leadRecord
+        );
         EmailTemplate template = LeadDocumentRequestRepository.getInstance()
             .selectEmailTemplateByDeveloperName(resolvedTemplateDeveloperName);
         if (template == null) {
