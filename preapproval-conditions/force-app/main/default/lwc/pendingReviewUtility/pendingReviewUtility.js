@@ -603,6 +603,9 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
                 this.setActiveStatus(STATUS_REVIEW);
             }
             this.fireToast('Document accepted', 'success');
+            if (!this.hasActiveDocuments) {
+                this.returnToQueueOnPhone();
+            }
         } catch (e) {
             this.fireToast('Error accepting document: ' + this.extractErrorMessage(e), 'error');
         }
@@ -735,6 +738,9 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
                     : 'Filed under Not Needed',
                 'success'
             );
+            if (!this.hasActiveDocuments) {
+                this.returnToQueueOnPhone();
+            }
         } catch (e) {
             this.fireToast('Error filing document: ' + this.extractErrorMessage(e), 'error');
         }
@@ -803,6 +809,9 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
                     : 'Document rejected \u2014 borrower was not emailed',
                 'success'
             );
+            if (!this.hasActiveDocuments) {
+                this.returnToQueueOnPhone();
+            }
         } catch (e) {
             this.fireToast('Error rejecting document: ' + this.extractErrorMessage(e), 'error');
         }
@@ -996,6 +1005,19 @@ export default class PendingReviewUtility extends NavigationMixin(LightningEleme
 
     // Not Needed is a pre-approval action; a Transaction condition has its own rules for a
     // document nobody wants.
+    /**
+     * Leaves the condition and refreshes the queue.
+     *
+     * On a phone the modal fills the screen, so a decided condition with nothing on it but
+     * Reopen strands the Loan Officer. Desktop keeps the resolved banner in view - a Processor
+     * working a list wants to see what just happened before moving on.
+     */
+    returnToQueueOnPhone() {
+        if (this.isPhone) {
+            this.handleCloseModal();
+        }
+    }
+
     get isPreApprovalCondition() {
         return !!(this.activeCondition && this.activeCondition.isPreApproval);
     }

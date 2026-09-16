@@ -143,7 +143,9 @@ public inherited sharing class LeadDocumentRequestRepository {
                    Type__c, Requested_Date__c, Include_In_Email__c, Can_Borrower_See__c,
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
                    Lead_Document_Request_Reference__r.Condition_Group_Key__c, CreatedDate,
-                   Borrower__c, Assigned_To_Primary__c
+                   // RequestItem reads the borrower through the relationship, so selecting only
+                   // the lookup id throws the moment a result is built from this row.
+                   Borrower__c, Borrower__r.Name, Borrower__r.Email__c, Assigned_To_Primary__c
             FROM Lead_Document_Request__c
             WHERE Id = :requestId
             WITH SYSTEM_MODE

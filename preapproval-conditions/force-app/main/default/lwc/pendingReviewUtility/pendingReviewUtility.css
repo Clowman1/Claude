@@ -866,7 +866,17 @@
        rendition is a glance; the full read happens in the native viewer. */
     .pru-preview-frame,
     .pru-preview-image-wrap {
-        min-height: 12rem;
+        min-height: 9rem;
+        max-height: 34vh;
+    }
+
+    /* The rendition is 720x480 landscape, so a portrait page arrives letterboxed inside it.
+       Filling the width and cropping the padding shows more of the document than fitting the
+       whole rendition does, and the full page is one tap away regardless. */
+    .pru-preview-image {
+        width: 100%;
+        object-fit: cover;
+        object-position: top center;
     }
 
     .pru-preview-stage {

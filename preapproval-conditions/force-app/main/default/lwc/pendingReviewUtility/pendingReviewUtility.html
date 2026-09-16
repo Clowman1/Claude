@@ -346,6 +346,10 @@
 
                                 <template if:true={isDecisionIdle}>
                                     <template if:true={isResolved}>
+                                        <button type="button" class="pru-btn pru-btn-primary pru-btn-block" onclick={handleCloseModal}>
+                                            <lightning-icon icon-name="utility:back" size="xx-small"></lightning-icon>
+                                            Back to Queue
+                                        </button>
                                         <button type="button" class="pru-btn pru-btn-secondary pru-btn-block" onclick={handleReopen}>
                                             <lightning-icon icon-name="utility:refresh" size="xx-small"></lightning-icon>
                                             Reopen Condition
@@ -373,11 +377,22 @@
                                             </template>
                                         </template>
                                         <template if:false={hasActiveDocuments}>
-                                            <p class="pru-help-text">No documents attached. Clear the comment alert to remove it from your queue without changing the condition status.</p>
-                                            <button type="button" class="pru-btn pru-btn-primary pru-btn-block" onclick={handleClearCommentAlert}>
-                                                <lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon>
-                                                Clear Comment Alert
-                                            </button>
+                                            <!-- Pre-approval conditions carry no comment thread by design, so offering to clear a
+                                                 comment alert on one is an action that can only report there was nothing to clear. -->
+                                            <template if:true={isPreApprovalCondition}>
+                                                <p class="pru-help-text">Nothing left to review on this condition.</p>
+                                                <button type="button" class="pru-btn pru-btn-primary pru-btn-block" onclick={handleCloseModal}>
+                                                    <lightning-icon icon-name="utility:back" size="xx-small"></lightning-icon>
+                                                    Back to Queue
+                                                </button>
+                                            </template>
+                                            <template if:false={isPreApprovalCondition}>
+                                                <p class="pru-help-text">No documents attached. Clear the comment alert to remove it from your queue without changing the condition status.</p>
+                                                <button type="button" class="pru-btn pru-btn-primary pru-btn-block" onclick={handleClearCommentAlert}>
+                                                    <lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon>
+                                                    Clear Comment Alert
+                                                </button>
+                                            </template>
                                         </template>
                                     </template>
                                 </template>
