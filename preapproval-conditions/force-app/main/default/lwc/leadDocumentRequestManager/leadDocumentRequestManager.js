@@ -199,13 +199,13 @@ export default class LeadDocumentRequestManager extends LightningElement {
      * that looks set but is not would send the next email in the wrong language.
      */
     get languageLabel() {
-        return this.spanishCommunications ? 'Espanol' : 'English';
+        return this.spanishCommunications ? 'Español' : 'English';
     }
 
     get languageSwitchClass() {
         return this.spanishCommunications
-            ? 'language-switch language-switch_on'
-            : 'language-switch';
+            ? 'toolbar-info-pill language-switch language-switch_on'
+            : 'toolbar-info-pill language-switch';
     }
 
     get languageSwitchTitle() {

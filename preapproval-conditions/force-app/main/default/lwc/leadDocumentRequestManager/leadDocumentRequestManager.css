@@ -27,7 +27,7 @@
     display: flex;
     gap: 16px;
     justify-content: space-between;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     min-width: 0;
     padding: 16px;
 }
@@ -36,7 +36,7 @@
     align-items: center;
     display: flex;
     flex: 1 1 auto;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 10px;
     min-width: 0;
 }
@@ -56,16 +56,19 @@
     padding: 6px 12px;
 }
 
-/* Sized to sit inside the toolbar pill rather than beside it. */
+/* Its own pill rather than a control inside one: the word is the state, so it must never be
+   the thing that gets shortened when the toolbar runs out of room. */
 .language-switch {
-    align-items: center;
-    background: transparent;
-    border: none;
     cursor: pointer;
-    display: inline-flex;
+    flex: 0 0 auto;
     font-family: inherit;
-    gap: 6px;
-    padding: 0;
+    gap: 8px;
+    max-width: none;
+}
+
+.language-switch .language-switch__text {
+    overflow: visible;
+    text-overflow: clip;
 }
 
 .language-switch[disabled] {
@@ -106,6 +109,7 @@
 .language-switch__text {
     color: #101828;
     font-size: 13px;
+    font-weight: 600;
     white-space: nowrap;
 }
 

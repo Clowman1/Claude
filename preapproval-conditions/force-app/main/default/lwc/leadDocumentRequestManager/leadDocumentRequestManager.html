@@ -54,18 +54,15 @@
                          Officer is standing when they realise the borrower needs Spanish.
                          A plain button, not lightning-input: the toggle stacks its own label and
                          message, which will not sit in a 32px pill. -->
-                    <div class="toolbar-info-pill">
-                        <span class="toolbar-label">Language</span>
-                        <button
-                            type="button"
-                            class={languageSwitchClass}
-                            onclick={handleSpanishToggle}
-                            disabled={isConverted}
-                            title={languageSwitchTitle}>
-                            <span class="language-switch__track"><span class="language-switch__knob"></span></span>
-                            <span class="language-switch__text">{languageLabel}</span>
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        class={languageSwitchClass}
+                        onclick={handleSpanishToggle}
+                        disabled={isConverted}
+                        title={languageSwitchTitle}>
+                        <span class="language-switch__track"><span class="language-switch__knob"></span></span>
+                        <span class="language-switch__text">{languageLabel}</span>
+                    </button>
                     <template lwc:if={hasPortalLinks}>
                         <template for:each={portalLinks} for:item="portal">
                             <div key={portal.key} class="portal-pill">
