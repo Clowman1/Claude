@@ -361,8 +361,6 @@ public with sharing class LeadDocumentRequestService {
                 Name = resolvedName,
                 Status__c = String.isBlank(input.status) ? DEFAULT_STATUS : input.status,
                 Description__c = input.description,
-                Description_ES__c = input.descriptionES,
-                Subject_ES__c = input.descriptionES,
                 Subject__c = input.subject,
                 Category__c = input.category,
                 Type__c = String.isBlank(input.type) ? 'Loan Officer' : input.type,
@@ -370,6 +368,13 @@ public with sharing class LeadDocumentRequestService {
                 Can_Borrower_See__c = input.canBorrowerSee == true,
                 Lead_Document_Request_Reference__c = input.referenceId
             );
+            // Set only when the caller actually supplied Spanish. Leaving the field off the record
+            // entirely is what preserves it - assigning null would clear it, and the conditions
+            // tab has no Spanish to send.
+            if (String.isNotBlank(input.descriptionES)) {
+                requestRecord.Description_ES__c = input.descriptionES;
+                requestRecord.Subject_ES__c = input.descriptionES;
+            }
             // On an update a blank token means the caller is not touching assignment, so the
             // existing Borrower__c is left as it is rather than being silently reset to shared.
             if (input.id == null || String.isNotBlank(input.assignment)) {
