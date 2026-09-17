@@ -31,7 +31,11 @@ public without sharing class LeadDocumentPortalService {
             parentId = requestRecord.Lead__c;
             name = useSpanish == true ? spanishConditionName(requestRecord.Name) : requestRecord.Name;
             status = requestRecord.Status__c;
-            description = preferred(requestRecord.Description_ES__c, requestRecord.Description__c, useSpanish);
+            description = preferred(
+                LeadDocumentRequestService.spanishDescriptionFor(requestRecord),
+                requestRecord.Description__c,
+                useSpanish
+            );
             notes = preferred(requestRecord.Subject_ES__c, requestRecord.Subject__c, useSpanish);
             fileCount = linkedFileCount == null ? 0 : linkedFileCount;
             pendingFiles = new List<PortalPendingFile>();

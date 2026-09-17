@@ -98,6 +98,33 @@ public with sharing class LeadDocumentRequestService {
      * Generated in Apex by resolveReferenceConditionName, never from the catalogue, so they are
      * invisible to anyone translating it. Anything unrecognised is returned untouched.
      */
+    /**
+     * The Spanish a borrower should see for one condition, or null if there is none.
+     *
+     * The request carries its own copy so an edit survives, but a condition raised before the
+     * Spanish existed - or before the copy did - has none, so the catalogue stands behind it.
+     * Without that fallback a condition is stuck in the language it was born in forever.
+     */
+    public static String spanishDescriptionFor(Lead_Document_Request__c requestRecord) {
+        if (requestRecord == null) {
+            return null;
+        }
+        if (String.isNotBlank(requestRecord.Description_ES__c)) {
+            return requestRecord.Description_ES__c;
+        }
+        if (requestRecord.Lead_Document_Request_Reference__r == null) {
+            return null;
+        }
+        String catalogueSpanish = requestRecord.Lead_Document_Request_Reference__r.Borrower_Description_ES__c;
+        if (String.isNotBlank(catalogueSpanish)) {
+            return catalogueSpanish;
+        }
+        // A handful of catalogue entries - the photo ID and the green card - carry their prose in
+        // the label rather than the description, so their Spanish lives there too.
+        String labelSpanish = requestRecord.Lead_Document_Request_Reference__r.Borrower_Label_ES__c;
+        return String.isBlank(labelSpanish) ? null : labelSpanish;
+    }
+
     public static String spanishConditionName(String englishName) {
         Map<String, String> byEnglishName = new Map<String, String>{
             'Identification' => 'Identificación',
@@ -2110,11 +2137,10 @@ public with sharing class LeadDocumentRequestService {
             String conditionName = useSpanish == true
                 ? spanishConditionName(requestRecord.Name)
                 : requestRecord.Name;
-            Boolean hasSpanishText = useSpanish == true
-                && String.isNotBlank(requestRecord.Description_ES__c);
-            String conditionDescription = hasSpanishText
-                ? requestRecord.Description_ES__c
-                : requestRecord.Description__c;
+            String spanishText = useSpanish == true ? spanishDescriptionFor(requestRecord) : null;
+            String conditionDescription = String.isBlank(spanishText)
+                ? requestRecord.Description__c
+                : spanishText;
             body += '<li><strong>' + conditionName.escapeHtml4() + '</strong>';
             if (String.isNotBlank(conditionDescription)) {
                 body += ' - ' + conditionDescription.escapeHtml4();
