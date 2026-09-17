@@ -198,8 +198,24 @@ export default class LeadDocumentRequestManager extends LightningElement {
      * The toggle is optimistic: it flips, then reverts if the write fails, because a switch
      * that looks set but is not would send the next email in the wrong language.
      */
-    async handleSpanishToggle(event) {
-        const requested = event.target.checked;
+    get languageLabel() {
+        return this.spanishCommunications ? 'Espanol' : 'English';
+    }
+
+    get languageSwitchClass() {
+        return this.spanishCommunications
+            ? 'language-switch language-switch_on'
+            : 'language-switch';
+    }
+
+    get languageSwitchTitle() {
+        return this.spanishCommunications
+            ? 'This borrower receives Spanish. Click to switch to English.'
+            : 'This borrower receives English. Click to switch to Spanish.';
+    }
+
+    async handleSpanishToggle() {
+        const requested = !this.spanishCommunications;
         this.spanishCommunications = requested;
         try {
             const saved = await setSpanishCommunications({

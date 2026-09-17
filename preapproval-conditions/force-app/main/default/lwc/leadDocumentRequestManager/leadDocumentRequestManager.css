@@ -56,6 +56,59 @@
     padding: 6px 12px;
 }
 
+/* Sized to sit inside the toolbar pill rather than beside it. */
+.language-switch {
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    gap: 6px;
+    padding: 0;
+}
+
+.language-switch[disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.language-switch__track {
+    background: #c9ced6;
+    border-radius: 999px;
+    display: inline-block;
+    flex: 0 0 auto;
+    height: 14px;
+    position: relative;
+    transition: background-color 0.15s ease;
+    width: 26px;
+}
+
+.language-switch__knob {
+    background: #ffffff;
+    border-radius: 50%;
+    height: 10px;
+    left: 2px;
+    position: absolute;
+    top: 2px;
+    transition: left 0.15s ease;
+    width: 10px;
+}
+
+.language-switch_on .language-switch__track {
+    background: #2e844a;
+}
+
+.language-switch_on .language-switch__knob {
+    left: 14px;
+}
+
+.language-switch__text {
+    color: #101828;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
 .toolbar-label {
     color: #f59f2f;
     font-size: 11px;
