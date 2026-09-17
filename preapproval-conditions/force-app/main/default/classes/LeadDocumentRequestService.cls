@@ -92,6 +92,33 @@ public with sharing class LeadDocumentRequestService {
         return useSpanish == true;
     }
 
+    /**
+     * Spanish for the grouping words shown as the condition name.
+     *
+     * Generated in Apex by resolveReferenceConditionName, never from the catalogue, so they are
+     * invisible to anyone translating it. Anything unrecognised is returned untouched.
+     */
+    public static String spanishConditionName(String englishName) {
+        Map<String, String> byEnglishName = new Map<String, String>{
+            'Identification' => 'Identificación',
+            'Income' => 'Ingresos',
+            'Asset' => 'Activos',
+            'Assets' => 'Activos',
+            'Credit' => 'Crédito',
+            'Gift Letter' => 'Carta de Regalo',
+            'WVOE' => 'Verificación de Empleo',
+            'Other Items' => 'Otros Documentos',
+            'Other' => 'Otros',
+            'Condition' => 'Requisito',
+            'Document Request' => 'Documento Solicitado'
+        };
+        if (String.isBlank(englishName)) {
+            return englishName;
+        }
+        String translated = byEnglishName.get(englishName);
+        return translated == null ? englishName : translated;
+    }
+
     public static String resolveGroupingName(String category) {
         return String.isBlank(category) ? 'Other' : category;
     }
@@ -111,6 +138,9 @@ public with sharing class LeadDocumentRequestService {
         @AuraEnabled public String name { get; set; }
         @AuraEnabled public String status { get; set; }
         @AuraEnabled public String description { get; set; }
+        // Spanish for a condition that is built in Apex rather than taken from the catalogue.
+        // Blank falls back to the English, as everywhere else.
+        @AuraEnabled public String descriptionES { get; set; }
         @AuraEnabled public String subject { get; set; }
         @AuraEnabled public String category { get; set; }
         @AuraEnabled public String type { get; set; }
@@ -304,6 +334,8 @@ public with sharing class LeadDocumentRequestService {
                 Name = resolvedName,
                 Status__c = String.isBlank(input.status) ? DEFAULT_STATUS : input.status,
                 Description__c = input.description,
+                Description_ES__c = input.descriptionES,
+                Subject_ES__c = input.descriptionES,
                 Subject__c = input.subject,
                 Category__c = input.category,
                 Type__c = String.isBlank(input.type) ? 'Loan Officer' : input.type,
@@ -837,7 +869,9 @@ public with sharing class LeadDocumentRequestService {
                 mail.setCcAddresses(ccAddresses);
             }
             mail.setSubject(subject);
-            mail.setHtmlBody(buildTemplatedBorrowerBody(target, theirs, resolvedBorrowerTemplateName));
+            mail.setHtmlBody(buildTemplatedBorrowerBody(
+                target, theirs, resolvedBorrowerTemplateName, prefersSpanish(leadRecord)
+            ));
             mail.setSaveAsActivity(true);
 
             if (!Test.isRunningTest()) {
@@ -1002,7 +1036,8 @@ public with sharing class LeadDocumentRequestService {
     private static String buildTemplatedBorrowerBody(
         BorrowerSendTarget target,
         List<Lead_Document_Request__c> requests,
-        String templateDeveloperName
+        String templateDeveloperName,
+        Boolean useSpanish
     ) {
         String resolvedName = String.isBlank(templateDeveloperName)
             ? EMAIL_TEMPLATE_DEVELOPER_NAME
@@ -1018,7 +1053,9 @@ public with sharing class LeadDocumentRequestService {
                 );
                 String renderedHtmlBody = rendered.getHtmlBody();
                 if (String.isNotBlank(renderedHtmlBody)) {
-                    return prepareRenderedHtmlBodyFor(renderedHtmlBody, target.portalLink, requests, target);
+                    return prepareRenderedHtmlBodyFor(
+                        renderedHtmlBody, target.portalLink, requests, target, useSpanish
+                    );
                 }
             } catch (Exception renderException) {
                 // Fall through to the plain body rather than failing the send outright.
@@ -1636,7 +1673,7 @@ public with sharing class LeadDocumentRequestService {
         String body = '<p>Hi ' + borrowerName + ',</p>' +
             '<p>To keep your loan moving, we would like to begin collecting a few documents while your file is still in the lead stage.</p>' +
             '<p>Please upload any requested documentation to this secure portal.</p>' +
-            buildRequestedDocumentListHtml(requestRecords);
+            buildRequestedDocumentListHtml(requestRecords, prefersSpanish(leadRecord));
         body += '<p><a href="' + buildLeadPortalLink(leadRecord).escapeHtml4() +
             '">Upload Files</a></p>' +
             '<p>Please remember that I am here to assist you every step of the way. If you need help gathering any documents or have questions, please reply to this email.</p>' +
@@ -1819,7 +1856,9 @@ public with sharing class LeadDocumentRequestService {
         String bodyWithPortalLink = addLeadPortalLink(htmlBody, leadRecord);
         // The same token the per-borrower path fills, so a template works on either path.
         String bodyWithName = applyBorrowerFirstName(bodyWithPortalLink, leadRecord.FirstName);
-        String bodyWithDocuments = addRequestedDocumentList(bodyWithName, requestRecords);
+        String bodyWithDocuments = addRequestedDocumentList(
+            bodyWithName, requestRecords, prefersSpanish(leadRecord)
+        );
         return addSenderSignature(bodyWithDocuments);
     }
 
@@ -1831,14 +1870,15 @@ public with sharing class LeadDocumentRequestService {
         String htmlBody,
         String portalLink,
         List<Lead_Document_Request__c> requestRecords,
-        BorrowerSendTarget target
+        BorrowerSendTarget target,
+        Boolean useSpanish
     ) {
         String body = htmlBody;
         if (body.contains(LEAD_PORTAL_LINK_PLACEHOLDER) && String.isNotBlank(portalLink)) {
             body = body.replace(LEAD_PORTAL_LINK_PLACEHOLDER, portalLink.escapeHtml4());
         }
         body = applyBorrowerFirstName(body, firstNameOf(target));
-        return addSenderSignature(addRequestedDocumentList(body, requestRecords));
+        return addSenderSignature(addRequestedDocumentList(body, requestRecords, useSpanish));
     }
 
     /** First word of the borrower's name, which is what a greeting wants. */
@@ -1868,9 +1908,10 @@ public with sharing class LeadDocumentRequestService {
 
     private static String addRequestedDocumentList(
         String htmlBody,
-        List<Lead_Document_Request__c> requestRecords
+        List<Lead_Document_Request__c> requestRecords,
+        Boolean useSpanish
     ) {
-        String requestedDocumentsHtml = buildRequestedDocumentListHtml(requestRecords);
+        String requestedDocumentsHtml = buildRequestedDocumentListHtml(requestRecords, useSpanish);
         if (htmlBody.contains(REQUESTED_DOCUMENT_LIST_PLACEHOLDER)) {
             return htmlBody.replace(REQUESTED_DOCUMENT_LIST_PLACEHOLDER, requestedDocumentsHtml);
         }
@@ -2060,12 +2101,23 @@ public with sharing class LeadDocumentRequestService {
         return String.isBlank(value) ? '' : value.escapeHtml4();
     }
 
-    private static String buildRequestedDocumentListHtml(List<Lead_Document_Request__c> requestRecords) {
+    private static String buildRequestedDocumentListHtml(
+        List<Lead_Document_Request__c> requestRecords,
+        Boolean useSpanish
+    ) {
         String body = '<ul>';
         for (Lead_Document_Request__c requestRecord : requestRecords) {
-            body += '<li><strong>' + requestRecord.Name.escapeHtml4() + '</strong>';
-            if (String.isNotBlank(requestRecord.Description__c)) {
-                body += ' - ' + requestRecord.Description__c.escapeHtml4();
+            String conditionName = useSpanish == true
+                ? spanishConditionName(requestRecord.Name)
+                : requestRecord.Name;
+            Boolean hasSpanishText = useSpanish == true
+                && String.isNotBlank(requestRecord.Description_ES__c);
+            String conditionDescription = hasSpanishText
+                ? requestRecord.Description_ES__c
+                : requestRecord.Description__c;
+            body += '<li><strong>' + conditionName.escapeHtml4() + '</strong>';
+            if (String.isNotBlank(conditionDescription)) {
+                body += ' - ' + conditionDescription.escapeHtml4();
             }
             body += '</li>';
         }

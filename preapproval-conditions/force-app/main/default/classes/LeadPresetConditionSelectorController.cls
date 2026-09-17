@@ -307,16 +307,30 @@ public with sharing class LeadPresetConditionSelectorController {
         return new List<LeadDocumentRequestService.RequestInput>{
             buildManualRequest(
                 'Other Items',
-                'Real Estate Owned - Please upload the current mortgage statement and insurance declaration page for any real estate property currently owned, if applicable.'
+                'Real Estate Owned - Please upload the current mortgage statement and insurance declaration page for any real estate property currently owned, if applicable.',
+                'Propiedades Inmuebles - Por favor suba el estado de cuenta hipotecario actual y la página de declaración del seguro de cualquier propiedad que tenga actualmente, si aplica.'
             )
         };
     }
 
     private static LeadDocumentRequestService.RequestInput buildManualRequest(String name, String description) {
+        return buildManualRequest(name, description, null);
+    }
+
+    /**
+     * A condition assembled here rather than taken from the catalogue, so its Spanish has to
+     * travel with it - there is no reference record to look it up from later.
+     */
+    private static LeadDocumentRequestService.RequestInput buildManualRequest(
+        String name,
+        String description,
+        String descriptionES
+    ) {
         LeadDocumentRequestService.RequestInput input = new LeadDocumentRequestService.RequestInput();
         input.name = name;
         input.subject = name;
         input.description = description;
+        input.descriptionES = descriptionES;
         input.category = 'Other';
         input.type = 'Loan Officer';
         input.includeInEmail = true;

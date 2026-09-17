@@ -93,24 +93,7 @@ public without sharing class LeadDocumentPortalService {
      */
     @TestVisible
     private static String spanishConditionName(String englishName) {
-        Map<String, String> byEnglishName = new Map<String, String>{
-            'Identification' => 'Identificacion',
-            'Income' => 'Ingresos',
-            'Asset' => 'Activos',
-            'Assets' => 'Activos',
-            'Credit' => 'Credito',
-            'Gift Letter' => 'Carta de Regalo',
-            'WVOE' => 'Verificacion de Empleo',
-            'Other Items' => 'Otros Documentos',
-            'Other' => 'Otros',
-            'Condition' => 'Requisito',
-            'Document Request' => 'Documento Solicitado'
-        };
-        if (String.isBlank(englishName)) {
-            return englishName;
-        }
-        String translated = byEnglishName.get(englishName);
-        return translated == null ? englishName : translated;
+        return LeadDocumentRequestService.spanishConditionName(englishName);
     }
 
     public class PortalClearedRequest {

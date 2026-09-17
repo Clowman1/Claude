@@ -125,7 +125,7 @@ public inherited sharing class LeadDocumentRequestRepository {
         }
 
         return [
-            SELECT Id, Name, Status__c, Subject__c, Category__c, LastModifiedDate
+            SELECT Id, Name, Status__c, Subject__c, Subject_ES__c, Category__c, LastModifiedDate
             FROM Lead_Document_Request__c
             WHERE Lead__c = :leadId
             AND Can_Borrower_See__c = TRUE
@@ -178,6 +178,7 @@ public inherited sharing class LeadDocumentRequestRepository {
                    Converted_Condition__c, Lead_Document_Request_Reference__c,
                    Lead_Document_Request_Reference__r.Condition_Group_Key__c
                    , Borrower__c, Assigned_To_Primary__c
+                   , Description_ES__c, Subject_ES__c
             FROM Lead_Document_Request__c
             WHERE Lead__c = :leadId
             AND Include_In_Email__c = TRUE
