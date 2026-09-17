@@ -113,6 +113,23 @@
     white-space: nowrap;
 }
 
+/* The menu button sits on the dark toolbar, so it needs the light-on-dark treatment the pills
+   already have rather than the default white SLDS button. */
+.portal-menu {
+    flex: 0 0 auto;
+}
+
+.portal-menu .slds-button {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(16, 24, 40, 0.16);
+    color: #101828;
+    font-size: 13px;
+    min-height: 32px;
+    padding: 0 12px;
+}
+
 .toolbar-label {
     color: #f59f2f;
     font-size: 11px;

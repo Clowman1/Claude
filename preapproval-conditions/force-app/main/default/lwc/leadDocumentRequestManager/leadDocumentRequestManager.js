@@ -1616,6 +1616,52 @@ export default class LeadDocumentRequestManager extends LightningElement {
         }
     }
 
+    get portalMenuLabel() {
+        const count = this.portalLinks.length;
+        return count === 1 ? 'Portal Link' : `Portal Links (${count})`;
+    }
+
+    /**
+     * Two entries per borrower: opening their portal and copying their link are different jobs,
+     * and a menu item can only do one. Naming the borrower in both keeps it unambiguous when
+     * several of them are listed together.
+     */
+    get portalMenuItems() {
+        const items = [];
+        this.portalLinks.forEach(entry => {
+            items.push({
+                value: `open:${entry.key}`,
+                label: `Open ${entry.label}`,
+                icon: 'utility:new_window'
+            });
+            items.push({
+                value: `copy:${entry.key}`,
+                label: `Copy ${entry.label} link`,
+                icon: this.copiedLinkKey === entry.key ? 'utility:check' : 'utility:copy_to_clipboard'
+            });
+        });
+        return items;
+    }
+
+    handlePortalMenuSelect(event) {
+        const selected = String(event.detail.value || {});
+        const separator = selected.indexOf(':');
+        if (separator < 0) {
+            return;
+        }
+        const action = selected.substring(0, separator);
+        const key = selected.substring(separator + 1);
+        const entry = this.portalLinks.find(candidate => candidate.key === key);
+        if (!entry || !entry.link) {
+            return;
+        }
+        if (action === 'open') {
+            window.open(entry.link, '_blank');
+            return;
+        }
+        this.copyPortalLinkFor(entry);
+    }
+
     get hasPortalLinks() {
         return this.portalLinks.length > 0;
     }
@@ -1641,12 +1687,7 @@ export default class LeadDocumentRequestManager extends LightningElement {
             });
     }
 
-    async handleCopyBorrowerLink(event) {
-        const key = event.currentTarget.dataset.key;
-        const entry = this.portalLinks.find(candidate => candidate.key === key);
-        if (!entry || !entry.link) {
-            return;
-        }
+    async copyPortalLinkFor(entry) {
 
         const label = `${entry.label} Document Portal`;
         const html = `<a href="${entry.link}">${label}</a>`;
