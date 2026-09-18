@@ -80,6 +80,46 @@ private class LeadConversionCarryForwardSweeperTest {
         ], 'Two sweeps leave one condition, not two.');
     }
 
+    /**
+     * The real sequence, which the other tests here do not reproduce: convert FIRST, then stamp
+     * the Transaction onto the already-converted Lead, exactly as Convert_Lead does. This is the
+     * order that failed on the Hall file, so it is the order worth pinning.
+     */
+    @IsTest
+    static void theStampAfterConversionCarriesTheDocuments() {
+        Transaction__c transactionRecord = createTransaction('Live Order Loan', 'LD-ORDER');
+        Lead leadRecord = new Lead(
+            FirstName = 'Order',
+            LastName = 'Borrower',
+            Company = 'Order Borrower',
+            Status = 'New',
+            Email = 'carry-order@example.com'
+        );
+        insert leadRecord;
+        insert new Lead_Document_Request__c(
+            Lead__c = leadRecord.Id,
+            Name = 'Income',
+            Subject__c = 'Paystub',
+            Description__c = 'Please upload your paystub',
+            Category__c = 'Income',
+            Type__c = 'Loan Officer',
+            Status__c = 'Cleared'
+        );
+
+        Test.startTest();
+        convert(leadRecord.Id);
+        // The Lead is converted at this point. Convert_Lead stamps it here, and nothing had been
+        // carrying the documents when it did.
+        update new Lead(Id = leadRecord.Id, Converted_Transaction_ID__c = transactionRecord.Id);
+        Test.stopTest();
+
+        System.assertEquals(
+            1,
+            [SELECT COUNT() FROM Condition__c WHERE Transaction__c = :transactionRecord.Id],
+            'Stamping a converted Lead carries its conditions across.'
+        );
+    }
+
     private static Transaction__c createTransaction(String name, String loanNumber) {
         Transaction__c transactionRecord = new Transaction__c(
             Name = name,
