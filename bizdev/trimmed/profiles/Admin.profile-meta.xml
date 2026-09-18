@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <custom>false</custom>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <personAccountDefault>false</personAccountDefault>
+        <recordType>PersonAccount.BizDev_Expansion</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <tabVisibilities>
+        <tab>CEO_Biz_Dev_Contacts</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+</Profile>
