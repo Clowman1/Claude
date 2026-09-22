@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node --no-deprecation .claude/integrity.mjs --daily",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

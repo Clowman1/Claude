@@ -1,0 +1,6 @@
+# Local machine config, not shared
+.claude/settings.local.json
+
+# Integrity report local state -- the log holds borrower names and loan numbers
+.claude/.integrity-last-run
+.claude/integrity-log.md
