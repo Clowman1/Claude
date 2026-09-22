@@ -34,6 +34,10 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
     nonQmType = '';
     nonQmTriggerValue = 'NON-QM';
     docsReviewed = '';
+    ltv;
+    // Which of the pair the Loan Officer last typed. When the purchase price moves, that one is
+    // held and the other recalculated - changing the figure they just entered would be rude.
+    lastEditedFigure = 'loanAmount';
     signerId;
     letterHtml = '';
 
@@ -69,7 +73,10 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
             return 'Enter a purchase price.';
         }
         if (!this.loanAmount) {
-            return 'Enter a loan amount.';
+            return 'Enter a loan amount, or an LTV to work it out from.';
+        }
+        if (Number(this.ltv) > 100) {
+            return 'The LTV is over 100%. Check the figures before generating.';
         }
         if (Number(this.loanAmount) > Number(this.purchasePrice)) {
             return 'The loan amount is higher than the purchase price. Check both figures before generating.';
@@ -96,16 +103,8 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
         return this.isLoading || Boolean(this.validationMessage);
     }
 
-    get ltvLabel() {
-        if (!this.purchasePrice || !this.loanAmount) {
-            return '';
-        }
-        const ltv = (Number(this.loanAmount) / Number(this.purchasePrice)) * 100;
-        return Number.isFinite(ltv) ? `${ltv.toFixed(2)}% LTV` : '';
-    }
-
-    get hasLtvLabel() {
-        return Boolean(this.ltvLabel);
+    get ltvDisabled() {
+        return !this.purchasePrice;
     }
 
     // ---------- load ----------
@@ -117,6 +116,7 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
             this.borrowerName = context.borrowerName;
             this.purchasePrice = context.purchasePrice;
             this.loanAmount = context.loanAmount;
+            this.deriveLtvFromLoanAmount();
             this.financingType = context.financingType || '';
             this.propertyType = context.propertyType || '';
             this.docsReviewed = context.docsReviewed || '';
@@ -138,10 +138,43 @@ export default class LeadPreApprovalLetter extends NavigationMixin(LightningElem
 
     handlePurchasePriceChange(event) {
         this.purchasePrice = event.target.value;
+        if (this.lastEditedFigure === 'ltv') {
+            this.deriveLoanAmountFromLtv();
+        } else {
+            this.deriveLtvFromLoanAmount();
+        }
+    }
+
+    handleLtvChange(event) {
+        this.ltv = event.target.value;
+        this.lastEditedFigure = 'ltv';
+        this.deriveLoanAmountFromLtv();
+    }
+
+    /** Whole dollars: a loan amount with cents on it looks like a rounding error to a realtor. */
+    deriveLoanAmountFromLtv() {
+        const price = Number(this.purchasePrice);
+        const percent = Number(this.ltv);
+        if (!price || !percent || !Number.isFinite(price) || !Number.isFinite(percent)) {
+            return;
+        }
+        this.loanAmount = Math.round((price * percent) / 100);
+    }
+
+    deriveLtvFromLoanAmount() {
+        const price = Number(this.purchasePrice);
+        const amount = Number(this.loanAmount);
+        if (!price || !amount || !Number.isFinite(price) || !Number.isFinite(amount)) {
+            return;
+        }
+        // Two decimals, but without a trailing .00 on the round numbers people actually type.
+        this.ltv = Number(((amount / price) * 100).toFixed(2));
     }
 
     handleLoanAmountChange(event) {
         this.loanAmount = event.target.value;
+        this.lastEditedFigure = 'loanAmount';
+        this.deriveLtvFromLoanAmount();
     }
 
     handleFinancingChange(event) {

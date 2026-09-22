@@ -44,22 +44,7 @@
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
 
-.loan-amount-cell {
-    position: relative;
-}
-
 /* Sits against the loan amount so an out-of-range LTV is obvious before generating. */
-.ltv-chip {
-    background: #e8f1fb;
-    border-radius: 999px;
-    color: #1b6fc4;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 0.1rem 0.5rem;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
 
 .field-hint {
     color: #5a6b86;
