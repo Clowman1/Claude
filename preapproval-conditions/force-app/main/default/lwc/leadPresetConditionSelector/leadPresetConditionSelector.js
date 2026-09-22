@@ -1,6 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import { FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
-import { shouldUseFlowNavigation } from 'c/portalUtils';
+import communityId from '@salesforce/community/Id';
 import getPresetConditions from '@salesforce/apex/LeadPresetConditionSelectorController.getPresetConditions';
 import createSelectedConditionKeys from '@salesforce/apex/LeadPresetConditionSelectorController.createSelectedConditionKeys';
 
@@ -87,6 +87,19 @@ export default class LeadPresetConditionSelector extends LightningElement {
     @api availableActions = [];
     @api portalMode = false;
 
+    /**
+     * Was c/portalUtils.shouldUseFlowNavigation, inlined because that module imports
+     * lightning/toast, which only exists in an Experience Cloud LWR site. In internal Lightning
+     * the whole module fails to load, every export comes back undefined, and adding conditions
+     * died on "shouldUseFlowNavigation is not a function".
+     *
+     * Same rule, same behaviour: never emit flow navigation in the portal wizard or on a
+     * community page. c/portalUtils is left untouched for the community build.
+     */
+    get shouldUseFlowNavigation() {
+        return !this.portalMode && !communityId;
+    }
+
     @track conditions = [];
     @track expandedSectionNames = [];
     isLoading = false;
@@ -155,7 +168,7 @@ export default class LeadPresetConditionSelector extends LightningElement {
     }
 
     navigateForward() {
-        if (!shouldUseFlowNavigation(this.portalMode)) {
+        if (!this.shouldUseFlowNavigation) {
             return;
         }
         if (this.availableActions.includes('FINISH')) {
