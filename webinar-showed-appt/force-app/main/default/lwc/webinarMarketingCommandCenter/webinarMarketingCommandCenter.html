@@ -1,0 +1,106 @@
+<template>
+    <section class="wmcc" aria-label="Marketing Command Center">
+        <header class="wmcc-hero">
+            <div>
+                <p class="wmcc-kicker">Reach Home Loans</p>
+                <h1>Marketing Command Center</h1>
+                <p>Track acquisition volume, status progression, and conversion performance by channel.</p>
+            </div>
+            <button class="wmcc-refresh" type="button" onclick={handleRefresh} disabled={isRefreshing}>
+                {refreshLabel}
+            </button>
+        </header>
+
+        <div class="wmcc-master-tabs" role="tablist" aria-label="Marketing performance views">
+            <button class={webinarTabClass} type="button" role="tab" aria-selected={isWebinarTab} data-tab="webinar" onclick={handleMasterTab}>
+                Consumer Webinar
+            </button>
+            <button class={socialTabClass} type="button" role="tab" aria-selected={isSocialTab} data-tab="social" onclick={handleMasterTab}>
+                Social Media
+            </button>
+        </div>
+
+        <template if:true={activeData}>
+            <section class="wmcc-summary-grid" aria-label="Marketing performance summary">
+                <button class="wmcc-metric" type="button" data-metric="leads" onclick={handleOpenRawData}><span>Leads</span><strong>{activeData.leadCount}</strong><small>all source leads · View records</small></button>
+                <button class="wmcc-metric" type="button" data-metric="preApproved" onclick={handleOpenRawData}><span>Pre-Approved</span><strong>{activeData.preApprovalCount}</strong><small>{activeData.leadToPreApprovalRate} of leads · View records</small></button>
+                <button class="wmcc-metric" type="button" data-metric="transactions" onclick={handleOpenRawData}><span>Transactions</span><strong>{activeData.transactionCount}</strong><small>{activeData.preApprovalToTransactionRate} of pre-approved · View records</small></button>
+                <button class="wmcc-metric" type="button" data-metric="funded" onclick={handleOpenRawData}><span>Funded / Post-Closed</span><strong>{activeData.fundedOrPostClosedCount}</strong><small>{activeData.leadToFundedRate} of leads · View records</small></button>
+                <template if:true={isWebinarTab}><button class="wmcc-metric" type="button" data-metric="showedThenNurtured" onclick={handleOpenRawData}><span>Showed for Appt → Nurture</span><strong>{activeData.showedThenNurturedCount}</strong><small>{activeData.showedThenNurturedRate} of {activeData.nurturingCount} nurturing · View records</small></button></template>
+            </section>
+
+            <section class="wmcc-panel">
+                <div class="wmcc-panel-heading">
+                    <div><h2>{cohortHeading} Performance</h2><p>{cohortSubtitle}</p></div>
+                    <div class="wmcc-flow">Lead <span>to</span> Pre-Approval <span>to</span> Transaction <span>to</span> Funded</div>
+                </div>
+                <template if:true={hasCohorts}>
+                    <div class="wmcc-cohort-grid">
+                        <template for:each={activeData.cohorts} for:item="cohort">
+                            <article class="wmcc-cohort-card" key={cohort.webinarDateLabel}>
+                                <header class="wmcc-cohort-header">
+                                    <span>{cohortHeading}</span>
+                                    <h3>{cohort.webinarDateLabel}</h3>
+                                </header>
+
+                                <div class="wmcc-cohort-section">
+                                    <p class="wmcc-section-label">Lead performance</p>
+                                    <div class="wmcc-stat-grid">
+                                        <button type="button" data-metric="leads" data-cohort={cohort.webinarDateLabel} onclick={handleOpenRawData}><span>Leads</span><strong>{cohort.leadCount}</strong></button>
+                                        <button type="button" data-metric="preApproved" data-cohort={cohort.webinarDateLabel} onclick={handleOpenRawData}><span>Pre-Approved</span><strong>{cohort.preApprovalCount}</strong></button>
+                                    </div>
+                                    <p class="wmcc-rate"><strong>{cohort.leadToPreApprovalRate}</strong> lead to pre-approval</p>
+                                    <template if:true={isWebinarTab}><p class="wmcc-rate"><button class="wmcc-link" type="button" data-metric="showedThenNurtured" data-cohort={cohort.webinarDateLabel} onclick={handleOpenRawData}><strong>{cohort.showedThenNurturedCount}</strong> of {cohort.nurturingCount} nurturing showed for appt first</button></p></template>
+                                    <p class="wmcc-status-mix">{cohort.leadStatusMix}</p>
+                                </div>
+
+                                <div class="wmcc-cohort-section wmcc-transaction-section">
+                                    <p class="wmcc-section-label">Transaction performance</p>
+                                    <div class="wmcc-stat-grid">
+                                        <button type="button" data-metric="transactions" data-cohort={cohort.webinarDateLabel} onclick={handleOpenRawData}><span>Transactions</span><strong>{cohort.transactionCount}</strong></button>
+                                        <button type="button" data-metric="funded" data-cohort={cohort.webinarDateLabel} onclick={handleOpenRawData}><span>Funded / Post-Closed</span><strong>{cohort.fundedOrPostClosedCount}</strong></button>
+                                    </div>
+                                    <p class="wmcc-rate"><strong>{cohort.preApprovalToTransactionRate}</strong> pre-approval to transaction</p>
+                                    <p class="wmcc-status-mix">{cohort.transactionStatusMix}</p>
+                                </div>
+                            </article>
+                        </template>
+                    </div>
+                </template>
+                <template if:false={hasCohorts}><p class="wmcc-empty">{noDataMessage}</p></template>
+            </section>
+        </template>
+        <template if:true={error}><p class="wmcc-error">{error}</p></template>
+
+        <template if:true={isRawDataOpen}>
+            <section class="wmcc-modal-backdrop" role="presentation">
+                <section class="wmcc-modal" role="dialog" aria-modal="true" aria-label={rawDataTitle}>
+                    <header class="wmcc-modal-header">
+                        <div><p class="wmcc-kicker">Raw data report</p><h2>{rawDataTitle}</h2></div>
+                        <button class="wmcc-close" type="button" onclick={closeRawData} title="Close raw data report">×</button>
+                    </header>
+                    <div class="wmcc-modal-body">
+                        <template if:true={isRawDataLoading}><p class="wmcc-empty">Loading matching records…</p></template>
+                        <template if:false={isRawDataLoading}>
+                            <template if:true={hasRawDataRows}>
+                                <div class="wmcc-table-wrap">
+                                    <table class="wmcc-raw-table">
+                                        <thead><tr><th>Name</th><th>Type</th><th>Source</th><th>Status</th><th>Owner</th><th>Buyer’s Agent</th><th>Created</th><th>Webinar Date</th><th>Pre-Approval Date</th></tr></thead>
+                                        <tbody>
+                                            <template for:each={rawDataRows} for:item="row">
+                                                <tr key={row.recordId}>
+                                                    <td><a href={row.recordUrl} target="_blank" rel="noopener">{row.name}</a></td><td>{row.recordType}</td><td>{row.leadSource}</td><td>{row.status}</td><td>{row.ownerName}</td><td>{row.buyerAgentName}</td><td><lightning-formatted-date-time value={row.createdDate} year="numeric" month="2-digit" day="2-digit"></lightning-formatted-date-time></td><td><lightning-formatted-date-time value={row.webinarDate} year="numeric" month="2-digit" day="2-digit"></lightning-formatted-date-time></td><td><lightning-formatted-date-time value={row.preApprovalDate} year="numeric" month="2-digit" day="2-digit"></lightning-formatted-date-time></td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </template>
+                            <template if:false={hasRawDataRows}><p class="wmcc-empty">No records match this metric and cohort.</p></template>
+                        </template>
+                    </div>
+                </section>
+            </section>
+        </template>
+    </section>
+</template>

@@ -1,0 +1,3 @@
+{"total": {"lines":{"total":6593,"covered":5655,"skipped":0,"pct":85.77},"statements":{"total":6593,"covered":5655,"skipped":0,"pct":85.77},"functions":{"total":0,"covered":0,"skipped":0,"pct":100},"branches":{"total":0,"covered":0,"skipped":0,"pct":100},"branchesTrue":{"total":0,"covered":0,"skipped":0,"pct":"Unknown"}}
+,"no-map\\PipelineCommandCenterController": {"lines":{"total":6593,"covered":5655,"skipped":0,"pct":85.77},"functions":{"total":0,"covered":0,"skipped":0,"pct":100},"statements":{"total":6593,"covered":5655,"skipped":0,"pct":85.77},"branches":{"total":0,"covered":0,"skipped":0,"pct":100}}
+}
