@@ -1,5 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 import { FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
+import { shouldUseFlowNavigation } from 'c/portalUtils';
 import getPresetConditions from '@salesforce/apex/LeadPresetConditionSelectorController.getPresetConditions';
 import createSelectedConditionKeys from '@salesforce/apex/LeadPresetConditionSelectorController.createSelectedConditionKeys';
 
@@ -84,6 +85,7 @@ export default class LeadPresetConditionSelector extends LightningElement {
     // Borrower record Id. Set by the borrower picker screen earlier in the flow.
     @api assignment;
     @api availableActions = [];
+    @api portalMode = false;
 
     @track conditions = [];
     @track expandedSectionNames = [];
@@ -143,6 +145,7 @@ export default class LeadPresetConditionSelector extends LightningElement {
                 selectedKeys: this.conditions.filter(item => item.selected).map(item => item.key),
                 assignment: this.assignment
             });
+            this.dispatchEvent(new CustomEvent('portalcomplete', { bubbles: true, composed: true }));
             this.navigateForward();
         } catch (error) {
             this.errorMessage = this.reduceError(error);
@@ -152,6 +155,9 @@ export default class LeadPresetConditionSelector extends LightningElement {
     }
 
     navigateForward() {
+        if (!shouldUseFlowNavigation(this.portalMode)) {
+            return;
+        }
         if (this.availableActions.includes('FINISH')) {
             this.dispatchEvent(new FlowNavigationFinishEvent());
             return;

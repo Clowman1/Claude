@@ -6,6 +6,7 @@
     <description>Asks which borrower a set of conditions is for. Outputs ALL, PRIMARY, or a Borrower record Id.</description>
     <targets>
         <target>lightning__FlowScreen</target>
+        <target>lightningCommunity__Page</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
