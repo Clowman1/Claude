@@ -1,6 +1,5 @@
 import { LightningElement, api, track } from 'lwc';
 import { FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
-import communityId from '@salesforce/community/Id';
 import getPresetConditions from '@salesforce/apex/LeadPresetConditionSelectorController.getPresetConditions';
 import createSelectedConditionKeys from '@salesforce/apex/LeadPresetConditionSelectorController.createSelectedConditionKeys';
 
@@ -88,16 +87,18 @@ export default class LeadPresetConditionSelector extends LightningElement {
     @api portalMode = false;
 
     /**
-     * Was c/portalUtils.shouldUseFlowNavigation, inlined because that module imports
-     * lightning/toast, which only exists in an Experience Cloud LWR site. In internal Lightning
-     * the whole module fails to load, every export comes back undefined, and adding conditions
-     * died on "shouldUseFlowNavigation is not a function".
+     * Was c/portalUtils.shouldUseFlowNavigation. That module imports lightning/toast, which
+     * exists only in an Experience Cloud LWR site, so in internal Lightning the whole module
+     * failed to load and every export came back undefined.
      *
-     * Same rule, same behaviour: never emit flow navigation in the portal wizard or on a
-     * community page. c/portalUtils is left untouched for the community build.
+     * Deliberately imports nothing. The first attempt at this swapped in
+     * @salesforce/community/Id, which is an Experience Cloud module too, and the component
+     * stopped rendering at all - a blank flow screen instead of an error. portalMode is set by
+     * the community page that hosts this component, which is the only caller that needs to
+     * suppress flow navigation, so it answers the question on its own.
      */
     get shouldUseFlowNavigation() {
-        return !this.portalMode && !communityId;
+        return !this.portalMode;
     }
 
     @track conditions = [];
