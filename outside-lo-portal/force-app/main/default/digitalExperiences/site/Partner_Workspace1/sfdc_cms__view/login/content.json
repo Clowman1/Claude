@@ -1,0 +1,142 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Login",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"22f24df8-b5b6-4f78-8712-d787264689d0\",\"columns\":[{\"UUID\":\"0060ccb8-ad00-433c-8d05-403a5d06f993\",\"columnName\":\"Hero\",\"columnKey\":\"col1\",\"columnWidth\":\"7\",\"seedComponents\":null},{\"UUID\":\"901ee18c-9f4e-4ce1-ba13-e9ed3ba48616\",\"columnName\":\"Sign In\",\"columnKey\":\"col2\",\"columnWidth\":\"5\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { },
+                "variant" : "hero"
+              },
+              "definition" : "c:partnerLogin",
+              "id" : "08070991-13c6-4a6a-a50a-081196c61e46",
+              "type" : "component"
+            } ],
+            "id" : "0060ccb8-ad00-433c-8d05-403a5d06f993",
+            "name" : "col1",
+            "title" : "Hero",
+            "type" : "region"
+          }, {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { },
+                "variant" : "welcome"
+              },
+              "definition" : "c:partnerLogin",
+              "id" : "2b447371-cddf-4ed3-a9ad-e4beb66d1c6d",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "dxpStyle" : { },
+                "forgotPasswordLabel" : "Forgot your password?",
+                "forgotPasswordUrl" : "/ForgotPassword",
+                "loginButtonLabel" : "Log In",
+                "passwordLabel" : "Password",
+                "selfRegisterLabel" : "Not a member?",
+                "selfRegisterUrl" : "/SelfRegister",
+                "startUrl" : "",
+                "usernameLabel" : "Username"
+              },
+              "definition" : "community_login:loginForm",
+              "id" : "8ec0203e-ec50-464b-a9f0-b0e7a00f1f6c",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "dxpStyle" : { },
+                "variant" : "help"
+              },
+              "definition" : "c:partnerLogin",
+              "id" : "9815e61d-c404-4a61-ba41-58ce418b46a4",
+              "type" : "component"
+            } ],
+            "id" : "901ee18c-9f4e-4ce1-ba13-e9ed3ba48616",
+            "name" : "col2",
+            "title" : "Sign In",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "22f24df8-b5b6-4f78-8712-d787264689d0",
+          "type" : "component"
+        }, {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"e43959a4-01cc-439c-987b-5dc5dc22a0fc\",\"columns\":[{\"UUID\":\"182fb16e-5b9c-4a4c-a288-223b2dc5ca3c\",\"columnName\":\"Footer\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "dxpStyle" : { },
+                "variant" : "footer"
+              },
+              "definition" : "c:partnerLogin",
+              "id" : "87b3252a-5912-4710-bf0f-2ae4c4f66f37",
+              "type" : "component"
+            } ],
+            "id" : "182fb16e-5b9c-4a4c-a288-223b2dc5ca3c",
+            "name" : "col1",
+            "title" : "Footer",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "e43959a4-01cc-439c-987b-5dc5dc22a0fc",
+          "type" : "component"
+        } ],
+        "id" : "675793cd-0aa5-4881-8e9d-cc3b9c912e7f",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "Partner Workspace Login",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "1d254e22-0402-4706-99a2-6ce399ef393d",
+          "type" : "component"
+        } ],
+        "id" : "e8c3f6a3-adf8-4f94-88d5-05e65b413243",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "7b4c8968-edcf-44d6-9226-877b0f57a535",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "login-main"
+  },
+  "urlName" : "login"
+}

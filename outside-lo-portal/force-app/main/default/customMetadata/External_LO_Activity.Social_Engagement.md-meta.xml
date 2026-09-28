@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Social Engagement</label>
+    <protected>false</protected>
+    <values>
+        <field>Activity_Key__c</field>
+        <value xsi:type="xsd:string">social-engagement</value>
+    </values>
+    <values>
+        <field>Cadence__c</field>
+        <value xsi:type="xsd:string">daily</value>
+    </values>
+    <values>
+        <field>Category_Api_Name__c</field>
+        <value xsi:type="xsd:string">Social_Engagement</value>
+    </values>
+    <values>
+        <field>Coaching_Note__c</field>
+        <value xsi:type="xsd:string">Comments and DMs keep you visible without a full meeting. Batch them.</value>
+    </values>
+    <values>
+        <field>Credit_Activity_Types__c</field>
+        <value xsi:type="xsd:string">Text;Email</value>
+    </values>
+    <values>
+        <field>Default_Weekly_Target__c</field>
+        <value xsi:type="xsd:double">15.0</value>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Social posts, comments, and DMs that keep partners and borrowers warm.</value>
+    </values>
+    <values>
+        <field>Icon_Name__c</field>
+        <value xsi:type="xsd:string">share-2</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Requires_Contact__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Short_Label__c</field>
+        <value xsi:type="xsd:string">Social posts</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">3.0</value>
+    </values>
+    <values>
+        <field>Target_Options__c</field>
+        <value xsi:type="xsd:string">5;10;15;20;25</value>
+    </values>
+    <values>
+        <field>Tone__c</field>
+        <value xsi:type="xsd:string">navy</value>
+    </values>
+    <values>
+        <field>Unit__c</field>
+        <value xsi:type="xsd:string">engagements</value>
+    </values>
+</CustomMetadata>

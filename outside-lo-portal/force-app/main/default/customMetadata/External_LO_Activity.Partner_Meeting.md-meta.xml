@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Partner Meeting</label>
+    <protected>false</protected>
+    <values>
+        <field>Activity_Key__c</field>
+        <value xsi:type="xsd:string">partner-meeting</value>
+    </values>
+    <values>
+        <field>Cadence__c</field>
+        <value xsi:type="xsd:string">weekly</value>
+    </values>
+    <values>
+        <field>Category_Api_Name__c</field>
+        <value xsi:type="xsd:string">Partner_Meeting</value>
+    </values>
+    <values>
+        <field>Coaching_Note__c</field>
+        <value xsi:type="xsd:string">Face time with existing partners is what turns a one-off referral into a cadence.</value>
+    </values>
+    <values>
+        <field>Credit_Activity_Types__c</field>
+        <value xsi:type="xsd:string">Meeting (New Agent);Meeting (Active Agent);Open House</value>
+    </values>
+    <values>
+        <field>Default_Weekly_Target__c</field>
+        <value xsi:type="xsd:double">3.0</value>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">In-person or scheduled meetings with referral partners, including open houses.</value>
+    </values>
+    <values>
+        <field>Icon_Name__c</field>
+        <value xsi:type="xsd:string">handshake</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Requires_Contact__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Short_Label__c</field>
+        <value xsi:type="xsd:string">Partner meetings</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+    <values>
+        <field>Target_Options__c</field>
+        <value xsi:type="xsd:string">1;2;3;4;5</value>
+    </values>
+    <values>
+        <field>Tone__c</field>
+        <value xsi:type="xsd:string">warn</value>
+    </values>
+    <values>
+        <field>Unit__c</field>
+        <value xsi:type="xsd:string">meetings</value>
+    </values>
+</CustomMetadata>

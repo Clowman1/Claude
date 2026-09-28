@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ExtLO_Shell_Log_Out</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Sidebar log out button</shortDescription>
+        <value>Log out</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Generic_Error</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Generic portal error</shortDescription>
+        <value>Something went wrong. Screenshot this and send it to an admin.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Columns_Heading</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Expected columns heading</shortDescription>
+        <value>Expected columns</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Consumer_Columns</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Consumer CSV columns</shortDescription>
+        <value>FirstName, LastName, Phone, Email, Type (Lead or Past Client), LoanAmount, Purpose, City, Notes</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Consumer_Help</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Consumer CSV blurb</shortDescription>
+        <value>Borrowers you are working, plus anyone you have closed. These become your consumer conversation and past-client lists.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Consumer_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Consumer CSV card title</shortDescription>
+        <value>Leads &amp; past clients</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Drop_Hint</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CSV drag and drop hint</shortDescription>
+        <value>or drag a .csv file here</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Partner_Columns</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner CSV columns</shortDescription>
+        <value>FirstName, LastName, Phone, Email, Company, Market, PartnerType (Realtor, Realtor Prospect, Title, Insurance)</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Partner_Help</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner CSV blurb</shortDescription>
+        <value>Agents, title, and insurance contacts. We split them into existing partners and prospects so outreach is measured separately.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Partner_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner CSV card title</shortDescription>
+        <value>Realtors &amp; partners</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Result_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Import results heading</shortDescription>
+        <value>Import results</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Import_Upload</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Upload CSV button</shortDescription>
+        <value>Choose file</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Category</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Activity category legend</shortDescription>
+        <value>What did you do?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Channel</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Activity channel legend</shortDescription>
+        <value>How did you reach out?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Contact</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Activity contact picker</shortDescription>
+        <value>Who did you talk to?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Count</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Activity count stepper</shortDescription>
+        <value>How many?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Open_House</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Open house channel</shortDescription>
+        <value>Open house</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Save</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Save activity</shortDescription>
+        <value>Save activity</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Log_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Activity log modal title</shortDescription>
+        <value>Log an activity</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_Biz_Dev</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav group Business development</shortDescription>
+        <value>Business development</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_Import_Data</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav Import Data</shortDescription>
+        <value>Import Data</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Activity</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav group My activity</shortDescription>
+        <value>My activity</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Leads</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav My Leads</shortDescription>
+        <value>My Leads</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Loans</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav My Loans</shortDescription>
+        <value>My Loans</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Perfect_Week</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav My Perfect Week</shortDescription>
+        <value>My Perfect Week</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Pre_Approvals</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav My Pre-Approvals</shortDescription>
+        <value>My Pre-Approvals</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Progress</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav My Progress</shortDescription>
+        <value>My Progress</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_My_Realtors</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav My Realtors</shortDescription>
+        <value>My Realtors</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_Past_Clients</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav Past Clients</shortDescription>
+        <value>Past Clients</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_Perfect_Day</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav Perfect Day</shortDescription>
+        <value>Perfect Day</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_Pipeline</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav group Pipeline</shortDescription>
+        <value>Pipeline</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Nav_Realtor_Prospects</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Nav Realtor Prospects</shortDescription>
+        <value>Realtor Prospects</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Activities_Copy</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding activities copy</shortDescription>
+        <value>Turn off anything you will not track. You can change this later.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Activities_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding activities heading</shortDescription>
+        <value>Which activities belong in your week?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Complete_Cta</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Finish onboarding button</shortDescription>
+        <value>Finish setup</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Daily_Hint</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Live daily target hint</shortDescription>
+        <value>Per working day</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Focus_Copy</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding focus copy</shortDescription>
+        <value>Your focus pre-fills weekly targets. You can tune the numbers on the next screens.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Focus_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding focus heading</shortDescription>
+        <value>Which area of business do you want to focus on?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Goals_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding goals heading</shortDescription>
+        <value>What daily goals do you want to set?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Import_Copy</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding import copy</shortDescription>
+        <value>Upload a CSV now, or skip and use Import Data later. Consumer pipeline and past clients go in one file. Realtors and partners go in another.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Import_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding import heading</shortDescription>
+        <value>Bring in your existing database</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Intro</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding intro</shortDescription>
+        <value>Answer a few questions so your Perfect Day, goals, and lists match how you work. You can import your existing database now or later.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Review_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding review heading</shortDescription>
+        <value>Review your perfect week</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Rhythm_Copy</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding workdays copy</shortDescription>
+        <value>Weekly targets stay the same. Daily targets update as you change your rhythm.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Rhythm_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding workdays heading</shortDescription>
+        <value>How many days will you work this week?</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Skip_Import</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Skip import during onboarding</shortDescription>
+        <value>Skip for now</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Targets_Copy</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding weekly targets copy</shortDescription>
+        <value>These are weekly audience targets. Perfect Day scores the day against the daily share.</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Targets_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding weekly targets heading</shortDescription>
+        <value>Set weekly targets for each activity</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Onboarding_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Onboarding title</shortDescription>
+        <value>Set up your Partner Workspace</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Prompt_Log</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Log prompt done</shortDescription>
+        <value>Log it done</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Prompt_Tomorrow</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Snooze prompt until tomorrow</shortDescription>
+        <value>Tomorrow</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_Brand_Subtitle</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner Workspace brand subtitle</shortDescription>
+        <value>Reach Home Loans</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_Brand_Title</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner Workspace brand title</shortDescription>
+        <value>Partner Workspace</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_Close_Nav</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Close mobile nav</shortDescription>
+        <value>Close navigation</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_Loading</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal loading copy</shortDescription>
+        <value>Loading Partner Workspace…</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_Nav_Aria</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Portal nav aria-label</shortDescription>
+        <value>Portal</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_Open_Nav</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Open mobile nav</shortDescription>
+        <value>Open portal navigation</value>
+    </labels>
+    <labels>
+        <fullName>ExtLO_Shell_User_Role</fullName>
+        <categories>ExternalLO</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Sidebar user role</shortDescription>
+        <value>External Loan Officer</value>
+    </labels>
+</CustomLabels>

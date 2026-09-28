@@ -1,0 +1,52 @@
+<template>
+    <main class="page">
+        <header class="page-header">
+            <h1 class="page-title">My Perfect Week</h1>
+            <p class="page-subtitle">{pageSubtitle}</p>
+        </header>
+
+        <template lwc:if={showWizard}>
+            <c-external-lo-onboarding
+                embedded
+                state={setupState}
+                oncompleted={handleOnboardingCompleted}
+            ></c-external-lo-onboarding>
+        </template>
+        <template lwc:elseif={loading}>
+            <p class="muted">Loading your week…</p>
+        </template>
+        <template lwc:elseif={errorMessage}>
+            <p class="form-error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:else>
+            <section class="panel" aria-labelledby="week-progress-heading">
+                <header class="panel-header">
+                    <div>
+                        <h2 id="week-progress-heading" class="panel-title">This week</h2>
+                        <p class="panel-copy">Actual versus the weekly audience targets you set</p>
+                    </div>
+                    <div class="score">
+                        <span class="score-value">{weekPercent}%</span>
+                        <span class="score-label">of plan completed</span>
+                    </div>
+                </header>
+                <ul class="metric-list">
+                    <template for:each={rows} for:item="row">
+                        <li key={row.key} class="metric-row">
+                            <div class="metric-top">
+                                <span class="metric-label">{row.label}</span>
+                                <div class="metric-right">
+                                    <span class="metric-count">{row.progressLabel}</span>
+                                    <span class={row.paceClass}>{row.paceLabel}</span>
+                                </div>
+                            </div>
+                            <div class="track" role="progressbar" aria-label={row.label} aria-valuenow={row.percent} aria-valuemin="0" aria-valuemax="100">
+                                <div class={row.fillClass} style={row.barStyle}></div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </section>
+        </template>
+    </main>
+</template>

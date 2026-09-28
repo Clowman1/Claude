@@ -5,7 +5,8 @@
  * automation and are not notes a user left.
  *
  * Who gets it:
- *   - Lead Owner, Loan Partner, Other  -- always, except whoever wrote the note.
+ *   - Lead Owner, Loan Partner         -- always, even when they wrote the note.
+ *   - Other                            -- always, except when they wrote the note.
  *   - Scenario Manager                 -- only when @mentioned in the note body,
  *                                         so they aren't inundated by every note.
  */
@@ -105,7 +106,8 @@ public without sharing class LeadNoteTeamNotifier {
 
     /**
      * Owner, Loan Partner and Other always; Scenario Manager only when @mentioned.
-     * The note's author is never emailed their own note. Deduped, active users only.
+     * Owner and Loan Partner get their own notes too; Other and Scenario Manager do not.
+     * Deduped, active users only.
      */
     private static List<String> recipientsFor(
         Lead theLead,
@@ -122,10 +124,13 @@ public without sharing class LeadNoteTeamNotifier {
             candidates.add(theLead.Scenario_Manager__c);
         }
 
+        // Owner (the Loan Officer) and Loan Partner get every note, even one they wrote.
+        Set<Id> evenIfAuthor = new Set<Id>{ theLead.OwnerId, theLead.Loan_Partner__c };
+
         List<String> recipients = new List<String>();
         Set<String> seen = new Set<String>();
         for (Id userId : candidates) {
-            if (userId == null || userId == note.CreatedById) {
+            if (userId == null || (userId == note.CreatedById && !evenIfAuthor.contains(userId))) {
                 continue;
             }
             User u = usersById.get(userId);

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Consumer Conversation</label>
+    <protected>false</protected>
+    <values>
+        <field>Activity_Key__c</field>
+        <value xsi:type="xsd:string">consumer-conversation</value>
+    </values>
+    <values>
+        <field>Cadence__c</field>
+        <value xsi:type="xsd:string">daily</value>
+    </values>
+    <values>
+        <field>Category_Api_Name__c</field>
+        <value xsi:type="xsd:string">Consumer_Conversation</value>
+    </values>
+    <values>
+        <field>Coaching_Note__c</field>
+        <value xsi:type="xsd:string">Borrower conversations move files. Log every call, text, and sit-down.</value>
+    </values>
+    <values>
+        <field>Credit_Activity_Types__c</field>
+        <value xsi:type="xsd:string">Call - Prospecting;Call - Active Agent;Text</value>
+    </values>
+    <values>
+        <field>Default_Weekly_Target__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Conversations with borrowers in your pipeline or at first touch.</value>
+    </values>
+    <values>
+        <field>Icon_Name__c</field>
+        <value xsi:type="xsd:string">phone</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Requires_Contact__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Short_Label__c</field>
+        <value xsi:type="xsd:string">Consumer convos</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">2.0</value>
+    </values>
+    <values>
+        <field>Target_Options__c</field>
+        <value xsi:type="xsd:string">5;8;10;15;20</value>
+    </values>
+    <values>
+        <field>Tone__c</field>
+        <value xsi:type="xsd:string">teal</value>
+    </values>
+    <values>
+        <field>Unit__c</field>
+        <value xsi:type="xsd:string">conversations</value>
+    </values>
+</CustomMetadata>

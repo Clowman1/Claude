@@ -1,0 +1,191 @@
+<template>
+    <main class={pageClass}>
+        <div class="onboarding-card">
+            <ol class="stepper" aria-label="Setup steps">
+                <template for:each={steps} for:item="step">
+                    <li key={step.id} class="stepper-item">
+                        <button
+                            type="button"
+                            class={step.stepClass}
+                            data-index={step.index}
+                            aria-current={step.isCurrent}
+                            onclick={handleStepClick}
+                        >
+                            <span class="step-index" aria-hidden="true">
+                                <template lwc:if={step.isDone}><c-portal-icon name="check" size="14"></c-portal-icon></template>
+                                <template lwc:else>{step.marker}</template>
+                            </span>
+                            {step.label}
+                        </button>
+                        <template lwc:if={step.showConnector}>
+                            <span class="step-connector" aria-hidden="true"></span>
+                        </template>
+                    </li>
+                </template>
+            </ol>
+
+            <template lwc:if={errorMessage}>
+                <p class="form-error" role="alert">{errorMessage}</p>
+            </template>
+
+            <div class="step-body">
+                <template lwc:if={isFocus}>
+                    <h1 class="title">{labels.focusTitle}</h1>
+                    <p class="copy">{labels.focusCopy}</p>
+                    <div class="choice-grid" role="radiogroup" aria-label={labels.focusTitle}>
+                        <template for:each={focusOptions} for:item="option">
+                            <button
+                                key={option.id}
+                                type="button"
+                                role="radio"
+                                class={option.optionClass}
+                                data-focus={option.id}
+                                aria-checked={option.isSelected}
+                                onclick={handleSelectFocus}
+                            >
+                                <span class="choice-label">{option.label}</span>
+                                <template lwc:if={option.description}>
+                                    <span class="choice-copy">{option.description}</span>
+                                </template>
+                            </button>
+                        </template>
+                    </div>
+                </template>
+
+                <template lwc:elseif={isActivities}>
+                    <h1 class="title">{labels.activitiesTitle}</h1>
+                    <p class="copy">{labels.activitiesCopy}</p>
+                    <div class="choice-stack" role="group" aria-label={labels.activitiesTitle}>
+                        <template for:each={activityChoices} for:item="activity">
+                            <button
+                                key={activity.activityKey}
+                                type="button"
+                                class={activity.optionClass}
+                                data-key={activity.activityKey}
+                                aria-pressed={activity.isEnabled}
+                                onclick={handleToggleActivity}
+                            >
+                                <span class="choice-label">{activity.shortLabel}</span>
+                                <span class="choice-copy">{activity.description}</span>
+                                <span class="choice-state">{activity.checkedLabel}</span>
+                            </button>
+                        </template>
+                    </div>
+                </template>
+
+                <template lwc:elseif={isRhythm}>
+                    <h1 class="title">{labels.rhythmTitle}</h1>
+                    <p class="copy">{labels.rhythmCopy}</p>
+                    <div class="workday-grid" role="radiogroup" aria-label={labels.rhythmTitle}>
+                        <template for:each={workdayOptions} for:item="option">
+                            <button
+                                key={option.id}
+                                type="button"
+                                role="radio"
+                                class={option.optionClass}
+                                data-days={option.id}
+                                aria-checked={option.isSelected}
+                                onclick={handleWorkdays}
+                            >
+                                {option.label}
+                            </button>
+                        </template>
+                    </div>
+                    <ul class="goal-list">
+                        <template for:each={targetFields} for:item="goal">
+                            <li key={goal.activityKey} class="goal-row">
+                                <div>
+                                    <p class="goal-label">{goal.shortLabel}</p>
+                                    <p class="goal-hint">{goal.weeklyTarget} weekly · {goal.dailyLabel}</p>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+
+                <template lwc:elseif={isTargets}>
+                    <h1 class="title">{labels.targetsTitle}</h1>
+                    <p class="copy">{labels.targetsCopy}</p>
+                    <ul class="goal-list">
+                        <template for:each={targetFields} for:item="goal">
+                            <li key={goal.activityKey} class="goal-row">
+                                <div>
+                                    <p class="goal-label">{goal.shortLabel}</p>
+                                    <p class="goal-hint">{goal.dailyLabel}</p>
+                                </div>
+                                <div class="goal-stepper">
+                                    <button
+                                        type="button"
+                                        class="stepper-btn"
+                                        data-key={goal.activityKey}
+                                        data-delta="-1"
+                                        aria-label={goal.decreaseLabel}
+                                        onclick={handleGoalStep}
+                                    >
+                                        <c-portal-icon name="minus" size="16"></c-portal-icon>
+                                    </button>
+                                    <input
+                                        class="goal-input"
+                                        type="number"
+                                        min="0"
+                                        max="200"
+                                        value={goal.weeklyTarget}
+                                        data-key={goal.activityKey}
+                                        aria-label={goal.shortLabel}
+                                        onchange={handleGoalChange}
+                                        onblur={handleGoalBlur}
+                                    />
+                                    <button
+                                        type="button"
+                                        class="stepper-btn"
+                                        data-key={goal.activityKey}
+                                        data-delta="1"
+                                        aria-label={goal.increaseLabel}
+                                        onclick={handleGoalStep}
+                                    >
+                                        <c-portal-icon name="plus" size="16"></c-portal-icon>
+                                    </button>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+
+                <template lwc:elseif={isImport}>
+                    <h1 class="title">{labels.importTitle}</h1>
+                    <p class="copy">{labels.importCopy}</p>
+                    <c-external-lo-csv-import></c-external-lo-csv-import>
+                </template>
+
+                <template lwc:else>
+                    <h1 class="title">{labels.reviewTitle}</h1>
+                    <p class="copy">{reviewFocus} · {reviewRhythm}</p>
+                    <ul class="goal-list">
+                        <template for:each={reviewRows} for:item="row">
+                            <li key={row.activityKey} class="goal-row">
+                                <div>
+                                    <p class="goal-label">{row.shortLabel}</p>
+                                    <p class="goal-hint">{row.weeklyTarget} weekly · {row.dailyTarget} daily</p>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-secondary" type="button" onclick={handleBack} disabled={isFirstStep}>
+                    Back
+                </button>
+                <p class="step-count">Step {stepNumber} of {stepTotal}</p>
+                <template lwc:if={isImport}>
+                    <button class="btn btn-secondary" type="button" onclick={handleFinish} disabled={saving}>{labels.skipImport}</button>
+                    <button class="btn btn-primary" type="button" onclick={handleFinish} disabled={saving}>{labels.completeCta}</button>
+                </template>
+                <template lwc:else>
+                    <button class="btn btn-primary" type="button" onclick={handleNext} disabled={cannotContinue}>Continue</button>
+                </template>
+            </div>
+        </div>
+    </main>
+</template>

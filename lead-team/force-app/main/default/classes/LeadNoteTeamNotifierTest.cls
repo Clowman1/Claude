@@ -113,7 +113,7 @@ private class LeadNoteTeamNotifierTest {
     // ---------- recipient selection ----------
 
     @IsTest
-    static void authorIsNotEmailedTheirOwnNote() {
+    static void ownerIsEmailedTheirOwnNote() {
         List<User> users = buildUsers(1);
         Lead theLead = new Lead(
             LastName = 'Webb', FirstName = 'Marcus', Company = 'Test', Status = 'New',
@@ -129,13 +129,38 @@ private class LeadNoteTeamNotifierTest {
             LeadNoteTeamNotifier.buildEmails(new List<Enhanced_Note__c>{ note });
         Test.stopTest();
 
-        System.assertEquals(1, emails.size(), 'Still one email for the rest of the team');
+        System.assertEquals(1, emails.size(), 'One email');
+        Set<String> addresses = toAddresses(emails[0]);
+        System.assert(
+            addresses.contains([SELECT Email FROM User WHERE Id = :UserInfo.getUserId()].Email.toLowerCase()),
+            'Owner (Loan Officer) is emailed every note, including their own'
+        );
+        System.assert(addresses.contains(users[0].Email.toLowerCase()), 'Other is still emailed');
+    }
+
+    @IsTest
+    static void otherMemberIsNotEmailedTheirOwnNote() {
+        List<User> users = buildUsers(1);
+        Lead theLead = new Lead(
+            LastName = 'Webb', FirstName = 'Marcus', Company = 'Test', Status = 'New',
+            RecordTypeId = consumerRecordTypeId(),
+            OwnerId = users[0].Id,
+            Other_Lead_Team_Member__c = UserInfo.getUserId()   // the running user writes the note
+        );
+        insert theLead;
+
+        Test.startTest();
+        Enhanced_Note__c note = insertNote(theLead.Id, 'Note', '<p>Rate lock discussed.</p>');
+        List<Messaging.SingleEmailMessage> emails =
+            LeadNoteTeamNotifier.buildEmails(new List<Enhanced_Note__c>{ note });
+        Test.stopTest();
+
         Set<String> addresses = toAddresses(emails[0]);
         System.assert(
             !addresses.contains([SELECT Email FROM User WHERE Id = :UserInfo.getUserId()].Email.toLowerCase()),
-            'Author (also the Owner) must not be emailed their own note'
+            'Other Lead Team Member is still not emailed their own note'
         );
-        System.assert(addresses.contains(users[0].Email.toLowerCase()), 'Other is still emailed');
+        System.assert(addresses.contains(users[0].Email.toLowerCase()), 'Owner emailed');
     }
 
     @IsTest

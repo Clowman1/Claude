@@ -1,0 +1,13 @@
+/*
+ * Inter (variable) — self-hosted so the Partner Workspace matches the
+ * Linked Prototype without depending on a Google Fonts CSP entry.
+ * Loaded once by externalLoPortalShell via loadStyle; @font-face is
+ * document-scoped, so every portal component inherits it.
+ */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('./InterVariable.woff2') format('woff2');
+}

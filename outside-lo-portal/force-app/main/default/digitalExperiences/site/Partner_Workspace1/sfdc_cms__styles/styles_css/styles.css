@@ -1,0 +1,20 @@
+html,
+body {
+    height: 100%;
+}
+
+html {
+    background: #f7f8fa;
+}
+
+body {
+    margin: 0;
+}
+
+dxp-page-wrapper,
+.dxp-page-wrapper,
+.slds-col,
+.cb-section_column {
+    padding: 0 !important;
+    max-width: none !important;
+}

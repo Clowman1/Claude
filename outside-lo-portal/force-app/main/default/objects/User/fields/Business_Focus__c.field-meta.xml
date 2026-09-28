@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Business_Focus__c</fullName>
+    <description>Area of business selected during Partner Workspace onboarding. Options are sourced from External_LO_Baseline__mdt.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Selected during first-run onboarding. Only an admin should change this later.</inlineHelpText>
+    <label>Business Focus</label>
+    <length>80</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

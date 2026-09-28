@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "login-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["-e", "const h=require('http'),f=require('fs'),p=require('path'),d='C:/Users/ChristopherLowman/AppData/Local/Temp/claude/C--Apps-Claude-Back-Up/c3f2f5e8-b041-4d1d-b4e4-16c574c1305c/scratchpad/preview';h.createServer((q,r)=>{const u=decodeURIComponent(q.url.split('?')[0]);const fp=p.join(d,u==='/'?'index.html':u);f.readFile(fp,(e,b)=>{if(e){r.writeHead(404);return r.end()}r.writeHead(200,{'Content-Type':fp.endsWith('.png')?'image/png':fp.endsWith('.js')?'text/javascript':'text/html'});r.end(b)})}).listen(5175)"],
+      "port": 5175
+    }
+  ]
+}

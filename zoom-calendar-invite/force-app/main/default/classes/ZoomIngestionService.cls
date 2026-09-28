@@ -66,6 +66,7 @@ public without sharing class ZoomIngestionService {
 
             String transcriptUrl;
             String summaryUrl;
+            String nextStepsUrl;
             List<Zoom_Recording__c> recordings = new List<Zoom_Recording__c>();
 
             for (Object rawFile : files) {
@@ -75,7 +76,17 @@ public without sharing class ZoomIngestionService {
                 if (mapped == null) continue;
 
                 if ('TRANSCRIPT'.equals(zoomType)) transcriptUrl = (String) file.get('download_url');
-                if ('SUMMARY'.equals(zoomType)) summaryUrl = (String) file.get('download_url');
+                // Zoom sends two SUMMARY files distinguished only by recording_type:
+                // "summary" holds the overall summary and smart chapters, while
+                // "summary_next_steps" holds action items in a different shape entirely.
+                // Keying on file_type alone kept whichever came last and discarded the other.
+                if ('SUMMARY'.equals(zoomType)) {
+                    if ('summary_next_steps'.equalsIgnoreCase(String.valueOf(file.get('recording_type')))) {
+                        nextStepsUrl = (String) file.get('download_url');
+                    } else {
+                        summaryUrl = (String) file.get('download_url');
+                    }
+                }
 
                 String fileId = String.valueOf(file.get('id'));
                 if (String.isBlank(fileId) || fileId == 'null') continue;
@@ -99,7 +110,13 @@ public without sharing class ZoomIngestionService {
             // Every callout must happen before the first DML: Apex refuses to call out
             // once a transaction has uncommitted work pending.
             String transcript = transcriptUrl == null ? null : ZoomVttParser.toPlainText(ZoomApiClient.download(transcriptUrl));
-            Map<String, String> summary = summaryUrl == null ? new Map<String, String>() : parseSummary(ZoomApiClient.download(summaryUrl));
+            Map<String, String> summary = summaryUrl == null
+                ? new Map<String, String>()
+                : parseSummary(ZoomApiClient.download(summaryUrl));
+            if (nextStepsUrl != null) {
+                String nextSteps = parseNextSteps(ZoomApiClient.download(nextStepsUrl));
+                if (String.isNotBlank(nextSteps)) summary.put('Next_Steps__c', nextSteps);
+            }
             result.transcriptChars = transcript == null ? 0 : transcript.length();
             result.summaryFound = !summary.isEmpty();
 
@@ -121,14 +138,30 @@ public without sharing class ZoomIngestionService {
             if (transcript != null || !summary.isEmpty()) {
                 result.callInsightId = writeInsight(meeting, transcript, summary);
             }
+            // The insight trigger never queues the Application Summary from a batch, and this
+            // runs inside the sweep batch - so queue it here, once, when the transcript lands.
+            if (transcript != null && meeting.Lead__c != null && System.isBatch()
+                    && Limits.getQueueableJobs() < Limits.getLimitQueueableJobs()) {
+                System.enqueueJob(new ApplicationSummaryService.SummaryJob(new List<Id>{ result.callInsightId }));
+            }
 
-            meeting.Status__c = 'Completed';
+            // Zoom publishes the media files first and the transcript and AI summary some
+            // minutes later. Marking the meeting Completed on media alone ended the sweep
+            // before the transcript existed, so it was never collected — the meeting looked
+            // finished while the only thing worth having was still missing. The meeting is
+            // terminal only once a transcript is in hand; otherwise it stays Scheduled and
+            // the hourly sweep keeps trying until the 7-day window closes.
+            Boolean gotTranscript = transcript != null;
+            meeting.Status__c = gotTranscript ? 'Completed' : 'Scheduled';
             meeting.Last_Sync_Attempt__c = System.now();
             update meeting;
 
-            result.success = true;
-            result.message = 'Stored ' + result.recordingsStored + ' recording(s), '
-                + result.transcriptChars + ' transcript chars, summary=' + result.summaryFound + '.';
+            result.success = gotTranscript;
+            result.skipped = !gotTranscript;
+            result.message = gotTranscript
+                ? 'Stored ' + result.recordingsStored + ' recording(s), '
+                    + result.transcriptChars + ' transcript chars, summary=' + result.summaryFound + '.'
+                : 'Stored ' + result.recordingsStored + ' recording(s); transcript not published by Zoom yet.';
             return result;
 
         } catch (Exception error) {
@@ -181,6 +214,32 @@ public without sharing class ZoomIngestionService {
             if (!chapters.isEmpty()) mapped.put('Bulleted_Summary__c', String.join(chapters, '\n'));
         }
         return mapped;
+    }
+
+    /**
+     * Parses Zoom's "summary_next_steps" file, whose items carry action_item_text and an
+     * assignee rather than the label/summary pair the smart-chapters file uses.
+     */
+    @TestVisible
+    private static String parseNextSteps(String raw) {
+        if (String.isBlank(raw)) return null;
+        Map<String, Object> parsed;
+        try {
+            parsed = (Map<String, Object>) JSON.deserializeUntyped(raw);
+        } catch (Exception ignored) {
+            return null;
+        }
+        if (!(parsed.get('items') instanceof List<Object>)) return null;
+
+        List<String> lines = new List<String>();
+        for (Object rawItem : (List<Object>) parsed.get('items')) {
+            Map<String, Object> item = (Map<String, Object>) rawItem;
+            String action = String.valueOf(item.get('action_item_text'));
+            if (String.isBlank(action) || action == 'null') continue;
+            String assignee = String.valueOf(item.get('assignee_name'));
+            lines.add(String.isBlank(assignee) || assignee == 'null' ? action : assignee + ': ' + action);
+        }
+        return lines.isEmpty() ? null : String.join(lines, '\n');
     }
 
     /** First non-blank value among candidate keys, flattening lists to newline-joined text. */

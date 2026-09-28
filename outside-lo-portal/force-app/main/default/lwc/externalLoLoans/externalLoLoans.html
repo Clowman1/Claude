@@ -1,0 +1,57 @@
+<template>
+    <template lwc:if={isDetailView}>
+        <template lwc:if={detail}>
+            <main class="detail-page">
+                <div class="detail-page-inner">
+                    <button type="button" class="back-link" onclick={handleBack}><c-portal-icon name="arrow-left" size="16"></c-portal-icon>My Loans</button>
+                    <header class="detail-header-card">
+                        <div>
+                            <h1 class="detail-title">{detail.summary.borrower}</h1>
+                            <p class="detail-primary">{detail.summary.amount} · {detail.summary.program}</p>
+                            <p class="detail-meta">{detail.summary.idLabel} · {detail.summary.milestone}</p>
+                        </div>
+                    </header>
+                    <section class="detail-card">
+                        <h2 class="detail-card-title">Loan details</h2>
+                        <dl class="field-list">
+                            <template for:each={detail.loanDetails} for:item="field">
+                                <div key={field.label} class="field-row">
+                                    <dt>{field.label}</dt>
+                                    <dd>{field.value}</dd>
+                                </div>
+                            </template>
+                        </dl>
+                    </section>
+                </div>
+            </main>
+        </template>
+        <template lwc:else>
+            <main class="detail-page">
+                <div class="detail-page-inner detail-loading" aria-busy="true" aria-label="Loading loan">
+                    <span class="spinner spinner-lg" aria-hidden="true"></span>
+                    <p class="detail-loading-copy">Loading loan…</p>
+                </div>
+            </main>
+        </template>
+    </template>
+
+    <template lwc:else>
+        <c-portal-list-layout
+            title="My Loans"
+            subtitle="Active borrower files in your pipeline."
+            search-value={search}
+            search-placeholder="Search loans by borrower, ID, or milestone"
+            filters={filterChips}
+            loading={loading}
+            is-empty={isListEmpty}
+            empty-title="No loans match this view"
+            empty-message="Try a different filter or clear your search."
+            result-label={resultLabel}
+            row-type="generic"
+            items={listItems}
+            onsearchchange={handleSearchChangeEvent}
+            onfilterchange={handleFilterChangeEvent}
+            onrowaction={handleRowAction}
+        ></c-portal-list-layout>
+    </template>
+</template>

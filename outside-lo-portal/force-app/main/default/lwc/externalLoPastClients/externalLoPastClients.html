@@ -1,0 +1,20 @@
+<template>
+    <c-portal-list-layout
+        title="Past Clients"
+        subtitle="Borrowers you imported as past clients. Open a record to log activity."
+        search-value={search}
+        search-placeholder="Search past clients"
+        loading={loading}
+        is-empty={isEmpty}
+        empty-title="No past clients yet"
+        empty-message="Use Import Data and set Type to Past Client, or ask an admin to update Lead Source."
+        result-label={resultLabel}
+        row-type="generic"
+        items={clients}
+        onsearchchange={handleSearchChange}
+        onrowaction={handleRowAction}
+    ></c-portal-list-layout>
+    <template lwc:if={errorMessage}>
+        <p class="form-error" role="alert">{errorMessage}</p>
+    </template>
+</template>

@@ -16,8 +16,8 @@ const FIELDS = [
   'Loan_Amount_1st__c', 'Rate_1st_TD__c', 'Loan_Purpose__c', 'Loan_Type_1st_TD__c',
   'Loan_Type_2nd_TD__c', 'Loan_Program_1st__c', 'Property_Address__c', 'Property_City__c',
   'Property_State__c', 'Property_Postal_Code__c', 'Property_Type__c', 'Closing_Date__c',
-  'Loan_Application_Date__c', 'TRID_Date__c', 'Initial_Loan_Estimate__c',
-  'Disclosures_Out_Date__c', 'Disclosures_Received_Date__c', 'Disclosures_Due_Date__c',
+  'Loan_Application_Date__c', 'TRID_Date__c',
+  'Disclosures_Out_Date__c', 'Disclosures_Received_Date__c',
   'Borrower_SSN__c', 'Borrower_Name__c', 'Borrower_Name__r.Name',
   'Borrower_Name__r.IsPersonAccount', 'Borrower_Name__r.SSN__pc',
   'Borrower_Name__r.PersonBirthdate', 'Loan_Officer__r.Name',
@@ -42,12 +42,24 @@ const SUBMITTED_RANK = RANK['Submitted'];
 const CLOSING_RANK = RANK['Closing'];
 
 const today = new Date(new Date().toDateString());
-// Normalize to calendar date: Date fields arrive at midnight, DateTime fields carry a time,
-// so comparing the two raw yields a phantom +/-1 day.
+
+// Normalize everything to a calendar date in the org's timezone. Date fields arrive as
+// plain YYYY-MM-DD; DateTime fields arrive in UTC, so reading the date straight off the
+// UTC string pushes any late-afternoon Eastern timestamp into the next day and invents
+// out-of-sequence findings. Org TimeZoneSidKey is America/New_York.
+const ORG_TZ = 'America/New_York';
+const tzFmt = new Intl.DateTimeFormat('en-CA', {
+  timeZone: ORG_TZ, year: 'numeric', month: '2-digit', day: '2-digit',
+});
 const D = (v) => {
   if (v == null) return null;
-  const m = String(v).match(/^(\d{4})-(\d{2})-(\d{2})/);
-  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(String(v));
+  const s = String(v);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {            // date-only field, already local
+    const p = s.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  const p = tzFmt.format(new Date(s)).split('-'); // en-CA formats as YYYY-MM-DD
+  return new Date(+p[0], +p[1] - 1, +p[2]);
 };
 const dayDiff = (a, b) => Math.round((D(a) - D(b)) / 86400000);
 const bizDays = (a, b) => {
@@ -113,18 +125,34 @@ function evaluate(rows) {
     // --- TRID / disclosure dates ---
     // Loan_Application_Date__c and File_Open_Date__c are 0% populated org-wide (dead fields).
     // TRID_Date__c is the live application/TRID-clock anchor.
+    // TRID compliance is tracked on Disclosures Out Date and Disclosures Received Date.
+    // Received is stamped automatically when the borrower signs, so a blank Received on an
+    // aging file means unsigned disclosures, not a data-entry gap.
+    // Initial_Loan_Estimate__c (25/38) is NOT the compliance field and is not checked.
+    // Disclosures_Due_Date__c is 0% populated org-wide and is not checked.
     const appDate = x.TRID_Date__c || x.Loan_Application_Date__c || null;
     if (!appDate) add('trid', x, 'No application/TRID date (TRID_Date__c blank)');
-    if (!x.Initial_Loan_Estimate__c) add('trid', x, 'Initial Loan Estimate date is blank');
-    if (appDate && x.Initial_Loan_Estimate__c) {
-      if (dayDiff(x.Initial_Loan_Estimate__c, appDate) < 0) add('trid', x, 'Initial LE dated BEFORE the TRID/application date');
-      else if (bizDays(appDate, x.Initial_Loan_Estimate__c) > 3) add('trid', x, 'Initial LE issued ' + bizDays(appDate, x.Initial_Loan_Estimate__c) + ' business days after TRID date (limit 3)');
+
+    if (!x.Disclosures_Out_Date__c) {
+      add('trid', x, 'Disclosures Out Date blank at status ' + x.Status__c);
+    } else if (appDate) {
+      if (dayDiff(x.Disclosures_Out_Date__c, appDate) < 0) {
+        add('trid', x, 'Disclosures sent BEFORE the TRID date');
+      } else if (bizDays(appDate, x.Disclosures_Out_Date__c) > 3) {
+        add('trid', x, 'Disclosures sent ' + bizDays(appDate, x.Disclosures_Out_Date__c) +
+          ' business days after the TRID date (TRID limit 3)');
+      }
     }
-    if (!x.Disclosures_Out_Date__c) add('trid', x, 'Disclosures Out Date blank at status ' + x.Status__c);
-    if (x.Disclosures_Out_Date__c && appDate && dayDiff(x.Disclosures_Out_Date__c, appDate) < 0) add('trid', x, 'Disclosures sent BEFORE the TRID/application date');
-    if (x.Disclosures_Out_Date__c && x.Disclosures_Received_Date__c && dayDiff(x.Disclosures_Received_Date__c, x.Disclosures_Out_Date__c) < 0) add('trid', x, 'Disclosures received BEFORE they were sent');
-    if (x.Disclosures_Out_Date__c && !x.Disclosures_Received_Date__c && dayDiff(today, x.Disclosures_Out_Date__c) > 7) add('trid', x, 'Disclosures out ' + dayDiff(today, x.Disclosures_Out_Date__c) + ' days, still not received back');
-    if (x.Disclosures_Due_Date__c && !x.Disclosures_Received_Date__c && dayDiff(today, x.Disclosures_Due_Date__c) > 0) add('trid', x, 'Disclosures Due Date passed (' + x.Disclosures_Due_Date__c + ') with nothing received');
+
+    if (x.Disclosures_Out_Date__c && x.Disclosures_Received_Date__c &&
+        dayDiff(x.Disclosures_Received_Date__c, x.Disclosures_Out_Date__c) < 0) {
+      add('trid', x, 'Disclosures received BEFORE they were sent');
+    }
+    if (x.Disclosures_Out_Date__c && !x.Disclosures_Received_Date__c &&
+        dayDiff(today, x.Disclosures_Out_Date__c) > 7) {
+      add('trid', x, 'Disclosures out ' + dayDiff(today, x.Disclosures_Out_Date__c) +
+        ' days, still unsigned (no Received date)');
+    }
 
     // --- MERS MIN, Correspondent channel only ---
     if (x.Channel__c === 'Correspondent') {

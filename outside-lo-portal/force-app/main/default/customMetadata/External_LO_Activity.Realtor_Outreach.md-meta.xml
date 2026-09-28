@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Realtor Outreach</label>
+    <protected>false</protected>
+    <values>
+        <field>Activity_Key__c</field>
+        <value xsi:type="xsd:string">realtor-outreach</value>
+    </values>
+    <values>
+        <field>Cadence__c</field>
+        <value xsi:type="xsd:string">daily</value>
+    </values>
+    <values>
+        <field>Category_Api_Name__c</field>
+        <value xsi:type="xsd:string">Realtor_Outreach</value>
+    </values>
+    <values>
+        <field>Coaching_Note__c</field>
+        <value xsi:type="xsd:string">New partners compound. A short, specific ask beats a generic check-in.</value>
+    </values>
+    <values>
+        <field>Credit_Activity_Types__c</field>
+        <value xsi:type="xsd:string">Call - Prospecting;Call - Active Agent</value>
+    </values>
+    <values>
+        <field>Default_Weekly_Target__c</field>
+        <value xsi:type="xsd:double">20.0</value>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">Touches with agents you do not yet have a referral relationship with.</value>
+    </values>
+    <values>
+        <field>Icon_Name__c</field>
+        <value xsi:type="xsd:string">users</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Requires_Contact__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Short_Label__c</field>
+        <value xsi:type="xsd:string">Realtor outreach</value>
+    </values>
+    <values>
+        <field>Sort_Order__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>Target_Options__c</field>
+        <value xsi:type="xsd:string">10;15;20;25;30</value>
+    </values>
+    <values>
+        <field>Tone__c</field>
+        <value xsi:type="xsd:string">brand</value>
+    </values>
+    <values>
+        <field>Unit__c</field>
+        <value xsi:type="xsd:string">touches</value>
+    </values>
+</CustomMetadata>
