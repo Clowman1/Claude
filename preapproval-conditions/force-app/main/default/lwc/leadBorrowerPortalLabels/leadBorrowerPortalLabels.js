@@ -105,8 +105,10 @@ export function uploadingMany(index, total, spanish) {
 
 export function tooLarge(fileName, spanish) {
     return spanish
-        ? `${fileName} pesa más de 3.5 MB. Suba un archivo más pequeño o envíelo por correo a su equipo hipotecario.`
-        : `${fileName} is larger than 3.5 MB. Please upload a smaller file, or email it to your loan team.`;
+        ? `${fileName} es demasiado grande para subirlo aquí (el límite es 3.5 MB). Si es un PDF de muchas páginas, ` +
+          `envíelo en partes o por correo a su equipo hipotecario.`
+        : `${fileName} is too large to upload here (the limit is 3.5 MB). If it is a long PDF, please send it in ` +
+          `parts, or email it to your loan team.`;
 }
 
 export function tooSmall(fileName, width, height, spanish) {
