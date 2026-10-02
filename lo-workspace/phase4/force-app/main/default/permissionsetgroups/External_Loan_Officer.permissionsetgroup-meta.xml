@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Outside LOs, on top of the External Loan Officer Profile. Excludes All_Apex_Classes, DocuSign, Pipeline Command Center, Wire Calculator, Twilio and ActiveCampaign. See lo-workspace/OUTLINE.md.</description>
+    <label>External Loan Officer</label>
+    <permissionSets>External_LO_Access</permissionSets>
+    <permissionSets>External_LO_Perfect_Day_Access</permissionSets>
+    <permissionSets>Multi_Factor_Authentication_MFA</permissionSets>
+    <permissionSets>Enhances_Notes</permissionSets>
+    <permissionSets>ConditionPermissions</permissionSets>
+    <permissionSets>UserActionsPermissions</permissionSets>
+    <permissionSets>Condition_Files_Permissions</permissionSets>
+    <permissionSets>Realtor_Referral_Source_Access</permissionSets>
+    <permissionSets>Lead_Document_Collection_Access</permissionSets>
+    <permissionSets>Borrower_Rating_Access</permissionSets>
+    <permissionSets>Property_Sold_Access</permissionSets>
+    <permissionSets>Zoom_Meeting_Assistant_Access</permissionSets>
+    <permissionSets>Zoom_OAuth_Connection_Access</permissionSets>
+    <permissionSets>Zoom_Meeting_Sync_Access</permissionSets>
+    <permissionSets>Application_Summary_Fields</permissionSets>
+    <permissionSets>Application_Summary_Access</permissionSets>
+    <permissionSets>Reach_Mobile_LO</permissionSets>
+    <permissionSets>Lead_Team_Access</permissionSets>
+    <permissionSets>Borrower_Management</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>

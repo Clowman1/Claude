@@ -1,0 +1,48 @@
+<template>
+    <template if:true={isSupportedObject}>
+        <div class="optout-bar">
+            <div class="optout-copy">
+                <span class="optout-eyebrow">Automated texting</span>
+                <p>Controls whether scheduled SMS campaigns send to this person.</p>
+            </div>
+            <button
+                class={pillClass}
+                onclick={handlePillClick}
+                disabled={isSaving}
+                title={pillTitle}
+                type="button">
+                <span class="optout-dot" aria-hidden="true"></span>
+                <span>{pillLabel}</span>
+            </button>
+        </div>
+
+        <template if:true={isConfirmOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="optout-heading" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container optout-modal">
+                    <header class="slds-modal__header">
+                        <h2 id="optout-heading" class="slds-modal__title">Opt out of automated texts?</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p><strong>{recordName}</strong> will stop receiving automated texts.</p>
+                        <ul class="optout-points">
+                            <li>Every scheduled message not yet sent will be blocked.</li>
+                            <li>Campaigns will not queue new automated texts for them.</li>
+                            <li>You can resume auto-texts later, which releases the blocked messages.</li>
+                        </ul>
+                        <p class="optout-note">Manual one-to-one texts are not affected.</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" onclick={closeConfirm}></lightning-button>
+                        <lightning-button
+                            class="slds-m-left_x-small"
+                            variant="destructive"
+                            label="Opt out"
+                            onclick={confirmOptOut}>
+                        </lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </template>
+</template>

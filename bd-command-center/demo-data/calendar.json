@@ -1,0 +1,82 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E1C"
+      },
+      "WhatId": "701Qi00001awnsnIAA",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Coffee with Fred · Priya Shah",
+      "Location": "Kahwa Coffee, Central Ave",
+      "Description": "BD DEMO DATA - delete after CEO demo",
+      "StartDateTime": "2026-10-01T12:30:00.000+0000",
+      "EndDateTime": "2026-10-01T13:30:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E2C"
+      },
+      "WhatId": "701Qi00001awnsoIAA",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Lunch with Fred · Tom Nguyen",
+      "Location": "Ciccio, Water Street",
+      "Description": "BD DEMO DATA - delete after CEO demo",
+      "StartDateTime": "2026-10-05T16:00:00.000+0000",
+      "EndDateTime": "2026-10-05T17:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E3C"
+      },
+      "WhatId": "701Qi00001awnspIAA",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Happy Hour: CPA & Title Partner Mixer",
+      "Location": "Ciccio Water Street rooftop",
+      "Description": "BD DEMO DATA - delete after CEO demo",
+      "StartDateTime": "2026-10-02T21:30:00.000+0000",
+      "EndDateTime": "2026-10-02T23:30:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E4C"
+      },
+      "WhatId": "701Qi00001awnsqIAA",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Coffee with Fred · Nora Castillo",
+      "Location": "Buddy Brew, Kennedy Blvd",
+      "Description": "BD DEMO DATA - delete after CEO demo",
+      "StartDateTime": "2026-09-22T13:00:00.000+0000",
+      "EndDateTime": "2026-09-22T14:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E5C"
+      },
+      "WhatId": "701Qi00001awnsrIAA",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Lunch with Fred · Greg Ellison",
+      "Location": "Oxford Exchange",
+      "Description": "BD DEMO DATA - delete after CEO demo",
+      "StartDateTime": "2026-09-23T16:00:00.000+0000",
+      "EndDateTime": "2026-09-23T17:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E6C"
+      },
+      "WhatId": "701Qi00001awnssIAA",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Coffee with Fred · Ben Alvarez",
+      "Location": "Kahwa Coffee, Central Ave",
+      "Description": "BD DEMO DATA - delete after CEO demo",
+      "StartDateTime": "2026-09-10T12:00:00.000+0000",
+      "EndDateTime": "2026-09-10T13:00:00.000+0000"
+    }
+  ]
+}

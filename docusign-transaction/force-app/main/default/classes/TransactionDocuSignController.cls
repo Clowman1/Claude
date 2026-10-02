@@ -101,14 +101,17 @@ public with sharing class TransactionDocuSignController {
         return d;
     }
 
-    /** Creates the draft envelope and returns its DocuSign envelope ID. */
+    /** Creates the draft envelope and returns its dfsle__Envelope__c record Id. */
     @AuraEnabled
-    public static String createDraft(Id transactionId, String templateName, List<Id> versionIds, Boolean includeCoBorrower, Boolean includeLoanOfficer) {
+    public static String createDraft(Id transactionId, List<String> templateNames, List<Id> versionIds, Boolean includeCoBorrower, Boolean includeLoanOfficer) {
+        templateNames = templateNames ?? new List<String>();
         versionIds = versionIds ?? new List<Id>();
-        if (String.isNotBlank(templateName) && !TEMPLATE_IDS.containsKey(templateName)) {
-            throw error('Unknown template: ' + templateName);
+        for (String name : templateNames) {
+            if (!TEMPLATE_IDS.containsKey(name)) {
+                throw error('Unknown template: ' + name);
+            }
         }
-        if (String.isBlank(templateName) && versionIds.isEmpty()) {
+        if (templateNames.isEmpty() && versionIds.isEmpty()) {
             throw error('Pick a template or at least one file to send.');
         }
         Data d = getData(transactionId);
@@ -139,8 +142,8 @@ public with sharing class TransactionDocuSignController {
         }
         // Template roles are filled by matching recipient role names; unmatched template roles are dropped.
         List<dfsle.Document> docs = new List<dfsle.Document>();
-        if (String.isNotBlank(templateName)) {
-            docs.add(dfsle.Document.fromTemplate(dfsle.UUID.parse(TEMPLATE_IDS.get(templateName)), templateName));
+        for (String name : templateNames) {
+            docs.add(dfsle.Document.fromTemplate(dfsle.UUID.parse(TEMPLATE_IDS.get(name)), name));
         }
         if (!versionIds.isEmpty()) {
             docs.addAll(dfsle.DocumentService.getDocuments(ContentVersion.getSObjectType(), new Set<Id>(versionIds)));
@@ -148,7 +151,8 @@ public with sharing class TransactionDocuSignController {
         env = env
             .withRecipients(recipients)
             .withDocuments(docs)
-            .withEmail('Reach Home Loans: ' + (String.isNotBlank(templateName) ? templateName : 'documents for your signature'),
+            // DocuSign caps the subject at 100 characters.
+            .withEmail(('Reach Home Loans: ' + (templateNames.isEmpty() ? 'documents for your signature' : String.join(templateNames, ', '))).abbreviate(100),
                 'Please review and sign the attached documents.')
             // Remind at 2 days then every 2 days; expire at 14 days, warn 2 days before.
             .withNotifications(new dfsle.Notifications(true, 2, 2, true, 14, 2, false))
@@ -160,14 +164,15 @@ public with sharing class TransactionDocuSignController {
 
         // sendEnvelope saves the package's envelope records, so the sender-view callout must run in a
         // separate transaction (getSenderView) or Salesforce throws "uncommitted work pending".
-        return dfsle.EnvelopeService.sendEnvelope(env, false).docuSignId.toString();
+        return dfsle.EnvelopeService.sendEnvelope(env, false).id;
     }
 
-    /** DocuSign's sender-view URL for a draft created by createDraft. */
+    /** DocuSign's sender-view URL for a draft created by createDraft (envelopeId = dfsle__Envelope__c Id). */
     @AuraEnabled
-    public static String getSenderView(Id transactionId, String envelopeId) {
+    public static String getSenderView(Id transactionId, Id envelopeId) {
+        dfsle__Envelope__c e = [SELECT dfsle__DocuSignId__c FROM dfsle__Envelope__c WHERE Id = :envelopeId];
         Url back = new Url(Url.getOrgDomainUrl().toExternalForm() + '/' + transactionId);
-        return dfsle.EnvelopeService.getSenderViewUrl(dfsle.UUID.parse(envelopeId), back).toExternalForm();
+        return dfsle.EnvelopeService.getSenderViewUrl(dfsle.UUID.parse(e.dfsle__DocuSignId__c), back).toExternalForm();
     }
 
     private static Transaction__c loadTransaction(Id transactionId) {

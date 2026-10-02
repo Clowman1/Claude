@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExtLO_Monthly_Unit_Goal__c</fullName>
+    <description>Outside LO setup Q&amp;A: loans closed per month.</description>
+    <externalId>false</externalId>
+    <label>Monthly Unit Goal</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

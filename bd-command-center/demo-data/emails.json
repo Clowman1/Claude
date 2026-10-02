@@ -1,0 +1,68 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "EmailMessage",
+        "referenceId": "M1"
+      },
+      "RelatedToId": "001Qi00001ax6oxIAA",
+      "Subject": "Bank-statement loans for your self-employed clients",
+      "TextBody": "Marcus, great connecting. Attached is our one-page overview of bank-statement and P&L programs.",
+      "HtmlBody": "<p>Marcus, great connecting. Attached is our one-page overview of bank-statement and P&L programs.</p>",
+      "FromName": "Fred Carlton",
+      "FromAddress": "fred@reachhomeloans.com",
+      "ToAddress": "marcus.ortega@example.com",
+      "MessageDate": "2026-09-11T13:00:00.000+0000",
+      "Status": "3",
+      "Incoming": false
+    },
+    {
+      "attributes": {
+        "type": "EmailMessage",
+        "referenceId": "M2"
+      },
+      "RelatedToId": "001Qi00001ax6p2IAA",
+      "Subject": "Buyer intro: the Hendersons",
+      "TextBody": "Fred, introducing you to the Hendersons. Pre-approval needed by Friday for a Seminole Heights offer.",
+      "HtmlBody": "<p>Fred, introducing you to the Hendersons. Pre-approval needed by Friday for a Seminole Heights offer.</p>",
+      "FromName": "Ben Alvarez",
+      "FromAddress": "ben.alvarez@example.com",
+      "ToAddress": "fred@reachhomeloans.com",
+      "MessageDate": "2026-09-26T20:00:00.000+0000",
+      "Status": "3",
+      "Incoming": true
+    },
+    {
+      "attributes": {
+        "type": "EmailMessage",
+        "referenceId": "M3"
+      },
+      "RelatedToId": "001Qi00001ax6p4IAA",
+      "Subject": "Lunch next week?",
+      "TextBody": "Tom, thanks for the call today. I sent a lunch invite for next Monday at Ciccio.",
+      "HtmlBody": "<p>Tom, thanks for the call today. I sent a lunch invite for next Monday at Ciccio.</p>",
+      "FromName": "Fred Carlton",
+      "FromAddress": "fred@reachhomeloans.com",
+      "ToAddress": "tom.nguyen@example.com",
+      "MessageDate": "2026-09-25T21:00:00.000+0000",
+      "Status": "3",
+      "Incoming": false
+    },
+    {
+      "attributes": {
+        "type": "EmailMessage",
+        "referenceId": "M4"
+      },
+      "RelatedToId": "001Qi00001ax6p0IAA",
+      "Subject": "Re: Relocation clients",
+      "TextBody": "Fred, sending two relocation clients your way after our lunch. Both have 30%+ down.",
+      "HtmlBody": "<p>Fred, sending two relocation clients your way after our lunch. Both have 30%+ down.</p>",
+      "FromName": "Greg Ellison",
+      "FromAddress": "greg.ellison@example.com",
+      "ToAddress": "fred@reachhomeloans.com",
+      "MessageDate": "2026-09-24T14:00:00.000+0000",
+      "Status": "3",
+      "Incoming": true
+    }
+  ]
+}

@@ -1,0 +1,370 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000UK6JJIA1"
+        },
+        "ApiName": "Assign_Loan_Partner_on_Lead",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000005TLYAY"
+        },
+        "ApiName": "Convert_Lead_to_Person_Account_on_TRID_Date",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi000003XXt8IAG"
+        },
+        "ApiName": "Create_task_on_pre_approval_with_no_activity_Angelina",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000BKez4IAD"
+        },
+        "ApiName": "Daily_Send_Referral_Message_to_Lead",
+        "TriggerType": "Scheduled",
+        "RecordTriggerType": null
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000004CiYAI"
+        },
+        "ApiName": "Flow_to_Force_Company_field_to_Empty",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000kGqJeIAK"
+        },
+        "ApiName": "Lead_Assign_Call_Insights_To_Transaction_On_Conversion",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000cJMbdIAG"
+        },
+        "ApiName": "Lead_Assign_Follow_Up_Lead_to_Transactions",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000kVyGlIAK"
+        },
+        "ApiName": "Lead_Branch_Assignment",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000IgjuPIAR"
+        },
+        "ApiName": "Lead_Clear_Phone_and_Mobile_Phone",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000eaBcIIAU"
+        },
+        "ApiName": "Lead_Conversion_Relate_Activity_To_Transaction",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000fl0UoIAI"
+        },
+        "ApiName": "Lead_Create_Scheduled_Message_On_Status_Pre_Approval",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi000017479gIAA"
+        },
+        "ApiName": "Lead_Default_Scenario_Manager",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "Create"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000JKiAAM"
+        },
+        "ApiName": "Lead_Docs_Received_for_Review_field_update",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi0000115StpIAE"
+        },
+        "ApiName": "Lead_Document_Requests_Carry_Forward_On_Conversion",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000JKsAAM"
+        },
+        "ApiName": "Lead_Documents_Received_for_Review_task",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000IofdVIAR"
+        },
+        "ApiName": "Lead_Event_Status_Changed",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000IoSMxIAN"
+        },
+        "ApiName": "Lead_Keep_First_Owner_Assignment",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi000017TPHrIAO"
+        },
+        "ApiName": "Lead_Notify_Buyers_Agent_Docs_Requested",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi000014KtqOIAS"
+        },
+        "ApiName": "Lead_Owner_Transfer_Email_Notification",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000KppEfIAJ"
+        },
+        "ApiName": "Lead_Stamp_Initial_Contact_Date",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000003iCYAQ"
+        },
+        "ApiName": "Lead_Status_Change_Message_Sends",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000JKnAAM"
+        },
+        "ApiName": "Lead_Under_Contract_field_update",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000JKxAAM"
+        },
+        "ApiName": "Lead_Under_Contract_task_record_type",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000JFEAA2"
+        },
+        "ApiName": "Lead_meeting_complete_biz_dev",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000IwlAAE"
+        },
+        "ApiName": "Lead_to_Event_for_Appointments",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Create"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x0000000JHoAAM"
+        },
+        "ApiName": "Leads_Documents_Requested",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000009OGYAY"
+        },
+        "ApiName": "New_Lead_from_Realtor_Intake_Form",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000NzePyIAJ"
+        },
+        "ApiName": "New_Referral_Lead_Send_Notification_When_It_s_Still_In_Queue",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Create"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi000019iujxIAA"
+        },
+        "ApiName": "Realtor_Lead_Placeholder_Email",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "Create"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000YJrMnIAL"
+        },
+        "ApiName": "Set_Default_Credit_Repair_Company",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000B07kjIAB"
+        },
+        "ApiName": "Set_First_Contact_Date_on_Lead",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300Qi00000FRdSvIAL"
+        },
+        "ApiName": "Share_Leads_With_Lawrence_Lanos",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000005fBYAQ"
+        },
+        "ApiName": "Shark_Tank_New_Lead",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Create"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000006JBYAY"
+        },
+        "ApiName": "Stamp_Last_Referral_Date_on_Account",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ000000088tYAA"
+        },
+        "ApiName": "Stamp_Pre_Approval_Date_on_Lead_Conversion",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000007zcYAA"
+        },
+        "ApiName": "Stamp_Pre_Approval_Date_when_Status_is_Pre_Approval",
+        "TriggerType": "RecordBeforeSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000006JCYAY"
+        },
+        "ApiName": "Stamp_Referred_By_When_Buying_Agent_is_Filled_In",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/3005x000000H8sPAAS"
+        },
+        "ApiName": "Submission_Form_Account_Update",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Update"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ00000009OLYAY"
+        },
+        "ApiName": "Update_Lead_Information_on_New_Referral",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "Create"
+      },
+      {
+        "attributes": {
+          "type": "FlowDefinitionView",
+          "url": "/services/data/v67.0/sobjects/FlowDefinitionView/300AJ0000000B7MYAU"
+        },
+        "ApiName": "Website_Lead_Internal_Notification",
+        "TriggerType": "RecordAfterSave",
+        "RecordTriggerType": "CreateAndUpdate"
+      }
+    ],
+    "totalSize": 40,
+    "done": true
+  },
+  "warnings": []
+}

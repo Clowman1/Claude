@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ActionRequired</members>
+        <members>AppraisalOrder</members>
+        <members>Checklist</members>
+        <members>CloserActionRequired</members>
+        <members>ConditionsViewer</members>
+        <members>EnhancedNotes</members>
+        <members>LendwizeIframe</members>
+        <members>PostClosingActionRequired</members>
+        <members>SubmissionQualityChecklist</members>
+        <members>richTextMessage</members>
+        <name>AuraDefinitionBundle</name>
+    </types>
+    <types>
+        <members>accountRecordHero</members>
+        <members>bdLogTouchCard</members>
+        <members>borrowerPanel</members>
+        <members>callInsightList</members>
+        <members>documentViewer</members>
+        <members>fileUploader</members>
+        <members>leadActivityAssistant</members>
+        <members>leadDocumentRequestManager</members>
+        <members>leadRecordHero</members>
+        <members>smsAutomationOptOutPill</members>
+        <members>transactionDocuSign</members>
+        <members>zoomMeetingAssistant</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <version>62.0</version>
+</Package>

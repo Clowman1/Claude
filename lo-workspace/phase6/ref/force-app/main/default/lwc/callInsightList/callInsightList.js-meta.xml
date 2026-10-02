@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<masterLabel>Call Insight List</masterLabel>
+	<apiVersion>63.0</apiVersion>
+	<isExposed>true</isExposed>
+	<targets>
+		<target>lightning__RecordPage</target>
+		<target>lightningCommunity__Page</target>
+	</targets>
+	<targetConfigs>
+		<targetConfig targets="lightning__RecordPage">
+			<property name="source"
+					  type="String"
+					  datasource="RingSense,Zoom"
+					  default="RingSense"
+					  label="Insight Source"
+					  description="RingSense shows phone-call insights. Zoom shows insights from recorded Zoom meetings. Place one instance per tab."/>
+		</targetConfig>
+	</targetConfigs>
+</LightningComponentBundle>

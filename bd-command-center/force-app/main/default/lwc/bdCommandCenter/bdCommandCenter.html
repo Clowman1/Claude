@@ -1,0 +1,281 @@
+<template>
+    <div class="shell">
+        <template lwc:if={loading}><div class="card pad"><lightning-spinner alternative-text="Loading" size="small"></lightning-spinner></div></template>
+        <template lwc:if={error}><div class="card pad err" role="alert">{error}</div></template>
+
+        <template lwc:if={home}>
+            <header class="head">
+                <div>
+                    <div class="lbl">{todayLabel}</div>
+                    <h1 class="hello">{greeting}</h1>
+                </div>
+                <div class="head-actions">
+                    <template lwc:if={showRepPicker}>
+                        <lightning-combobox class="rep" label="Rep" variant="label-hidden" options={repOptions} value={repId} onchange={changeRep}></lightning-combobox>
+                    </template>
+                    <template lwc:if={canEdit}>
+                        <button class="btn" onclick={openCalendar}><lightning-icon icon-name="utility:event" size="x-small"></lightning-icon>Calendar</button>
+                        <button class="btn" onclick={openInvite}>Schedule invite</button>
+                        <button class="btn btn-p" onclick={openAdd}>+ Add partner</button>
+                    </template>
+                </div>
+            </header>
+
+            <template lwc:if={showRcPrompt}>
+                <section class="card rc" role="alert">
+                    <div class="rc-icon"><lightning-icon icon-name="utility:call" size="small"></lightning-icon></div>
+                    <div class="grow">
+                        <div class="strong">Connect your RingCentral</div>
+                        <div class="muted sm">
+                            Link your RingCentral account so your calls and texts log into Salesforce and RingSense insights
+                            show on your partners. It opens RingCentral's sign-in in a new tab; come back here when it says you're connected.
+                        </div>
+                    </div>
+                    <template lwc:if={rcOpened}>
+                        <button class="btn" onclick={connectRc}>Open sign-in again</button>
+                        <button class="btn btn-p" onclick={reload}>I've connected</button>
+                    </template>
+                    <template lwc:else>
+                        <button class="btn btn-o" onclick={connectRc}>Connect RingCentral</button>
+                    </template>
+                </section>
+            </template>
+
+            <template lwc:if={hasRep}>
+                <nav class="navbar" aria-label="Command center">
+                    <template for:each={navItems} for:item="n">
+                        <button key={n.value} class={n.cls} data-value={n.value} onclick={pickView}>{n.label}</button>
+                    </template>
+                </nav>
+
+                <section class="stats" aria-label="This week">
+                    <div class="card stat"><div class="lbl">Partners</div><div class="num">{s.partners}</div><div class="muted sm">+{s.addedThisWeek} added this week</div></div>
+                    <div class="card stat"><div class="lbl">Calls this week</div><div class="num">{s.callsThisWeek}</div><div class="muted sm">{s.textsThisWeek} texts · RingCentral</div></div>
+                    <div class="card stat"><div class="lbl">Meetings this week</div><div class="num">{s.meetingsThisWeek}</div><div class="muted sm">{meetingsSub}</div></div>
+                    <div class="card stat"><div class="lbl">Active partners</div><div class="num">{s.activePartners}</div><div class="muted sm">sent a lead in 90 days</div></div>
+                    <div class="card stat dark"><div class="lbl gold">Referred leads · 90d</div><div class="num">{s.referredLeads90}</div><div class="sm light">from {s.referringPartners90} partners</div></div>
+                </section>
+
+                <!-- ============================== TODAY -->
+                <template lwc:if={isToday}>
+                    <div class="grid2">
+                        <div class="colmain">
+                            <template lwc:if={hasToConfirm}>
+                                <section class="card">
+                                    <div class="sechead"><h2 class="h2">Did these meetings happen?</h2><span class="muted sm">Yes moves the partner to Met</span></div>
+                                    <template for:each={toConfirm} for:item="e">
+                                        <div key={e.campaignId} class="row">
+                                            <div class="grow"><div class="strong">{e.name}</div><div class="muted sm">{e.dow} {e.day} · {e.who}</div></div>
+                                            <button class="btn btn-s" data-id={e.campaignId} data-held="no" onclick={answerMeeting}>Didn't happen</button>
+                                            <button class="btn btn-p btn-s" data-id={e.campaignId} data-held="yes" onclick={answerMeeting}>Yes, we met</button>
+                                        </div>
+                                    </template>
+                                </section>
+                            </template>
+
+                            <section class="card">
+                                <div class="sechead">
+                                    <div class="inline"><h2 class="h2">Needs a touch</h2><span class="chip wait">{needsTouchCount} overdue</span></div>
+                                    <div class="pills">
+                                        <template for:each={industryPills} for:item="p">
+                                            <button key={p.value} class={p.cls} data-value={p.value} onclick={pickIndustry}>{p.label}</button>
+                                        </template>
+                                    </div>
+                                </div>
+                                <template lwc:if={hasNeedsTouch}>
+                                    <template for:each={needsTouch} for:item="p">
+                                        <div key={p.id} class="row">
+                                            <div class="av">{p.initials}</div>
+                                            <div class="grow clickable" data-id={p.id} onclick={openPartner}>
+                                                <div class="strong">{p.name}</div><div class="muted sm">{p.sub}</div>
+                                            </div>
+                                            <span class={p.chipCls}>{p.industry}</span>
+                                            <span class={p.quietCls}>{p.quietLabel}</span>
+                                            <template lwc:if={p.phone}><lightning-click-to-dial value={p.phone} record-id={p.id}></lightning-click-to-dial></template>
+                                            <template lwc:if={canEdit}>
+                                                <button class="btn btn-s" data-id={p.id} data-name={p.name} onclick={openLogTouch}>Log touch</button>
+                                                <button class="btn btn-s" data-id={p.id} onclick={inviteOne}>Invite</button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template lwc:else><div class="empty muted">Everyone has been touched in the last 14 days.</div></template>
+                            </section>
+
+                            <section class="card">
+                                <div class="sechead"><h2 class="h2">Recent calls &amp; texts</h2><span class="muted sm">RingCentral, matched by phone number</span></div>
+                                <template lwc:if={hasCalls}>
+                                    <template for:each={calls} for:item="c">
+                                        <div key={c.taskId} class="row">
+                                            <span class={c.dirCls}>{c.dirLabel}</span>
+                                            <div class="grow clickable strong" data-id={c.partnerId} onclick={openPartner}>{c.partnerName} <span class="muted normal">{c.company}</span></div>
+                                            <span class="muted sm">{c.when}</span>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template lwc:else><div class="empty muted">No partner calls in the last 14 days.</div></template>
+                            </section>
+
+                            <template lwc:if={hasUnmatched}>
+                                <section class="card">
+                                    <div class="sechead"><h2 class="h2">Unmatched calls</h2><span class="muted sm">Numbers Salesforce doesn't know yet</span></div>
+                                    <template for:each={unmatched} for:item="c">
+                                        <div key={c.taskId} class="row wrap">
+                                            <span class={c.dirCls}>{c.dirLabel}</span>
+                                            <div class="grow strong">{c.numberLabel}</div>
+                                            <span class="muted sm">{c.when}</span>
+                                            <template lwc:if={c.linking}>
+                                                <lightning-combobox class="linkpick" label="Partner" variant="label-hidden" placeholder="Pick a partner"
+                                                    options={partnerOptions} onchange={pickLinkPartner}></lightning-combobox>
+                                                <button class="btn btn-s" onclick={cancelLink}>Cancel</button>
+                                                <button class="btn btn-p btn-s" disabled={linkDisabled} onclick={saveLink}>Link</button>
+                                            </template>
+                                            <template lwc:else>
+                                                <button class="btn btn-s" data-id={c.taskId} onclick={startLink}>Link to partner</button>
+                                                <button class="btn btn-s" data-number={c.phoneNumber} onclick={addFromCall}>New partner</button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </section>
+                            </template>
+                        </div>
+
+                        <aside class="colside">
+                            <section class="card pad2">
+                                <div class="sechead flat"><h2 class="h2">Upcoming</h2><template lwc:if={canEdit}><button class="linkish" onclick={openCalendar}>Open calendar</button></template></div>
+                                <template lwc:if={hasUpcoming}>
+                                    <template for:each={upcoming} for:item="e">
+                                        <button key={e.campaignId} class={e.boxCls} data-id={e.campaignId} onclick={openTracker}>
+                                            <div class="date"><div class="lbl">{e.dow}</div><div class="dnum">{e.day}</div></div>
+                                            <div class="grow left">
+                                                <div class="strong">{e.name}</div>
+                                                <div class="muted sm">{e.when}</div>
+                                                <div class="sm rsvp">{e.rsvp}</div>
+                                            </div>
+                                        </button>
+                                    </template>
+                                </template>
+                                <template lwc:else><div class="muted sm">Nothing scheduled. Invite a partner for coffee.</div></template>
+                            </section>
+                            <section class="card pad2">
+                                <h2 class="h2">Book by industry</h2>
+                                <template for:each={industryBars} for:item="b">
+                                    <div key={b.name} class="bar"><span class="bname">{b.name}</span><div class="track"><div class="fill" style={b.style}></div></div><b>{b.count}</b></div>
+                                </template>
+                            </section>
+                        </aside>
+                    </div>
+                </template>
+
+                <!-- ============================== PARTNERS -->
+                <template lwc:if={isPartners}>
+                    <div class="toolbar">
+                        <div class="pills">
+                            <template for:each={industryPills} for:item="p">
+                                <button key={p.value} class={p.cls} data-value={p.value} onclick={pickIndustry}>{p.label}</button>
+                            </template>
+                            <button class={needsCls} onclick={toggleNeeds}>Needs a touch</button>
+                        </div>
+                        <div class="tools">
+                            <template lwc:if={hasSelection}>
+                                <button class="btn btn-s" onclick={closePartner}>← Back to board</button>
+                            </template>
+                            <lightning-input type="search" variant="label-hidden" label="Search partners" placeholder="Search partners" value={search} onchange={handleSearch}></lightning-input>
+                            <div class="seg small-seg">
+                                <button class={listBtnCls} onclick={showList}>List</button>
+                                <button class={boardBtnCls} onclick={showBoard}>Board</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template lwc:if={isBoard}>
+                        <div class="board">
+                            <template for:each={columns} for:item="col">
+                                <section key={col.stage} class={col.colCls} aria-label={col.stage}>
+                                    <div class="colhead"><span class="lbl">{col.stage}</span><span class="chip oth">{col.count}</span></div>
+                                    <template for:each={col.cards} for:item="p">
+                                        <button key={p.id} class="kcard" data-id={p.id} onclick={openPartner}>
+                                            <span class="strong">{p.name}</span>
+                                            <span class="muted sm">{p.company}</span>
+                                            <span class="kfoot"><span class={p.chipCls}>{p.industry}</span><span class={p.quietCls}>{p.quietLabel}</span></span>
+                                        </button>
+                                    </template>
+                                </section>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="split">
+                            <section class="card plist">
+                                <template lwc:if={hasPartners}>
+                                    <template for:each={filteredPartners} for:item="p">
+                                        <div key={p.id} class={p.rowCls} data-id={p.id} onclick={openPartner}>
+                                            <div class="av">{p.initials}</div>
+                                            <div class="grow"><div class="strong">{p.name}</div><div class={p.quietCls}>{p.quietLabel}</div></div>
+                                            <span class={p.chipCls}>{p.industry}</span>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template lwc:else><div class="empty muted pad">No partners match. Add one with + Add partner.</div></template>
+                            </section>
+                            <div class="pdetail">
+                                <template lwc:if={hasSelection}>
+                                    <c-bd-partner-workspace partner-id={selectedPartnerId} rep-id={repId} can-edit={canEdit}
+                                        stages={home.stages} industries={home.industries}
+                                        onchanged={reload} oninvite={inviteOne} onopenevent={openTracker} onback={closePartner}></c-bd-partner-workspace>
+                                </template>
+                                <template lwc:else><div class="card pad muted">Pick a partner to see their timeline, RingSense calls and referred leads.</div></template>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+
+                <!-- ============================== EVENTS -->
+                <template lwc:if={isEvents}>
+                    <div class="grid2">
+                        <section class="card colmain">
+                            <div class="sechead"><h2 class="h2">Upcoming events</h2></div>
+                            <template for:each={upcoming} for:item="e">
+                                <div key={e.campaignId} class="row clickable" data-id={e.campaignId} onclick={openTracker}>
+                                    <div class="date"><div class="lbl">{e.dow}</div><div class="dnum">{e.day}</div></div>
+                                    <div class="grow"><div class="strong">{e.name}</div><div class="muted sm">{e.when} · {e.who}</div></div>
+                                    <span class="sm">{e.rsvp}</span>
+                                </div>
+                            </template>
+                            <template lwc:if={hasToConfirm}>
+                                <div class="sechead"><h2 class="h2">Waiting on your confirmation</h2></div>
+                                <template for:each={toConfirm} for:item="e">
+                                    <div key={e.campaignId} class="row">
+                                        <div class="date"><div class="lbl">{e.dow}</div><div class="dnum">{e.day}</div></div>
+                                        <div class="grow clickable" data-id={e.campaignId} onclick={openTracker}><div class="strong">{e.name}</div><div class="muted sm">{e.who}</div></div>
+                                        <button class="btn btn-s" data-id={e.campaignId} data-held="no" onclick={answerMeeting}>Didn't happen</button>
+                                        <button class="btn btn-p btn-s" data-id={e.campaignId} data-held="yes" onclick={answerMeeting}>Yes, we met</button>
+                                    </div>
+                                </template>
+                            </template>
+                        </section>
+                    </div>
+                </template>
+            </template>
+            <template lwc:else>
+                <div class="card pad muted">No business development rep has been set up yet. Assign the Business Development permission set to a user.</div>
+            </template>
+        </template>
+
+        <template lwc:if={showAdd}>
+            <c-bd-add-partner industries={home.industries} prefill-phone={addPhone}
+                onclose={closeAdd} onsaved={partnerSaved} onimported={imported}></c-bd-add-partner>
+        </template>
+        <template lwc:if={showInvite}>
+            <c-bd-invite-modal partners={pickerPartners} preselected-ids={inviteFor} rep-first-name={home.repFirstName}
+                onclose={closeInvite} onsent={inviteSent}></c-bd-invite-modal>
+        </template>
+        <template lwc:if={logTouchFor}>
+            <c-bd-log-touch-modal partner-id={logTouchFor.id} partner-name={logTouchFor.name}
+                onlogged={touchLogged} onclose={closeLogTouch}></c-bd-log-touch-modal>
+        </template>
+        <template lwc:if={trackerId}>
+            <c-bd-event-tracker campaign-id={trackerId} can-edit={canEdit} onclose={closeTracker}></c-bd-event-tracker>
+        </template>
+    </div>
+</template>

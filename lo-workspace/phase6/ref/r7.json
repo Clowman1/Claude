@@ -1,0 +1,789 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-06-24T20:28:09.000Z",
+        "fileName": "unpackaged/flows/Lead_Document_Requests_Carry_Forward_On_Conversion.flow",
+        "fullName": "Lead_Document_Requests_Carry_Forward_On_Conversion",
+        "id": "301Qi00001Q3HFpIAN",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-15T16:59:31.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-06-17T20:19:30.000Z",
+        "fileName": "unpackaged/flows/Set_Default_Credit_Repair_Company.flow",
+        "fullName": "Set_Default_Credit_Repair_Company",
+        "id": "301Qi00000ZijbZIAR",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-06-17T20:19:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-09-18T10:14:19.000Z",
+        "fileName": "unpackaged/flows/Lead_Conversion_Relate_Activity_To_Transaction.flow",
+        "fullName": "Lead_Conversion_Relate_Activity_To_Transaction",
+        "id": "301Qi00000hTxDgIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-09-18T10:14:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-01-06T10:11:37.000Z",
+        "fileName": "unpackaged/flows/New_Referral_Lead_Send_Notification_When_It_s_Still_In_Queue.flow",
+        "fullName": "New_Referral_Lead_Send_Notification_When_It_s_Still_In_Queue",
+        "id": "301Qi00000P5BdyIAF",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:43:27.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-17T17:07:45.000Z",
+        "fileName": "unpackaged/flows/Assign_Loan_Partner_on_Lead.flow",
+        "fullName": "Assign_Loan_Partner_on_Lead",
+        "id": "301Qi00001ZpZrtIAF",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-17T17:08:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-01-03T18:15:18.000Z",
+        "fileName": "unpackaged/flows/Stamp_Pre_Approval_Date_when_Status_is_Pre_Approval.flow",
+        "fullName": "Stamp_Pre_Approval_Date_when_Status_is_Pre_Approval",
+        "id": "301AJ0000000SyIYAU",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2023-01-03T18:15:24.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-02T16:53:15.000Z",
+        "fileName": "unpackaged/flows/Lead_Notify_Buyers_Agent_Docs_Requested.flow",
+        "fullName": "Lead_Notify_Buyers_Agent_Docs_Requested",
+        "id": "301Qi00001YKOrhIAH",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-02T16:54:19.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-02-17T17:59:36.000Z",
+        "fileName": "unpackaged/flows/Stamp_Last_Referral_Date_on_Account.flow",
+        "fullName": "Stamp_Last_Referral_Date_on_Account",
+        "id": "301AJ0000000bBeYAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:42:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-10T16:06:57.000Z",
+        "fileName": "unpackaged/flows/Share_Leads_With_Lawrence_Lanos.flow",
+        "fullName": "Share_Leads_With_Lawrence_Lanos",
+        "id": "301Qi00000jYvJiIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:42:45.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-25T15:06:36.000Z",
+        "fileName": "unpackaged/flows/Lead_Under_Contract_task_record_type.flow",
+        "fullName": "Lead_Under_Contract_task_record_type",
+        "id": "301Qi00001QJE2jIAH",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-25T15:37:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-10T16:07:00.000Z",
+        "fileName": "unpackaged/flows/Shark_Tank_New_Lead.flow",
+        "fullName": "Shark_Tank_New_Lead",
+        "id": "301Qi00000jYvJjIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:42:51.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-10T16:07:03.000Z",
+        "fileName": "unpackaged/flows/Website_Lead_Internal_Notification.flow",
+        "fullName": "Website_Lead_Internal_Notification",
+        "id": "301Qi00000jYvJkIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:43:06.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-05-30T14:45:17.000Z",
+        "fileName": "unpackaged/flows/Daily_Send_Referral_Message_to_Lead.flow",
+        "fullName": "Daily_Send_Referral_Message_to_Lead",
+        "id": "301Qi00000BtJtMIAV",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-05-30T14:48:15.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-03T17:35:45.000Z",
+        "fileName": "unpackaged/flows/Lead_Owner_Transfer_Email_Notification.flow",
+        "fullName": "Lead_Owner_Transfer_Email_Notification",
+        "id": "301Qi00001UOPEqIAP",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-03T17:35:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-05-17T20:25:49.000Z",
+        "fileName": "unpackaged/flows/Lead_to_Event_for_Appointments.flow",
+        "fullName": "Lead_to_Event_for_Appointments",
+        "id": "301AJ0000000qvCYAQ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:43:44.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-29T15:43:38.000Z",
+        "fileName": "unpackaged/flows/Update_Lead_Information_on_New_Referral.flow",
+        "fullName": "Update_Lead_Information_on_New_Referral",
+        "id": "301Qi00001autO3IAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T15:46:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-10-22T09:23:22.000Z",
+        "fileName": "unpackaged/flows/Lead_Clear_Phone_and_Mobile_Phone.flow",
+        "fullName": "Lead_Clear_Phone_and_Mobile_Phone",
+        "id": "301Qi00000JioNzIAJ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-10-22T09:23:24.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-11-24T11:33:32.000Z",
+        "fileName": "unpackaged/flows/Lead_Assign_Call_Insights_To_Transaction_On_Conversion.flow",
+        "fullName": "Lead_Assign_Call_Insights_To_Transaction_On_Conversion",
+        "id": "301Qi00000oNuG2IAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-11-24T11:35:09.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-11-04T11:14:49.000Z",
+        "fileName": "unpackaged/flows/Lead_Stamp_Initial_Contact_Date.flow",
+        "fullName": "Lead_Stamp_Initial_Contact_Date",
+        "id": "301Qi00000La8SrIAJ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-11-04T11:17:39.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-08-25T19:18:08.000Z",
+        "fileName": "unpackaged/flows/Stamp_Pre_Approval_Date_on_Lead_Conversion.flow",
+        "fullName": "Stamp_Pre_Approval_Date_on_Lead_Conversion",
+        "id": "301Qi00000fTh0LIAS",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-08-29T16:24:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000BrtGrAAJ",
+        "createdByName": "Cassandra Besner",
+        "createdDate": "2022-05-10T00:09:29.000Z",
+        "fileName": "unpackaged/flows/Lead_Documents_Received_for_Review_task.flow",
+        "fullName": "Lead_Documents_Received_for_Review_task",
+        "id": "3015x0000001bWoAAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:46:15.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-01-25T16:39:51.000Z",
+        "fileName": "unpackaged/flows/Flow_to_Force_Company_field_to_Empty.flow",
+        "fullName": "Flow_to_Force_Company_field_to_Empty",
+        "id": "301AJ0000000X8KYAU",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:48:19.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-05-08T13:59:22.000Z",
+        "fileName": "unpackaged/flows/New_Lead_from_Realtor_Intake_Form.flow",
+        "fullName": "New_Lead_from_Realtor_Intake_Form",
+        "id": "301Qi00001EXKDDIA5",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-05-08T14:00:03.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000BrtGrAAJ",
+        "createdByName": "Cassandra Besner",
+        "createdDate": "2022-05-10T00:02:45.000Z",
+        "fileName": "unpackaged/flows/Leads_Documents_Requested.flow",
+        "fullName": "Leads_Documents_Requested",
+        "id": "3015x0000001bWnAAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:46:09.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000BrtGrAAJ",
+        "createdByName": "Cassandra Besner",
+        "createdDate": "2022-05-10T00:04:00.000Z",
+        "fileName": "unpackaged/flows/Lead_Docs_Received_for_Review_field_update.flow",
+        "fullName": "Lead_Docs_Received_for_Review_field_update",
+        "id": "3015x0000001bWjAAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:46:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2021-06-12T20:45:02.000Z",
+        "fileName": "unpackaged/flows/Submission_Form_Account_Update.flow",
+        "fullName": "Submission_Form_Account_Update",
+        "id": "3015x0000005rbEAAQ",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2021-06-12T20:54:54.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-05-24T08:31:18.000Z",
+        "fileName": "unpackaged/flows/Set_First_Contact_Date_on_Lead.flow",
+        "fullName": "Set_First_Contact_Date_on_Lead",
+        "id": "301Qi00000Bbqu9IAB",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-05-24T08:31:41.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-05-30T15:35:59.000Z",
+        "fileName": "unpackaged/flows/Create_task_on_pre_approval_with_no_activity_Angelina.flow",
+        "fullName": "Create_task_on_pre_approval_with_no_activity_Angelina",
+        "id": "301Qi00000BtZq5IAF",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-05-30T15:57:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-01-11T18:49:37.000Z",
+        "fileName": "unpackaged/flows/Lead_Status_Change_Message_Sends.flow",
+        "fullName": "Lead_Status_Change_Message_Sends",
+        "id": "301AJ0000000UWJYA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:44:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-12-18T19:02:14.000Z",
+        "fileName": "unpackaged/flows/Lead_Create_Scheduled_Message_On_Status_Pre_Approval.flow",
+        "fullName": "Lead_Create_Scheduled_Message_On_Status_Pre_Approval",
+        "id": "301Qi00000rNGexIAG",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-12-18T19:02:19.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000BrtGrAAJ",
+        "createdByName": "Cassandra Besner",
+        "createdDate": "2022-05-10T00:13:35.000Z",
+        "fileName": "unpackaged/flows/Lead_Under_Contract_field_update.flow",
+        "fullName": "Lead_Under_Contract_field_update",
+        "id": "3015x0000001bWaAAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:46:17.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-28T19:31:16.000Z",
+        "fileName": "unpackaged/flows/Realtor_Lead_Placeholder_Email.flow",
+        "fullName": "Realtor_Lead_Placeholder_Email",
+        "id": "301Qi00001aqDjtIAE",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-28T19:40:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-11-05T14:23:39.000Z",
+        "fileName": "unpackaged/flows/Lead_Keep_First_Owner_Assignment.flow",
+        "fullName": "Lead_Keep_First_Owner_Assignment",
+        "id": "301Qi00000LekGLIAZ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-11-05T14:23:42.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000BsO5WAAV",
+        "createdByName": "Daris Paulino",
+        "createdDate": "2022-08-03T03:21:02.000Z",
+        "fileName": "unpackaged/flows/Lead_meeting_complete_biz_dev.flow",
+        "fullName": "Lead_meeting_complete_biz_dev",
+        "id": "301AJ00000003zhYAA",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:43:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-02-17T18:10:06.000Z",
+        "fileName": "unpackaged/flows/Stamp_Referred_By_When_Buying_Agent_is_Filled_In.flow",
+        "fullName": "Stamp_Referred_By_When_Buying_Agent_is_Filled_In",
+        "id": "301AJ0000000bBsYAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:43:19.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-08-14T12:44:05.000Z",
+        "fileName": "unpackaged/flows/Lead_Assign_Follow_Up_Lead_to_Transactions.flow",
+        "fullName": "Lead_Assign_Follow_Up_Lead_to_Transactions",
+        "id": "301Qi00000eXdYEIA0",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:44:28.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-10-24T13:26:15.000Z",
+        "fileName": "unpackaged/flows/Lead_Event_Status_Changed.flow",
+        "fullName": "Lead_Event_Status_Changed",
+        "id": "301Qi00000KJ13ZIAT",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:44:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-31T16:24:10.000Z",
+        "fileName": "unpackaged/flows/Lead_Default_Scenario_Manager.flow",
+        "fullName": "Lead_Default_Scenario_Manager",
+        "id": "301Qi00001Y4FKfIAN",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-31T16:24:51.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-15T18:08:12.000Z",
+        "fileName": "unpackaged/flows/Convert_Lead_to_Person_Account_on_TRID_Date.flow",
+        "fullName": "Convert_Lead_to_Person_Account_on_TRID_Date",
+        "id": "301Qi00001ZabHTIAZ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-15T18:09:11.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-04T19:17:44.000Z",
+        "fileName": "unpackaged/flows/Lead_Branch_Assignment.flow",
+        "fullName": "Lead_Branch_Assignment",
+        "id": "301Qi00001L1wGSIAZ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-04T19:28:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:30:32.248Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:30:32.248Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OfYkfMAF",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "Lead_Document_Requests_Carry_Forward_On_Conversion",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Document_Requests_Carry_Forward_On_Conversion.flow-meta.xml"
+      },
+      {
+        "fullName": "Set_Default_Credit_Repair_Company",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Set_Default_Credit_Repair_Company.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Conversion_Relate_Activity_To_Transaction",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Conversion_Relate_Activity_To_Transaction.flow-meta.xml"
+      },
+      {
+        "fullName": "New_Referral_Lead_Send_Notification_When_It_s_Still_In_Queue",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\New_Referral_Lead_Send_Notification_When_It_s_Still_In_Queue.flow-meta.xml"
+      },
+      {
+        "fullName": "Assign_Loan_Partner_on_Lead",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Assign_Loan_Partner_on_Lead.flow-meta.xml"
+      },
+      {
+        "fullName": "Stamp_Pre_Approval_Date_when_Status_is_Pre_Approval",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Stamp_Pre_Approval_Date_when_Status_is_Pre_Approval.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Notify_Buyers_Agent_Docs_Requested",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Notify_Buyers_Agent_Docs_Requested.flow-meta.xml"
+      },
+      {
+        "fullName": "Stamp_Last_Referral_Date_on_Account",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Stamp_Last_Referral_Date_on_Account.flow-meta.xml"
+      },
+      {
+        "fullName": "Share_Leads_With_Lawrence_Lanos",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Share_Leads_With_Lawrence_Lanos.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Under_Contract_task_record_type",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Under_Contract_task_record_type.flow-meta.xml"
+      },
+      {
+        "fullName": "Shark_Tank_New_Lead",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Shark_Tank_New_Lead.flow-meta.xml"
+      },
+      {
+        "fullName": "Website_Lead_Internal_Notification",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Website_Lead_Internal_Notification.flow-meta.xml"
+      },
+      {
+        "fullName": "Daily_Send_Referral_Message_to_Lead",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Daily_Send_Referral_Message_to_Lead.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Owner_Transfer_Email_Notification",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Owner_Transfer_Email_Notification.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_to_Event_for_Appointments",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_to_Event_for_Appointments.flow-meta.xml"
+      },
+      {
+        "fullName": "Update_Lead_Information_on_New_Referral",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Update_Lead_Information_on_New_Referral.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Clear_Phone_and_Mobile_Phone",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Clear_Phone_and_Mobile_Phone.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Assign_Call_Insights_To_Transaction_On_Conversion",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Assign_Call_Insights_To_Transaction_On_Conversion.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Stamp_Initial_Contact_Date",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Stamp_Initial_Contact_Date.flow-meta.xml"
+      },
+      {
+        "fullName": "Stamp_Pre_Approval_Date_on_Lead_Conversion",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Stamp_Pre_Approval_Date_on_Lead_Conversion.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Documents_Received_for_Review_task",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Documents_Received_for_Review_task.flow-meta.xml"
+      },
+      {
+        "fullName": "Flow_to_Force_Company_field_to_Empty",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Flow_to_Force_Company_field_to_Empty.flow-meta.xml"
+      },
+      {
+        "fullName": "New_Lead_from_Realtor_Intake_Form",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\New_Lead_from_Realtor_Intake_Form.flow-meta.xml"
+      },
+      {
+        "fullName": "Leads_Documents_Requested",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Leads_Documents_Requested.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Docs_Received_for_Review_field_update",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Docs_Received_for_Review_field_update.flow-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form_Account_Update",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Submission_Form_Account_Update.flow-meta.xml"
+      },
+      {
+        "fullName": "Set_First_Contact_Date_on_Lead",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Set_First_Contact_Date_on_Lead.flow-meta.xml"
+      },
+      {
+        "fullName": "Create_task_on_pre_approval_with_no_activity_Angelina",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Create_task_on_pre_approval_with_no_activity_Angelina.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Status_Change_Message_Sends",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Status_Change_Message_Sends.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Create_Scheduled_Message_On_Status_Pre_Approval",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Create_Scheduled_Message_On_Status_Pre_Approval.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Under_Contract_field_update",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Under_Contract_field_update.flow-meta.xml"
+      },
+      {
+        "fullName": "Realtor_Lead_Placeholder_Email",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Realtor_Lead_Placeholder_Email.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Keep_First_Owner_Assignment",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Keep_First_Owner_Assignment.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_meeting_complete_biz_dev",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_meeting_complete_biz_dev.flow-meta.xml"
+      },
+      {
+        "fullName": "Stamp_Referred_By_When_Buying_Agent_is_Filled_In",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Stamp_Referred_By_When_Buying_Agent_is_Filled_In.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Assign_Follow_Up_Lead_to_Transactions",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Assign_Follow_Up_Lead_to_Transactions.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Event_Status_Changed",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Event_Status_Changed.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Default_Scenario_Manager",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Default_Scenario_Manager.flow-meta.xml"
+      },
+      {
+        "fullName": "Convert_Lead_to_Person_Account_on_TRID_Date",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Convert_Lead_to_Person_Account_on_TRID_Date.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Branch_Assignment",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Branch_Assignment.flow-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

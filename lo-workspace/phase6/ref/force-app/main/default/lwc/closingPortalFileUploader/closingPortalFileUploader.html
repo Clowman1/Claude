@@ -1,0 +1,25 @@
+<template>
+    <div class="slds-p-around_large container" style="background: #fff;">
+        <p class="slds-text-heading_medium">Upload following documents</p>
+        <br/>
+        <ul>
+            <li>1. Executed Closing Package</li>
+            <li>2. Seller’s Closing Disclosure (If Applicable)</li>
+            <li>3. Title’s ALTA</li>
+        </ul>
+        <br/>
+        <lightning-file-upload
+            label="Upload Documents"
+            name="fileUploader"
+            record-id={recordId}
+            multiple
+            onuploadfinished={handleUploadFinished}>
+        </lightning-file-upload>
+    </div>
+
+    <template if:true={showToast}>
+        <div class="toast">
+        <span>{toastMessage}</span>
+        </div>
+    </template>
+</template>

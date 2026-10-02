@@ -1,0 +1,52 @@
+@import 'c/portalSharedStyles';
+
+:host { display: block; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+.form-error {
+    margin: 16px;
+}
+.contact-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 31, 54, 0.45);
+    z-index: 9000;
+}
+
+.contact-drawer {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 9001;
+    width: min(26rem, 100%);
+    height: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 20px;
+    overflow: auto;
+}
+
+.contact-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.contact-drawer-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a2d4a;
+}
+
+.contact-drawer-close {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid #c0d1e6;
+    background: #fff;
+    color: #243c60;
+    font-weight: 600;
+    cursor: pointer;
+}

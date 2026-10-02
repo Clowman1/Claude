@@ -1,0 +1,44 @@
+.section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--slds-g-color-neutral-base-30, #444);
+    margin-bottom: 0.5rem;
+}
+
+.signer {
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--slds-g-color-neutral-base-100, #fff);
+}
+
+.template {
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* The tile owns the click; the checkbox is only a visual indicator. */
+.template lightning-input {
+    pointer-events: none;
+}
+
+.signer_on {
+    border-color: var(--slds-g-color-brand-base-50, #0176d3);
+    background: var(--slds-g-color-brand-base-95, #eef4ff);
+}
+
+.files {
+    max-height: 15rem;
+    overflow-y: auto;
+    border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    border-radius: 0.25rem;
+}
+
+.send-bar {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+}

@@ -1,0 +1,26 @@
+.toast {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745; /* Success green */
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    animation: fadeInOut 3s forwards;
+  }
+  
+  @keyframes fadeInOut {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    10%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+    90%  { opacity: 1; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  }
+
+  .container {
+    max-width: 1100px;
+    text-align: left;
+    margin: 0 auto;
+  }

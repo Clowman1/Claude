@@ -1,0 +1,76 @@
+.container {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .title {
+    color: #fff;
+    font-size: 2.25rem;
+    line-height: 1.1;
+    margin-bottom:1rem;
+  }
+  
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .btn {
+    font-size: 1.1rem;
+    padding: 1.2rem 2rem;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .btn.accept {
+    background-color: #f27b35 !important;
+  }
+
+  .btn.accept:hover {
+    background-color: #c6510e !important;
+  }
+  
+  
+  .btn.reject {
+    background-color: red;
+  }
+
+  .btn.reject:hover {
+    background-color: rgb(196, 0, 0);
+  }
+
+  .btn.submit {
+    padding: 1rem 2rem;
+    background-color: #007bff;
+  }
+
+  .btn.submit:hover {
+    padding: 1rem 2rem;
+    background-color: #005cbe;
+  }
+  
+  .reject-form textarea {
+    width: 100%;
+    max-width: 500px;
+    min-height: 120px;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+  }
+  
+  .thank-you {
+    color: #fff;
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-top: 2rem;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 1rem;
+  }

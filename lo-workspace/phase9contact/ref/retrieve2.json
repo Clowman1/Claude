@@ -1,0 +1,141 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-29T17:49:49.000Z",
+        "fileName": "unpackaged/classes/BdCommandCenterController.cls",
+        "fullName": "BdCommandCenterController",
+        "id": "01pQi000003IAf7IAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T21:40:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:13.000Z",
+        "fileName": "unpackaged/classes/LoWsLeadIntakeService.cls",
+        "fullName": "LoWsLeadIntakeService",
+        "id": "01pQi000003IfcUIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:13.000Z",
+        "fileName": "unpackaged/classes/LoWsLeadIntakeServiceTest.cls",
+        "fullName": "LoWsLeadIntakeServiceTest",
+        "id": "01pQi000003IfcVIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:16.000Z",
+        "fileName": "unpackaged/classes/ExternalLoLeadService.cls",
+        "fullName": "ExternalLoLeadService",
+        "id": "01pQi000003CdWzIAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T18:11:29.315Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:11:29.315Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OiIwIMAV",
+    "messages": [
+      {
+        "fileName": "unpackaged/package.xml",
+        "problem": "Entity of type 'ApexClass' named 'ExternalLoLeadServiceTest' cannot be found"
+      }
+    ],
+    "status": "Succeeded",
+    "success": true,
+    "files": [
+      {
+        "fullName": "ExternalLoLeadServiceTest",
+        "type": "ApexClass",
+        "state": "Failed",
+        "error": "Entity of type 'ApexClass' named 'ExternalLoLeadServiceTest' cannot be found",
+        "problemType": "Error"
+      },
+      {
+        "fullName": "BdCommandCenterController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\BdCommandCenterController.cls"
+      },
+      {
+        "fullName": "BdCommandCenterController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\BdCommandCenterController.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsLeadIntakeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\LoWsLeadIntakeService.cls"
+      },
+      {
+        "fullName": "LoWsLeadIntakeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\LoWsLeadIntakeService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsLeadIntakeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\LoWsLeadIntakeServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsLeadIntakeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\LoWsLeadIntakeServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoLeadService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\ExternalLoLeadService.cls"
+      },
+      {
+        "fullName": "ExternalLoLeadService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\classes\\ExternalLoLeadService.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

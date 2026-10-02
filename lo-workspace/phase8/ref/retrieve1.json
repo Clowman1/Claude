@@ -1,0 +1,283 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:08.000Z",
+        "fileName": "unpackaged/customPermissions/LO_Workspace_Oversight.customPermission",
+        "fullName": "LO_Workspace_Oversight",
+        "id": "0CPQi0000001dc1OAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:35.000Z",
+        "fileName": "unpackaged/objects/External_User_Assignment__c.object",
+        "fullName": "External_User_Assignment__c",
+        "id": "01IQi00000ExrQ4MAJ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-14T18:47:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T11:38:00.000Z",
+        "fileName": "unpackaged/objects/External_LO_Plan_Change__c.object",
+        "fullName": "External_LO_Plan_Change__c",
+        "id": "01IQi00000FBLWjMAP",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T11:38:00.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:48.000Z",
+        "fileName": "unpackaged/classes/ExternalLoOnboardingService.cls",
+        "fullName": "ExternalLoOnboardingService",
+        "id": "01pQi000003FNVwIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T11:38:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/PerfectDayHomeServiceTest.cls",
+        "fullName": "PerfectDayHomeServiceTest",
+        "id": "01pQi000003CdXBIA0",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-14T18:47:48.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoActivityLogService.cls",
+        "fullName": "ExternalLoActivityLogService",
+        "id": "01pQi000003FNVjIAO",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-14T18:47:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/PerfectDayHomeService.cls",
+        "fullName": "PerfectDayHomeService",
+        "id": "01pQi000003CdXAIA0",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/ExternalLoPortalService.cls",
+        "fullName": "ExternalLoPortalService",
+        "id": "01pQi000003CdX3IAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:02:28.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:17.000Z",
+        "fileName": "unpackaged/permissionsets/LO_Workspace_Oversight.permissionset",
+        "fullName": "LO_Workspace_Oversight",
+        "id": "0PSQi000000LA2oOAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:17.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T17:59:57.891Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T17:59:57.891Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OfkSTMAZ",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "LO_Workspace_Oversight",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\customPermissions\\LO_Workspace_Oversight.customPermission-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.Assigned_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\fields\\Assigned_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.Contact__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\fields\\Contact__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.Granted_Share__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\fields\\Granted_Share__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.Stage__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\fields\\Stage__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.Unique_Key__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\fields\\Unique_Key__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.User__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\fields\\User__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c.All",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\listViews\\All.listView-meta.xml"
+      },
+      {
+        "fullName": "External_User_Assignment__c",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_User_Assignment__c\\External_User_Assignment__c.object-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Plan_Change__c.Summary__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_LO_Plan_Change__c\\fields\\Summary__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Plan_Change__c.User__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_LO_Plan_Change__c\\fields\\User__c.field-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Plan_Change__c",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\objects\\External_LO_Plan_Change__c\\External_LO_Plan_Change__c.object-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoOnboardingService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\ExternalLoOnboardingService.cls"
+      },
+      {
+        "fullName": "ExternalLoOnboardingService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\ExternalLoOnboardingService.cls-meta.xml"
+      },
+      {
+        "fullName": "PerfectDayHomeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\PerfectDayHomeServiceTest.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\PerfectDayHomeServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoActivityLogService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\ExternalLoActivityLogService.cls"
+      },
+      {
+        "fullName": "ExternalLoActivityLogService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\ExternalLoActivityLogService.cls-meta.xml"
+      },
+      {
+        "fullName": "PerfectDayHomeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\PerfectDayHomeService.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\PerfectDayHomeService.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\ExternalLoPortalService.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\classes\\ExternalLoPortalService.cls-meta.xml"
+      },
+      {
+        "fullName": "LO_Workspace_Oversight",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase8\\ref\\src\\main\\default\\permissionsets\\LO_Workspace_Oversight.permissionset-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

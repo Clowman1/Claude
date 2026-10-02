@@ -1,0 +1,11 @@
+<template>
+    <div class="portal-opt-out">
+        <div class={alertClass} role="alert">
+            <span class="slds-assistive-text">Info</span>
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Updating preferences" size="small"></lightning-spinner>
+            </template>
+            <h2 class="slds-text-heading_medium">{resultMessage}</h2>
+        </div>
+    </div>
+</template>

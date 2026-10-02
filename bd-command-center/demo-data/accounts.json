@@ -1,0 +1,274 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "PriyaShah"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Priya",
+      "LastName": "Shah",
+      "PersonTitle": "Keystone Realty Tampa Bay",
+      "PersonMobilePhone": "(813) 555-0142",
+      "PersonEmail": "priya.shah@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Realtor",
+      "BD_Stage__c": "Meeting Set",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "DanaWhitfield"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Dana",
+      "LastName": "Whitfield",
+      "PersonTitle": "Harbor & Main Realty",
+      "PersonMobilePhone": "(813) 555-0151",
+      "PersonEmail": "dana.whitfield@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Realtor",
+      "BD_Stage__c": "Contacted",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "MarcusOrtega"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Marcus",
+      "LastName": "Ortega",
+      "PersonTitle": "Ortega Tax Group",
+      "PersonMobilePhone": "(727) 555-0163",
+      "PersonEmail": "marcus.ortega@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "CPA",
+      "BD_Stage__c": "Contacted",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "KelseyLin"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Kelsey",
+      "LastName": "Lin",
+      "PersonTitle": "Suncoast Title Partners",
+      "PersonMobilePhone": "(813) 555-0174",
+      "PersonEmail": "kelsey.lin@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Title Agent",
+      "BD_Stage__c": "Active Partner",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "JordanPierce"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Jordan",
+      "LastName": "Pierce",
+      "PersonTitle": "Pierce Insurance Group",
+      "PersonMobilePhone": "(727) 555-0185",
+      "PersonEmail": "jordan.pierce@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Insurance Agent",
+      "BD_Stage__c": "Contacted",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "GregEllison"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Greg",
+      "LastName": "Ellison",
+      "PersonTitle": "Ellison Wealth Partners",
+      "PersonMobilePhone": "(813) 555-0196",
+      "PersonEmail": "greg.ellison@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Financial Planner",
+      "BD_Stage__c": "Met",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "NoraCastillo"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Nora",
+      "LastName": "Castillo",
+      "PersonTitle": "Gulf Coast Title Co.",
+      "PersonMobilePhone": "(727) 555-0107",
+      "PersonEmail": "nora.castillo@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Title Agent",
+      "BD_Stage__c": "Met",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "BenAlvarez"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Ben",
+      "LastName": "Alvarez",
+      "PersonTitle": "Bayside Realty Group",
+      "PersonMobilePhone": "(813) 555-0118",
+      "PersonEmail": "ben.alvarez@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Realtor",
+      "BD_Stage__c": "Active Partner",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "SamPatel"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Sam",
+      "LastName": "Patel",
+      "PersonTitle": "Sunshine Homes Realty",
+      "PersonMobilePhone": "(954) 555-0129",
+      "PersonEmail": "sam.patel@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Realtor",
+      "BD_Stage__c": "Contacted",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "TomNguyen"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Tom",
+      "LastName": "Nguyen",
+      "PersonTitle": "Nguyen & Associates CPAs",
+      "PersonMobilePhone": "(954) 555-0131",
+      "PersonEmail": "tom.nguyen@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "CPA",
+      "BD_Stage__c": "Meeting Set",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "RachelKim"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Rachel",
+      "LastName": "Kim",
+      "PersonTitle": "Harborline Insurance",
+      "PersonMobilePhone": "(727) 555-0145",
+      "PersonEmail": "rachel.kim@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Insurance Agent",
+      "BD_Stage__c": "Prospect",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "AliciaBrenner"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Alicia",
+      "LastName": "Brenner",
+      "PersonTitle": "Coastal Premier Properties",
+      "PersonMobilePhone": "(813) 555-0156",
+      "PersonEmail": "alicia.brenner@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Realtor",
+      "BD_Stage__c": "Prospect",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "MichaelReyes"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Michael",
+      "LastName": "Reyes",
+      "PersonTitle": "Reyes Family Law",
+      "PersonMobilePhone": "(813) 555-0167",
+      "PersonEmail": "michael.reyes@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Attorney",
+      "BD_Stage__c": "Contacted",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "LauraChen"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Laura",
+      "LastName": "Chen",
+      "PersonTitle": "Chen Custom Homes",
+      "PersonMobilePhone": "(954) 555-0178",
+      "PersonEmail": "laura.chen@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "Builder",
+      "BD_Stage__c": "Dormant",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "DerekFoster"
+      },
+      "RecordTypeId": "012f20000010aScAAI",
+      "FirstName": "Derek",
+      "LastName": "Foster",
+      "PersonTitle": "Foster CPA Group",
+      "PersonMobilePhone": "(727) 555-0189",
+      "PersonEmail": "derek.foster@example.com",
+      "BD_Rep__c": "005Qi00000iOSkzIAG",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "BD_Industry__c": "CPA",
+      "BD_Stage__c": "Met",
+      "Type__c": "Other",
+      "Description": "BD DEMO DATA - delete after CEO demo"
+    }
+  ]
+}

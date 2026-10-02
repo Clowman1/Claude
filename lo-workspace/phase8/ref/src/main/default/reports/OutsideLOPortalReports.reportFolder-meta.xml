@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportFolder xmlns="http://soap.sforce.com/2006/04/metadata">
+    <folderShares>
+        <accessLevel>Manage</accessLevel>
+        <sharedTo>reach@nimbuscloudsolutions.com</sharedTo>
+        <sharedToType>User</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>CustomerCommunityUserCustomerUser</sharedTo>
+        <sharedToType>PortalRole</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>hellis@reachhomeloans.com</sharedTo>
+        <sharedToType>CustomerPortalUser</sharedToType>
+    </folderShares>
+    <folderShares>
+        <accessLevel>View</accessLevel>
+        <sharedTo>outsidelo@reachhomeloans.com</sharedTo>
+        <sharedToType>CustomerPortalUser</sharedToType>
+    </folderShares>
+    <name>Outside LO Portal Reports</name>
+</ReportFolder>

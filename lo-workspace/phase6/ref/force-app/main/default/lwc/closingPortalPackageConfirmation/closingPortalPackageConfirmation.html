@@ -1,0 +1,47 @@
+<template>
+  <div class="container">
+   
+    <template if:true={error}>
+      <p class="error">Error: {error}</p>
+    </template>
+
+    <template if:false={error}>
+      <h2 if:false={hasResponded} class="title">Can you please confirm closing package is acceptable?</h2>
+
+      <template if:false={hasResponded}>
+        <div class="button-row">
+          <button class="btn accept" onclick={handleAccept}>
+            Click Here to Accept Closing Package
+          </button>
+          <button class="btn reject" onclick={showRejectInput}>
+            Reject Closing Package with Explanation
+          </button>
+        </div>
+      </template>
+
+      <template if:false={hasResponded}>
+        <template if:true={showRejectNote}>
+          <div class="reject-form">
+            <template if:true={inputError}>
+              <p style="color: red; margin-top: 30px;">Please provide an explanation for the rejection:</p>
+            </template>
+            <textarea placeholder="Please explain why you're rejecting..." value={rejectionNote} oninput={handleNoteInput}></textarea>
+            <div class="button-row">
+              <button class="btn submit" onclick={handleReject}>Submit Rejection</button>
+            </div>
+          </div>
+        </template>
+      </template>
+
+      <template if:true={hasResponded}>
+        <p class="thank-you">{thankYouMessage}</p>
+      </template>
+
+      <div class="slds-m-top_medium">
+        <c-closing-portal-file-uploader record-id={recordId}></c-closing-portal-file-uploader>
+      </div>
+      
+    </template>
+    
+  </div>
+</template>

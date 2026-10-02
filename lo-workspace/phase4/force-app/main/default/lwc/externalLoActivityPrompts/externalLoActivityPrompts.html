@@ -1,0 +1,27 @@
+<template>
+    <section class="panel" aria-labelledby="prompts-heading">
+        <div class="panel-header">
+            <h2 id="prompts-heading" class="panel-title">Up next for you</h2>
+        </div>
+        <template lwc:if={isEmpty}>
+            <p class="empty">You're clear on highest-impact actions right now.</p>
+        </template>
+        <ul class="prompt-list" lwc:else>
+            <template for:each={items} for:item="prompt">
+                <li key={prompt.promptKey} class="prompt-card">
+                    <p class="reason">{prompt.reason}</p>
+                    <h3 class="title">{prompt.title}</h3>
+                    <p class="script">{prompt.script}</p>
+                    <div class="actions">
+                        <button class="btn btn-primary" type="button" data-key={prompt.promptKey} onclick={handleLog}>
+                            {labels.log}
+                        </button>
+                        <button class="btn btn-secondary" type="button" data-key={prompt.promptKey} onclick={handleSnooze}>
+                            {labels.tomorrow}
+                        </button>
+                    </div>
+                </li>
+            </template>
+        </ul>
+    </section>
+</template>

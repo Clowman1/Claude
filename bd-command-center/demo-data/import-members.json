@@ -1,0 +1,67 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": [
+    {
+      "refId": "E1M0",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfebIAA"
+    },
+    {
+      "refId": "E2M0",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfecIAA"
+    },
+    {
+      "refId": "E3M0",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfedIAA"
+    },
+    {
+      "refId": "E3M1",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfeeIAA"
+    },
+    {
+      "refId": "E3M2",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfefIAA"
+    },
+    {
+      "refId": "E3M3",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfegIAA"
+    },
+    {
+      "refId": "E3M4",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfehIAA"
+    },
+    {
+      "refId": "E3M5",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfeiIAA"
+    },
+    {
+      "refId": "E3M6",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfejIAA"
+    },
+    {
+      "refId": "E4M0",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfekIAA"
+    },
+    {
+      "refId": "E5M0",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfelIAA"
+    },
+    {
+      "refId": "E6M0",
+      "type": "CampaignMember",
+      "id": "00vQi00000arfemIAA"
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,68 @@
+<!--
+ - Created by toma on 2/14/2022.
+ -->
+
+<apex:page id="NCS_IntakeForm" showHeader="false" sidebar="false">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=.78" />
+
+        <!-- Import the Design System style sheet -->
+        <apex:slds />
+        <apex:includeScript value="https://reachhomeloans--ncskev.sandbox.my.site.com/LeadIntakeForm/lightning/lightning.out.js?v=2"/>
+        
+        <!-- PWA Manifest and Service Worker -->
+        <script>
+        (function() {
+            const prefixPathMatch = location.pathname.match(/(^.*?)\/s/i);
+            const prefixPath = prefixPathMatch ? prefixPathMatch[1] : '';
+            const urlPrefix = prefixPath ? encodeURIComponent(prefixPath) : '';
+            const email = new URLSearchParams(window.location.search).get("email");
+            
+            let manifestUrl = prefixPath + '/pwa_LeadIntakeFormManifest';
+            if (urlPrefix) {
+                manifestUrl += '?urlPrefix=' + urlPrefix;
+                if (email) {
+                    manifestUrl += '&email=' + encodeURIComponent(email);
+                }
+            } else if (email) {
+                manifestUrl += '?email=' + encodeURIComponent(email);
+            }
+            
+            const manifestLink = document.createElement('link');
+            manifestLink.rel = 'manifest';
+            manifestLink.href = manifestUrl;
+            document.head.appendChild(manifestLink);
+            
+            const loaderScript = document.createElement('script');
+            loaderScript.src = prefixPath + '/pwa_LeadIntakeFormLoader';
+            loaderScript.defer = true;
+            document.head.appendChild(loaderScript);
+        })();
+        </script>
+        
+        <style>
+        </style>
+    </head>
+    <body>
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("c:NCS_IntakeFormApp", function() {
+            $Lightning.createComponent("c:IntakeForm",
+                {
+                    urlHash : '{!$CurrentPage.parameters.lid}',
+                    referralEmail : '{!$CurrentPage.parameters.email}',
+                    referralId : '{!$CurrentPage.parameters.id}'
+                },
+                "lightning",
+                function(cmp) {
+                    console.log('Lightning Out Loaded.')
+                    console.log('cmp:' + cmp);
+                }
+            );
+        });
+    </script>
+    </body>
+</apex:page>

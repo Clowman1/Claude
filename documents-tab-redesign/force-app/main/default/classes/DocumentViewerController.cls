@@ -1,3 +1,5 @@
+// Phase 1b: stays without sharing (borrower uploads are owned by the integration user, see the
+// notes below), but every write now checks the target record or file with RecordAccessGuard.
 public without sharing class DocumentViewerController {
     // 3.5 MB, the same ceiling as the borrower upload path: base64 in and out of Apex is heap-bound.
     private static final Integer MAX_ROTATED_BYTES = 3500000;
@@ -57,6 +59,7 @@ public without sharing class DocumentViewerController {
             throw new AuraHandledException('A record, a folder and at least one file are required.');
         }
         try {
+            RecordAccessGuard.requireRead(recordId);
             Set<Id> filesOnRecord = getContentDocsIds(retrieveContentDocLinks(recordId));
             if (!filesOnRecord.containsAll(orderedFileIds)) {
                 throw new AuraHandledException('One of those files is not on this record.');
@@ -189,6 +192,7 @@ public without sharing class DocumentViewerController {
     @AuraEnabled
     public static void renameFolder(Id recordId, String oldFolderName, String newFolderName) {
         try {
+            RecordAccessGuard.requireRead(recordId);
             List<ContentDocumentLink> links = retrieveContentDocLinks(recordId, oldFolderName);
             List<ContentDocument> docs = retrieveContentDocs(getContentDocsIds(links));
             Database.update(assignNewFolderName(docs, newFolderName), false, AccessLevel.SYSTEM_MODE);
@@ -213,6 +217,11 @@ public without sharing class DocumentViewerController {
     @AuraEnabled
     public static void changeFolder(Id recordId, Id fileId, String newFolderName) {
         try {
+            // Phase 1b: the file must be on this record, and the record one the user can open.
+            RecordAccessGuard.requireRead(recordId);
+            if (!getContentDocsIds(retrieveContentDocLinks(recordId)).contains(fileId)) {
+                throw RecordAccessGuard.denied();
+            }
             List<ContentDocument> docs = retrieveContentDocs(new Set<Id>{ fileId });
             List<ContentVersion> versions = assignNewFolderName(docs, newFolderName);
             // Its old position means nothing in the new folder, so it goes to the end.
@@ -238,10 +247,12 @@ public without sharing class DocumentViewerController {
             if (contentVersionIds == null || contentVersionIds.isEmpty()) {
                 return;
             }
+            // Phase 1b: only versions the running user just uploaded, never an arbitrary Id.
             List<ContentVersion> versions = [
                 SELECT Id, Title, PathOnClient
                 FROM ContentVersion
                 WHERE Id IN :contentVersionIds
+                AND CreatedById = :UserInfo.getUserId()
                 WITH SYSTEM_MODE
             ];
             if (versions.isEmpty()) {
@@ -286,6 +297,7 @@ public without sharing class DocumentViewerController {
             if (documents.isEmpty()) {
                 throw new AuraHandledException('File not found.');
             }
+            requireFileOnVisibleRecord(fileId);
 
             // Rename via latest ContentVersion only; updating ContentDocument.Title often fails with
             // INSUFFICIENT_ACCESS_OR_READONLY for users who can edit the file via the version.
@@ -319,6 +331,7 @@ public without sharing class DocumentViewerController {
             if (documents.isEmpty()) {
                 throw new AuraHandledException('File not found.');
             }
+            requireFileOnVisibleRecord(contentDocumentId);
 
             ContentVersion current = [
                 SELECT Id, Title, PathOnClient, FileExtension, Folder__c, Sort_Order__c, Lead_Document_Request__c, Condition__c
@@ -415,15 +428,18 @@ public without sharing class DocumentViewerController {
         try {
             ContentDocument documentRecord = retrieveContentDocs(new Set<Id>{ fileId })[0];
             Set<Id> versionIds = new Set<Id>{ documentRecord.LatestPublishedVersionId };
+            requireFileOnVisibleRecord(fileId);
 
             if (conditionId != null && conditionId.getSObjectType() == Lead_Document_Request__c.SObjectType) {
                 Lead_Document_Request__c targetRequest = [
-                    SELECT Id, Category__c
+                    SELECT Id, Category__c, Lead__c
                     FROM Lead_Document_Request__c
                     WHERE Id = :conditionId
                     WITH USER_MODE
                     LIMIT 1
                 ];
+                // Phase 1b: requests are Public Read/Write, so check the Lead they belong to.
+                RecordAccessGuard.requireRead(targetRequest.Lead__c);
                 // SYSTEM_MODE, like the rest of this class: borrower uploads are owned by the
                 // integration user, and USER_MODE enforces record sharing even here, so a Loan
                 // Officer or Loan Partner filing one under the right condition would be refused.
@@ -444,10 +460,47 @@ public without sharing class DocumentViewerController {
                 return;
             }
 
+            // Phase 1b: FileUploadHandler is without sharing, so the condition must be visible here.
+            // A null condition is the viewer's "None" choice (unlink) and is left alone.
+            if (conditionId != null) {
+                RecordAccessGuard.requireRead(conditionId);
+            }
             FileUploadHandler.updateContentVersions(versionIds, documentRecord.LatestPublishedVersion.Folder__c, conditionId);
             FileUploadHandler.setLoanConditionToReview(conditionId);
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage() + '. ' + e.getStackTraceString());
+        }
+    }
+
+    // Phase 1b: the SYSTEM_MODE writes above exist so internal users can file borrower uploads
+    // they can only read (owned by the integration user). A readable file is not enough on its
+    // own, since files on Public Read/Write objects are readable by everyone: it must also sit
+    // on a Lead, Account, Transaction or Condition the running user can open, or be their own.
+    private static void requireFileOnVisibleRecord(Id contentDocumentId) {
+        List<ContentDocument> docs = [
+            SELECT OwnerId FROM ContentDocument WHERE Id = :contentDocumentId WITH SYSTEM_MODE LIMIT 1
+        ];
+        if (docs.isEmpty()) {
+            throw RecordAccessGuard.denied();
+        }
+        if (docs[0].OwnerId == UserInfo.getUserId()) {
+            return;
+        }
+        Set<Schema.SObjectType> parentTypes = new Set<Schema.SObjectType>{
+            Lead.SObjectType, Account.SObjectType, Transaction__c.SObjectType, Condition__c.SObjectType
+        };
+        Set<Id> parentIds = new Set<Id>();
+        for (ContentDocumentLink link : [
+            SELECT LinkedEntityId FROM ContentDocumentLink
+            WHERE ContentDocumentId = :contentDocumentId
+            WITH SYSTEM_MODE
+        ]) {
+            if (parentTypes.contains(link.LinkedEntityId.getSObjectType())) {
+                parentIds.add(link.LinkedEntityId);
+            }
+        }
+        if (RecordAccessGuard.readable(parentIds).isEmpty()) {
+            throw RecordAccessGuard.denied();
         }
     }
 

@@ -1,0 +1,5 @@
+<!--
+ - Created by andrk on 8/8/2024.
+ -->
+
+<apex:page id="pwa_LeadIntakeFormLoader" controller="pwa_LeadIntakeFormLoader" contentType="text/javascript">{!content}</apex:page>

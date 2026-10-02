@@ -1,0 +1,1296 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T16:44:23.000Z",
+        "fileName": "unpackaged/pages/TitleAgents_ShippingLabels.page",
+        "fullName": "TitleAgents_ShippingLabels",
+        "id": "066AJ00000005KtYAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T16:44:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-06T09:31:00.000Z",
+        "fileName": "unpackaged/pages/RingCentralAuthPage.page",
+        "fullName": "RingCentralAuthPage",
+        "id": "066Qi000000ZJivIAG",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-06T09:46:42.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-10-25T21:12:59.000Z",
+        "fileName": "unpackaged/pages/Commitment_Letter.page",
+        "fullName": "Commitment_Letter",
+        "id": "066AJ00000006bhYAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-26T13:48:54.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-08-09T08:50:13.000Z",
+        "fileName": "unpackaged/pages/pwa_LeadIntakeFormServiceWorker.page",
+        "fullName": "pwa_LeadIntakeFormServiceWorker",
+        "id": "066Qi0000007VC0IAM",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-01-08T15:42:06.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2020-06-17T12:26:00.000Z",
+        "fileName": "unpackaged/pages/Send_SMS_Transaction.page",
+        "fullName": "Send_SMS_Transaction",
+        "id": "0665x000000BnTHAA0",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2020-06-17T12:26:00.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2020-06-22T16:59:29.000Z",
+        "fileName": "unpackaged/pages/TransactionSingleSMS.page",
+        "fullName": "TransactionSingleSMS",
+        "id": "0665x000000BnWuAAK",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2020-06-22T20:25:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-09-26T19:42:59.000Z",
+        "fileName": "unpackaged/pages/Preapproval_Letter.page",
+        "fullName": "Preapproval_Letter",
+        "id": "066AJ000000064BYAQ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-09-26T20:15:44.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2020-06-17T12:35:36.000Z",
+        "fileName": "unpackaged/pages/Single_SMS_transaction.page",
+        "fullName": "Single_SMS_transaction",
+        "id": "0665x000000BnTMAA0",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2020-06-17T13:51:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T16:44:23.000Z",
+        "fileName": "unpackaged/pages/TitleConfirmation.page",
+        "fullName": "TitleConfirmation",
+        "id": "066AJ00000005KuYAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-05-14T07:48:42.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-12-16T14:27:48.000Z",
+        "fileName": "unpackaged/pages/CommunitiesTemplate.page",
+        "fullName": "CommunitiesTemplate",
+        "id": "066AJ00000008E9YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-12-16T14:27:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-12-16T14:27:48.000Z",
+        "fileName": "unpackaged/pages/CommunitiesSelfReg.page",
+        "fullName": "CommunitiesSelfReg",
+        "id": "066AJ00000008ECYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-12-16T14:27:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-12-16T14:27:48.000Z",
+        "fileName": "unpackaged/pages/CommunitiesLanding.page",
+        "fullName": "CommunitiesLanding",
+        "id": "066AJ00000008EBYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-12-16T14:27:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-12-16T14:27:48.000Z",
+        "fileName": "unpackaged/pages/CommunitiesLogin.page",
+        "fullName": "CommunitiesLogin",
+        "id": "066AJ00000008EAYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-12-16T14:27:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-02-17T14:58:38.000Z",
+        "fileName": "unpackaged/pages/NCS_IntakeForm.page",
+        "fullName": "NCS_IntakeForm",
+        "id": "066AJ00000009lEYAQ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-02-20T17:26:20.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:33.000Z",
+        "fileName": "unpackaged/pages/ForgotPassword.page",
+        "fullName": "ForgotPassword",
+        "id": "066AJ00000005L5YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:33.000Z",
+        "fileName": "unpackaged/pages/ChangePassword.page",
+        "fullName": "ChangePassword",
+        "id": "066AJ00000005L4YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:31.000Z",
+        "fileName": "unpackaged/pages/SiteRegister.page",
+        "fullName": "SiteRegister",
+        "id": "066AJ00000005L3YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-07-27T17:20:32.000Z",
+        "fileName": "unpackaged/pages/LeadBorrowerDocumentPortal.page",
+        "fullName": "LeadBorrowerDocumentPortal",
+        "id": "066Qi000000k2urIAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-07-27T17:20:32.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2019-03-11T22:15:07.000Z",
+        "fileName": "unpackaged/pages/Send_Bulk_SMS_Lead.page",
+        "fullName": "Send_Bulk_SMS_Lead",
+        "id": "066f2000002V6rIAAS",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2019-03-11T22:15:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-01T20:21:49.000Z",
+        "fileName": "unpackaged/pages/Lead_Pre_Approval_Letter.page",
+        "fullName": "Lead_Pre_Approval_Letter",
+        "id": "066Qi000000l24nIAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-11T22:17:49.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-12-16T14:27:48.000Z",
+        "fileName": "unpackaged/pages/MicrobatchSelfReg.page",
+        "fullName": "MicrobatchSelfReg",
+        "id": "066AJ00000008EEYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-12-16T14:27:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-12-16T14:27:48.000Z",
+        "fileName": "unpackaged/pages/CommunitiesSelfRegConfirm.page",
+        "fullName": "CommunitiesSelfRegConfirm",
+        "id": "066AJ00000008EDYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-12-16T14:27:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-08-09T08:50:13.000Z",
+        "fileName": "unpackaged/pages/pwa_LeadIntakeFormManifest.page",
+        "fullName": "pwa_LeadIntakeFormManifest",
+        "id": "066Qi0000007VBzIAM",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-01-08T15:42:05.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-10-04T13:42:51.000Z",
+        "fileName": "unpackaged/pages/Form1098A_page.page",
+        "fullName": "Form1098A_page",
+        "id": "066Qi0000009sUDIAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-11-14T09:41:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-08-09T08:50:13.000Z",
+        "fileName": "unpackaged/pages/pwa_LeadIntakeFormLoader.page",
+        "fullName": "pwa_LeadIntakeFormLoader",
+        "id": "066Qi0000007VByIAM",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-01-08T15:42:05.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-06-24T20:27:51.000Z",
+        "fileName": "unpackaged/pages/LeadDocumentPortalRedirect.page",
+        "fullName": "LeadDocumentPortalRedirect",
+        "id": "066Qi000000jEmnIAE",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-06-24T20:28:29.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-10-04T13:42:51.000Z",
+        "fileName": "unpackaged/pages/Form1098B_page.page",
+        "fullName": "Form1098B_page",
+        "id": "066Qi0000009sUEIAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-11-14T09:42:59.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-08-09T08:50:13.000Z",
+        "fileName": "unpackaged/pages/pwa_LeadIntakeFormOffline.page",
+        "fullName": "pwa_LeadIntakeFormOffline",
+        "id": "066Qi0000007VBxIAM",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-01-08T15:42:06.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2019-03-11T22:17:26.000Z",
+        "fileName": "unpackaged/pages/Send_Bulk_SMS_Transaction.page",
+        "fullName": "Send_Bulk_SMS_Transaction",
+        "id": "066f2000002V6rNAAS",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2019-03-11T22:17:26.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:36.000Z",
+        "fileName": "unpackaged/pages/MyProfilePage.page",
+        "fullName": "MyProfilePage",
+        "id": "066AJ00000005L9YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:34:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:35.000Z",
+        "fileName": "unpackaged/pages/SiteRegisterConfirm.page",
+        "fullName": "SiteRegisterConfirm",
+        "id": "066AJ00000005L8YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:35.000Z",
+        "fileName": "unpackaged/pages/ForgotPasswordConfirm.page",
+        "fullName": "ForgotPasswordConfirm",
+        "id": "066AJ00000005L7YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:34.000Z",
+        "fileName": "unpackaged/pages/SiteLogin.page",
+        "fullName": "SiteLogin",
+        "id": "066AJ00000005L6YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:57.000Z",
+        "fileName": "unpackaged/pages/Exception.page",
+        "fullName": "Exception",
+        "id": "066AJ00000005LEYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:57.000Z",
+        "fileName": "unpackaged/pages/BandwidthExceeded.page",
+        "fullName": "BandwidthExceeded",
+        "id": "066AJ00000005LDYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:34:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-29T21:20:04.000Z",
+        "fileName": "unpackaged/pages/ReachLoginPanel.page",
+        "fullName": "ReachLoginPanel",
+        "id": "066Qi000000m58fIAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T21:33:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:57.000Z",
+        "fileName": "unpackaged/pages/FileNotFound.page",
+        "fullName": "FileNotFound",
+        "id": "066AJ00000005LCYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:55.000Z",
+        "fileName": "unpackaged/pages/SiteTemplate.page",
+        "fullName": "SiteTemplate",
+        "id": "066AJ00000005LBYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:54.000Z",
+        "fileName": "unpackaged/pages/StdExceptionTemplate.page",
+        "fullName": "StdExceptionTemplate",
+        "id": "066AJ00000005LAYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2019-03-11T22:12:30.000Z",
+        "fileName": "unpackaged/pages/Send_Bulk_SMS.page",
+        "fullName": "Send_Bulk_SMS",
+        "id": "066f2000002V6r8AAC",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2019-03-11T22:12:30.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:35:01.000Z",
+        "fileName": "unpackaged/pages/AnswersHome.page",
+        "fullName": "AnswersHome",
+        "id": "066AJ00000005LJYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:01.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:35:00.000Z",
+        "fileName": "unpackaged/pages/IdeasHome.page",
+        "fullName": "IdeasHome",
+        "id": "066AJ00000005LIYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:00.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-11-14T11:21:19.000Z",
+        "fileName": "unpackaged/pages/MortgageQAITest.page",
+        "fullName": "MortgageQAITest",
+        "id": "066Qi000000COHtIAO",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-11-14T11:23:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:59.000Z",
+        "fileName": "unpackaged/pages/UnderConstruction.page",
+        "fullName": "UnderConstruction",
+        "id": "066AJ00000005LHYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:34:59.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:59.000Z",
+        "fileName": "unpackaged/pages/Unauthorized.page",
+        "fullName": "Unauthorized",
+        "id": "066AJ00000005LGYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:35:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T01:58:15.000Z",
+        "fileName": "unpackaged/pages/Wire_Calculator_PDF.page",
+        "fullName": "Wire_Calculator_PDF",
+        "id": "066AJ00000005KfYAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T01:58:15.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T01:58:15.000Z",
+        "fileName": "unpackaged/pages/AddNewNote.page",
+        "fullName": "AddNewNote",
+        "id": "066AJ00000005KeYAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T01:58:15.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-07-22T18:34:58.000Z",
+        "fileName": "unpackaged/pages/InMaintenance.page",
+        "fullName": "InMaintenance",
+        "id": "066AJ00000005LFYAY",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-07-22T18:34:58.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexPage"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T15:35:45.263Z",
+        "fileName": "unpackaged/objects/Lead.object",
+        "fullName": "Lead",
+        "id": "000000000000000AAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:35:45.263Z",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-17T17:07:45.000Z",
+        "fileName": "unpackaged/flows/Assign_Loan_Partner_on_Lead.flow",
+        "fullName": "Assign_Loan_Partner_on_Lead",
+        "id": "301Qi00001ZpZrtIAF",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-17T17:08:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-07-07T09:06:43.000Z",
+        "fileName": "unpackaged/profiles/Integrations Profile.profile",
+        "fullName": "Integrations Profile",
+        "id": "00eQi00000SyOk7IAF",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:02:26.000Z",
+        "type": "Profile"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T15:35:48.168Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:35:48.168Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OfS0vMAF",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "TitleAgents_ShippingLabels",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\TitleAgents_ShippingLabels.page"
+      },
+      {
+        "fullName": "TitleAgents_ShippingLabels",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\TitleAgents_ShippingLabels.page-meta.xml"
+      },
+      {
+        "fullName": "RingCentralAuthPage",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\RingCentralAuthPage.page"
+      },
+      {
+        "fullName": "RingCentralAuthPage",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\RingCentralAuthPage.page-meta.xml"
+      },
+      {
+        "fullName": "Commitment_Letter",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Commitment_Letter.page"
+      },
+      {
+        "fullName": "Commitment_Letter",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Commitment_Letter.page-meta.xml"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormServiceWorker",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormServiceWorker.page"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormServiceWorker",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormServiceWorker.page-meta.xml"
+      },
+      {
+        "fullName": "Send_SMS_Transaction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_SMS_Transaction.page"
+      },
+      {
+        "fullName": "Send_SMS_Transaction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_SMS_Transaction.page-meta.xml"
+      },
+      {
+        "fullName": "TransactionSingleSMS",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\TransactionSingleSMS.page"
+      },
+      {
+        "fullName": "TransactionSingleSMS",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\TransactionSingleSMS.page-meta.xml"
+      },
+      {
+        "fullName": "Preapproval_Letter",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Preapproval_Letter.page"
+      },
+      {
+        "fullName": "Preapproval_Letter",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Preapproval_Letter.page-meta.xml"
+      },
+      {
+        "fullName": "Single_SMS_transaction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Single_SMS_transaction.page"
+      },
+      {
+        "fullName": "Single_SMS_transaction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Single_SMS_transaction.page-meta.xml"
+      },
+      {
+        "fullName": "TitleConfirmation",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\TitleConfirmation.page"
+      },
+      {
+        "fullName": "TitleConfirmation",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\TitleConfirmation.page-meta.xml"
+      },
+      {
+        "fullName": "CommunitiesTemplate",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesTemplate.page"
+      },
+      {
+        "fullName": "CommunitiesTemplate",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesTemplate.page-meta.xml"
+      },
+      {
+        "fullName": "CommunitiesSelfReg",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesSelfReg.page"
+      },
+      {
+        "fullName": "CommunitiesSelfReg",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesSelfReg.page-meta.xml"
+      },
+      {
+        "fullName": "CommunitiesLanding",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesLanding.page"
+      },
+      {
+        "fullName": "CommunitiesLanding",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesLanding.page-meta.xml"
+      },
+      {
+        "fullName": "CommunitiesLogin",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesLogin.page"
+      },
+      {
+        "fullName": "CommunitiesLogin",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesLogin.page-meta.xml"
+      },
+      {
+        "fullName": "NCS_IntakeForm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\NCS_IntakeForm.page"
+      },
+      {
+        "fullName": "NCS_IntakeForm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\NCS_IntakeForm.page-meta.xml"
+      },
+      {
+        "fullName": "ForgotPassword",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ForgotPassword.page"
+      },
+      {
+        "fullName": "ForgotPassword",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ForgotPassword.page-meta.xml"
+      },
+      {
+        "fullName": "ChangePassword",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ChangePassword.page"
+      },
+      {
+        "fullName": "ChangePassword",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ChangePassword.page-meta.xml"
+      },
+      {
+        "fullName": "SiteRegister",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteRegister.page"
+      },
+      {
+        "fullName": "SiteRegister",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteRegister.page-meta.xml"
+      },
+      {
+        "fullName": "LeadBorrowerDocumentPortal",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\LeadBorrowerDocumentPortal.page"
+      },
+      {
+        "fullName": "LeadBorrowerDocumentPortal",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\LeadBorrowerDocumentPortal.page-meta.xml"
+      },
+      {
+        "fullName": "Send_Bulk_SMS_Lead",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_Bulk_SMS_Lead.page"
+      },
+      {
+        "fullName": "Send_Bulk_SMS_Lead",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_Bulk_SMS_Lead.page-meta.xml"
+      },
+      {
+        "fullName": "Lead_Pre_Approval_Letter",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Lead_Pre_Approval_Letter.page"
+      },
+      {
+        "fullName": "Lead_Pre_Approval_Letter",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Lead_Pre_Approval_Letter.page-meta.xml"
+      },
+      {
+        "fullName": "MicrobatchSelfReg",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\MicrobatchSelfReg.page"
+      },
+      {
+        "fullName": "MicrobatchSelfReg",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\MicrobatchSelfReg.page-meta.xml"
+      },
+      {
+        "fullName": "CommunitiesSelfRegConfirm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesSelfRegConfirm.page"
+      },
+      {
+        "fullName": "CommunitiesSelfRegConfirm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\CommunitiesSelfRegConfirm.page-meta.xml"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormManifest",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormManifest.page"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormManifest",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormManifest.page-meta.xml"
+      },
+      {
+        "fullName": "Form1098A_page",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Form1098A_page.page"
+      },
+      {
+        "fullName": "Form1098A_page",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Form1098A_page.page-meta.xml"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormLoader",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormLoader.page"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormLoader",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormLoader.page-meta.xml"
+      },
+      {
+        "fullName": "LeadDocumentPortalRedirect",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\LeadDocumentPortalRedirect.page"
+      },
+      {
+        "fullName": "LeadDocumentPortalRedirect",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\LeadDocumentPortalRedirect.page-meta.xml"
+      },
+      {
+        "fullName": "Form1098B_page",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Form1098B_page.page"
+      },
+      {
+        "fullName": "Form1098B_page",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Form1098B_page.page-meta.xml"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormOffline",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormOffline.page"
+      },
+      {
+        "fullName": "pwa_LeadIntakeFormOffline",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\pwa_LeadIntakeFormOffline.page-meta.xml"
+      },
+      {
+        "fullName": "Send_Bulk_SMS_Transaction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_Bulk_SMS_Transaction.page"
+      },
+      {
+        "fullName": "Send_Bulk_SMS_Transaction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_Bulk_SMS_Transaction.page-meta.xml"
+      },
+      {
+        "fullName": "MyProfilePage",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\MyProfilePage.page"
+      },
+      {
+        "fullName": "MyProfilePage",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\MyProfilePage.page-meta.xml"
+      },
+      {
+        "fullName": "SiteRegisterConfirm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteRegisterConfirm.page"
+      },
+      {
+        "fullName": "SiteRegisterConfirm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteRegisterConfirm.page-meta.xml"
+      },
+      {
+        "fullName": "ForgotPasswordConfirm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ForgotPasswordConfirm.page"
+      },
+      {
+        "fullName": "ForgotPasswordConfirm",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ForgotPasswordConfirm.page-meta.xml"
+      },
+      {
+        "fullName": "SiteLogin",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteLogin.page"
+      },
+      {
+        "fullName": "SiteLogin",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteLogin.page-meta.xml"
+      },
+      {
+        "fullName": "Exception",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Exception.page"
+      },
+      {
+        "fullName": "Exception",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Exception.page-meta.xml"
+      },
+      {
+        "fullName": "BandwidthExceeded",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\BandwidthExceeded.page"
+      },
+      {
+        "fullName": "BandwidthExceeded",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\BandwidthExceeded.page-meta.xml"
+      },
+      {
+        "fullName": "ReachLoginPanel",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ReachLoginPanel.page"
+      },
+      {
+        "fullName": "ReachLoginPanel",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\ReachLoginPanel.page-meta.xml"
+      },
+      {
+        "fullName": "FileNotFound",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\FileNotFound.page"
+      },
+      {
+        "fullName": "FileNotFound",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\FileNotFound.page-meta.xml"
+      },
+      {
+        "fullName": "SiteTemplate",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteTemplate.page"
+      },
+      {
+        "fullName": "SiteTemplate",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\SiteTemplate.page-meta.xml"
+      },
+      {
+        "fullName": "StdExceptionTemplate",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\StdExceptionTemplate.page"
+      },
+      {
+        "fullName": "StdExceptionTemplate",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\StdExceptionTemplate.page-meta.xml"
+      },
+      {
+        "fullName": "Send_Bulk_SMS",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_Bulk_SMS.page"
+      },
+      {
+        "fullName": "Send_Bulk_SMS",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Send_Bulk_SMS.page-meta.xml"
+      },
+      {
+        "fullName": "AnswersHome",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\AnswersHome.page"
+      },
+      {
+        "fullName": "AnswersHome",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\AnswersHome.page-meta.xml"
+      },
+      {
+        "fullName": "IdeasHome",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\IdeasHome.page"
+      },
+      {
+        "fullName": "IdeasHome",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\IdeasHome.page-meta.xml"
+      },
+      {
+        "fullName": "MortgageQAITest",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\MortgageQAITest.page"
+      },
+      {
+        "fullName": "MortgageQAITest",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\MortgageQAITest.page-meta.xml"
+      },
+      {
+        "fullName": "UnderConstruction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\UnderConstruction.page"
+      },
+      {
+        "fullName": "UnderConstruction",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\UnderConstruction.page-meta.xml"
+      },
+      {
+        "fullName": "Unauthorized",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Unauthorized.page"
+      },
+      {
+        "fullName": "Unauthorized",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Unauthorized.page-meta.xml"
+      },
+      {
+        "fullName": "Wire_Calculator_PDF",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Wire_Calculator_PDF.page"
+      },
+      {
+        "fullName": "Wire_Calculator_PDF",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\Wire_Calculator_PDF.page-meta.xml"
+      },
+      {
+        "fullName": "AddNewNote",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\AddNewNote.page"
+      },
+      {
+        "fullName": "AddNewNote",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\AddNewNote.page-meta.xml"
+      },
+      {
+        "fullName": "InMaintenance",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\InMaintenance.page"
+      },
+      {
+        "fullName": "InMaintenance",
+        "type": "ApexPage",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\pages\\InMaintenance.page-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Source_Change_Restricted",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_Source_Change_Restricted.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Partner_Reassignment_Restricted",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Partner_Reassignment_Restricted.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\Lead.object-meta.xml"
+      },
+      {
+        "fullName": "Assign_Loan_Partner_on_Lead",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Assign_Loan_Partner_on_Lead.flow-meta.xml"
+      },
+      {
+        "fullName": "Integrations Profile",
+        "type": "Profile",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\profiles\\Integrations Profile.profile-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

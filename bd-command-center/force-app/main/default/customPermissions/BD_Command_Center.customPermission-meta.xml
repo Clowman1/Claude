@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>BD Command Center</label>
+    <description>Works a business development partner book on the BD home tab.</description>
+    <isLicensed>false</isLicensed>
+</CustomPermission>

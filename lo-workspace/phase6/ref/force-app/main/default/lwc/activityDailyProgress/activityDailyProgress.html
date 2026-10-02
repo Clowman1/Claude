@@ -1,0 +1,108 @@
+<template>
+    <!-- <div class="container">
+        <h3>Daily Progress</h3>
+        <hr/>
+    </div> -->
+
+    <lightning-card>
+
+        <h3 slot="title">
+            <lightning-icon icon-name="standard:lightning_usage" size="small" class="brand-color-utility-icon"></lightning-icon>
+            <span class="icon-text slds-m-left_small" >Daily Progress</span>
+        </h3>
+
+        <!-- <lightning-button label="New Activity" slot="actions"></lightning-button> -->
+        <div lwc:if={data} class="content-outer slds-p-horizontal_medium">
+            <div class="slds-p-top_x-small" style="border-top: solid 1px #ededed">
+
+                 <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="12">
+                        <lightning-layout>
+                            <lightning-layout-item size="6">
+                                <lightning-icon icon-name="utility:dayview" size="xx-small" class='slds-m-right_small light-grey-utility-icon'></lightning-icon>
+                                <span>Today</span>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-text-align_right">
+                                <lightning-icon icon-name={data.allCompletedIcon.name} size="xx-small" class={data.allCompletedIcon.class}> </lightning-icon>
+                                <span class="icon-text">{data.dailyCompleted.all} / {data.dailyGoal.all}</span>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" class="slds-m-vertical_small">
+                        <lightning-progress-bar class="progress-bar" variant="circular" value={data.totalProgress} size="large"></lightning-progress-bar>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" class="slds-m-vertical_x-small">
+                        <lightning-layout>
+                            <lightning-layout-item size="6">
+                                <lightning-icon icon-name="utility:call" size="xx-small" class="slds-m-right_small light-grey-utility-icon"></lightning-icon>
+                                <span class="icon-text">Calls</span>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="6" class="slds-text-align_right">
+                                <lightning-icon icon-name={data.callsCompletedIcon.name} size="xx-small" class={data.callsCompletedIcon.class}> </lightning-icon>
+                                <span class="icon-text">{data.dailyCompleted.calls} / {data.dailyGoal.calls}</span>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" class="slds-m-vertical_xx-small">
+                        <lightning-layout>
+                            <lightning-layout-item size="6">
+                                <lightning-icon icon-name="utility:chat" size="xx-small" class="slds-m-right_small light-grey-utility-icon"></lightning-icon>
+                                <span class="icon-text">Texts</span>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-text-align_right">
+                                <lightning-icon icon-name={data.textsCompletedIcon.name} size="xx-small" class={data.textsCompletedIcon.class}> </lightning-icon>
+                                <span class="icon-text">{data.dailyCompleted.texts} / {data.dailyGoal.texts}</span>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+                
+                    <lightning-layout-item size="12" class="slds-m-vertical_xx-small">
+                        <lightning-layout>
+                            <lightning-layout-item size="6">
+                                <lightning-icon icon-name="utility:people" size="xx-small" class="slds-m-right_small light-grey-utility-icon"></lightning-icon>
+                                <span class="icon-text">Meetings</span>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-text-align_right">
+                                <lightning-icon icon-name={data.emailsCompletedIcon.name} size="xx-small" class={data.emailsCompletedIcon.class}> </lightning-icon>
+                                <span class="icon-text">{data.dailyCompleted.meetings} / {data.dailyGoal.meetings}</span>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" class="slds-m-vertical_xx-small">
+                        <lightning-layout>
+                            <lightning-layout-item size="6">
+                                <lightning-icon icon-name="utility:email" size="xx-small" class="slds-m-right_small light-grey-utility-icon"></lightning-icon>
+                                <span class="icon-text">Emails</span>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-text-align_right">
+                                <lightning-icon icon-name={data.meetingsCompletedIcon.name} size="xx-small" class={data.meetingsCompletedIcon.class}> </lightning-icon>
+                                <span class="icon-text">{data.dailyCompleted.emails} / {data.dailyGoal.emails}</span>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" class="slds-m-vertical_xx-small">
+                        <lightning-layout>
+                            <lightning-layout-item size="6">
+                                <lightning-icon icon-name="utility:home" size="xx-small" class="slds-m-right_small light-grey-utility-icon"></lightning-icon>
+                                <span class="icon-text">Open House</span>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-text-align_right">
+                                <lightning-icon icon-name={data.openHousesCompletedIcon.name} size="xx-small" class={data.openHousesCompletedIcon.class}> </lightning-icon>
+                                <span class="icon-text">{data.dailyCompleted.openHouses} / {data.dailyGoal.openHouses}</span>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+
+            </div>
+        </div>
+    </lightning-card>
+</template>

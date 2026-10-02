@@ -1,0 +1,37 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": [
+    {
+      "refId": "E1C",
+      "type": "Event",
+      "id": "00UQi00000aF88bMAC"
+    },
+    {
+      "refId": "E2C",
+      "type": "Event",
+      "id": "00UQi00000aF88cMAC"
+    },
+    {
+      "refId": "E3C",
+      "type": "Event",
+      "id": "00UQi00000aF88dMAC"
+    },
+    {
+      "refId": "E4C",
+      "type": "Event",
+      "id": "00UQi00000aF88eMAC"
+    },
+    {
+      "refId": "E5C",
+      "type": "Event",
+      "id": "00UQi00000aF88fMAC"
+    },
+    {
+      "refId": "E6C",
+      "type": "Event",
+      "id": "00UQi00000aF88gMAC"
+    }
+  ],
+  "warnings": []
+}

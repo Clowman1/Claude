@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Granted_Share__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>LO Workspace partner tag: true when tagging created this user's Manual Read AccountShare on the partner. Untagging deletes the share only when this is true, so access granted another way is never removed.</description>
+    <label>Granted Share</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

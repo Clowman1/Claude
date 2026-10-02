@@ -1,0 +1,179 @@
+<template>
+    <lightning-modal-body>
+        <header class="ai-hero-band">
+            <div>
+                <h1 class="ai-band-title">Reach approved investors</h1>
+                <p class="ai-band-subtitle">{headerSubtitle}</p>
+            </div>
+            <div class="ai-band-search">
+                <lightning-input
+                    type="search"
+                    label="Find a product or investor"
+                    variant="label-hidden"
+                    placeholder="Find a product, investor, or AE"
+                    value={searchTerm}
+                    onchange={handleSearch}
+                ></lightning-input>
+            </div>
+        </header>
+
+        <div class="ai-filters" role="group" aria-label="Filter by product">
+            <template for:each={productOptions} for:item="option">
+                <button
+                    key={option.key}
+                    type="button"
+                    class={option.className}
+                    aria-pressed={option.pressed}
+                    data-product={option.label}
+                    onclick={toggleProduct}
+                >{option.label}</button>
+            </template>
+        </div>
+        <div class="ai-toolbar-meta">
+            <span>{resultCountText}</span>
+            <template lwc:if={hasFilters}>
+                <button type="button" class="ai-link" onclick={clearFilters}>Clear filters</button>
+            </template>
+            <span class="ai-legend">
+                <span class="ai-pill ai-pill-nondel">Non-Del · 0.00 = Par</span>
+                <span class="ai-pill ai-pill-broker">Broker · 2.75% Comp (LPC or BPC)</span>
+            </span>
+        </div>
+
+        <template lwc:if={isLoading}>
+            <div class="ai-loading"><lightning-spinner alternative-text="Loading investors" size="small"></lightning-spinner></div>
+        </template>
+        <template lwc:if={error}>
+            <p class="ai-empty">{error}</p>
+        </template>
+        <template lwc:if={noMatches}>
+            <p class="ai-empty">No investors match. Try removing a product filter.</p>
+        </template>
+
+        <template for:each={primaryInvestors} for:item="investor">
+            <article key={investor.id} class="ai-primary">
+                <div class="ai-primary-head">
+                    <div class="ai-avatar ai-avatar-gold">{investor.monogram}</div>
+                    <div class="ai-primary-text">
+                        <h2 class="ai-primary-title">
+                            <lightning-icon icon-name="utility:favorite" size="x-small" class="ai-star"></lightning-icon>
+                            {investor.name} · Primary investor
+                        </h2>
+                        <p class="ai-primary-sub">
+                            Non-Del at 0.00 par<template lwc:if={investor.brokerCarveOut}> · Broker 2.75% on {investor.brokerCarveOut}</template>
+                        </p>
+                    </div>
+                    <template lwc:if={investor.website}>
+                        <a class="ai-portal ai-portal-gold" href={investor.website} target="_blank" rel="noopener noreferrer">Portal ↗</a>
+                    </template>
+                </div>
+                <div class="ai-primary-body">
+                    <div class="ai-chips">
+                        <template for:each={investor.chips} for:item="chip">
+                            <span key={chip.key} class={chip.className} title={chip.title}>{chip.label}</span>
+                        </template>
+                    </div>
+                    <template lwc:if={investor.aeHeadline}>
+                        <p class="ai-ae">{investor.aeHeadline}</p>
+                    </template>
+                    <button type="button" class="ai-toggle" data-id={investor.id} aria-expanded={investor.ariaExpanded} onclick={toggleExpanded}>
+                        <lightning-icon icon-name={investor.toggleIcon} size="xx-small"></lightning-icon>
+                        {investor.toggleLabel}
+                    </button>
+                    <template lwc:if={investor.expanded}>
+                        <div class="ai-details">
+                            <template lwc:if={investor.summary}>
+                                <p class="ai-summary">{investor.summary}</p>
+                            </template>
+                            <template lwc:if={investor.description}>
+                                <div class="ai-contacts">
+                                    <lightning-formatted-text value={investor.description} linkify></lightning-formatted-text>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </article>
+        </template>
+
+        <template for:each={sections} for:item="section">
+            <section key={section.key} class="ai-section">
+                <h2 class="ai-section-title">
+                    {section.title}
+                    <span class={section.badgeClass}>{section.badge}</span>
+                </h2>
+                <div class="ai-grid">
+                    <template for:each={section.investors} for:item="investor">
+                        <article key={investor.id} class={investor.tileClass}>
+                            <div class="ai-tile-head">
+                                <div class="ai-avatar">{investor.monogram}</div>
+                                <div class="ai-tile-name">
+                                    <h3>{investor.name}</h3>
+                                    <template lwc:if={investor.isNonDel}>
+                                        <span class="ai-pill ai-pill-nondel">Par</span>
+                                    </template>
+                                    <template lwc:else>
+                                        <span class="ai-pill ai-pill-broker">2.75%</span>
+                                    </template>
+                                </div>
+                                <template lwc:if={investor.website}>
+                                    <a class="ai-portal" href={investor.website} target="_blank" rel="noopener noreferrer" title="Open portal">Portal ↗</a>
+                                </template>
+                            </div>
+
+                            <template lwc:if={investor.expanded}>
+                                <template lwc:if={investor.brokerCarveOut}>
+                                    <p class="ai-carveout">Broker channel at 2.75% comp for: <strong>{investor.brokerCarveOut}</strong></p>
+                                </template>
+                                <div class="ai-chips">
+                                    <template for:each={investor.chips} for:item="chip">
+                                        <span key={chip.key} class={chip.className} title={chip.title}>{chip.label}</span>
+                                    </template>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div class="ai-chips">
+                                    <template for:each={investor.previewChips} for:item="chip">
+                                        <span key={chip.key} class={chip.className} title={chip.title}>{chip.label}</span>
+                                    </template>
+                                    <template lwc:if={investor.moreText}>
+                                        <span class="ai-more">{investor.moreText}</span>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <template lwc:if={investor.aeHeadline}>
+                                <p class="ai-ae">{investor.aeHeadline}</p>
+                            </template>
+
+                            <button type="button" class="ai-toggle" data-id={investor.id} aria-expanded={investor.ariaExpanded} onclick={toggleExpanded}>
+                                <lightning-icon icon-name={investor.toggleIcon} size="xx-small"></lightning-icon>
+                                {investor.toggleLabel}
+                            </button>
+
+                            <template lwc:if={investor.expanded}>
+                                <div class="ai-details">
+                                    <template lwc:if={investor.summary}>
+                                        <p class="ai-summary">{investor.summary}</p>
+                                    </template>
+                                    <template lwc:if={investor.description}>
+                                        <div class="ai-contacts">
+                                            <lightning-formatted-text value={investor.description} linkify></lightning-formatted-text>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </article>
+                    </template>
+                </div>
+            </section>
+        </template>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <div class="ai-footer">
+            <button type="button" class="ai-link" onclick={openListView}>Open list view</button>
+            <lightning-button label="Close" onclick={handleClose}></lightning-button>
+        </div>
+    </lightning-modal-footer>
+</template>

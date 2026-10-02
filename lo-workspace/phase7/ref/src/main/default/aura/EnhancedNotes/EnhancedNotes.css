@@ -1,0 +1,51 @@
+/**
+ * Created by J9 on 8/20/2021.
+ */
+
+.THIS .ncs-item-selected .slds-icon_container_circle{
+    box-shadow: 0px 0px 15px 2px #1c8755;
+}
+
+.THIS .ncs-searchBar {
+    width: 85%;
+    background: rgba(234, 233, 233, 0.82);
+}
+.THIS .ncs-scroll {
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.THIS .ncs-item-selected-font { 
+    font-weight: bolder;
+    font-size: 13px;
+}
+.THIS .slds-input {
+    background: #e8e8e8;
+    width: 85%;
+}
+.THIS .ncs-searchBar-margin {
+    margin-left: 37px;
+    margin-top: 10px;
+
+}
+.THIS .ncs-filterBar-margin {
+    margin-bottom: 10px;
+}
+.THIS .slds-illustration__svg {
+    width: 100%;
+    max-width: 600px;
+    max-height: 400px;
+}
+.THIS .ncs-searchBar-width{
+    width: 850px;
+}
+.THIS .span-margin {
+    margin: 14px
+}
+
+.THIS .slds-tabs_default__link {
+    font-size: medium;
+}

@@ -1,0 +1,43 @@
+<template>
+    <lightning-card title="Closed Volume Progress Tracker">
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="4" padding="around-small">
+                <div class="slds-text-align_center">
+                    <img width="250px" src={monthlyChartUrl} />
+                </div>
+                <!-- <p class="progress-label">Annual: ${annualVolume} / ${annualGoal}</p>
+                <div class="progress-bar">
+                    <div class="progress" style={annualBarStyle}></div>
+                </div>
+                <p class="percentage">{annualProgress}%</p> -->
+            </lightning-layout-item>
+            
+            <lightning-layout-item size="4" padding="around-small">
+                <!--<p class="progress-label">Monthly: ${monthlyVolume} / ${monthlyGoal}</p>-->
+
+                <div class="slds-text-align_center">
+                    <img width="250px" src={quarterlyChartUrl} />
+                </div>
+                
+
+                <!--<div class="progress-bar">
+                    <div class="progress progress-monthly" style={monthlyBarStyle}></div>
+                   
+                </div>-->
+                <!--<p class="percentage">{monthlyProgress}%</p>-->
+            </lightning-layout-item>
+            
+            <lightning-layout-item size="4" padding="around-small">
+                <div class="slds-text-align_center">
+                    <img width="250px" src={annualChartUrl} />
+                </div>
+                <!-- <p class="progress-label">Quarterly: ${quarterlyVolume} / ${quarterlyGoal}</p>
+                <div class="progress-bar">
+                    <div class="progress progress-monthly" style={quarterlyBarStyle}></div>
+                </div>
+                <p class="percentage">{quarterlyProgress}%</p> -->
+            </lightning-layout-item>
+        </lightning-layout>
+        
+    </lightning-card>
+</template>

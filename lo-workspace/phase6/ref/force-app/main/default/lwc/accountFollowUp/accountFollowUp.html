@@ -1,0 +1,41 @@
+<template>
+    <!-- <lightning-card title="Assign Follow-Up LO" >
+        <div class="slds-p-around_small">
+            <lightning-combobox 
+                label="Select User"
+                placeholder="Choose user"
+                value={selectedUser}
+                options={userOptions}
+                onchange={handleUserChange}
+                class="slds-m-bottom_small">
+            </lightning-combobox>
+
+            <lightning-datatable
+                key-field="Id"
+                data={sortedData}
+                columns={columns}
+                onsort={handleSort}
+                sorted-by={sortBy}
+                sorted-direction={sortDirection}
+                onrowselection={handleRowSelection}
+                class="slds-m-bottom_small">
+            </lightning-datatable>
+
+            <div class="slds-m-top_medium">
+                <lightning-button
+                    label="Assign Follow-Up LO"
+                    variant="brand"
+                    onclick={assignFollowUp}>
+                </lightning-button>
+            </div>
+        </div>
+    </lightning-card> -->
+
+    <div style="height: 700px; overflow: auto;">
+     <lightning-flow
+        flow-api-name='Account_Follow_Up_Screen_Flow'
+    >
+    </lightning-flow>
+    </div>
+
+</template>

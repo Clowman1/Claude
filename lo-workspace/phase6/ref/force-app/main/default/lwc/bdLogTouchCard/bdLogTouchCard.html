@@ -1,0 +1,14 @@
+<template>
+    <template lwc:if={show}>
+        <div class="strip">
+            <div class="grow">
+                <span class="strong">BD partner</span>
+                <span class="muted sm"> · Log coffees, calls, texts and notes to keep the 14-day touch clock current.</span>
+            </div>
+            <button class="btn btn-p btn-s" onclick={openModal}>Log touch</button>
+        </div>
+        <template lwc:if={open}>
+            <c-bd-log-touch-modal partner-id={recordId} onlogged={logged} onclose={closeModal}></c-bd-log-touch-modal>
+        </template>
+    </template>
+</template>

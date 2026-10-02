@@ -1,0 +1,65 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-28T20:14:31.000Z",
+        "fileName": "unpackaged/permissionsets/Lead_Team_Access.permissionset",
+        "fullName": "Lead_Team_Access",
+        "id": "0PSQi000000KbLBOA0",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-28T20:14:31.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:53.000Z",
+        "fileName": "unpackaged/permissionsets/External_LO_Access.permissionset",
+        "fullName": "External_LO_Access",
+        "id": "0PSQi000000L8ozOAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:18:54.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T18:22:33.245Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:22:33.245Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OiLCbMAN",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "Lead_Team_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\permissionsets\\Lead_Team_Access.permissionset-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact\\ref\\permissionsets\\External_LO_Access.permissionset-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

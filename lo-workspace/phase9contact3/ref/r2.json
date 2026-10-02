@@ -1,0 +1,530 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T16:30:53.000Z",
+        "fileName": "unpackaged/lwc/borrowerPanel/borrowerPanel.html",
+        "fullName": "borrowerPanel/borrowerPanel.html",
+        "id": "0RdQi0000007UEHKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T18:19:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T16:30:53.000Z",
+        "fileName": "unpackaged/lwc/borrowerPanel/borrowerPanel.js",
+        "fullName": "borrowerPanel/borrowerPanel.js",
+        "id": "0RdQi0000007UEJKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T18:19:39.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T16:30:53.000Z",
+        "fileName": "unpackaged/lwc/borrowerPanel/borrowerPanel.css",
+        "fullName": "borrowerPanel/borrowerPanel.css",
+        "id": "0RdQi0000007UEKKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T18:19:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:46:11.000Z",
+        "fileName": "unpackaged/lwc/loWsBorrowerPills/loWsBorrowerPills.js",
+        "fullName": "loWsBorrowerPills/loWsBorrowerPills.js",
+        "id": "0RdQi0000007eTlKAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:23.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:46:11.000Z",
+        "fileName": "unpackaged/lwc/loWsBorrowerPills/loWsBorrowerPills.html",
+        "fullName": "loWsBorrowerPills/loWsBorrowerPills.html",
+        "id": "0RdQi0000007eTmKAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:11.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:46:11.000Z",
+        "fileName": "unpackaged/lwc/loWsBorrowerPills/loWsBorrowerPills.css",
+        "fullName": "loWsBorrowerPills/loWsBorrowerPills.css",
+        "id": "0RdQi0000007eToKAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:11.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-23T13:49:34.000Z",
+        "fileName": "unpackaged/lwc/leadPortalDocumentRequestManager/leadPortalDocumentRequestManager.css",
+        "fullName": "leadPortalDocumentRequestManager/leadPortalDocumentRequestManager.css",
+        "id": "0RdQi0000007Xk1KAE",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-30T14:41:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-23T13:49:34.000Z",
+        "fileName": "unpackaged/lwc/leadPortalDocumentRequestManager/leadPortalDocumentRequestManager.html",
+        "fullName": "leadPortalDocumentRequestManager/leadPortalDocumentRequestManager.html",
+        "id": "0RdQi0000007Xk2KAE",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-30T14:42:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-23T13:49:34.000Z",
+        "fileName": "unpackaged/lwc/leadPortalDocumentRequestManager/leadPortalDocumentRequestManager.js",
+        "fullName": "leadPortalDocumentRequestManager/leadPortalDocumentRequestManager.js",
+        "id": "0RdQi0000007Xk4KAE",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-30T14:42:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-06-24T20:27:51.000Z",
+        "fileName": "unpackaged/lwc/leadDocumentRequestManager/leadDocumentRequestManager.js",
+        "fullName": "leadDocumentRequestManager/leadDocumentRequestManager.js",
+        "id": "0RdQi0000005tSGKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-30T16:09:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-06-24T20:27:51.000Z",
+        "fileName": "unpackaged/lwc/leadDocumentRequestManager/leadDocumentRequestManager.css",
+        "fullName": "leadDocumentRequestManager/leadDocumentRequestManager.css",
+        "id": "0RdQi0000005tSHKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-30T16:09:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-06-24T20:27:51.000Z",
+        "fileName": "unpackaged/lwc/leadDocumentRequestManager/leadDocumentRequestManager.html",
+        "fullName": "leadDocumentRequestManager/leadDocumentRequestManager.html",
+        "id": "0RdQi0000005tSJKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-30T16:09:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsContactCard/loWsContactCard.js",
+        "fullName": "loWsContactCard/loWsContactCard.js",
+        "id": "0RdQi0000007eK5KAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:23.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsContactCard/loWsContactCard.css",
+        "fullName": "loWsContactCard/loWsContactCard.css",
+        "id": "0RdQi0000007eK6KAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsContactCard/loWsContactCard.html",
+        "fullName": "loWsContactCard/loWsContactCard.html",
+        "id": "0RdQi0000007eK8KAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-06-24T20:28:11.000Z",
+        "fileName": "unpackaged/classes/LeadDocumentRequestService.cls",
+        "fullName": "LeadDocumentRequestService",
+        "id": "01pQi000002zkcqIAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T10:21:43.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:57.000Z",
+        "fileName": "unpackaged/classes/LoWsContactService.cls",
+        "fullName": "LoWsContactService",
+        "id": "01pQi000003Iuy5IAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:57.000Z",
+        "fileName": "unpackaged/classes/LoWsContactServiceTest.cls",
+        "fullName": "LoWsContactServiceTest",
+        "id": "01pQi000003Iuy6IAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:46:14.000Z",
+        "fileName": "unpackaged/classes/LoWsBorrowerServiceTest.cls",
+        "fullName": "LoWsBorrowerServiceTest",
+        "id": "01pQi000003IwocIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T16:29:49.000Z",
+        "fileName": "unpackaged/classes/BorrowerPersonAccountService.cls",
+        "fullName": "BorrowerPersonAccountService",
+        "id": "01pQi000003Egs5IAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T18:17:59.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:46:14.000Z",
+        "fileName": "unpackaged/classes/LoWsBorrowerService.cls",
+        "fullName": "LoWsBorrowerService",
+        "id": "01pQi000003IwobIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T16:29:50.000Z",
+        "fileName": "unpackaged/permissionsets/Borrower_Management.permissionset",
+        "fullName": "Borrower_Management",
+        "id": "0PSQi000000KsnROAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T19:32:53.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:53.000Z",
+        "fileName": "unpackaged/permissionsets/External_LO_Access.permissionset",
+        "fullName": "External_LO_Access",
+        "id": "0PSQi000000L8ozOAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:59:43.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:59:44.388Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:59:44.388Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OitqzMAB",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "borrowerPanel",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\borrowerPanel\\borrowerPanel.css"
+      },
+      {
+        "fullName": "borrowerPanel",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\borrowerPanel\\borrowerPanel.html"
+      },
+      {
+        "fullName": "borrowerPanel",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\borrowerPanel\\borrowerPanel.js"
+      },
+      {
+        "fullName": "borrowerPanel",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\borrowerPanel\\borrowerPanel.js-meta.xml"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.css"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.html"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.js"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.js-meta.xml"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.css"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.html"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.js"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.js-meta.xml"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.css"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.html"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.js"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.js-meta.xml"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsContactCard\\loWsContactCard.css"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsContactCard\\loWsContactCard.html"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsContactCard\\loWsContactCard.js"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsContactCard\\loWsContactCard.js-meta.xml"
+      },
+      {
+        "fullName": "LeadDocumentRequestService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LeadDocumentRequestService.cls"
+      },
+      {
+        "fullName": "LeadDocumentRequestService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LeadDocumentRequestService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsContactService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsContactService.cls"
+      },
+      {
+        "fullName": "LoWsContactService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsContactService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsContactServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsContactServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsContactServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsContactServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsBorrowerServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsBorrowerServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsBorrowerServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsBorrowerServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "BorrowerPersonAccountService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\BorrowerPersonAccountService.cls"
+      },
+      {
+        "fullName": "BorrowerPersonAccountService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\BorrowerPersonAccountService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsBorrowerService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsBorrowerService.cls"
+      },
+      {
+        "fullName": "LoWsBorrowerService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsBorrowerService.cls-meta.xml"
+      },
+      {
+        "fullName": "Borrower_Management",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\permissionsets\\Borrower_Management.permissionset-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\permissionsets\\External_LO_Access.permissionset-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

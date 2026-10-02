@@ -157,14 +157,6 @@ body:has(.rhl-hero) .community_byo-scoped-header-and-footer__header-content {
     padding-top: 32px;
     max-width: 540px;
 }
-.rhl-eyebrow {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--rhl-amber);
-}
 .rhl-hero h1 {
     font-family: var(--rhl-font);
     font-size: 40px;
@@ -172,7 +164,7 @@ body:has(.rhl-hero) .community_byo-scoped-header-and-footer__header-content {
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #fff;
-    margin: 14px 0;
+    margin: 0 0 14px;
 }
 .rhl-hero h1 span {
     color: #9fb6ea;

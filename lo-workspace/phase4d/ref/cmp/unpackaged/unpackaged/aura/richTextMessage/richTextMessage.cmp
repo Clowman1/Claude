@@ -1,0 +1,8 @@
+<!-- richTextMessage.cmp -->
+<aura:component implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="message" type="String" />
+    
+    <div style="background-color: red; padding: 10px;">
+        <p style="color: white; font-size: 20px; text-align: center">{!v.message}</p>
+    </div>
+</aura:component>

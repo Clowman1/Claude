@@ -35,7 +35,26 @@
                         <!-- Documents -->
                         <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-3">
                             <h3 class="section-title">2 · Documents</h3>
-                            <lightning-combobox label="Template" options={templateOptions} value={template} onchange={handleTemplate}></lightning-combobox>
+                            <div class="slds-grid slds-grid_vertical-align-end">
+                                <p class="slds-col slds-form-element__label">Templates</p>
+                                <p class="slds-text-body_small slds-text-color_weak">{templateCountLabel}</p>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-gutters_x-small">
+                                <template for:each={templateTiles} for:item="t">
+                                    <div key={t.name} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <div class={t.tileClass} role="checkbox" aria-checked={t.checked} tabindex="0"
+                                            data-name={t.name} onclick={handleTemplate} onkeydown={handleTemplateKey}>
+                                            <div class="slds-media slds-media_center">
+                                                <div class="slds-media__figure">
+                                                    <lightning-icon icon-name="doctype:pdf" size="small"></lightning-icon>
+                                                </div>
+                                                <div class="slds-media__body slds-truncate"><strong>{t.name}</strong></div>
+                                                <lightning-input type="checkbox" label={t.name} variant="label-hidden" checked={t.checked} tabindex="-1"></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
 
                             <div class="slds-grid slds-grid_vertical-align-end slds-m-top_small">
                                 <div class="slds-col">

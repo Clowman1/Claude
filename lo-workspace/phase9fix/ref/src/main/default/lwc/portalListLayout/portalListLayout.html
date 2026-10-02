@@ -1,0 +1,128 @@
+<template>
+    <main class="list-page">
+        <div class="list-page-inner">
+            <header class="list-page-header">
+                <div>
+                    <h1 class="list-page-title">{title}</h1>
+                    <p class="list-page-subtitle">{subtitle}</p>
+                </div>
+                <div class="list-page-actions">
+                    <slot name="actions"></slot>
+                </div>
+            </header>
+
+            <template lwc:if={showBanner}>
+                <div class="list-page-banner">
+                    <slot name="banner"></slot>
+                </div>
+            </template>
+
+            <div class="list-card">
+                <div class="list-card-toolbar">
+                    <div class="search-wrap">
+                        <span class="search-icon" aria-hidden="true"><c-portal-icon name="search" size="16"></c-portal-icon></span>
+                        <label class="sr-only" for="portal-list-search">{searchPlaceholder}</label>
+                        <input
+                            id="portal-list-search"
+                            class="search-input"
+                            type="search"
+                            value={searchValue}
+                            placeholder={searchPlaceholder}
+                            oninput={handleSearchChange}
+                        />
+                    </div>
+                    <div class="filter-row" role="group" aria-label="Filter list">
+                        <template for:each={normalizedFilters} for:item="filter">
+                            <button
+                                key={filter.id}
+                                type="button"
+                                class={filter.chipClass}
+                                data-filter={filter.id}
+                                aria-pressed={filter.isActive}
+                                onclick={handleFilterClick}
+                            >
+                                {filter.label}
+                                <template lwc:if={filter.showCount}>
+                                    <span class={filter.countClass}>{filter.count}</span>
+                                </template>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <template lwc:if={loading}>
+                    <ul class="record-list" aria-busy="true">
+                        <template for:each={skeletonRows} for:item="row">
+                            <li key={row} class="skeleton-row">
+                                <div class="skeleton-line skeleton-line-lg"></div>
+                                <div class="skeleton-line skeleton-line-sm"></div>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:elseif={isEmpty}>
+                    <div class="empty-state">
+                        <span class="empty-icon" aria-hidden="true"><c-portal-icon name="inbox" size="22"></c-portal-icon></span>
+                        <h2 class="empty-title">{emptyTitle}</h2>
+                        <p class="empty-message">{emptyMessage}</p>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="sr-only" aria-live="polite">{resultLabel}</p>
+                    <ul class="record-list">
+                        <template lwc:if={isGenericRows}>
+                            <template for:each={items} for:item="item">
+                                <li key={item.id} class="record-row">
+                                    <div class="record-main">
+                                        <div class="record-title-row">
+                                            <button
+                                                type="button"
+                                                class="record-link"
+                                                data-action="view"
+                                                data-id={item.id}
+                                                onclick={handleRowAction}
+                                            >
+                                                {item.title}
+                                            </button>
+                                            <template for:each={item.badges} for:item="badge">
+                                                <span key={badge.key} class={badge.toneClass}>{badge.label}</span>
+                                            </template>
+                                        </div>
+                                        <template lwc:if={item.primary}>
+                                            <p class="record-primary">{item.primary}</p>
+                                        </template>
+                                        <template lwc:if={item.meta}>
+                                            <p class="record-meta">{item.meta}</p>
+                                        </template>
+                                        <template lwc:if={item.note}>
+                                            <p class="record-meta">{item.note}</p>
+                                        </template>
+                                    </div>
+                                    <div class="record-actions">
+                                        <template for:each={item.actions} for:item="action">
+                                            <button
+                                                key={action.name}
+                                                type="button"
+                                                class={action.buttonClass}
+                                                data-action={action.name}
+                                                data-id={item.id}
+                                                disabled={action.disabled}
+                                                onclick={handleRowAction}
+                                            >
+                                                {action.label}
+                                            </button>
+                                        </template>
+                                    </div>
+                                </li>
+                            </template>
+                        </template>
+                    </ul>
+                </template>
+            </div>
+
+            <template lwc:if={showFooterLabel}>
+                <p class="result-label">{resultLabel}</p>
+            </template>
+        </div>
+    </main>
+</template>

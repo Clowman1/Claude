@@ -1,0 +1,18 @@
+<template>
+    <lightning-layout>
+        <lightning-layout-item size="3" padding="horizontal-small">
+            <div class="slds-p-bottom_large">
+                <c-activity-daily-progress ></c-activity-daily-progress>
+            </div>
+            
+            <c-activity-weekly-progress></c-activity-weekly-progress>
+        </lightning-layout-item>
+        <lightning-layout-item size="9" padding="horizontal-small">
+            <div class="slds-p-bottom_large">
+                <c-activity-log-buttons onfinished={refreshDashboard}></c-activity-log-buttons>
+            </div>
+            
+            <c-event-calendar></c-event-calendar>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

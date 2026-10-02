@@ -23,7 +23,7 @@ export default class TransactionDocuSign extends LightningElement {
     @api recordId;
     fileColumns = FILE_COLUMNS;
     data;
-    template = '';
+    templates = [];
     selected = [];
     search = '';
     includeCoBorrower = true;
@@ -59,8 +59,14 @@ export default class TransactionDocuSign extends LightningElement {
     }
 
     // ---- documents
-    get templateOptions() {
-        return [{ label: 'No template (files only)', value: '' }, ...(this.data?.templates || []).map((t) => ({ label: t, value: t }))];
+    get templateTiles() {
+        return (this.data?.templates || []).map((t) => {
+            const on = this.templates.includes(t);
+            return { name: t, checked: on, tileClass: 'template slds-box slds-box_x-small' + (on ? ' signer_on' : '') };
+        });
+    }
+    get templateCountLabel() {
+        return this.templates.length ? `${this.templates.length} selected` : 'Optional';
     }
     get files() {
         const q = this.search.toLowerCase();
@@ -76,7 +82,14 @@ export default class TransactionDocuSign extends LightningElement {
         return n ? `${n} selected` : `${this.data?.files?.length || 0} available`;
     }
     handleTemplate(e) {
-        this.template = e.detail.value;
+        const name = e.currentTarget.dataset.name;
+        this.templates = this.templates.includes(name) ? this.templates.filter((t) => t !== name) : [...this.templates, name];
+    }
+    handleTemplateKey(e) {
+        if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            this.handleTemplate(e);
+        }
     }
     handleSearch(e) {
         this.search = e.target.value || '';
@@ -91,14 +104,14 @@ export default class TransactionDocuSign extends LightningElement {
     // ---- send
     get summary() {
         const parts = [];
-        if (this.template) parts.push(this.template);
+        if (this.templates.length) parts.push(this.templates.join(', '));
         if (this.selected.length) parts.push(`${this.selected.length} file${this.selected.length > 1 ? 's' : ''}`);
         if (!parts.length) return 'Choose a template or files to send.';
         const who = this.signers.filter((s) => s.fixed || s.checked).map((s) => s.name).join(', ');
         return `${parts.join(' + ')} → ${who}`;
     }
     get sendDisabled() {
-        return this.busy || (!this.template && this.selected.length === 0);
+        return this.busy || (!this.templates.length && this.selected.length === 0);
     }
 
     async handleSend() {
@@ -108,7 +121,7 @@ export default class TransactionDocuSign extends LightningElement {
         try {
             const envelopeId = await createDraft({
                 transactionId: this.recordId,
-                templateName: this.template,
+                templateNames: this.templates,
                 versionIds: this.selected,
                 includeCoBorrower: this.includeCoBorrower,
                 includeLoanOfficer: this.includeLoanOfficer
@@ -116,10 +129,11 @@ export default class TransactionDocuSign extends LightningElement {
             const url = await getSenderView({ transactionId: this.recordId, envelopeId });
             if (win) win.location = url;
             else window.open(url, '_blank');
-            this.toast('success', 'Opened in DocuSign', this.template
-                ? 'In the DocuSign tab, fill in the grey pre-fill field, then click Send.'
-                : 'In the DocuSign tab, give every signer a Signature with a Date Signed next to it, then click Send.');
-            this.template = '';
+            const steps = [];
+            if (this.templates.length) steps.push('fill in the grey pre-fill fields');
+            if (this.selected.length) steps.push('give every signer a Signature with a Date Signed next to it on the added files');
+            this.toast('success', 'Opened in DocuSign', `In the DocuSign tab, ${steps.join(' and ')}, then click Send.`);
+            this.templates = [];
             this.selected = [];
             this.load();
         } catch (e) {

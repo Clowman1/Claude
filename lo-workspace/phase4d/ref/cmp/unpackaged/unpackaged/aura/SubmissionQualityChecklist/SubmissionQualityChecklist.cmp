@@ -1,0 +1,118 @@
+<aura:component controller="SubmissionQualityChecklistController" implements="force:hasRecordId,flexipage:availableForRecordHome,force:appHostable">
+    <aura:attribute name="questions" type="Object[]"/>
+    <aura:attribute name="answers" type="Map" default="{}"/>
+    <aura:attribute name="yesCount" type="Integer" default="0"/>
+    <aura:attribute name="noCount" type="Integer" default="0"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="userRecord" type="Object"/>
+    <aura:attribute name="isReadOnly" type="Boolean" default="false"/>
+    
+    <force:recordData
+                      aura:id="userRecordLoader"
+                      recordId="{!$SObjectType.CurrentUser.Id}"
+                      fields="Id,ProfileId"
+                      targetRecord="{!v.userRecord}"
+                      mode="VIEW"
+                      recordUpdated="{!c.onUserLoaded}" />
+    
+    <lightning:card title="Checklist Table">
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th class="slds-text-align_center">Yes</th>
+                    <th class="slds-text-align_center">No</th>
+                    <th class="slds-text-align_center">N/A</th>
+                </tr>
+            </thead>
+            <tbody>
+               <aura:iteration items="{!v.questions}" var="q">
+    <tr>
+        <td style="white-space: wrap!important;">{!q.Custom_Label__c}</td>
+
+        <!-- YES column -->
+        <td class="slds-text-align_center" style="white-space: wrap!important;">
+            <aura:if isTrue="{!v.isReadOnly}">
+                <div class="clickable disabled"
+                     data-field="{!q.FieldName__c}"
+                     data-value="Yes">
+                    Y
+                </div>
+                <aura:set attribute="else">
+                    <div class="clickable"
+                         data-field="{!q.FieldName__c}"
+                         data-value="Yes"
+                         onclick="{!c.handleAnswerClick}">
+                        Y
+                    </div>
+                </aura:set>
+            </aura:if>
+        </td>
+
+        <!-- NO column -->
+        <td class="slds-text-align_center" style="white-space: wrap!important;">
+            <aura:if isTrue="{!v.isReadOnly}">
+                <div class="clickable disabled"
+                     data-field="{!q.FieldName__c}"
+                     data-value="No">
+                    N
+                </div>
+                <aura:set attribute="else">
+                    <div class="clickable"
+                         data-field="{!q.FieldName__c}"
+                         data-value="No"
+                         onclick="{!c.handleAnswerClick}">
+                        N
+                    </div>
+                </aura:set>
+            </aura:if>
+        </td>
+
+        <!-- N/A column -->
+        <td class="slds-text-align_center" style="white-space: wrap!important;">
+            <aura:if isTrue="{!v.isReadOnly}">
+                <div class="clickable disabled"
+                     data-field="{!q.FieldName__c}"
+                     data-value="N/A">
+                    N/A
+                </div>
+                <aura:set attribute="else">
+                    <div class="clickable"
+                         data-field="{!q.FieldName__c}"
+                         data-value="N/A"
+                         onclick="{!c.handleAnswerClick}">
+                        N/A
+                    </div>
+                </aura:set>
+            </aura:if>
+        </td>
+    </tr>
+</aura:iteration>
+
+            </tbody>
+        </table>
+
+        <div class="slds-p-top_medium">
+            <p><strong>Yes:</strong> {!v.yesCount} | <strong>No:</strong> {!v.noCount}</p>
+            <lightning:button variant="brand" label="Save Checklist" onclick="{!c.saveChecklist}" disabled="{!v.isReadOnly}"/>
+        </div>
+    </lightning:card>
+
+    <aura:html tag="style">
+        .clickable {
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .clickable:hover {
+            background-color: #f3f3f3;
+        }
+        .yes.selected { background-color: #d4f8d4; }
+        .no.selected  { background-color: #f8d4d4; }
+        .na.selected  { background-color: #e8e8ff; }
+    </aura:html>
+</aura:component>

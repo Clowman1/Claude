@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata"
+                         fqn="pulseFlowButtonBar">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="buttons" type="String" label="Buttons (JSON)" description="JSON array of button objects with label, value, icon, and iconPosition properties" />
+            <property name="mode" type="String" label="Mode" description="Mode of the button bar: Navigation or Selection" default="Navigation" />
+            <property name="barLabel" type="String" label="Button Bar Label" description="Label displayed above the button bar" />
+            <property name="barLabelStyle" type="String" label="CSS for Bar Label" description="CSS styling for the bar label, e.g., 'font-size: 16px; color: blue;'" />
+            <property name="buttonLabelStyle" type="String" label="CSS for Button Label" description="CSS styling for button labels, e.g., 'font-size: 14px; color: red;'" />
+            <property name="selectedValue" type="String" label="Selected Button Value" description="Outputs the value of the selected button (single selection)" />
+            <property name="selectedValues" type="String" label="Selected Button Values" description="Outputs the values of the selected buttons (multi-selection)" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

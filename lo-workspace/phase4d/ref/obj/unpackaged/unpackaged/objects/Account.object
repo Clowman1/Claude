@@ -1,0 +1,4098 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableCustomerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableCustomerPortalUser</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableCustomerPortalUser</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SmsHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SmsHighlightAction</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SmsHighlightAction</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override updated by Lightning App Builder during activation.</comment>
+        <content>Account_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewCustomerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewCustomerPortalUser</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewCustomerPortalUser</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>WebsiteHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>WebsiteHighlightAction</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>WebsiteHighlightAction</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>Account_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Account_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>Phone</fields>
+        <fields>BillingAddress</fields>
+        <fields>Website</fields>
+        <fields>OwnerId</fields>
+        <label>Account Compact Layout</label>
+    </compactLayouts>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>AccountNumber</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>AccountSource</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ActiveCamp__ActiveCampaign_Id__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>ActiveCampaign Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>ActiveCamp__ActiveCampaign_Sync_Status__c</fullName>
+        <deprecated>false</deprecated>
+        <label>ActiveCampaign Sync Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Waiting For Next Sync</fullName>
+                    <default>false</default>
+                    <label>Waiting For Next Sync</label>
+                </value>
+                <value>
+                    <fullName>Successfully Synced</fullName>
+                    <default>false</default>
+                    <label>Successfully Synced</label>
+                </value>
+                <value>
+                    <fullName>Does Not Meet Sync Criteria</fullName>
+                    <default>false</default>
+                    <label>Does Not Meet Sync Criteria</label>
+                </value>
+                <value>
+                    <fullName>Waiting For Update</fullName>
+                    <default>false</default>
+                    <label>Waiting For Update</label>
+                </value>
+                <value>
+                    <fullName>Account Deleted in ActiveCampaign</fullName>
+                    <default>false</default>
+                    <label>Account Deleted in ActiveCampaign</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ActiveCamp__Last_Synced__c</fullName>
+        <deprecated>false</deprecated>
+        <label>ActiveCampaign Last Synced</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AnnualRevenue</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Appointment_Date_Time__c</fullName>
+        <label>Appointment Date &amp; Time</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Area_of_Specialty_Display__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(INCLUDES(Area_of_Specialty__c, &quot;1099&quot;), &quot;1099, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;All-In-One Loan&quot;), &quot;All-In-One Loan, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;ARM&quot;), &quot;ARM, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Asset Depletion&quot;), &quot;Asset Depletion, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Bank Statement&quot;), &quot;Bank Statement, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Bridge Loans&quot;), &quot;Bridge Loans, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Community Mortgage/No Income&quot;), &quot;Community Mortgage/No Income, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Condotel&quot;), &quot;Condotel, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Construction&quot;), &quot;Construction, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Conventional&quot;), &quot;Conventional, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Doctor Loan&quot;), &quot;Doctor Loan, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;DPA&quot;), &quot;DPA, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;DSCR&quot;), &quot;DSCR, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Fannie Homestyle Reno&quot;), &quot;Fannie Homestyle Reno, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;FHA&quot;), &quot;FHA, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;FHA 100% Financing&quot;), &quot;FHA 100% Financing, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;FHA 203K&quot;), &quot;FHA 203K, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Fix &amp; Flip&quot;), &quot;Fix &amp; Flip, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Foreign National&quot;), &quot;Foreign National, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Full Doc Non-QM&quot;), &quot;Full Doc Non-QM, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Hard Money&quot;), &quot;Hard Money, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;HELOAN&quot;), &quot;HELOAN, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;HELOC&quot;), &quot;HELOC, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Interest Only&quot;), &quot;Interest Only, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Investment&quot;), &quot;Investment, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;ITIN&quot;), &quot;ITIN, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Jumbo&quot;), &quot;Jumbo, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Manufactured&quot;), &quot;Manufactured, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Non-QM&quot;), &quot;Non-QM, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Non-Warrantable Condo&quot;), &quot;Non-Warrantable Condo, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;P&amp;L&quot;), &quot;P&amp;L, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Renovation&quot;), &quot;Renovation, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Reverse Mortgage&quot;), &quot;Reverse Mortgage, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Second Home&quot;), &quot;Second Home, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;USDA&quot;), &quot;USDA, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;VA&quot;), &quot;VA, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;Vacant Land&quot;), &quot;Vacant Land, &quot;, &quot;&quot;) +
+    IF(INCLUDES(Area_of_Specialty__c, &quot;WVOE&quot;), &quot;WVOE, &quot;, &quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Area of Specialty</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Area_of_Specialty__c</fullName>
+        <label>Area of Specialty</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Doctor Loan</fullName>
+                    <default>false</default>
+                    <label>Doctor Loan</label>
+                </value>
+                <value>
+                    <fullName>All-In-One Loan</fullName>
+                    <default>false</default>
+                    <label>All-In-One Loan</label>
+                </value>
+                <value>
+                    <fullName>ARM</fullName>
+                    <default>false</default>
+                    <label>ARM</label>
+                </value>
+                <value>
+                    <fullName>Asset Depletion</fullName>
+                    <default>false</default>
+                    <label>Asset Depletion</label>
+                </value>
+                <value>
+                    <fullName>Bank Statement</fullName>
+                    <default>false</default>
+                    <label>Bank Statement</label>
+                </value>
+                <value>
+                    <fullName>Bridge Loans</fullName>
+                    <default>false</default>
+                    <label>Bridge Loans</label>
+                </value>
+                <value>
+                    <fullName>Community Mortgage/No Income</fullName>
+                    <default>false</default>
+                    <label>Community Mortgage/No Income</label>
+                </value>
+                <value>
+                    <fullName>Condotel</fullName>
+                    <default>false</default>
+                    <label>Condotel</label>
+                </value>
+                <value>
+                    <fullName>Conventional</fullName>
+                    <default>false</default>
+                    <label>Conventional</label>
+                </value>
+                <value>
+                    <fullName>DPA</fullName>
+                    <default>false</default>
+                    <label>DPA</label>
+                </value>
+                <value>
+                    <fullName>DSCR</fullName>
+                    <default>false</default>
+                    <label>DSCR</label>
+                </value>
+                <value>
+                    <fullName>FHA</fullName>
+                    <default>false</default>
+                    <label>FHA</label>
+                </value>
+                <value>
+                    <fullName>FHA 100% Financing</fullName>
+                    <default>false</default>
+                    <label>FHA 100% Financing</label>
+                </value>
+                <value>
+                    <fullName>FHA 203K</fullName>
+                    <default>false</default>
+                    <label>FHA 203K</label>
+                </value>
+                <value>
+                    <fullName>Fannie Homestyle Reno</fullName>
+                    <default>false</default>
+                    <label>Fannie Homestyle Reno</label>
+                </value>
+                <value>
+                    <fullName>Foreign National</fullName>
+                    <default>false</default>
+                    <label>Foreign National</label>
+                </value>
+                <value>
+                    <fullName>Hard Money</fullName>
+                    <default>false</default>
+                    <label>Hard Money</label>
+                </value>
+                <value>
+                    <fullName>HELOC</fullName>
+                    <default>false</default>
+                    <label>HELOC</label>
+                </value>
+                <value>
+                    <fullName>ITIN</fullName>
+                    <default>false</default>
+                    <label>ITIN</label>
+                </value>
+                <value>
+                    <fullName>Jumbo</fullName>
+                    <default>false</default>
+                    <label>Jumbo</label>
+                </value>
+                <value>
+                    <fullName>Non-QM</fullName>
+                    <default>false</default>
+                    <label>Non-QM</label>
+                </value>
+                <value>
+                    <fullName>Non-Warrantable Condo</fullName>
+                    <default>false</default>
+                    <label>Non-Warrantable Condo</label>
+                </value>
+                <value>
+                    <fullName>P&amp;L</fullName>
+                    <default>false</default>
+                    <label>P&amp;L</label>
+                </value>
+                <value>
+                    <fullName>USDA</fullName>
+                    <default>false</default>
+                    <label>USDA</label>
+                </value>
+                <value>
+                    <fullName>VA</fullName>
+                    <default>false</default>
+                    <label>VA</label>
+                </value>
+                <value>
+                    <fullName>Vacant Land</fullName>
+                    <default>false</default>
+                    <label>Vacant Land</label>
+                </value>
+                <value>
+                    <fullName>1099</fullName>
+                    <default>false</default>
+                    <label>1099</label>
+                </value>
+                <value>
+                    <fullName>Second Home</fullName>
+                    <default>false</default>
+                    <label>Second Home</label>
+                </value>
+                <value>
+                    <fullName>Investment</fullName>
+                    <default>false</default>
+                    <label>Investment</label>
+                </value>
+                <value>
+                    <fullName>Reverse Mortgage</fullName>
+                    <default>false</default>
+                    <label>Reverse Mortgage</label>
+                </value>
+                <value>
+                    <fullName>HELOAN</fullName>
+                    <default>false</default>
+                    <label>HELOAN</label>
+                </value>
+                <value>
+                    <fullName>Construction</fullName>
+                    <default>false</default>
+                    <label>Construction</label>
+                </value>
+                <value>
+                    <fullName>Fix &amp; Flip</fullName>
+                    <default>false</default>
+                    <label>Fix &amp; Flip</label>
+                </value>
+                <value>
+                    <fullName>Interest Only</fullName>
+                    <default>false</default>
+                    <label>Interest Only</label>
+                </value>
+                <value>
+                    <fullName>WVOE</fullName>
+                    <default>false</default>
+                    <label>WVOE</label>
+                </value>
+                <value>
+                    <fullName>Manufactured</fullName>
+                    <default>false</default>
+                    <label>Manufactured</label>
+                </value>
+                <value>
+                    <fullName>Renovation</fullName>
+                    <default>false</default>
+                    <label>Renovation</label>
+                </value>
+                <value>
+                    <fullName>Full Doc Non-QM</fullName>
+                    <default>false</default>
+                    <label>Full Doc Non-QM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>BD_Industry__c</fullName>
+        <description>Partner industry for business development. Separate from Type__c so a borrower can also be a partner.</description>
+        <label>BD Industry</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Realtor</fullName>
+                    <default>false</default>
+                    <label>Realtor</label>
+                </value>
+                <value>
+                    <fullName>CPA</fullName>
+                    <default>false</default>
+                    <label>CPA</label>
+                </value>
+                <value>
+                    <fullName>Title Agent</fullName>
+                    <default>false</default>
+                    <label>Title Agent</label>
+                </value>
+                <value>
+                    <fullName>Insurance Agent</fullName>
+                    <default>false</default>
+                    <label>Insurance Agent</label>
+                </value>
+                <value>
+                    <fullName>Financial Planner</fullName>
+                    <default>false</default>
+                    <label>Financial Planner</label>
+                </value>
+                <value>
+                    <fullName>Attorney</fullName>
+                    <default>false</default>
+                    <label>Attorney</label>
+                </value>
+                <value>
+                    <fullName>Builder</fullName>
+                    <default>false</default>
+                    <label>Builder</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>BD_Rep__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Business development rep who works this partner. Does not change ownership.</description>
+        <label>BD Rep</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>BD_Partner_Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>BD_Stage__c</fullName>
+        <description>Business development pipeline stage.</description>
+        <label>BD Stage</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Prospect</fullName>
+                    <default>false</default>
+                    <label>Prospect</label>
+                </value>
+                <value>
+                    <fullName>Contacted</fullName>
+                    <default>false</default>
+                    <label>Contacted</label>
+                </value>
+                <value>
+                    <fullName>Meeting Set</fullName>
+                    <default>false</default>
+                    <label>Meeting Set</label>
+                </value>
+                <value>
+                    <fullName>Met</fullName>
+                    <default>false</default>
+                    <label>Met</label>
+                </value>
+                <value>
+                    <fullName>Active Partner</fullName>
+                    <default>false</default>
+                    <label>Active Partner</label>
+                </value>
+                <value>
+                    <fullName>Dormant</fullName>
+                    <default>false</default>
+                    <label>Dormant</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>BillingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Biz_Dev_Designation__c</fullName>
+        <label>Biz Dev Designation</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Reach</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Reach</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Delaney</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Delaney</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Anagnostou</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Anagnostou</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Bondarevsky</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Bondarevsky</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Fritz</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Fritz</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Olmsted</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Olmsted</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Pugh</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Pugh</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Rebagliati</fullName>
+                    <default>false</default>
+                    <label>Biz Dev - Rebagliati</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Cabrera</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Cabrera</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Carey</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Carey</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Hornaday</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Hornaday</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Hsieh</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Hsieh</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Perrault</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Perrault</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Peterson</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Peterson</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - SERHANT ORL</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - SERHANT ORL</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Saludes</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Saludes</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Waters</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Waters</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Wemert</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Wemert</label>
+                </value>
+                <value>
+                    <fullName>Biz Dev - Williams</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Biz Dev - Williams</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Borrower_Rating__c</fullName>
+        <label>Rating</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Hot</fullName>
+                    <default>false</default>
+                    <label>Hot</label>
+                </value>
+                <value>
+                    <fullName>Warm</fullName>
+                    <default>false</default>
+                    <label>Warm</label>
+                </value>
+                <value>
+                    <fullName>Cold</fullName>
+                    <default>false</default>
+                    <label>Cold</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Borrower_Withdrawal_Reason__c</fullName>
+        <label>Borrower Withdrawal Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Selected an Alternative Lender</fullName>
+                    <default>false</default>
+                    <label>Selected an Alternative Lender</label>
+                </value>
+                <value>
+                    <fullName>Found a More Competetive Interest Rate</fullName>
+                    <default>false</default>
+                    <label>Found a More Competetive Interest Rate</label>
+                </value>
+                <value>
+                    <fullName>Costs Are Too High</fullName>
+                    <default>false</default>
+                    <label>Costs Are Too High</label>
+                </value>
+                <value>
+                    <fullName>Chose to Purchase a Different Property</fullName>
+                    <default>false</default>
+                    <label>Chose to Purchase a Different Property</label>
+                </value>
+                <value>
+                    <fullName>Property Did Not Pass Inspection and Borrower is Not Purchasing Home</fullName>
+                    <default>false</default>
+                    <label>Property Did Not Pass Inspection and Borrower is Not Purchasing Home</label>
+                </value>
+                <value>
+                    <fullName>Opted for a Direct Purchase Without Financing</fullName>
+                    <default>false</default>
+                    <label>Opted for a Direct Purchase Without Financing</label>
+                </value>
+                <value>
+                    <fullName>Chose Not to Proceed with the Financing Process</fullName>
+                    <default>false</default>
+                    <label>Chose Not to Proceed with the Financing Process</label>
+                </value>
+                <value>
+                    <fullName>Opted to Proceed with a Different Loan Application</fullName>
+                    <default>false</default>
+                    <label>Opted to Proceed with a Different Loan Application</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Broker_Channel_Products__c</fullName>
+        <description>Products this investor prices through the Broker channel (2.75% comp) even though its main channel is Non-Delegated Correspondent. Leave blank for Broker-channel investors.</description>
+        <inlineHelpText>Only for Non-Del investors with broker carve-outs (e.g. UWM DPA / HELOC / HELOAN).</inlineHelpText>
+        <label>Broker Channel Products</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Doctor Loan</fullName>
+                    <default>false</default>
+                    <label>Doctor Loan</label>
+                </value>
+                <value>
+                    <fullName>All-In-One Loan</fullName>
+                    <default>false</default>
+                    <label>All-In-One Loan</label>
+                </value>
+                <value>
+                    <fullName>ARM</fullName>
+                    <default>false</default>
+                    <label>ARM</label>
+                </value>
+                <value>
+                    <fullName>Asset Depletion</fullName>
+                    <default>false</default>
+                    <label>Asset Depletion</label>
+                </value>
+                <value>
+                    <fullName>Bank Statement</fullName>
+                    <default>false</default>
+                    <label>Bank Statement</label>
+                </value>
+                <value>
+                    <fullName>Bridge Loans</fullName>
+                    <default>false</default>
+                    <label>Bridge Loans</label>
+                </value>
+                <value>
+                    <fullName>Community Mortgage/No Income</fullName>
+                    <default>false</default>
+                    <label>Community Mortgage/No Income</label>
+                </value>
+                <value>
+                    <fullName>Condotel</fullName>
+                    <default>false</default>
+                    <label>Condotel</label>
+                </value>
+                <value>
+                    <fullName>Conventional</fullName>
+                    <default>false</default>
+                    <label>Conventional</label>
+                </value>
+                <value>
+                    <fullName>DPA</fullName>
+                    <default>false</default>
+                    <label>DPA</label>
+                </value>
+                <value>
+                    <fullName>DSCR</fullName>
+                    <default>false</default>
+                    <label>DSCR</label>
+                </value>
+                <value>
+                    <fullName>FHA</fullName>
+                    <default>false</default>
+                    <label>FHA</label>
+                </value>
+                <value>
+                    <fullName>FHA 100% Financing</fullName>
+                    <default>false</default>
+                    <label>FHA 100% Financing</label>
+                </value>
+                <value>
+                    <fullName>FHA 203K</fullName>
+                    <default>false</default>
+                    <label>FHA 203K</label>
+                </value>
+                <value>
+                    <fullName>Fannie Homestyle Reno</fullName>
+                    <default>false</default>
+                    <label>Fannie Homestyle Reno</label>
+                </value>
+                <value>
+                    <fullName>Foreign National</fullName>
+                    <default>false</default>
+                    <label>Foreign National</label>
+                </value>
+                <value>
+                    <fullName>Hard Money</fullName>
+                    <default>false</default>
+                    <label>Hard Money</label>
+                </value>
+                <value>
+                    <fullName>HELOC</fullName>
+                    <default>false</default>
+                    <label>HELOC</label>
+                </value>
+                <value>
+                    <fullName>ITIN</fullName>
+                    <default>false</default>
+                    <label>ITIN</label>
+                </value>
+                <value>
+                    <fullName>Jumbo</fullName>
+                    <default>false</default>
+                    <label>Jumbo</label>
+                </value>
+                <value>
+                    <fullName>Non-QM</fullName>
+                    <default>false</default>
+                    <label>Non-QM</label>
+                </value>
+                <value>
+                    <fullName>Non-Warrantable Condo</fullName>
+                    <default>false</default>
+                    <label>Non-Warrantable Condo</label>
+                </value>
+                <value>
+                    <fullName>P&amp;L</fullName>
+                    <default>false</default>
+                    <label>P&amp;L</label>
+                </value>
+                <value>
+                    <fullName>USDA</fullName>
+                    <default>false</default>
+                    <label>USDA</label>
+                </value>
+                <value>
+                    <fullName>VA</fullName>
+                    <default>false</default>
+                    <label>VA</label>
+                </value>
+                <value>
+                    <fullName>Vacant Land</fullName>
+                    <default>false</default>
+                    <label>Vacant Land</label>
+                </value>
+                <value>
+                    <fullName>1099</fullName>
+                    <default>false</default>
+                    <label>1099</label>
+                </value>
+                <value>
+                    <fullName>Second Home</fullName>
+                    <default>false</default>
+                    <label>Second Home</label>
+                </value>
+                <value>
+                    <fullName>Investment</fullName>
+                    <default>false</default>
+                    <label>Investment</label>
+                </value>
+                <value>
+                    <fullName>Reverse Mortgage</fullName>
+                    <default>false</default>
+                    <label>Reverse Mortgage</label>
+                </value>
+                <value>
+                    <fullName>HELOAN</fullName>
+                    <default>false</default>
+                    <label>HELOAN</label>
+                </value>
+                <value>
+                    <fullName>Construction</fullName>
+                    <default>false</default>
+                    <label>Construction</label>
+                </value>
+                <value>
+                    <fullName>Fix &amp; Flip</fullName>
+                    <default>false</default>
+                    <label>Fix &amp; Flip</label>
+                </value>
+                <value>
+                    <fullName>Interest Only</fullName>
+                    <default>false</default>
+                    <label>Interest Only</label>
+                </value>
+                <value>
+                    <fullName>WVOE</fullName>
+                    <default>false</default>
+                    <label>WVOE</label>
+                </value>
+                <value>
+                    <fullName>Manufactured</fullName>
+                    <default>false</default>
+                    <label>Manufactured</label>
+                </value>
+                <value>
+                    <fullName>Renovation</fullName>
+                    <default>false</default>
+                    <label>Renovation</label>
+                </value>
+                <value>
+                    <fullName>Full Doc Non-QM</fullName>
+                    <default>false</default>
+                    <label>Full Doc Non-QM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Business_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What this contact does - loan officer, branch manager, broker owner, realtor, or anything else.</inlineHelpText>
+        <label>Business Type</label>
+        <length>255</length>
+        <required>false</required>
+        <securityClassification>Public</securityClassification>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Candidate_Checklist__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Candidate Checklist</label>
+        <referenceTo>Candidate_Checklist__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Company_License_Expiration_Date__c</fullName>
+        <label>Company License Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Company_License_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Company License Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Company_Phone_Number__c</fullName>
+        <label>Company Phone Number</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Company__c</fullName>
+        <externalId>false</externalId>
+        <label>Company</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_User_Follow_Up_LO__c</fullName>
+        <formula>Follow_Up_LO__c = $User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Current User - Follow Up LO</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Exclude_From_Duplicate_Check__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Exclude From Duplicate Check</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Fax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>First_UTM_Campaign__c</fullName>
+        <externalId>false</externalId>
+        <label>First UTM Campaign</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_UTM_Content__c</fullName>
+        <externalId>false</externalId>
+        <label>First UTM Content</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_UTM_Medium__c</fullName>
+        <externalId>false</externalId>
+        <label>First UTM Medium</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_UTM_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>First UTM Source</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_UTM_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>First UTM Term</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Follow_Up_LO_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Follow_Up_LO__r.FirstName &amp; &apos; &apos; &amp;  Follow_Up_LO__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Follow Up LO Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Follow_Up_LO__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Follow Up LO</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Follow_Up_Lead_Created__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Follow Up Lead Created</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Industry</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Intake_Form_Link__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(PersonEmail), &quot;&quot;, HYPERLINK( Intake_Form_URL__c &amp;  PersonEmail , &quot;Intake Form&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Intake Form Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Intake_Form_URL__c</fullName>
+        <defaultValue>&apos;https://reachhomeloans.my.site.com/LeadIntakeForm/s/?email=&apos;</defaultValue>
+        <externalId>false</externalId>
+        <label>Intake Form URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Investor_Channel__c</fullName>
+        <description>How Reach sells to this investor. Drives the pricing badge in the Approved Investors modal: Non-Delegated Correspondent = 0.00 is Par; Broker = 2.75% comp (LPC or BPC).</description>
+        <label>Investor Channel</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Non-Delegated Correspondent</fullName>
+                    <default>false</default>
+                    <label>Non-Delegated Correspondent</label>
+                </value>
+                <value>
+                    <fullName>Broker</fullName>
+                    <default>true</default>
+                    <label>Broker</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Investor_Summary__c</fullName>
+        <description>Short product summary shown in the Approved Investors modal. AE contacts stay in Description.</description>
+        <label>Investor Summary</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>IsCustomerPortal</fullName>
+    </fields>
+    <fields>
+        <fullName>Is_Borrower__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Is Borrower</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Realtor__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Is Realtor</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Jigsaw</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Last_RC_Call__c</fullName>
+        <label>Last RC Call</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Last_RC_SMS__c</fullName>
+        <label>Last RC SMS</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Last_Referral_Date__c</fullName>
+        <label>Last Referral Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Last_UTM_Campaign__c</fullName>
+        <externalId>false</externalId>
+        <label>Last UTM Campaign</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_UTM_Content__c</fullName>
+        <externalId>false</externalId>
+        <label>Last UTM Content</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_UTM_Medium__c</fullName>
+        <externalId>false</externalId>
+        <label>Last UTM Medium</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_UTM_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>Last UTM Source</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_UTM_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Last UTM Term</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_BPS__c</fullName>
+        <externalId>false</externalId>
+        <label>Most Recent BPS</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Buydown__c</fullName>
+        <label>Most Recent Buydown</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1-0</fullName>
+                    <default>false</default>
+                    <label>1-0</label>
+                </value>
+                <value>
+                    <fullName>1-1</fullName>
+                    <default>false</default>
+                    <label>1-1</label>
+                </value>
+                <value>
+                    <fullName>2-1</fullName>
+                    <default>false</default>
+                    <label>2-1</label>
+                </value>
+                <value>
+                    <fullName>3-2-1</fullName>
+                    <default>false</default>
+                    <label>3-2-1</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Closing_Date__c</fullName>
+        <label>Most Recent Closing Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_DPA__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Most Recent DPA</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_FICO_Score__c</fullName>
+        <externalId>false</externalId>
+        <formula>Most_Recent_Transaction__r.FICO__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Most Recent FICO Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_LTV__c</fullName>
+        <label>Most Recent LTV</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Loan_Amount__c</fullName>
+        <label>Most Recent Loan Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Loan_Officer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Most Recent Loan Officer</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts3</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Loan_Program_1st__c</fullName>
+        <label>Most Recent Loan Program (1st)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>40 yr Fixed</fullName>
+                    <default>false</default>
+                    <label>40 yr Fixed</label>
+                </value>
+                <value>
+                    <fullName>40 Yr Adjustable</fullName>
+                    <default>false</default>
+                    <label>40 Yr Adjustable</label>
+                </value>
+                <value>
+                    <fullName>30 yr Fixed</fullName>
+                    <default>false</default>
+                    <label>30 yr Fixed</label>
+                </value>
+                <value>
+                    <fullName>30 yr Interest Only</fullName>
+                    <default>false</default>
+                    <label>30 yr Interest Only</label>
+                </value>
+                <value>
+                    <fullName>20 yr Fixed</fullName>
+                    <default>false</default>
+                    <label>20 yr Fixed</label>
+                </value>
+                <value>
+                    <fullName>15 yr Fixed</fullName>
+                    <default>false</default>
+                    <label>15 yr Fixed</label>
+                </value>
+                <value>
+                    <fullName>3/1 yr ARM</fullName>
+                    <default>false</default>
+                    <label>3/1 yr ARM</label>
+                </value>
+                <value>
+                    <fullName>3/1 yr Interest Only ARM</fullName>
+                    <default>false</default>
+                    <label>3/1 yr Interest Only ARM</label>
+                </value>
+                <value>
+                    <fullName>5/1 yr ARM</fullName>
+                    <default>false</default>
+                    <label>5/1 yr ARM</label>
+                </value>
+                <value>
+                    <fullName>5/1 yr Interest Only ARM</fullName>
+                    <default>false</default>
+                    <label>5/1 yr Interest Only ARM</label>
+                </value>
+                <value>
+                    <fullName>7/1 yr ARM</fullName>
+                    <default>false</default>
+                    <label>7/1 yr ARM</label>
+                </value>
+                <value>
+                    <fullName>7/1 yr Interest Only ARM</fullName>
+                    <default>false</default>
+                    <label>7/1 yr Interest Only ARM</label>
+                </value>
+                <value>
+                    <fullName>10/1 yr ARM</fullName>
+                    <default>false</default>
+                    <label>10/1 yr ARM</label>
+                </value>
+                <value>
+                    <fullName>10/1 yr Interest Only ARM</fullName>
+                    <default>false</default>
+                    <label>10/1 yr Interest Only ARM</label>
+                </value>
+                <value>
+                    <fullName>Option ARM</fullName>
+                    <default>false</default>
+                    <label>Option ARM</label>
+                </value>
+                <value>
+                    <fullName>Reverse Mortgage</fullName>
+                    <default>false</default>
+                    <label>Reverse Mortgage</label>
+                </value>
+                <value>
+                    <fullName>Money Merge Account</fullName>
+                    <default>false</default>
+                    <label>Money Merge Account</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Loan_Purpose__c</fullName>
+        <label>Most Recent Loan Purpose</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Purchase</fullName>
+                    <default>false</default>
+                    <label>Purchase</label>
+                </value>
+                <value>
+                    <fullName>Refinance Cash-Out</fullName>
+                    <default>false</default>
+                    <label>Refinance Cash-Out</label>
+                </value>
+                <value>
+                    <fullName>Refinance Rate &amp; Term</fullName>
+                    <default>false</default>
+                    <label>Refinance Rate &amp; Term</label>
+                </value>
+                <value>
+                    <fullName>HELOC</fullName>
+                    <default>false</default>
+                    <label>HELOC</label>
+                </value>
+                <value>
+                    <fullName>Cash-Out Refinance</fullName>
+                    <default>false</default>
+                    <label>Cash-Out Refinance</label>
+                </value>
+                <value>
+                    <fullName>NoCash-Out Refinance</fullName>
+                    <default>false</default>
+                    <label>NoCash-Out Refinance</label>
+                </value>
+                <value>
+                    <fullName>Refinance</fullName>
+                    <default>false</default>
+                    <label>Refinance</label>
+                </value>
+                <value>
+                    <fullName>Refinance No Cash-Out</fullName>
+                    <default>false</default>
+                    <label>Refinance No Cash-Out</label>
+                </value>
+                <value>
+                    <fullName>Refinance Debt Consolidation</fullName>
+                    <default>false</default>
+                    <label>Refinance Debt Consolidation</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Loan_Type_1st_TD__c</fullName>
+        <label>Most Recent Loan Type 1st TD</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Conventional</fullName>
+                    <default>false</default>
+                    <label>Conventional</label>
+                </value>
+                <value>
+                    <fullName>FHA</fullName>
+                    <default>false</default>
+                    <label>FHA</label>
+                </value>
+                <value>
+                    <fullName>Jumbo</fullName>
+                    <default>false</default>
+                    <label>Jumbo</label>
+                </value>
+                <value>
+                    <fullName>VA</fullName>
+                    <default>false</default>
+                    <label>VA</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>FarmersHomeAdministration</fullName>
+                    <default>false</default>
+                    <label>FarmersHomeAdministration</label>
+                </value>
+                <value>
+                    <fullName>NonQM</fullName>
+                    <default>false</default>
+                    <label>NonQM</label>
+                </value>
+                <value>
+                    <fullName>USDA</fullName>
+                    <default>false</default>
+                    <label>USDA</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Rate_BuyDown__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Most Recent Rate BuyDown</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Rate__c</fullName>
+        <label>Most Recent Rate</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Most Recent Term</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Most_Recent_Transaction__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Most Recent Transaction</label>
+        <referenceTo>Transaction__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Name_For_Display__c</fullName>
+        <externalId>false</externalId>
+        <formula>FirstName &amp; &apos; &apos; &amp; LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Name (For Display)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Nickley_Realtor_LO__c</fullName>
+        <description>Preferred Loan Officer allocation for this realtor, used to filter the &quot;My Nickley Realtors&quot; Home tab for Zach Fritz, Joe Olmsted, and Rhett Delaney. Admin-managed only.</description>
+        <inlineHelpText>Which LO this Nickley Group realtor is allocated to. Only Admins should edit this.</inlineHelpText>
+        <label>Nickley Realtor LO</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Zach Fritz</fullName>
+                    <default>false</default>
+                    <label>Zach Fritz</label>
+                </value>
+                <value>
+                    <fullName>Joe Olmsted</fullName>
+                    <default>false</default>
+                    <label>Joe Olmsted</label>
+                </value>
+                <value>
+                    <fullName>Rhett Delaney</fullName>
+                    <default>false</default>
+                    <label>Rhett Delaney</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>NumberOfEmployees</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Ownership</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>ParentId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Hierarchy</type>
+    </fields>
+    <fields>
+        <fullName>PersonAssistantName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonAssistantPhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonBirthdate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonDepartment</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonDoNotCall</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonEmail</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonGenderIdentity</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PersonHasOptedOutOfEmail</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonHasOptedOutOfFax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonHomePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonIndividualId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PersonLastCURequestDate</fullName>
+    </fields>
+    <fields>
+        <fullName>PersonLastCUUpdateDate</fullName>
+    </fields>
+    <fields>
+        <fullName>PersonLeadSource</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PersonMailingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonMobilePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonOtherAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonOtherPhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>PersonPronouns</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PersonTitle</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Phone_2__c</fullName>
+        <label>Phone #2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Preferred_LO__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Preferred LO</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Primary_Investor__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Pins and highlights this investor at the top of the Approved Investors modal.</description>
+        <label>Primary Investor</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Property_Sold__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Property Sold</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Rating</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Realtor_Group__c</fullName>
+        <label>Realtor Group</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>The Nickley Group</fullName>
+                    <default>false</default>
+                    <label>The Nickley Group</label>
+                </value>
+                <value>
+                    <fullName>Nickley TC&apos;s</fullName>
+                    <default>false</default>
+                    <label>Nickley TC&apos;s</label>
+                </value>
+                <value>
+                    <fullName>Nickley ISA&apos;s</fullName>
+                    <default>false</default>
+                    <label>Nickley ISA&apos;s</label>
+                </value>
+                <value>
+                    <fullName>Coastal Real Estate Professionals</fullName>
+                    <default>false</default>
+                    <label>Coastal Real Estate Professionals</label>
+                </value>
+                <value>
+                    <fullName>SERHANT - ORL</fullName>
+                    <default>false</default>
+                    <label>SERHANT - ORL</label>
+                </value>
+                <value>
+                    <fullName>Wemert Group</fullName>
+                    <default>false</default>
+                    <label>Wemert Group</label>
+                </value>
+                <value>
+                    <fullName>Homes by Cusi</fullName>
+                    <default>false</default>
+                    <label>Homes by Cusi</label>
+                </value>
+                <value>
+                    <fullName>Rinker Realty</fullName>
+                    <default>false</default>
+                    <label>Rinker Realty</label>
+                </value>
+                <value>
+                    <fullName>CarAtlanta</fullName>
+                    <default>false</default>
+                    <label>CarAtlanta</label>
+                </value>
+                <value>
+                    <fullName>Champagne &amp; Parisi Real Estate</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Champagne &amp; Parisi Real Estate</label>
+                </value>
+                <value>
+                    <fullName>EXP Realty Melbourne</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>EXP Realty Melbourne</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Premier Group At Compass</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Premier Group At Compass</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Realtor_Individual_License_Exp_Date__c</fullName>
+        <label>Realtor/Individual License Exp. Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Realtor_Individual_License_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Realtor/Individual License Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Realtor_Referral_Source__c</fullName>
+        <label>Realtor Referral Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Instagram</fullName>
+                    <default>false</default>
+                    <label>Instagram</label>
+                </value>
+                <value>
+                    <fullName>TikTok</fullName>
+                    <default>false</default>
+                    <label>TikTok</label>
+                </value>
+                <value>
+                    <fullName>Facebook</fullName>
+                    <default>false</default>
+                    <label>Facebook</label>
+                </value>
+                <value>
+                    <fullName>Youtube</fullName>
+                    <default>false</default>
+                    <label>Youtube</label>
+                </value>
+                <value>
+                    <fullName>Partner Referral</fullName>
+                    <default>false</default>
+                    <label>Partner Referral</label>
+                </value>
+                <value>
+                    <fullName>Organic</fullName>
+                    <default>false</default>
+                    <label>Organic</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Realtor_Source__c</fullName>
+        <label>Realtor Referral Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Instagram</fullName>
+                    <default>false</default>
+                    <label>Instagram</label>
+                </value>
+                <value>
+                    <fullName>TikTok</fullName>
+                    <default>false</default>
+                    <label>TikTok</label>
+                </value>
+                <value>
+                    <fullName>Facebook</fullName>
+                    <default>false</default>
+                    <label>Facebook</label>
+                </value>
+                <value>
+                    <fullName>Youtube</fullName>
+                    <default>false</default>
+                    <label>Youtube</label>
+                </value>
+                <value>
+                    <fullName>Partner Referral</fullName>
+                    <default>false</default>
+                    <label>Partner Referral</label>
+                </value>
+                <value>
+                    <fullName>Organic</fullName>
+                    <default>false</default>
+                    <label>Organic</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Realtor_lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This field shows the related lead record for realtors.</description>
+        <label>Realtor lead</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Lead.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Realtor Lead record type</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Realtor_person_account</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SMS_Opt_Out__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>SMS Opt Out</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Salesforce_User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Salesforce User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ShippingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Sic</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>SicDesc</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Site</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Test_Checkbox__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Test Checkbox</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TickerSymbol</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Tier</fullName>
+    </fields>
+    <fields>
+        <fullName>Title_Attorney_License_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Title/Attorney License Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Title__c</fullName>
+        <externalId>false</externalId>
+        <label>Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Today_s_Date__c</fullName>
+        <formula>TODAY()</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Today&apos;s Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Coordinator__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <label>Transaction Coordinator</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <label>Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Title Agent Account</fullName>
+                    <default>false</default>
+                    <label>Title Agent Account</label>
+                </value>
+                <value>
+                    <fullName>Borrower Account</fullName>
+                    <default>false</default>
+                    <label>Borrower Account</label>
+                </value>
+                <value>
+                    <fullName>Realtor Account</fullName>
+                    <default>false</default>
+                    <label>Realtor Account</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>UTM_Content__c</fullName>
+        <externalId>false</externalId>
+        <label>UTM Content</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unique_Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Unique Account  ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Website</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>of_Closed_Transactions__c</fullName>
+        <externalId>false</externalId>
+        <label># of Closed Transactions</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>rh2__Describe__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <label>Describe</label>
+        <referenceTo>rh2__PS_Describe__c</referenceTo>
+        <relationshipLabel>Accounts</relationshipLabel>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>rh2__testCurrency__c</fullName>
+        <deprecated>false</deprecated>
+        <label>Currency Test</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <listViews>
+        <fullName>AllAccounts</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>PC_FIRST_NAME</columns>
+        <columns>PC_LAST_NAME</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Stage__pc</columns>
+        <columns>Closing_Date__pc</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>PC_LEAD_SOURCE</columns>
+        <columns>Loan_Anniversary_Date__pc</columns>
+        <columns>Loan_Officer__pc</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Accounts</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Follow_Up_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>of_Closed_Transactions__c</columns>
+        <columns>Most_Recent_Loan_Purpose__c</columns>
+        <columns>Most_Recent_Loan_Program_1st__c</columns>
+        <columns>Most_Recent_Loan_Officer__c</columns>
+        <columns>Most_Recent_Loan_Type_1st_TD__c</columns>
+        <columns>Most_Recent_Closing_Date__c</columns>
+        <columns>Most_Recent_Loan_Amount__c</columns>
+        <columns>Most_Recent_LTV__c</columns>
+        <columns>Most_Recent_Rate__c</columns>
+        <columns>Most_Recent_Rate_BuyDown__c</columns>
+        <columns>Most_Recent_DPA__c</columns>
+        <columns>Most_Recent_Buydown__c</columns>
+        <columns>Most_Recent_Term__c</columns>
+        <columns>Most_Recent_BPS__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Follow_Up_LO__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>All Follow Up Accounts</label>
+        <sharedTo>
+            <group>Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>All_Realtors</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Status__pc</columns>
+        <columns>PC_TITLE</columns>
+        <columns>ACCOUNT.RECORDTYPE</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Group__pc</field>
+            <operation>equals</operation>
+            <value>Realtor,Realtor Prospect</value>
+        </filters>
+        <label>All Realtors</label>
+        <sharedTo>
+            <group>Ryan_Kauffman</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>All_Title_Agents</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Status__pc</columns>
+        <columns>PC_TITLE</columns>
+        <columns>ACCOUNT.RECORDTYPE</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Group__pc</field>
+            <operation>equals</operation>
+            <value>Title Agent</value>
+        </filters>
+        <label>All Title Agents</label>
+    </listViews>
+    <listViews>
+        <fullName>Birthdays_Next_Week</fullName>
+        <columns>Loan_Officer__pc</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>PC_TITLE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_PHONE5</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>PC_BIRTHDATE</columns>
+        <columns>Birth_Date_Number__pc</columns>
+        <columns>Stage__pc</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PC_BIRTHDATE</field>
+            <operation>equals</operation>
+            <value>NEXT_WEEK</value>
+        </filters>
+        <filters>
+            <field>Stage__pc</field>
+            <operation>equals</operation>
+            <value>Closed Client</value>
+        </filters>
+        <label>Birthdays Next Week</label>
+    </listViews>
+    <listViews>
+        <fullName>Birthdays_This_Month</fullName>
+        <columns>Closing_Date__pc</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>PC_TITLE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_PHONE5</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>PC_BIRTHDATE</columns>
+        <columns>Birth_Date_Number__pc</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PC_BIRTHDATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Birthdays This Month</label>
+    </listViews>
+    <listViews>
+        <fullName>Closed_Lead_Source_View</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>Closing_Date__pc</columns>
+        <columns>Deal_Type__pc</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Stage__pc</columns>
+        <columns>PC_LEAD_SOURCE</columns>
+        <columns>Referred_By__pc</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>PC_BIRTHDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Stage__pc</field>
+            <operation>contains</operation>
+            <value>Closed</value>
+        </filters>
+        <filters>
+            <field>Closing_Date__pc</field>
+            <operation>equals</operation>
+            <value>LAST_MONTH</value>
+        </filters>
+        <label>Closed Clients Last Month</label>
+        <sharedTo>
+            <group>Opener</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_All_Accounts</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>PC_FIRST_NAME</columns>
+        <columns>PC_LAST_NAME</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Stage__pc</columns>
+        <columns>Closing_Date__pc</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>PC_LEAD_SOURCE</columns>
+        <columns>Loan_Anniversary_Date__pc</columns>
+        <columns>Loan_Officer__pc</columns>
+        <columns>PC_ADDRESS2_STATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PC_LEAD_SOURCE</field>
+            <operation>equals</operation>
+            <value>InIt Webinar</value>
+        </filters>
+        <label>InIT Realtor Accounts</label>
+        <sharedTo>
+            <group>Admins</group>
+            <role>Management</role>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_All_Follow_Up_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <columns>Most_Recent_Closing_Date__c</columns>
+        <columns>Most_Recent_Rate__c</columns>
+        <columns>PC_BIRTHDATE</columns>
+        <columns>of_Closed_Transactions__c</columns>
+        <columns>Most_Recent_Loan_Purpose__c</columns>
+        <columns>Most_Recent_Loan_Program_1st__c</columns>
+        <columns>Most_Recent_Loan_Officer__c</columns>
+        <columns>Most_Recent_Loan_Type_1st_TD__c</columns>
+        <columns>Most_Recent_Loan_Amount__c</columns>
+        <columns>Most_Recent_LTV__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Follow_Up_LO__c</field>
+            <operation>contains</operation>
+            <value>Joey</value>
+        </filters>
+        <filters>
+            <field>Most_Recent_Loan_Officer__c</field>
+            <operation>notContain</operation>
+            <value>carey,Ellis,Gonzalez</value>
+        </filters>
+        <label>Ben&apos;s Follow Up Account View</label>
+        <sharedTo>
+            <group>Ben_s_Group_For_Sharing</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Employees</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Title__c</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Employee</value>
+        </filters>
+        <label>Employees</label>
+        <sharedTo>
+            <group>Admins</group>
+            <portalRole>CustomerCommunityUserCustomerUser</portalRole>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Investor_Accounts</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Area_of_Specialty_Display__c</columns>
+        <columns>ACCOUNT.URL</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.TYPE</field>
+            <operation>equals</operation>
+            <value>Investor</value>
+        </filters>
+        <label>Investor Accounts</label>
+        <sharedTo>
+            <allCustomerPortalUsers></allCustomerPortalUsers>
+            <allInternalUsers></allInternalUsers>
+            <group>Admins</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Loan_Anniversaries_Next_Week</fullName>
+        <columns>Closing_Date__pc</columns>
+        <columns>Loan_Officer__pc</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_PHONE5</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>Loan_Anniversary_Date__pc</columns>
+        <columns>Stage__pc</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Loan_Anniversary_Date__pc</field>
+            <operation>equals</operation>
+            <value>NEXT_WEEK</value>
+        </filters>
+        <filters>
+            <field>Stage__pc</field>
+            <operation>equals</operation>
+            <value>Closed Client</value>
+        </filters>
+        <label>Loan Anniversaries Next Week</label>
+        <sharedTo>
+            <group>Opener</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>My_Client_List</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>ACCOUNT.RECORDTYPE</columns>
+        <columns>Type__c</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Type__c</field>
+            <operation>equals</operation>
+            <value>Borrower Account</value>
+        </filters>
+        <label>My Client List</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Follow_Up_List</fullName>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>PC_BIRTHDATE</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>of_Closed_Transactions__c</columns>
+        <columns>Most_Recent_Loan_Program_1st__c</columns>
+        <columns>Most_Recent_Loan_Purpose__c</columns>
+        <columns>Most_Recent_Loan_Officer__c</columns>
+        <columns>Most_Recent_Loan_Type_1st_TD__c</columns>
+        <columns>Most_Recent_Closing_Date__c</columns>
+        <columns>Most_Recent_Loan_Amount__c</columns>
+        <columns>Most_Recent_Rate__c</columns>
+        <columns>Last_RC_Call__c</columns>
+        <columns>Last_RC_SMS__c</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Current_User_Follow_Up_LO__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Follow Up List</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Realtors</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Status__pc</columns>
+        <columns>PC_TITLE</columns>
+        <columns>ACCOUNT.RECORDTYPE</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Group__pc</field>
+            <operation>equals</operation>
+            <value>Realtor,Realtor Prospect</value>
+        </filters>
+        <label>My Realtors</label>
+    </listViews>
+    <listViews>
+        <fullName>Nickley_Team</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>CORE.USERS.LAST_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>PC_FIRST_NAME</columns>
+        <columns>PC_LAST_NAME</columns>
+        <columns>ACCOUNT.TYPE</columns>
+        <columns>Stage__pc</columns>
+        <columns>Closing_Date__pc</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>ACCOUNT.ADDRESS1_STATE</columns>
+        <columns>PC_LEAD_SOURCE</columns>
+        <columns>Loan_Anniversary_Date__pc</columns>
+        <columns>Loan_Officer__pc</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Realtor_Group__c</field>
+            <operation>contains</operation>
+            <value>The Nickley Group,Nickley TC&apos;s,Nickley ISA&apos;s</value>
+        </filters>
+        <label>Nickley Team</label>
+    </listViews>
+    <listViews>
+        <fullName>Realtor_Recruits</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Status__pc</columns>
+        <columns>PC_TITLE</columns>
+        <columns>Appointment_Date_Time__c</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Group__pc</columns>
+        <columns>ACCOUNT.INDUSTRY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>PersonAccount.Recruit_Account</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.LAST_NAME</field>
+            <operation>contains</operation>
+            <value>Carey,Saludes</value>
+        </filters>
+        <filters>
+            <field>Status__pc</field>
+            <operation>notEqual</operation>
+            <value>Nurture</value>
+        </filters>
+        <label>Realtor Recruits</label>
+    </listViews>
+    <listViews>
+        <fullName>Team_Mali_Realtors</fullName>
+        <columns>ACCOUNT.CREATED_DATE</columns>
+        <columns>ACCOUNT.LAST_ACTIVITY</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>Status__pc</columns>
+        <columns>PC_TITLE</columns>
+        <columns>Appointment_Date_Time__c</columns>
+        <columns>ACCOUNT.PHONE1</columns>
+        <columns>PC_PHONE3</columns>
+        <columns>PC_EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Group__pc</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>PersonAccount.PersonAccount</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.LAST_NAME</field>
+            <operation>contains</operation>
+            <value>Mali</value>
+        </filters>
+        <filters>
+            <field>Status__pc</field>
+            <operation>notEqual</operation>
+            <value>Nurture</value>
+        </filters>
+        <label>Team Mali Realtors</label>
+        <sharedTo>
+            <group>Mike_Mali_For_Sharing</group>
+        </sharedTo>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Business_Account</fullName>
+        <active>true</active>
+        <label>Business Account</label>
+        <picklistValues>
+            <picklist>AccountSource</picklist>
+            <values>
+                <fullName>Google_Organic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Personal Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Zillow</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ActiveCamp__ActiveCampaign_Sync_Status__c</picklist>
+            <values>
+                <fullName>Account Deleted in ActiveCampaign</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Meet Sync Criteria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Successfully Synced</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Waiting For Next Sync</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Waiting For Update</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Area_of_Specialty__c</picklist>
+            <values>
+                <fullName>1099</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All-In-One Loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Asset Depletion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bank Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bridge Loans</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Community Mortgage%2FNo Income</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Condotel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Conventional</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DPA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DSCR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Doctor Loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA 100%25 Financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA 203K</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fannie Homestyle Reno</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fix %26 Flip</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Foreign National</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Full Doc Non-QM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HELOAN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HELOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hard Money</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ITIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interest Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jumbo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manufactured</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-QM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Warrantable Condo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>P%26L</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renovation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reverse Mortgage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Second Home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>USDA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vacant Land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WVOE</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>BD_Industry__c</picklist>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Builder</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CPA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Planner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Insurance Agent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Realtor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Title Agent</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>BD_Stage__c</picklist>
+            <values>
+                <fullName>Active Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contacted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dormant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Meeting Set</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Met</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospect</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Biz_Dev_Designation__c</picklist>
+            <values>
+                <fullName>Biz Dev - Fritz</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biz Dev - Olmsted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biz Dev - Reach</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biz Dev - Rebagliati</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Borrower_Rating__c</picklist>
+            <values>
+                <fullName>Cold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hot</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warm</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Borrower_Withdrawal_Reason__c</picklist>
+            <values>
+                <fullName>Chose Not to Proceed with the Financing Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chose to Purchase a Different Property</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Costs Are Too High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Found a More Competetive Interest Rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opted for a Direct Purchase Without Financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opted to Proceed with a Different Loan Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Property Did Not Pass Inspection and Borrower is Not Purchasing Home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selected an Alternative Lender</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Broker_Channel_Products__c</picklist>
+            <values>
+                <fullName>1099</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All-In-One Loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Asset Depletion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bank Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bridge Loans</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Community Mortgage%2FNo Income</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Condotel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Conventional</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DPA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DSCR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Doctor Loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA 100%25 Financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA 203K</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fannie Homestyle Reno</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fix %26 Flip</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Foreign National</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Full Doc Non-QM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HELOAN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HELOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hard Money</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ITIN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interest Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jumbo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manufactured</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-QM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Non-Warrantable Condo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>P%26L</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renovation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reverse Mortgage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Second Home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>USDA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vacant Land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WVOE</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Industry</picklist>
+            <values>
+                <fullName>Agriculture</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Apparel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Banking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biotechnology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chemicals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Communications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Electronics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Entertainment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Environmental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Food %26 Beverage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Government</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hospitality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Machinery</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manufacturing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Media</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not For Profit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Recreation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Retail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shipping</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telecommunications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transportation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utilities</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Investor_Channel__c</picklist>
+            <values>
+                <fullName>Broker</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Non-Delegated Correspondent</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Most_Recent_Buydown__c</picklist>
+            <values>
+                <fullName>1-0</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>1-1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2-1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3-2-1</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Most_Recent_Loan_Program_1st__c</picklist>
+            <values>
+                <fullName>10%2F1 yr ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10%2F1 yr Interest Only ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>15 yr Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>20 yr Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%2F1 yr ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%2F1 yr Interest Only ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>30 yr Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>30 yr Interest Only</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>40 Yr Adjustable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>40 yr Fixed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5%2F1 yr ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5%2F1 yr Interest Only ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7%2F1 yr ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7%2F1 yr Interest Only ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Money Merge Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Option ARM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reverse Mortgage</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Most_Recent_Loan_Purpose__c</picklist>
+            <values>
+                <fullName>Cash-Out Refinance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HELOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NoCash-Out Refinance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Refinance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Refinance Cash-Out</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Refinance Debt Consolidation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Refinance No Cash-Out</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Refinance Rate %26 Term</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Most_Recent_Loan_Type_1st_TD__c</picklist>
+            <values>
+                <fullName>Conventional</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FHA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FarmersHomeAdministration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jumbo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NonQM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>USDA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VA</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Nickley_Realtor_LO__c</picklist>
+            <values>
+                <fullName>Joe Olmsted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rhett Delaney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Zach Fritz</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Ownership</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Private</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subsidiary</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Rating</picklist>
+            <values>
+                <fullName>Cold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hot</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warm</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Realtor_Group__c</picklist>
+            <values>
+                <fullName>Coastal Real Estate Professionals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nickley ISA%27s</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SERHANT - ORL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>The Nickley Group</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wemert Group</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Realtor_Referral_Source__c</picklist>
+            <values>
+                <fullName>Facebook</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instagram</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Organic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TikTok</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Youtube</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Realtor_Source__c</picklist>
+            <values>
+                <fullName>Facebook</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instagram</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Organic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TikTok</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Youtube</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Analyst</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Competitor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Integrator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warehouse Bank</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Borrower Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Realtor Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Title Agent Account</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.ADDRESS1_CITY</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.PHONE1</customTabListAdditionalFields>
+        <listViewButtons>Send_Bulk_SMS</listViewButtons>
+        <listViewButtons>Send_Bulk</listViewButtons>
+        <lookupDialogsAdditionalFields>ACCOUNT.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.PHONE1</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PC_EMAIL</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CORE.USERS.ALIAS</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.TYPE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.PHONE1</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.PHONE1</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+        <searchResultsCustomButtons>Send_Bulk_SMS</searchResultsCustomButtons>
+        <searchResultsCustomButtons>Send_Bulk</searchResultsCustomButtons>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Email_required_Realtor</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(  
+    INCLUDES(Group__pc ,&apos;Realtor&apos;),
+    ISBLANK( PersonEmail )
+ )</errorConditionFormula>
+        <errorMessage>Email required on Realtor Group Accounts.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>No_Owner_Change_on_Accounts</fullName>
+        <active>true</active>
+        <description>This rule will return an error is a user with the profile of Loan Officer tries to change record ownership on an account.</description>
+        <errorConditionFormula>ISCHANGED( OwnerId ) &amp;&amp;  $User.ProfileId  = &quot;00ef2000001wwBC&quot;  &amp;&amp;  $User.Id  &lt;&gt; &quot;005f2000009NwSs&quot;</errorConditionFormula>
+        <errorMessage>You do not have permission to change record ownership for this record.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>RealtorGroup_PhoneNum</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(  INCLUDES(Group__pc  , &apos;Realtor&apos;) , ISBLANK(Phone) )</errorConditionFormula>
+        <errorMessage>Phone number required on Realtor Group Accounts.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>GoogleMaps</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Maps</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://maps.google.com/maps?f=q&amp;hl=en&amp;q={!Account_BillingStreet}+{!Account_BillingCity}+{!Account_BillingState}&amp;om=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleNews</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google News</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/news?&amp;q={!Account_Name}&amp;btnG=Search+News</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleSearch</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Search</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/search?q={!Account_Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Bulk</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Send Bulk SMS</masterLabel>
+        <openType>noSidebar</openType>
+        <page>Send_Bulk_SMS</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Bulk_SMS</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Bulk SMS</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)}
+function loadJqueryDynamically(){
+
+var newscript = document.createElement(&apos;script&apos;);
+newscript.type = &apos;text/javascript&apos;;
+newscript.async = false;
+newscript.src = &apos;{!URLFOR(&apos;/resource/smagicinteract__smJQuery/js/jquery-1.10.2.js&apos;)}&apos;;
+(document.getElementsByTagName(&apos;head&apos;)[0]||document.getElementsByTagName(&apos;body&apos;)[0]).appendChild(newscript);
+
+var newscript1 = document.createElement(&apos;script&apos;);
+newscript1.type = &apos;text/javascript&apos;;
+newscript1.async = false;
+newscript1.src = &apos;{!URLFOR(&apos;/resource/smagicinteract__smJQuery/js/jquery-ui-1.10.4.custom.min.js&apos;)} &apos;;
+(document.getElementsByTagName(&apos;head&apos;)[0]||document.getElementsByTagName(&apos;body&apos;)[0]).appendChild(newscript1);
+
+var newscript2 = document.createElement(&apos;script&apos;);
+newscript2.type = &apos;text/javascript&apos;;
+newscript2.async = false;
+newscript2.src = &apos;{!URLFOR(&apos;/resource/smagicinteract__sendSMSJS&apos;)}&apos;;
+(document.getElementsByTagName(&apos;head&apos;)[0]||document.getElementsByTagName(&apos;body&apos;)[0]).appendChild(newscript2);
+newscript2.onload = showPage;
+
+}
+
+
+loadJqueryDynamically();
+
+function showPage() {
+
+var records = {!GETRECORDIDS($ObjectType.Account)}; 
+if (records[0] == null)
+{
+alert(&quot;Please select at least one Account.&quot;) 
+}
+else{
+var packagePrefix = &quot;smagicinteract__&quot;;
+var recordIds = &quot;&quot;;
+var userId = &apos;{!$User.Id}&apos;;
+var elementIdVar = &apos;&apos;;
+var dialogTitle = &apos;&apos;;
+var queryString = &apos;&apos;;
+var showUserDropDown = false; 
+var recordType = &quot;Account&quot;; // Enter the API name of an object
+var nameField = &apos;Name&apos;; // Enter the API Name of a Name Field 
+var mobileField = &apos;Phone&apos;; // Enter the API Name of a Mobile Field. For multiple mobile fields, add API Names of Mobile Fields comma separated (Max 3 allowed) 
+var optOutField = &apos;smagicinteract__SMSOptOut__c&apos;; // Enter the API Name name of Optout field
+var unrelatedObjectAPIName = &apos;&apos;; // Enter API name of unrelated Object 
+var optOutDefaultValue = &apos;no&apos;; // Enter the default OptOut Value 
+var smsType = &apos;&apos;; // Enter type as &apos;popup&apos; if you want to send message from popup
+
+for (var n in records) {
+if(n == &apos;remove&apos; || n == &apos;indexOf&apos;) continue;
+recordIds = recordIds + records[n];
+
+if (n != records.length-1) {
+recordIds = recordIds + &quot;,&quot;;
+}
+}
+
+var cssUrl = &apos;{!URLFOR(&apos;/resource/smagicinteract__smJQuery/css/sm-theme/jquery-ui-1.10.4.custom.min.css&apos;)}&apos;;
+
+if({!$Permission.smagicinteract__AllowToSendBulkMessage}) { 
+sendSMS(recordType, recordIds, userId, nameField, mobileField, optOutField, optOutDefaultValue, smsType, elementIdVar, packagePrefix, showUserDropDown, dialogTitle, cssUrl, unrelatedObjectAPIName);
+}
+else { 
+alert(&apos;You cannot Send SMS. Please Account system admin&apos;); 
+} 
+
+}
+
+}
+Description</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_SMS</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send SMS</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&apos;/resource/smagicinteract__smJQuery/js/jquery-1.10.2.js&apos;)} 
+{!REQUIRESCRIPT(&apos;/resource/smagicinteract__smJQuery/js/jquery-ui-1.10.4.custom.min.js&apos;)} 
+{!REQUIRESCRIPT(&quot;/resource/smagicinteract__sendSMSJS&quot;)} 
+
+var cssUrl = &apos;{!URLFOR(&apos;/resource/smagicinteract__smJQuery/css/sm-theme/jquery-ui-1.10.4.custom.min.css&apos;)}&apos;; 
+
+var packagePrefix = &quot;smagicinteract__&quot;; 
+var userId = &apos;{!$User.Id}&apos;; 
+var elementIdVar = &apos;&apos;; 
+var showUserDropDown = false; 
+var dialogTitle = &apos;&apos;; 
+var recordType = &apos;Account&apos;; // Enter the API name of an object
+var idToUpdate = &apos;{!Account.Id}&apos; // Enter merge field of id for example:- for Contact object enter &apos;{!Account.Id}&apos; 
+var nameField = &apos;Name&apos;; // Enter the API Name of a Name Field 
+var mobileField = &apos;Phone&apos;; // Enter the API Name of a Mobile Field. For multiple mobile fields, add API Names of Mobile Fields comma separated (Max 3 allowed) 
+var optOutField = &apos;SMS_Opt_Out__c&apos;; // Enter API name of optOut field 
+var optOutDefaultValue = &apos;no&apos;; // Enter the default OptOut Value
+var smsType = &apos;popup&apos;; // Enter type as &apos;popup&apos; if you want to send message from popup
+var unrelatedObjectAPIName = &apos;&apos;; // Enter the API Name of an Unrelated object 
+
+sendSMS(recordType, idToUpdate, userId, nameField, mobileField, optOutField, optOutDefaultValue, smsType, elementIdVar, packagePrefix, showUserDropDown, dialogTitle, cssUrl, unrelatedObjectAPIName);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>TwilioSF__Twilio_Two_Way_Messages</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Twilio Two Way Messages</masterLabel>
+        <openType>noSidebar</openType>
+        <page>TwilioSF__TwoWayMessagesAccount</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

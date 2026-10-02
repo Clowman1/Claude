@@ -1,0 +1,7 @@
+@import 'c/portalSharedStyles';
+
+:host { display: block; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+.form-error {
+    margin: 16px;
+}

@@ -1,0 +1,72 @@
+/**
+ * Emails ops when no Call_Insight__c has been created in 24 hours (RingSense feed silence).
+ */
+public without sharing class RingSenseSilenceAlertService {
+    private static final String LOG_SOURCE = 'RingSense Silence Alert';
+    private static final Integer SILENCE_HOURS = 24;
+
+    public class RunResult {
+        public Boolean alerted;
+        public Datetime latestCreatedDate;
+        public String message;
+        public RunResult() {
+            this.alerted = false;
+        }
+    }
+
+    public static RunResult run() {
+        RunResult result = new RunResult();
+        result.latestCreatedDate = CallInsightRepository.selectLatestCreatedDate();
+        Datetime cutoff = Datetime.now().addHours(-SILENCE_HOURS);
+        Boolean isSilent = result.latestCreatedDate == null || result.latestCreatedDate < cutoff;
+
+        if (!isSilent) {
+            result.message = 'Feed healthy. Latest Call Insight at ' + String.valueOf(result.latestCreatedDate);
+            insertLog(result.message);
+            return result;
+        }
+
+        String lastSeen = result.latestCreatedDate == null
+            ? 'never'
+            : String.valueOf(result.latestCreatedDate);
+        result.message =
+            'No Call_Insight__c created in the last ' +
+            SILENCE_HOURS +
+            ' hours. Last created: ' +
+            lastSeen +
+            '. Org: ' +
+            UserInfo.getOrganizationName() +
+            '. Check Custom_Log__c (RingSense Webhook / RingSense Webhook Error) and Home Tools > RingSense Webhook.';
+
+        sendAlert(result.message);
+        result.alerted = true;
+        insertLog(result.message);
+        return result;
+    }
+
+    private static void sendAlert(String body) {
+        String raw = Label.RingSense_Silence_Alert_Addresses;
+        if (String.isBlank(raw)) {
+            return;
+        }
+        List<String> toAddresses = new List<String>();
+        for (String part : raw.split(',')) {
+            String email = part == null ? null : part.trim();
+            if (!String.isBlank(email)) {
+                toAddresses.add(email);
+            }
+        }
+        if (toAddresses.isEmpty()) {
+            return;
+        }
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setToAddresses(toAddresses);
+        mail.setSubject('RingSense feed silence — no Call Insights in 24 hours');
+        mail.setPlainTextBody(body);
+        Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ mail }, false);
+    }
+
+    private static void insertLog(String data) {
+        insert new Custom_Log__c(Source__c = LOG_SOURCE, Data__c = data);
+    }
+}

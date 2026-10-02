@@ -1,0 +1,83 @@
+<template>
+    <template lwc:if={open}>
+        <section class="modal-backdrop" role="dialog" aria-modal="true" aria-label={modalTitle}>
+            <div class="modal-card" aria-busy={saving}>
+                <div class="modal-header">
+                    <div>
+                        <h2>{modalTitle}</h2>
+                        <template lwc:if={subjectContext}>
+                            <p class="modal-subtitle">{subjectContext}</p>
+                        </template>
+                    </div>
+                    <button type="button" class="modal-close" onclick={handleClose} aria-label="Close"><c-portal-icon name="x" size="18"></c-portal-icon></button>
+                </div>
+                <div class="modal-body">
+                    <template lwc:if={hasContact}>
+                        <p class="contact-strip">
+                            <template lwc:if={phone}>{phone}</template>
+                            <template lwc:if={phone}>
+                                <template lwc:if={email}> · </template>
+                            </template>
+                            <template lwc:if={email}>{email}</template>
+                        </p>
+                    </template>
+
+                    <fieldset class="field-block">
+                        <legend>How did you reach out?</legend>
+                        <div class="channel-row">
+                            <template for:each={channels} for:item="item">
+                                <button
+                                    key={item.id}
+                                    type="button"
+                                    class={item.className}
+                                    data-channel={item.id}
+                                    onclick={handleChannelClick}
+                                >
+                                    {item.label}
+                                </button>
+                            </template>
+                        </div>
+                    </fieldset>
+
+                    <label class="field-block">
+                        <span class="field-label">Outcome</span>
+                        <select class="field-input" value={outcome} onchange={handleOutcomeChange}>
+                            <template for:each={outcomeOptions} for:item="option">
+                                <option key={option.id} value={option.id}>{option.label}</option>
+                            </template>
+                        </select>
+                    </label>
+
+                    <label class="field-block">
+                        <span class="field-label">Notes</span>
+                        <textarea
+                            class="field-textarea"
+                            rows="4"
+                            value={notes}
+                            onchange={handleNotesChange}
+                            placeholder="What was discussed and what happens next?"
+                        ></textarea>
+                        <template lwc:if={errorMessage}>
+                            <p class="field-error">{errorMessage}</p>
+                        </template>
+                    </label>
+
+                    <c-lo-ws-follow-up-picker default-mode="general" onchange={handleFollowUpChange}></c-lo-ws-follow-up-picker>
+
+                    <template lwc:if={goalCredit}>
+                        <p class="goal-note">Saving this activity credits {goalCredit}.</p>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick={handleClose} disabled={saving}>Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick={handleSave} disabled={saving}>
+                        <template lwc:if={saving}>
+                            <span class="spinner" aria-hidden="true"></span>
+                        </template>
+                        {saveButtonLabel}
+                    </button>
+                </div>
+            </div>
+        </section>
+    </template>
+</template>

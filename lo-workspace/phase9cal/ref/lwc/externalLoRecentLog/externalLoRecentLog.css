@@ -1,0 +1,45 @@
+@import 'c/portalSharedStyles';
+
+.panel {
+    background: var(--pw-surface, #ffffff);
+    border: 1px solid var(--pw-line, #dfe8f3);
+    border-radius: 16px;
+    padding: 16px 20px;
+}
+
+.panel-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.empty,
+.log-meta {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--pw-ink-400, #5f83b3);
+}
+
+.log-list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+}
+
+.log-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--pw-line, #dfe8f3);
+}
+
+.log-title {
+    margin: 0;
+    font-weight: 600;
+}
+
+.count {
+    font-variant-numeric: tabular-nums;
+    color: var(--pw-navy-700, #243c60);
+}

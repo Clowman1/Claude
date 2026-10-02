@@ -1,0 +1,253 @@
+<template>
+    <section class="wizard-shell">
+        <div class="wizard-toolbar">
+            <template lwc:if={showBack}>
+                <lightning-button label="Back" onclick={handleBack}></lightning-button>
+            </template>
+            <div class="wizard-toolbar-spacer"></div>
+            <lightning-button
+                label="Exit"
+                title="Cancel"
+                icon-name="utility:close"
+                variant="destructive"
+                onclick={handleExit}>
+            </lightning-button>
+        </div>
+
+        <template lwc:if={isChoiceStep}>
+            <section class="choice-shell">
+                <div class="choice-header">
+                    <p class="eyebrow">Pre-Approval Conditions</p>
+                    <h2>What would you like to do?</h2>
+                    <p>Choose the condition workflow that fits this borrower.</p>
+                </div>
+
+                <div class="choice-grid">
+                    <button
+                        class={initialClass}
+                        type="button"
+                        data-value="Create Initial Bundle"
+                        onclick={handleChoiceSelect}
+                        onkeydown={handleChoiceKeyDown}>
+                        <span class="card-kicker">Recommended</span>
+                        <span class="card-title">Create Initial Bundle</span>
+                        <span class="card-copy">Build a guided starter set using loan purpose, income type, assets, and identification.</span>
+                    </button>
+                    <button
+                        class={additionalClass}
+                        type="button"
+                        data-value="Additional Conditions"
+                        onclick={handleChoiceSelect}
+                        onkeydown={handleChoiceKeyDown}>
+                        <span class="card-kicker">Manual Add</span>
+                        <span class="card-title">Additional Conditions</span>
+                        <span class="card-copy">Type a condition by hand: pick Income, Asset, Credit or Other and describe what the borrower needs to send.</span>
+                    </button>
+                </div>
+            </section>
+        </template>
+
+        <template lwc:if={isBorrowerStep}>
+            <section class="choice-shell">
+                <div class="choice-header">
+                    <p class="eyebrow">Pre-Approval Conditions</p>
+                    <h2>Who are these conditions for?</h2>
+                    <p>Pick the borrower these items belong to. You can change any of them afterwards.</p>
+                </div>
+
+                <div class="choice-grid">
+                    <template for:each={borrowerCards} for:item="card">
+                        <button
+                            key={card.value}
+                            class={card.cssClass}
+                            type="button"
+                            data-value={card.value}
+                            onclick={handleBorrowerSelect}
+                            onkeydown={handleBorrowerKeyDown}>
+                            <span class="card-kicker">{card.kicker}</span>
+                            <span class="card-title">{card.title}</span>
+                            <span class="card-copy">{card.copy}</span>
+                        </button>
+                    </template>
+                </div>
+
+                <template lwc:if={hasIneligibleBorrowers}>
+                    <div class="ineligible">
+                        <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                        <span>{ineligibleMessage}</span>
+                    </div>
+                </template>
+            </section>
+        </template>
+
+        <template lwc:if={isBundleStep}>
+            <section class="details-shell">
+                <div class="details-header">
+                    <p class="eyebrow">Initial Bundle Details</p>
+                    <h2>Tell us how to build the starter condition set</h2>
+                    <p>Select the loan purpose below. Income conditions are available on the next screen for manual selection.</p>
+                </div>
+
+                <div class="group">
+                    <div class="group-heading">
+                        <span>Loan Purpose</span>
+                        <small>Required</small>
+                    </div>
+                    <div class="card-grid two">
+                        <button
+                            class={purchaseClass}
+                            type="button"
+                            data-value="Purchase"
+                            onclick={handleBundleSelect}
+                            onkeydown={handleBundleKeyDown}>
+                            <span class="card-title">Purchase</span>
+                            <span class="card-copy">Starts with common identification and purchase asset defaults.</span>
+                        </button>
+                        <button
+                            class={refinanceClass}
+                            type="button"
+                            data-value="Refinance"
+                            onclick={handleBundleSelect}
+                            onkeydown={handleBundleKeyDown}>
+                            <span class="card-title">Refinance</span>
+                            <span class="card-copy">Starts with common identification defaults.</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template lwc:if={isEmploymentStep}>
+            <section class="details-shell">
+                <div class="details-header">
+                    <p class="eyebrow">Initial Bundle Details</p>
+                    <h2>How does this borrower earn income?</h2>
+                    <p>We use this to show the right income document presets on the next screen.</p>
+                </div>
+                <div class="group">
+                    <div class="group-heading">
+                        <span>Employment type</span>
+                        <small>Required</small>
+                    </div>
+                    <div class="card-grid four">
+                        <button class={w2EmploymentClass} type="button" data-value="W2" onclick={handleEmploymentSelect} onkeydown={handleEmploymentKeyDown}>
+                            <span class="card-title">W-2</span>
+                            <span class="card-copy">Pay stubs, W-2s, and VOE when needed.</span>
+                        </button>
+                        <button class={selfEmployedClass} type="button" data-value="Self Employed" onclick={handleEmploymentSelect} onkeydown={handleEmploymentKeyDown}>
+                            <span class="card-title">Self employed</span>
+                            <span class="card-copy">Business returns, P&amp;L, and entity docs.</span>
+                        </button>
+                        <button class={retiredEmploymentClass} type="button" data-value="Retired" onclick={handleEmploymentSelect} onkeydown={handleEmploymentKeyDown}>
+                            <span class="card-title">Retired</span>
+                            <span class="card-copy">Award letters, 1099-R, and pension income.</span>
+                        </button>
+                        <button class={vaEmploymentClass} type="button" data-value="VA" onclick={handleEmploymentSelect} onkeydown={handleEmploymentKeyDown}>
+                            <span class="card-title">VA</span>
+                            <span class="card-copy">VA benefit and entitlement documentation.</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template lwc:if={isSelfEmploymentStep}>
+            <section class="details-shell">
+                <div class="details-header">
+                    <p class="eyebrow">Self employment</p>
+                    <h2>What type of business entity?</h2>
+                    <p>Choose the structure that matches the borrower’s self-employment.</p>
+                </div>
+                <div class="group">
+                    <div class="group-heading">
+                        <span>Entity type</span>
+                        <small>Required</small>
+                    </div>
+                    <div class="card-grid three">
+                        <button class={llcSelfEmploymentClass} type="button" data-value="LLC" onclick={handleSelfEmploymentSelect} onkeydown={handleSelfEmploymentKeyDown}>
+                            <span class="card-title">LLC</span>
+                        </button>
+                        <button class={partnershipSelfEmploymentClass} type="button" data-value="Partnership" onclick={handleSelfEmploymentSelect} onkeydown={handleSelfEmploymentKeyDown}>
+                            <span class="card-title">Partnership</span>
+                        </button>
+                        <button class={sCorpSelfEmploymentClass} type="button" data-value="S Corporation" onclick={handleSelfEmploymentSelect} onkeydown={handleSelfEmploymentKeyDown}>
+                            <span class="card-title">S Corporation</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <template lwc:if={isPresetStep}>
+            <c-lead-portal-preset-condition-selector
+                context-record-key={contextRecordKey}
+                loan-purpose={loanPurpose}
+                employment-type={employmentType}
+                self-employment-type={selfEmploymentType}
+                assignment={assignment}
+                onportalcomplete={handlePresetComplete}>
+            </c-lead-portal-preset-condition-selector>
+        </template>
+
+        <template lwc:if={isManualStep}>
+            <section class="details-shell">
+                <div class="details-header">
+                    <p class="eyebrow">Manual Add</p>
+                    <h2>Add a condition by hand</h2>
+                    <p>Pick the type, then describe what the borrower needs to send. The description is what they read on their portal and in the request email.</p>
+                </div>
+
+                <div class="group">
+                    <div class="group-heading">
+                        <span>Condition Type</span>
+                        <small>Required</small>
+                    </div>
+                    <div class="card-grid four">
+                        <button class={incomeClass} type="button" data-value="Income" onclick={handleManualTypeSelect}>
+                            <span class="card-title">Income</span>
+                            <span class="card-copy">Pay stubs, W-2s, tax returns, benefit or award letters.</span>
+                        </button>
+                        <button class={assetClass} type="button" data-value="Asset" onclick={handleManualTypeSelect}>
+                            <span class="card-title">Asset</span>
+                            <span class="card-copy">Bank and retirement statements, gift funds, earnest money.</span>
+                        </button>
+                        <button class={creditClass} type="button" data-value="Credit" onclick={handleManualTypeSelect}>
+                            <span class="card-title">Credit</span>
+                            <span class="card-copy">Identification, letters of explanation, housing history.</span>
+                        </button>
+                        <button class={otherClass} type="button" data-value="Other" onclick={handleManualTypeSelect}>
+                            <span class="card-title">Other</span>
+                            <span class="card-copy">Anything outside the three above. Files under Conditions.</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <div class="group-heading">
+                        <span>What does the borrower need to send?</span>
+                        <small>Required</small>
+                    </div>
+                    <textarea
+                        class="description-input"
+                        placeholder="Most Recent 2 Months Bank Statements for Accounts Being Used for Closing"
+                        value={manualDescription}
+                        oninput={handleManualDescriptionChange}></textarea>
+                    <p class="field-hint">Write it the way you would say it to the borrower. Be specific about how many months or years you need.</p>
+                </div>
+            </section>
+
+            <div class="wizard-footer">
+                <lightning-button
+                    label="Create Condition"
+                    variant="brand"
+                    onclick={handleManualSave}
+                    disabled={isSaving}>
+                </lightning-button>
+            </div>
+        </template>
+
+        <template lwc:if={errorMessage}>
+            <div class="wizard-error" role="alert">{errorMessage}</div>
+        </template>
+    </section>
+</template>

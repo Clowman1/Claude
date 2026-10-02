@@ -1,0 +1,385 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T1"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6ovIAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 372,
+      "rcsfl__call_start_time__c": "2026-09-27T14:14:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550142",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-27",
+      "Description": "Walked through our 10-day close and the pre-approval portal. Has 3 buyers shopping, wants to meet."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T2"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6ovIAA",
+      "Subject": "Outbound SMS",
+      "InteractionType__c": "Sms",
+      "CallType": "Outbound",
+      "rcsfl__call_start_time__c": "2026-09-27T14:32:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550142",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-27",
+      "Description": "Great talking today! Coffee Thursday 8:30 at Kahwa on Central work for you?"
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T3"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6ovIAA",
+      "Subject": "Inbound SMS",
+      "InteractionType__c": "Sms",
+      "CallType": "Inbound",
+      "rcsfl__call_start_time__c": "2026-09-27T15:05:00.000+0000",
+      "rcsfl__from_number__c": "+18135550142",
+      "rcsfl__to_number__c": "+17542901871",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-27",
+      "Description": "Perfect, see you Thursday!"
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T4"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6ovIAA",
+      "Subject": "Inbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Inbound",
+      "CallDurationInSeconds": 160,
+      "rcsfl__call_start_time__c": "2026-09-23T20:52:00.000+0000",
+      "rcsfl__from_number__c": "+18135550142",
+      "rcsfl__to_number__c": "+17542901871",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-23",
+      "Description": "Returned my intro voicemail. Frustrated with her current lender on communication."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T5"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6owIAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 0,
+      "rcsfl__call_start_time__c": "2026-09-08T17:20:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550151",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-08",
+      "Description": "No answer, left voicemail."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T6"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6owIAA",
+      "Subject": "Outbound SMS",
+      "InteractionType__c": "Sms",
+      "CallType": "Outbound",
+      "rcsfl__call_start_time__c": "2026-09-07T13:45:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550151",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-07",
+      "Description": "Hi Dana, Fred with Reach Home Loans. Would love to buy you a coffee and hear what your buyers need."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T7"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6oxIAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 245,
+      "rcsfl__call_start_time__c": "2026-09-12T15:00:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+17275550163",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-12",
+      "Description": "Tax season prep. Open to referring self-employed clients who need bank-statement loans."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T8"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6oyIAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 410,
+      "rcsfl__call_start_time__c": "2026-08-24T19:10:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550174",
+      "Status": "Completed",
+      "ActivityDate": "2026-08-24",
+      "Description": "Title turn times and our closing calendar. Very responsive team."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T9"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6ozIAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 198,
+      "rcsfl__call_start_time__c": "2026-09-14T18:05:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+17275550185",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-14",
+      "Description": "Bundling homeowners quotes into our pre-approval packet. Wants a one-pager."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T10"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p0IAA",
+      "Subject": "Inbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Inbound",
+      "CallDurationInSeconds": 305,
+      "rcsfl__call_start_time__c": "2026-09-21T14:30:00.000+0000",
+      "rcsfl__from_number__c": "+18135550196",
+      "rcsfl__to_number__c": "+17542901871",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-21",
+      "Description": "Clients relocating from NY with large down payments. Confirmed lunch."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T11"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p1IAA",
+      "Subject": "Outbound SMS",
+      "InteractionType__c": "Sms",
+      "CallType": "Outbound",
+      "rcsfl__call_start_time__c": "2026-09-22T16:15:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+17275550107",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-22",
+      "Description": "Thanks again for coffee Nora. Sending over our closing checklist now."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T12"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p2IAA",
+      "Subject": "Inbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Inbound",
+      "CallDurationInSeconds": 486,
+      "rcsfl__call_start_time__c": "2026-09-28T21:40:00.000+0000",
+      "rcsfl__from_number__c": "+18135550118",
+      "rcsfl__to_number__c": "+17542901871",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-28",
+      "Description": "Two new buyers ready to go. Sending them over tomorrow."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T13"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p2IAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 223,
+      "rcsfl__call_start_time__c": "2026-09-17T13:15:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550118",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-17",
+      "Description": "Checked in on the Palma Ceia listing. Buyer financing questions."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T14"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p3IAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 110,
+      "rcsfl__call_start_time__c": "2026-09-28T15:25:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+19545550129",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-28",
+      "Description": "Intro call. Busy week, asked to reconnect after his open house."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T15"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p4IAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 318,
+      "rcsfl__call_start_time__c": "2026-09-25T19:45:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+19545550131",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-25",
+      "Description": "Discussed first-time-buyer clients. Lunch invite going out."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T16"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p7IAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 132,
+      "rcsfl__call_start_time__c": "2026-09-10T14:00:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+18135550167",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-10",
+      "Description": "Divorce refinances and buyouts. Wants to understand the timeline."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T17"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p8IAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 95,
+      "rcsfl__call_start_time__c": "2026-07-29T17:30:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+19545550178",
+      "Status": "Completed",
+      "ActivityDate": "2026-07-29",
+      "Description": "New build construction-to-perm question. Paused her spec homes this year."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T18"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p9IAA",
+      "Subject": "Outbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Outbound",
+      "CallDurationInSeconds": 0,
+      "rcsfl__call_start_time__c": "2026-09-29T13:10:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+17275550189",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-29",
+      "Description": "No answer, left voicemail about the happy hour."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T19"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p9IAA",
+      "Subject": "Outbound SMS",
+      "InteractionType__c": "Sms",
+      "CallType": "Outbound",
+      "rcsfl__call_start_time__c": "2026-09-29T13:12:00.000+0000",
+      "rcsfl__from_number__c": "+17542901871",
+      "rcsfl__to_number__c": "+17275550189",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-29",
+      "Description": "Hi Derek, looking forward to Friday! Parking is free after 5 at the garage on Water St."
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T20"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Inbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Inbound",
+      "CallDurationInSeconds": 142,
+      "rcsfl__call_start_time__c": "2026-09-29T15:48:00.000+0000",
+      "rcsfl__from_number__c": "+18135550199",
+      "rcsfl__to_number__c": "+17542901871",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-29"
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T21"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Subject": "Inbound Call",
+      "InteractionType__c": "Call",
+      "CallType": "Inbound",
+      "CallDurationInSeconds": 67,
+      "rcsfl__call_start_time__c": "2026-09-28T18:20:00.000+0000",
+      "rcsfl__from_number__c": "+17275550192",
+      "rcsfl__to_number__c": "+17542901871",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-28"
+    },
+    {
+      "attributes": {
+        "type": "Task",
+        "referenceId": "T22"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p9IAA",
+      "Subject": "BD Touch: In person",
+      "Status": "Completed",
+      "ActivityDate": "2026-09-19",
+      "Description": "Coffee at Oxford Exchange. Introduced us to two partners at his firm."
+    }
+  ]
+}

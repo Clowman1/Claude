@@ -1,0 +1,39 @@
+<template>
+    <div class="backdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-label="Invite tracker">
+            <template lwc:if={error}><div class="mb"><div class="err" role="alert">{error}</div></div></template>
+            <template lwc:if={ev}>
+                <div class="mh">
+                    <div>
+                        <div class="lbl">{header}</div>
+                        <h2 class="title">{ev.name}</h2>
+                        <div class="muted small">{sub}</div>
+                    </div>
+                    <div class="counts">
+                        <div class="count yesbox"><b>{ev.attending}</b><span>Attending</span></div>
+                        <div class="count waitbox"><b>{ev.awaiting}</b><span>No reply</span></div>
+                        <div class="count nobox"><b>{ev.declined}</b><span>Declined</span></div>
+                    </div>
+                </div>
+                <div class="mb">
+                    <template for:each={invitees} for:item="r">
+                        <div key={r.memberId} class="inv">
+                            <div class="grow">
+                                <div><b>{r.name}</b> <template lwc:if={r.industry}><span class={r.indCls}>{r.industry}</span></template></div>
+                                <template lwc:if={r.sentText}><div class="muted small">{r.sentText}</div></template>
+                            </div>
+                            <span class={r.statusCls}>{r.status}</span>
+                            <template lwc:if={r.canResend}>
+                                <button class="btn btn-s" data-id={r.memberId} disabled={r.resending} onclick={resend}>Resend</button>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <div class="mf">
+                <button class="btn" onclick={close}>Close</button>
+                <button class="btn btn-p" onclick={openCampaign}>Open event</button>
+            </div>
+        </section>
+    </div>
+</template>

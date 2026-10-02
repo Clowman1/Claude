@@ -1,0 +1,392 @@
+<template>
+    <template lwc:if={isDetailView}>
+        <template lwc:if={detail}>
+            <main class="detail-page">
+                <div class="detail-page-inner">
+                    <button type="button" class="back-link" onclick={handleBack}><c-portal-icon name="arrow-left" size="16"></c-portal-icon>My Leads</button>
+
+                    <header class="detail-header-card">
+                        <div class="detail-header-main">
+                            <div class="detail-title-row">
+                                <h1 class="detail-title">{detail.summary.name}</h1>
+                                <span class={detail.summary.statusClass}>{detail.summary.status}</span>
+                                <template lwc:if={detail.summary.neverContacted}>
+                                    <span class="badge badge-danger">Never contacted</span>
+                                </template>
+                            </div>
+                            <p class="detail-primary">{detail.summary.primary}</p>
+                            <p class="detail-meta">{headerMeta}</p>
+                        </div>
+                        <div class="detail-header-actions">
+                            <button type="button" class="btn btn-outline" onclick={handleOpenConversion}>Convert to transaction</button>
+                            <template lwc:if={showPreApprovalLetter}>
+                                <button type="button" class="btn btn-outline" onclick={handleOpenLetter}>Pre-Approval Letter</button>
+                            </template>
+                            <button type="button" class="btn btn-brand" onclick={handleLogOpen}>Log communication</button>
+                            <template lwc:if={hasAriveUrl}>
+                                <a class="btn btn-outline" href={detail.ariveUrl} target="_blank" rel="noopener noreferrer">Open in Arive</a>
+                            </template>
+                            <template lwc:else>
+                                <button type="button" class="btn btn-outline" onclick={handleOpenArive}>Open in Arive</button>
+                            </template>
+                        </div>
+                    </header>
+
+                    <nav class="detail-tabs" aria-label="Lead sections">
+                        <template for:each={detailTabs} for:item="tab">
+                            <button
+                                key={tab.id}
+                                type="button"
+                                class={tab.tabClass}
+                                data-tab={tab.id}
+                                aria-current={tab.ariaCurrent}
+                                onclick={handleTabSelect}
+                            >{tab.label}</button>
+                        </template>
+                    </nav>
+
+                    <template lwc:if={isOverviewTab}>
+                        <div class="detail-grid">
+                            <div class="detail-column-main">
+                                <!-- LO Workspace: Contact on top, then Pre-Approval Details (both editable by the owner). -->
+                                <template lwc:if={showContactCard}>
+                                    <section class="detail-card detail-card-accent">
+                                        <h2 class="detail-card-title">Contact</h2>
+                                        <c-lo-ws-borrower-pills lwc:ref="borrowerPills" class="borrower-pills" lead-id={detailId} selected-id={contactRecordId} onselect={handleBorrowerSelect}></c-lo-ws-borrower-pills>
+                                        <c-lo-ws-contact-card lwc:ref="contactCard" record-id={contactRecordId} onsaved={handleContactSaved} onremoved={handleBorrowerRemoved}></c-lo-ws-contact-card>
+                                    </section>
+                                    <section class="detail-card">
+                                        <c-lo-ws-lead-details lwc:ref="detailsCard" record-id={detailId} onsaved={handleDetailsSaved} onopenrealtor={handleOpenRealtor}></c-lo-ws-lead-details>
+                                        <template lwc:if={detail.scenarioNotes}>
+                                            <p class="scenario-notes">{detail.scenarioNotes}</p>
+                                        </template>
+                                    </section>
+                                </template>
+                                <section lwc:else class="detail-card">
+                                    <h2 class="detail-card-title">Loan scenario</h2>
+                                    <template lwc:if={hasScenarioFields}>
+                                        <dl class="field-list">
+                                            <template for:each={scenarioFields} for:item="field">
+                                                <div key={field.label} class="field-row">
+                                                    <dt>{field.label}</dt>
+                                                    <dd>{field.value}</dd>
+                                                </div>
+                                            </template>
+                                        </dl>
+                                        <template lwc:if={detail.scenarioNotes}>
+                                            <p class="scenario-notes">{detail.scenarioNotes}</p>
+                                        </template>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="empty-copy">No scenario details captured yet. Log your first conversation to fill this in.</p>
+                                    </template>
+                                </section>
+
+                                <section class="detail-card">
+                                    <h2 class="detail-card-title">Activity history</h2>
+                                    <template lwc:if={detail.activityEntries.length}>
+                                        <ul class="activity-list">
+                                            <template for:each={detail.activityEntries} for:item="entry">
+                                                <li key={entry.id} class="activity-item">
+                                                    <div class="activity-top">
+                                                        <strong>{entry.outcome}</strong>
+                                                        <span>{entry.timestamp}</span>
+                                                    </div>
+                                                    <p class="activity-channel">{entry.channel}</p>
+                                                    <template lwc:if={entry.note}>
+                                                        <p class="activity-note">{entry.note}</p>
+                                                    </template>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="empty-copy">No communication logged yet.</p>
+                                    </template>
+                                </section>
+                            </div>
+
+                            <div class="detail-column-side">
+                                <section class="detail-card">
+                                    <h2 class="detail-card-title">{sideCardTitle}</h2>
+                                    <ul lwc:if={showSideContactList} class="contact-list">
+                                        <template lwc:if={detail.summary.phone}>
+                                            <li>
+                                                <span class="contact-label">Phone</span>
+                                                <a class="contact-value" href={phoneHref}>{detail.summary.phone}</a>
+                                            </li>
+                                        </template>
+                                        <template lwc:if={detail.summary.email}>
+                                            <li>
+                                                <span class="contact-label">Email</span>
+                                                <a class="contact-value" href={emailHref}>{detail.summary.email}</a>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <div class="contact-meta">
+                                        <p>Source: {detail.summary.source}</p>
+                                        <p>{detail.summary.assignedLabel}</p>
+                                        <p>Last contact: {lastContactDisplay}</p>
+                                    </div>
+                                    <p class="contact-hint">Outbound calls and texts from your own phone aren’t captured automatically — log them here.</p>
+                                </section>
+
+                                <section class="detail-card">
+                                    <h2 class="detail-card-title">Open tasks</h2>
+                                    <template lwc:if={hasOpenTasks}>
+                                        <ul class="task-list">
+                                            <template for:each={openTasks} for:item="task">
+                                                <li key={task.id} class={task.taskClass}>
+                                                    <p class="task-label">{task.label}</p>
+                                                    <p class="task-meta">{task.due}</p>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="empty-copy success-copy">No open tasks for this lead.</p>
+                                    </template>
+                                </section>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isDocumentsTab}>
+                        <section class="detail-embed-panel">
+                            <c-document-viewer key={detailId} context-record-key={detailId}></c-document-viewer>
+                        </section>
+                    </template>
+
+                    <template lwc:if={isRequestsTab}>
+                        <section class="detail-embed-panel">
+                            <c-lead-portal-document-request-manager key={detailId} context-record-key={detailId}></c-lead-portal-document-request-manager>
+                        </section>
+                    </template>
+
+                    <template lwc:if={isNotesTab}>
+                        <section class="detail-embed-panel">
+                            <div class="notes-toolbar">
+                                <h2 class="detail-embed-title">Notes</h2>
+                                <div>
+                                    <button type="button" class="btn btn-outline" onclick={loadNotes}>Refresh</button>
+                                    <button type="button" class="btn btn-brand" onclick={handleNewNote}>New</button>
+                                </div>
+                            </div>
+                            <template lwc:if={notesLoading}>
+                                <span class="spinner" aria-hidden="true"></span>
+                            </template>
+                            <template lwc:elseif={notesError}>
+                                <p class="empty-copy" role="alert">{notesError}</p>
+                            </template>
+                            <template lwc:elseif={hasNotes}>
+                                <ul class="notes-list">
+                                    <template for:each={notes} for:item="note">
+                                        <li key={note.id} class="note-row">
+                                            <p class="note-subject">{note.subject}</p>
+                                            <lightning-formatted-rich-text value={note.body}></lightning-formatted-rich-text>
+                                            <p class="note-meta">{note.author} · <lightning-formatted-date-time value={note.created} year="numeric" month="short" day="numeric" hour="numeric" minute="2-digit"></lightning-formatted-date-time></p>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:else>
+                                <p class="empty-copy">There have been no notes created.</p>
+                            </template>
+                        </section>
+                    </template>
+
+                    <template lwc:if={isCallsTab}>
+                        <div class="detail-calls-stack">
+                            <section class="detail-embed-panel">
+                                <h2 class="detail-embed-title">Phone calls (RingSense)</h2>
+                                <c-call-insight-list key={ringSenseInsightKey} context-record-key={detailId} source="RingSense"></c-call-insight-list>
+                            </section>
+                            <section class="detail-embed-panel">
+                                <h2 class="detail-embed-title">Zoom meetings</h2>
+                                <c-call-insight-list key={zoomInsightKey} context-record-key={detailId} source="Zoom"></c-call-insight-list>
+                            </section>
+                            <template lwc:if={showLoggedCalls}>
+                                <section class="detail-embed-panel">
+                                    <h2 class="detail-embed-title">Logged calls</h2>
+                                    <p class="logged-calls-hint">Calls and meetings logged by hand (Log activity / Log communication).</p>
+                                    <template lwc:if={hasLoggedCalls}>
+                                        <ul class="activity-list">
+                                            <template for:each={detail.loggedCalls} for:item="entry">
+                                                <li key={entry.id} class="activity-item">
+                                                    <div class="activity-top">
+                                                        <strong>{entry.channel} · {entry.outcome}</strong>
+                                                        <span>{entry.timestamp}</span>
+                                                    </div>
+                                                    <p class="activity-channel">Logged by {entry.author}</p>
+                                                    <template lwc:if={entry.note}>
+                                                        <p class="activity-note">{entry.note}</p>
+                                                    </template>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="empty-copy">No calls logged by hand yet.</p>
+                                    </template>
+                                </section>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </main>
+        </template>
+        <template lwc:else>
+            <main class="detail-page">
+                <div class="detail-page-inner detail-loading" aria-busy="true" aria-label="Loading lead">
+                    <span class="spinner spinner-lg" aria-hidden="true"></span>
+                    <p class="detail-loading-copy">Loading lead…</p>
+                </div>
+            </main>
+        </template>
+    </template>
+
+    <template lwc:else>
+        <!-- LO Workspace: Board (kanban by stage, read-only; no drag) or List. The portal always gets List. -->
+        <main lwc:if={isBoard} class="board-page">
+            <div class="board-page-inner">
+                <header class="board-head">
+                    <div>
+                        <h1 class="board-title">My Leads</h1>
+                        <p class="board-subtitle">Every lead by stage. Open a card to work it.</p>
+                    </div>
+                    <div class="board-actions">
+                        <div class="layout-toggle" role="group" aria-label="Layout">
+                            <button type="button" class={listBtnClass} aria-pressed={listPressed} onclick={showList}>List</button>
+                            <button type="button" class={boardBtnClass} aria-pressed={boardPressed} onclick={showBoard}>Board</button>
+                        </div>
+                        <button type="button" class="btn btn-navy" onclick={handleAddOpen}>Add lead</button>
+                    </div>
+                </header>
+                <label class="board-search-label">
+                    <span class="board-sr">Search leads</span>
+                    <input class="board-search" type="search" value={search} placeholder="Search leads by name or source" oninput={handleBoardSearch} />
+                </label>
+                <div class="board">
+                    <template for:each={boardColumns} for:item="col">
+                        <section key={col.id} class={col.colClass} aria-label={col.label}>
+                            <div class="board-colhead">
+                                <span class="board-collabel">{col.label}</span>
+                                <span class="board-count">{col.count}</span>
+                            </div>
+                            <template for:each={col.cards} for:item="card">
+                                <button key={card.id} type="button" class="kcard" data-id={card.id} onclick={handleCardOpen}>
+                                    <span class="kcard-name">{card.name}</span>
+                                    <template lwc:if={card.primary}><span class="kcard-line">{card.primary}</span></template>
+                                    <template lwc:if={card.source}><span class="kcard-meta">{card.source}</span></template>
+                                    <template lwc:if={card.realtorName}><span class="kcard-meta">Realtor: {card.realtorName}</span></template>
+                                    <template lwc:if={card.apptLabel}><span class="kcard-appt">{card.apptLabel}</span></template>
+                                </button>
+                            </template>
+                            <template lwc:if={col.empty}><p class="board-empty">No leads</p></template>
+                        </section>
+                    </template>
+                </div>
+            </div>
+        </main>
+        <c-portal-list-layout
+            lwc:else
+            title="My Leads"
+            subtitle="Consumer leads assigned to you. Log every touch manually — outbound calls from your own phone aren’t tracked automatically."
+            search-value={search}
+            search-placeholder="Search leads by name, ID, or source"
+            filters={filterChips}
+            loading={loading}
+            is-empty={isListEmpty}
+            empty-title="No leads match this view"
+            empty-message="Try a different filter or clear your search. New leads appear here the moment they’re assigned to you."
+            result-label={resultLabel}
+            row-type="generic"
+            items={listItems}
+            onsearchchange={handleSearchChangeEvent}
+            onfilterchange={handleFilterChangeEvent}
+            onrowaction={handleRowAction}
+        >
+            <div slot="actions" class="list-actions">
+                <template lwc:if={showLayoutToggle}>
+                    <div class="layout-toggle" role="group" aria-label="Layout">
+                        <button type="button" class={listBtnClass} aria-pressed={listPressed} onclick={showList}>List</button>
+                        <button type="button" class={boardBtnClass} aria-pressed={boardPressed} onclick={showBoard}>Board</button>
+                    </div>
+                </template>
+                <button type="button" class="btn btn-navy" onclick={handleAddOpen}>Add lead</button>
+            </div>
+        </c-portal-list-layout>
+    </template>
+
+    <template lwc:if={addOpen}>
+        <!-- LO Workspace: the required-field form with the referring-realtor picker. The portal keeps its form. -->
+        <template lwc:if={showContactCard}>
+            <c-lo-ws-add-lead-form oncreated={handleLeadCreated} onclose={handleAddClose}></c-lo-ws-add-lead-form>
+        </template>
+        <section lwc:else class="drawer-backdrop">
+            <aside class="drawer">
+                <form class="create-form" onsubmit={handleCreateLeadSubmit}>
+                    <h2>Add a lead</h2>
+                    <label>Name<input data-field="name" value={form.name} oninput={handleFormChange} required /></label>
+                    <label>Phone<input data-field="phone" value={form.phone} oninput={handleFormChange} /></label>
+                    <label>Email<input data-field="email" value={form.email} oninput={handleFormChange} /></label>
+                    <label>Loan amount<input data-field="loanAmount" value={form.loanAmount} oninput={handleFormChange} required /></label>
+                    <label>Loan purpose<input data-field="purpose" value={form.purpose} oninput={handleFormChange} /></label>
+                    <template lwc:if={duplicates.length}>
+                        <p class="warn-copy">Possible duplicate found. Review before creating.</p>
+                    </template>
+                    <template lwc:if={formError}>
+                        <p class="form-error" role="alert">{formError}</p>
+                    </template>
+                    <div class="drawer-actions">
+                        <button type="button" class="btn btn-outline" onclick={handleAddClose}>Cancel</button>
+                        <button type="submit" class="btn btn-brand" disabled={saving}>
+                            <template lwc:if={saving}>
+                                <span class="spinner" aria-hidden="true"></span>
+                            </template>
+                            {createLeadLabel}
+                        </button>
+                    </div>
+                </form>
+            </aside>
+        </section>
+    </template>
+
+    <template lwc:if={showLogModal}>
+        <c-portal-communication-modal
+            open={logOpen}
+            target-record-id={logRecordId}
+            object-api-name="Lead"
+            subject-name={logSubjectName}
+            subject-context={logSubjectContext}
+            phone={logPhone}
+            email={logEmail}
+            goal-credit="your consumer conversations goal"
+            onclose={handleLogClose}
+            onlogged={handleLogged}
+        ></c-portal-communication-modal>
+    </template>
+
+    <template lwc:if={conversionOpen}>
+        <c-external-lo-lead-conversion-modal
+            context-record-key={detailId}
+            onclose={handleCloseConversion}
+            onconverted={handleLeadConverted}
+        ></c-external-lo-lead-conversion-modal>
+    </template>
+
+    <!-- The same component the Lead page's Pre-Approval Letter action runs (via Pre_Approval_Screen_Flow). -->
+    <template lwc:if={letterOpen}>
+        <section class="letter-backdrop" role="dialog" aria-modal="true" aria-label="Pre-Approval Letter">
+            <div class="letter-modal">
+                <button type="button" class="letter-modal-close" onclick={handleCloseLetter}>Close</button>
+                <template lwc:if={letterCtor}>
+                    <lwc:component lwc:is={letterCtor} lwc:ref="letter" record-id={detailId}></lwc:component>
+                </template>
+                <template lwc:else>
+                    <span class="spinner" aria-hidden="true"></span>
+                </template>
+            </div>
+        </section>
+    </template>
+</template>

@@ -1,0 +1,499 @@
+import { LightningElement, api, wire } from 'lwc';
+import { CurrentPageReference, NavigationMixin } from 'lightning/navigation';
+import { refreshApex } from '@salesforce/apex';
+import getRealtors from '@salesforce/apex/ExternalLoPortalController.getRealtors';
+import getPartnerDetail from '@salesforce/apex/ExternalLoPortalController.getPartnerDetail';
+import searchPartners from '@salesforce/apex/ExternalLoPortalController.searchPartners';
+import linkPartner from '@salesforce/apex/ExternalLoPortalController.linkPartner';
+import createPartner from '@salesforce/apex/ExternalLoPortalController.createPartner';
+import { PORTAL_VIEWS, dispatchPortalNavigate, reduceApexError, readFormFields, showPortalToast, toGenericListRow } from 'c/portalUtils';
+
+const FILTERS = [
+    { id: '30', label: 'Last 30 days' },
+    { id: '60', label: 'Last 60 days' },
+    { id: '90', label: 'Last 90 days' },
+    { id: 'due', label: 'Follow-up due' },
+    { id: 'all', label: 'All partners' }
+];
+
+export default class ExternalLoRealtors extends NavigationMixin(LightningElement) {
+    @api embeddedInShell = false;
+    @api recordId;
+    _filterKey = '90';
+    _pageDetailId;
+    _lastLoadedDetailId;
+    _refreshKey;
+
+    @api
+    get refreshKey() {
+        return this._refreshKey;
+    }
+    set refreshKey(value) {
+        this._refreshKey = value;
+        if (value && this.wiredPartnersResult) {
+            this.refreshPartnerLists().catch(() => {});
+        }
+    }
+
+    @api
+    get filterKey() {
+        return this._filterKey;
+    }
+
+    set filterKey(value) {
+        this._filterKey = value || '90';
+    }
+
+    partners = [];
+    allPartners = [];
+    detail;
+    detailLoading = false;
+    searchResults = [];
+    filter = '90';
+    search = '';
+    partnerSearch = '';
+    addOpen = false;
+    logOpen = false;
+    saving = false;
+    searching = false;
+    linkingId;
+    formError;
+    searchError;
+    loading = true;
+    _searchToken = 0;
+    _searchTimer;
+    listLogPartner;
+    wiredPartnersResult;
+    wiredAllPartnersResult;
+
+    form = {
+        name: '',
+        phone: '',
+        email: '',
+        company: '',
+        market: '',
+        partnerType: 'Realtor'
+    };
+
+    @wire(CurrentPageReference)
+    parsePageReference(pageRef) {
+        if (this.embeddedInShell) {
+            return;
+        }
+        this._pageDetailId = pageRef?.state?.c__recordId ?? null;
+        if (pageRef?.state?.c__filter) {
+            this.filter = pageRef.state.c__filter;
+        }
+        if (this._pageDetailId) {
+            this.loadDetail();
+        } else {
+            this.detail = undefined;
+        }
+    }
+
+    get effectiveFilter() {
+        return this.embeddedInShell ? this._filterKey : this.filter;
+    }
+
+    get detailId() {
+        return this.embeddedInShell ? this.recordId : this._pageDetailId;
+    }
+
+    @wire(getRealtors, { filterKey: '$effectiveFilter', searchTerm: '$search' })
+    wiredPartners(result) {
+        this.wiredPartnersResult = result;
+        this.loading = !result.data && !result.error;
+        if (result.data) {
+            this.partners = result.data.map((partner) => this.decoratePartner(partner));
+            this.loading = false;
+        }
+    }
+
+    decoratePartner(partner) {
+        const touch = partner.lastTouchLabel || 'No communication logged by you';
+        const buyers = partner.sharedBuyers ?? 0;
+        const buyersLabel = `${buyers} shared buyer${buyers === 1 ? '' : 's'}`;
+        return { ...partner, metaLabel: `${touch} · ${buyersLabel}` };
+    }
+
+    @wire(getRealtors, { filterKey: 'all', searchTerm: '$search' })
+    wiredAllPartners(result) {
+        this.wiredAllPartnersResult = result;
+        if (result.data) {
+            this.allPartners = result.data;
+        }
+    }
+
+    renderedCallback() {
+        if (!this.embeddedInShell || this._lastLoadedDetailId === this.detailId) {
+            return;
+        }
+        this._lastLoadedDetailId = this.detailId;
+        if (this.detailId) {
+            this.loadDetail();
+        } else {
+            this.detail = undefined;
+        }
+    }
+
+    get isDetailView() {
+        return !!this.detailId;
+    }
+
+    get filterChips() {
+        const activeFilter = this.effectiveFilter;
+        return FILTERS.map((item) => ({
+            id: item.id,
+            label: item.label,
+            count: this.countForFilter(item.id),
+            isActive: item.id === activeFilter
+        }));
+    }
+
+    get isListEmpty() {
+        return !this.loading && this.partners.length === 0;
+    }
+
+    get resultLabel() {
+        const total = this.allPartners.length || this.partners.length;
+        return `Showing ${this.partners.length} of ${total} partners`;
+    }
+
+    get listItems() {
+        return this.partners.map((partner) =>
+            toGenericListRow({
+                id: partner.id,
+                title: partner.name,
+                badges: [
+                    { key: 'type', label: partner.partnerType, toneClass: 'badge badge-neutral' },
+                    ...(partner.houseLocked
+                        ? [{ key: 'house', label: 'House account', toneClass: 'badge badge-dark' }]
+                        : []),
+                    ...(partner.followUpDue
+                        ? [{ key: 'due', label: 'Follow-up due', toneClass: 'badge badge-warn' }]
+                        : [])
+                ],
+                primary: [partner.company, partner.market].filter(Boolean).join(' · '),
+                meta: partner.metaLabel,
+                note: partner.houseLocked ? 'Managed by the Reach house team — view only.' : undefined,
+                actions: partner.houseLocked
+                    ? [{ name: 'view', label: 'View', variant: 'outline' }]
+                    : [
+                          { name: 'log', label: 'Log touch', variant: 'brand' },
+                          { name: 'view', label: 'View', variant: 'outline' }
+                      ]
+            })
+        );
+    }
+
+    get createPartnerLabel() {
+        return this.saving ? 'Creating…' : 'Create partner';
+    }
+
+    get decoratedSearchResults() {
+        return this.searchResults.map((result) => ({
+            ...result,
+            linkLabel: this.linkingId === result.id ? 'Linking…' : 'Link',
+            linkDisabled: !!this.linkingId || this.saving
+        }));
+    }
+
+    get canLog() {
+        return this.detail?.summary && !this.detail.summary.houseLocked;
+    }
+
+    get showLogModal() {
+        return this.logOpen && (this.canLog || this.listLogPartner);
+    }
+
+    get logRecordId() {
+        return this.detail?.summary?.id || this.listLogPartner?.id;
+    }
+
+    get logSubjectName() {
+        return this.detail?.summary?.name || this.listLogPartner?.name;
+    }
+
+    get logSubjectContext() {
+        return this.detail?.summary?.company || this.listLogPartner?.company;
+    }
+
+    get logPhone() {
+        return this.detail?.summary?.phone || this.listLogPartner?.phone;
+    }
+
+    get logEmail() {
+        return this.detail?.summary?.email || this.listLogPartner?.email;
+    }
+
+    get logGoalCredit() {
+        const partnerType = this.detail?.summary?.partnerType || this.listLogPartner?.partnerType;
+        return partnerType === 'Realtor'
+            ? 'your Realtor touches goal'
+            : 'your title & insurance partner touches goal';
+    }
+
+    countForFilter(filterId) {
+        const source = this.allPartners.length ? this.allPartners : this.partners;
+        if (filterId === 'all') {
+            return source.length;
+        }
+        if (filterId === 'due') {
+            return source.filter((partner) => partner.followUpDue).length;
+        }
+        const maxDays = Number(filterId);
+        return source.filter(
+            (partner) => partner.daysSinceMyTouch != null && partner.daysSinceMyTouch <= maxDays
+        ).length;
+    }
+
+    handleFilterChangeEvent(event) {
+        if (this.embeddedInShell) {
+            dispatchPortalNavigate(this, {
+                view: PORTAL_VIEWS.REALTORS,
+                filter: event.detail.filterId,
+                recordId: null
+            });
+            return;
+        }
+        this.filter = event.detail.filterId;
+    }
+
+    handleSearchChangeEvent(event) {
+        this.search = event.detail.value;
+    }
+
+    handleRowAction(event) {
+        const { action, recordId } = event.detail;
+        if (action === 'view') {
+            this.openDetail(recordId);
+            return;
+        }
+        const partner = this.partners.find((item) => item.id === recordId);
+        if (partner && !partner.houseLocked) {
+            this.listLogPartner = partner;
+            this.logOpen = true;
+        }
+    }
+
+    openDetail(partnerId) {
+        dispatchPortalNavigate(this, {
+            view: PORTAL_VIEWS.REALTORS,
+            filter: this.effectiveFilter,
+            recordId: partnerId
+        });
+    }
+
+    handlePartnerSearchChange(event) {
+        this.partnerSearch = event.target.value;
+        // Debounce so we do not fire an Apex search on every keystroke.
+        window.clearTimeout(this._searchTimer);
+        if (this.partnerSearch.length < 2) {
+            this._searchToken++;
+            this.searchResults = [];
+            this.searching = false;
+            return;
+        }
+        this.searching = true;
+        this._searchTimer = window.setTimeout(() => this.runPartnerSearch(), 300);
+    }
+
+    async runPartnerSearch() {
+        // Sequence guard: only the response for the latest keystroke may land.
+        const token = ++this._searchToken;
+        this.searching = true;
+        try {
+            const results = await searchPartners({ searchTerm: this.partnerSearch });
+            if (token !== this._searchToken) {
+                return;
+            }
+            this.searchResults = results;
+            this.searchError = undefined;
+        } catch (error) {
+            if (token !== this._searchToken) {
+                return;
+            }
+            this.searchResults = [];
+            this.searchError = reduceApexError(error);
+        } finally {
+            if (token === this._searchToken) {
+                this.searching = false;
+            }
+        }
+    }
+
+    handleFilterClick(event) {
+        this.filter = event.currentTarget.dataset.filter;
+    }
+
+    handleAddOpen() {
+        this.formError = undefined;
+        this.searchError = undefined;
+        this.addOpen = true;
+    }
+
+    handleAddClose() {
+        window.clearTimeout(this._searchTimer);
+        this._searchToken++;
+        this.addOpen = false;
+        this.searching = false;
+        this.searchResults = [];
+        this.formError = undefined;
+        this.searchError = undefined;
+    }
+
+    handleFormChange(event) {
+        const field = event.target.dataset.field;
+        this.form = { ...this.form, [field]: event.target.value };
+        this.formError = undefined;
+    }
+
+    async handleLinkPartner(event) {
+        const partnerId = event.currentTarget.dataset.id;
+        if (this.linkingId) {
+            return;
+        }
+        this.searchError = undefined;
+        this.linkingId = partnerId;
+        try {
+            await linkPartner({ accountId: partnerId });
+            this.showToast('Partner linked', 'The partner was added to your list.', 'success');
+            this.handleAddClose();
+            await this.refreshPartnerLists();
+        } catch (error) {
+            this.searchError = reduceApexError(error);
+            this.showToast('Unable to link partner', this.searchError, 'error');
+        } finally {
+            this.linkingId = undefined;
+        }
+    }
+
+    refreshPartnerLists() {
+        return Promise.all([
+            refreshApex(this.wiredPartnersResult),
+            refreshApex(this.wiredAllPartnersResult)
+        ]);
+    }
+
+    handleCreatePartnerSubmit(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.form = { ...this.form, ...readFormFields(event.currentTarget) };
+        this.handleCreatePartner();
+    }
+
+    async handleCreatePartner() {
+        if (this.saving) {
+            return;
+        }
+        this.saving = true;
+        this.formError = undefined;
+        try {
+            await createPartner({
+                name: this.form.name,
+                phone: this.form.phone,
+                email: this.form.email,
+                company: this.form.company,
+                market: this.form.market,
+                partnerType: this.form.partnerType
+            });
+            this.showToast('Partner created', 'The partner was added to your list.', 'success');
+            this.handleAddClose();
+            await this.refreshPartnerLists();
+        } catch (error) {
+            this.formError = reduceApexError(error);
+            this.showToast('Unable to create partner', this.formError, 'error');
+        } finally {
+            this.saving = false;
+        }
+    }
+
+    handleLogOpen() {
+        this.listLogPartner = undefined;
+        this.logOpen = true;
+    }
+
+    handleLogClose() {
+        this.logOpen = false;
+        this.listLogPartner = undefined;
+    }
+
+    handleLogged(event) {
+        this.showToast('Activity logged', event.detail.message, 'success');
+        if (this.detailId) {
+            this.loadDetail();
+        } else {
+            this.refreshPartnerLists().catch(() => {});
+        }
+    }
+
+    handleBack() {
+        dispatchPortalNavigate(this, {
+            view: PORTAL_VIEWS.REALTORS,
+            filter: this.effectiveFilter,
+            recordId: null
+        });
+    }
+
+    async loadDetail() {
+        if (!this.detailId) {
+            return;
+        }
+        this.detailLoading = true;
+        try {
+            this.detail = await getPartnerDetail({ accountId: this.detailId });
+        } catch (error) {
+            this.showToast('Partner not found', reduceApexError(error), 'error');
+            this.handleBack();
+        } finally {
+            this.detailLoading = false;
+        }
+    }
+
+    get daysSinceTouchLabel() {
+        const days = this.detail?.summary?.daysSinceMyTouch;
+        if (days == null) {
+            return 'No communication logged by you yet';
+        }
+        return `${days} day${days === 1 ? '' : 's'} since your last touch`;
+    }
+
+    get sharedBuyersLabel() {
+        const buyers = this.detail?.summary?.sharedBuyers ?? 0;
+        return `${buyers} shared buyer${buyers === 1 ? '' : 's'} in your pipeline`;
+    }
+
+    get relatedLeads() {
+        return (this.detail?.relatedLeads || []).map((lead) => ({
+            ...lead,
+            statusClass: `badge status-${lead.status}` || 'badge status-nurture'
+        }));
+    }
+
+    get hasRelatedLeads() {
+        return this.relatedLeads.length > 0;
+    }
+
+    get detailPhoneHref() {
+        const phone = this.detail?.summary?.phone?.replace(/[^0-9]/g, '');
+        return phone ? `tel:${phone}` : undefined;
+    }
+
+    get detailEmailHref() {
+        const email = this.detail?.summary?.email;
+        return email ? `mailto:${email}` : undefined;
+    }
+
+    handleOpenLead(event) {
+        const leadId = event.currentTarget.dataset.id;
+        dispatchPortalNavigate(this, {
+            view: PORTAL_VIEWS.LEADS,
+            filter: 'all',
+            recordId: leadId
+        });
+    }
+
+    showToast(title, message, variant) {
+        showPortalToast(this, title, message, variant);
+    }
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>External Loan Officer Profile</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>Account.BizDev_Expansion</members>
+        <members>Account.Business_Account</members>
+        <members>Account.Candidate</members>
+        <members>Account.PersonAccount</members>
+        <members>Account.Recruit_Account</members>
+        <members>Lead.Consumer_Lead_record_type</members>
+        <members>Lead.Consumer_Under_Contract_Lead_Record_Type</members>
+        <members>Lead.Loan_Officer_Lead_Record_Type</members>
+        <members>Lead.Partner_Relationship_Dev</members>
+        <members>Lead.Realtor_Lead_record_type</members>
+        <members>Transaction__c.Brokered</members>
+        <members>Transaction__c.Correspondent</members>
+        <name>RecordType</name>
+    </types>
+    <version>62.0</version>
+</Package>

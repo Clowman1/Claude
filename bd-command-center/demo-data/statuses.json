@@ -1,0 +1,334 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E1S0"
+      },
+      "CampaignId": "701Qi00001awnsnIAA",
+      "Label": "Invite List",
+      "SortOrder": 3,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E1S1"
+      },
+      "CampaignId": "701Qi00001awnsnIAA",
+      "Label": "Invitation Queued",
+      "SortOrder": 4,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E1S2"
+      },
+      "CampaignId": "701Qi00001awnsnIAA",
+      "Label": "Invitation Sent",
+      "SortOrder": 5,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E1S3"
+      },
+      "CampaignId": "701Qi00001awnsnIAA",
+      "Label": "Yes - Attending",
+      "SortOrder": 6,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E1S4"
+      },
+      "CampaignId": "701Qi00001awnsnIAA",
+      "Label": "No - Unable to Attend",
+      "SortOrder": 7,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E2S0"
+      },
+      "CampaignId": "701Qi00001awnsoIAA",
+      "Label": "Invite List",
+      "SortOrder": 3,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E2S1"
+      },
+      "CampaignId": "701Qi00001awnsoIAA",
+      "Label": "Invitation Queued",
+      "SortOrder": 4,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E2S2"
+      },
+      "CampaignId": "701Qi00001awnsoIAA",
+      "Label": "Invitation Sent",
+      "SortOrder": 5,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E2S3"
+      },
+      "CampaignId": "701Qi00001awnsoIAA",
+      "Label": "Yes - Attending",
+      "SortOrder": 6,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E2S4"
+      },
+      "CampaignId": "701Qi00001awnsoIAA",
+      "Label": "No - Unable to Attend",
+      "SortOrder": 7,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E3S0"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "Label": "Invite List",
+      "SortOrder": 3,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E3S1"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "Label": "Invitation Queued",
+      "SortOrder": 4,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E3S2"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "Label": "Invitation Sent",
+      "SortOrder": 5,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E3S3"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "Label": "Yes - Attending",
+      "SortOrder": 6,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E3S4"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "Label": "No - Unable to Attend",
+      "SortOrder": 7,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E4S0"
+      },
+      "CampaignId": "701Qi00001awnsqIAA",
+      "Label": "Invite List",
+      "SortOrder": 3,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E4S1"
+      },
+      "CampaignId": "701Qi00001awnsqIAA",
+      "Label": "Invitation Queued",
+      "SortOrder": 4,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E4S2"
+      },
+      "CampaignId": "701Qi00001awnsqIAA",
+      "Label": "Invitation Sent",
+      "SortOrder": 5,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E4S3"
+      },
+      "CampaignId": "701Qi00001awnsqIAA",
+      "Label": "Yes - Attending",
+      "SortOrder": 6,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E4S4"
+      },
+      "CampaignId": "701Qi00001awnsqIAA",
+      "Label": "No - Unable to Attend",
+      "SortOrder": 7,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E5S0"
+      },
+      "CampaignId": "701Qi00001awnsrIAA",
+      "Label": "Invite List",
+      "SortOrder": 3,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E5S1"
+      },
+      "CampaignId": "701Qi00001awnsrIAA",
+      "Label": "Invitation Queued",
+      "SortOrder": 4,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E5S2"
+      },
+      "CampaignId": "701Qi00001awnsrIAA",
+      "Label": "Invitation Sent",
+      "SortOrder": 5,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E5S3"
+      },
+      "CampaignId": "701Qi00001awnsrIAA",
+      "Label": "Yes - Attending",
+      "SortOrder": 6,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E5S4"
+      },
+      "CampaignId": "701Qi00001awnsrIAA",
+      "Label": "No - Unable to Attend",
+      "SortOrder": 7,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E6S0"
+      },
+      "CampaignId": "701Qi00001awnssIAA",
+      "Label": "Invite List",
+      "SortOrder": 3,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E6S1"
+      },
+      "CampaignId": "701Qi00001awnssIAA",
+      "Label": "Invitation Queued",
+      "SortOrder": 4,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E6S2"
+      },
+      "CampaignId": "701Qi00001awnssIAA",
+      "Label": "Invitation Sent",
+      "SortOrder": 5,
+      "IsDefault": false,
+      "HasResponded": false
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E6S3"
+      },
+      "CampaignId": "701Qi00001awnssIAA",
+      "Label": "Yes - Attending",
+      "SortOrder": 6,
+      "IsDefault": false,
+      "HasResponded": true
+    },
+    {
+      "attributes": {
+        "type": "CampaignMemberStatus",
+        "referenceId": "E6S4"
+      },
+      "CampaignId": "701Qi00001awnssIAA",
+      "Label": "No - Unable to Attend",
+      "SortOrder": 7,
+      "IsDefault": false,
+      "HasResponded": true
+    }
+  ]
+}

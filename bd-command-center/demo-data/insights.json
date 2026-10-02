@@ -1,0 +1,76 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Call_Insight__c",
+        "referenceId": "I1"
+      },
+      "Account__c": "001Qi00001ax6ovIAA",
+      "Salesforce_User__c": "005Qi00000iOSkzIAG",
+      "Title__c": "Intro call with Priya Shah (Keystone Realty)",
+      "Direction__c": "Outbound",
+      "Duration__c": "6m 12s",
+      "Recording_Start_DateTime__c": "2026-09-27T14:14:00.000+0000",
+      "AI_Score__c": 8.7,
+      "Summary__c": "<p>Fred introduced Reach Home Loans and the 10-day close. Priya has three buyers actively shopping and is unhappy with communication from her current lender. She agreed to meet for coffee Thursday.</p>",
+      "Bulleted_Summary__c": "<ul><li>Three active buyers, two first-time</li><li>Current lender slow to return calls</li><li>Interested in the borrower document portal</li></ul>",
+      "HighLights__c": "<ul><li>\"If you can get my buyers pre-approved same day, I will send you everything.\"</li></ul>",
+      "Next_Steps__c": "<ul><li>Coffee Thursday 8:30 at Kahwa</li><li>Send portal walkthrough video before the meeting</li></ul>",
+      "Transcript__c": "Demo transcript. BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Call_Insight__c",
+        "referenceId": "I2"
+      },
+      "Account__c": "001Qi00001ax6p2IAA",
+      "Salesforce_User__c": "005Qi00000iOSkzIAG",
+      "Title__c": "Ben Alvarez: two new buyer referrals",
+      "Direction__c": "Inbound",
+      "Duration__c": "8m 06s",
+      "Recording_Start_DateTime__c": "2026-09-28T21:40:00.000+0000",
+      "AI_Score__c": 9.2,
+      "Summary__c": "<p>Ben called with two new buyers ready to move. One needs a pre-approval by Friday for a Seminole Heights offer. Ben praised the last closing and wants to co-host an open house.</p>",
+      "Bulleted_Summary__c": "<ul><li>Two referrals incoming</li><li>Pre-approval deadline Friday</li><li>Open-house co-marketing idea</li></ul>",
+      "HighLights__c": "<ul><li>\"Your team made my last closing the easiest one this year.\"</li></ul>",
+      "Next_Steps__c": "<ul><li>Watch for the Henderson intro email</li><li>Propose open-house date in October</li></ul>",
+      "Transcript__c": "Demo transcript. BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Call_Insight__c",
+        "referenceId": "I3"
+      },
+      "Account__c": "001Qi00001ax6p4IAA",
+      "Salesforce_User__c": "005Qi00000iOSkzIAG",
+      "Title__c": "Tom Nguyen: first-time buyer clients",
+      "Direction__c": "Outbound",
+      "Duration__c": "5m 18s",
+      "Recording_Start_DateTime__c": "2026-09-25T19:45:00.000+0000",
+      "AI_Score__c": 7.9,
+      "Summary__c": "<p>Tom works with many young professionals filing first-year returns. He is open to referring clients but wants to understand how self-employment income is documented.</p>",
+      "Bulleted_Summary__c": "<ul><li>Young-professional client base</li><li>Needs clarity on self-employed documentation</li></ul>",
+      "HighLights__c": "<ul><li>\"Half my new clients ask me about buying their first home.\"</li></ul>",
+      "Next_Steps__c": "<ul><li>Lunch next Monday at Ciccio</li><li>Bring self-employed documentation checklist</li></ul>",
+      "Transcript__c": "Demo transcript. BD DEMO DATA - delete after CEO demo"
+    },
+    {
+      "attributes": {
+        "type": "Call_Insight__c",
+        "referenceId": "I4"
+      },
+      "Account__c": "001Qi00001ax6oxIAA",
+      "Salesforce_User__c": "005Qi00000iOSkzIAG",
+      "Title__c": "Marcus Ortega: bank-statement loans",
+      "Direction__c": "Outbound",
+      "Duration__c": "4m 05s",
+      "Recording_Start_DateTime__c": "2026-09-12T15:00:00.000+0000",
+      "AI_Score__c": 7.4,
+      "Summary__c": "<p>Marcus referred clients elsewhere in the past and is open to a new lender. Interested in bank-statement programs for self-employed clients.</p>",
+      "Bulleted_Summary__c": "<ul><li>Self-employed client base</li><li>Previously referred to a competitor</li></ul>",
+      "HighLights__c": "<ul><li>\"My self-employed folks get turned down constantly.\"</li></ul>",
+      "Next_Steps__c": "<ul><li>Follow up after tax deadline</li><li>Invite to the CPA and Title mixer</li></ul>",
+      "Transcript__c": "Demo transcript. BD DEMO DATA - delete after CEO demo"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+<template>
+    <div class="backdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-label={heading}>
+            <div class="mh">
+                <h2 class="title">{heading}</h2>
+                <div class="seg">
+                    <template for:each={kindButtons} for:item="k">
+                        <button key={k.value} class={k.cls} data-value={k.value} onclick={pickKind}>{k.value}</button>
+                    </template>
+                </div>
+            </div>
+            <div class="mb">
+                <template lwc:if={error}><div class="err" role="alert">{error}</div></template>
+
+                <div>
+                    <lightning-input label="Invite partners" type="search" placeholder="Search your partners"
+                        value={partnerTerm} onchange={handlePartnerTerm}></lightning-input>
+                    <div class="toks">
+                        <template for:each={selectedPartners} for:item="p">
+                            <span key={p.id} class="tok">{p.name}<button data-id={p.id} onclick={removePartner} aria-label="Remove">×</button></span>
+                        </template>
+                    </div>
+                    <div class="hits">
+                        <template for:each={partnerHits} for:item="p">
+                            <button key={p.id} class="hit" data-id={p.id} onclick={addPartner}>{p.name} <span class="muted">{p.company}</span></button>
+                        </template>
+                    </div>
+                </div>
+
+                <lightning-input label="Event name (optional)" placeholder={namePlaceholder} data-field="name" value={name} onchange={handleField}></lightning-input>
+                <div class="three">
+                    <lightning-input type="date" label="Date" data-field="eventDate" value={eventDate} onchange={handleField} required></lightning-input>
+                    <lightning-input type="time" label="Time" data-field="eventTime" value={eventTime} onchange={handleField} required></lightning-input>
+                    <lightning-combobox label="Length" options={lengthOptions} data-field="minutes" value={minutes} onchange={handleField}></lightning-combobox>
+                </div>
+                <lightning-input label="Location" data-field="location" value={location} onchange={handleField}></lightning-input>
+                <lightning-textarea label="Note in the invite (optional)" data-field="note" value={note} onchange={handleField}></lightning-textarea>
+
+                <div>
+                    <lightning-input label="Co-hosts (Reach team)" type="search" placeholder="Add an LO or manager"
+                        value={coHostTerm} onchange={handleCoHostTerm}></lightning-input>
+                    <div class="toks">
+                        <span class="tok">{repFirstName} (host)</span>
+                        <template for:each={coHosts} for:item="c">
+                            <span key={c.userId} class="tok">{c.name}<button data-id={c.userId} onclick={removeCoHost} aria-label="Remove">×</button></span>
+                        </template>
+                    </div>
+                    <div class="hits">
+                        <template for:each={coHostHits} for:item="c">
+                            <button key={c.userId} class="hit" data-id={c.userId} onclick={addCoHost}>{c.name} <span class="muted">{c.title}</span></button>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="sent">
+                    <div class="lbl">What gets sent</div>
+                    <div>Branded invite email with <b>Yes / No RSVP</b> buttons</div>
+                    <div>Text: "Check your email for an invite from {repFirstName}"</div>
+                    <div>RSVP reminder 5 days out to anyone who hasn't answered</div>
+                    <div>"Tomorrow" reminder to everyone attending</div>
+                </div>
+            </div>
+            <div class="mf">
+                <button class="btn" onclick={close}>Cancel</button>
+                <button class="btn btn-p" disabled={sendDisabled} onclick={send}>Send invites</button>
+            </div>
+        </section>
+    </div>
+</template>

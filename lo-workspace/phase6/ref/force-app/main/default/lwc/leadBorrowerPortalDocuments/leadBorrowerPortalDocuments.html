@@ -1,0 +1,161 @@
+<template>
+    <div class="portal-shell">
+        <aside class="brand-rail">
+            <img class="brand-logo" src={reachLogoUrl} alt="Reach Home Loans" />
+        </aside>
+        <main class="imbus-main-container">
+            <div class="imbus-main-container-header hero-header">
+                <div class="imbus-title">
+                    <h1 class="imbus-title-greeting">{labels.welcomeBack}, {displayBorrowerName}</h1>
+                    <h4 class="imbus-title-description">{labels.manageHere}</h4>
+                </div>
+            </div>
+            <div class="imbus-stats-container">
+                <div class="imbus-stat-card">
+                    <div class="imbus-stat-title">
+                        <div class="imbus-stat-text">{labels.documentsNeeded}</div>
+                    </div>
+                    <div class="imbus-stat-number-container">
+                        <div class="imbus-stat-number">
+                            <div class="imbus-stat-number-text">{documentStatus.needed}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="imbus-stat-card">
+                    <div class="imbus-stat-title">
+                        <div class="imbus-stat-text">{labels.documentsUploaded}</div>
+                    </div>
+                    <div class="imbus-stat-number-container">
+                        <div class="imbus-stat-number">
+                            <div class="imbus-stat-number-text">{documentStatus.pending}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="imbus-stat-card">
+                    <div class="imbus-stat-title">
+                        <div class="imbus-stat-text">{labels.documentsApproved}</div>
+                    </div>
+                    <div class="imbus-stat-number-container">
+                        <div class="imbus-stat-number">
+                            <div class="imbus-stat-number-text">{documentStatus.approved}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="imbus-main-container-header">
+                <div class="imbus-title">
+                    <h2 class="imbus-title-greeting">{labels.documentsRequired}</h2>
+                    <h3 class="imbus-title-description">{labels.intro}</h3>
+                </div>
+            </div>
+
+            <div class="how-it-works">
+                <span class="how-it-works-icon" aria-hidden="true">&#8593;</span>
+                <div>
+                    <p class="how-it-works-title">{labels.howToTitle}</p>
+                    <p class="how-it-works-body">{labels.howToBody}</p>
+                </div>
+            </div>
+            <div class="imbus-document-table">
+                <template lwc:if={isPhone}>
+                    <div class="imbus-table-header imbus-table-row">
+                        <div class="column-title">{labels.documentName}</div>
+                        <div class="column-title">{labels.documentDescription}</div>
+                        <div class="column-title">{labels.actions}</div>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="imbus-table-header imbus-table-row">
+                        <div class="column-title">{labels.documentName}</div>
+                        <div class="column-title">{labels.status}</div>
+                        <div class="column-title">{labels.documentDescription}</div>
+                        <div class="column-title">{labels.actions}</div>
+                    </div>
+                </template>
+                <template for:each={requests} for:item="request">
+                    <c-lead-borrower-portal-document-row
+                        key={request.id}
+                        lead-id={recordId}
+                        portal-hash={hashRecordId}
+                        spanish={spanish}
+                        request={request}
+                        onrequestupdated={handleRequestUpdated}
+                        onbasketchange={handleBasketChange}
+                        onuploaderror={handleUploadError}>
+                    </c-lead-borrower-portal-document-row>
+                </template>
+            </div>
+
+            <template lwc:if={showSubmittedConfirmation}>
+                <div class="submitted-banner" role="status">
+                    <span class="submitted-check" aria-hidden="true">&#10003;</span>
+                    <div>
+                        <p class="submitted-title">{labels.submittedTitle}</p>
+                        <p class="submitted-sub">{labels.submittedSub}</p>
+                    </div>
+                    <button type="button" class="submitted-dismiss" onclick={dismissSubmittedConfirmation}>{labels.dismiss}</button>
+                </div>
+            </template>
+
+            <template lwc:if={hasPendingSubmissions}>
+                <div class="submit-bar">
+                    <div class="submit-bar-text">
+                        <p class="submit-bar-count">{pendingSummaryLabel}</p>
+                        <p class="submit-warning">
+                            Your loan team has not been notified yet.
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        class="submit-button"
+                        onclick={handleSubmitPending}
+                        disabled={isSubmitting}>{submitButtonLabel}</button>
+                </div>
+            </template>
+            <template lwc:if={hasClearedRequests}>
+                <section class="cleared-section">
+                    <button class="cleared-toggle" type="button" onclick={toggleCleared}>
+                        {clearedToggleLabel}
+                    </button>
+                    <template lwc:if={showCleared}>
+                        <ul class="cleared-list">
+                            <template for:each={clearedRequests} for:item="cleared">
+                                <li class="cleared-item" key={cleared.id}>
+                                    <span class="cleared-check" aria-hidden="true">&#10003;</span>
+                                    <span class="cleared-name">{cleared.name}</span>
+                                    <span class="cleared-date">{cleared.clearedDateLabel}</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </section>
+            </template>
+        </main>
+        <aside class="team-rail">
+            <template lwc:if={showTeam}>
+                <template for:each={contacts} for:item="contact">
+                    <div class="team-card" key={contact.key}>
+                        <div class="team-card-label">Your {contact.role}</div>
+                        <template lwc:if={contact.showPhoto}>
+                            <img class="team-photo" src={contact.photoUrl} alt={contact.name} />
+                        </template>
+                        <template lwc:else>
+                            <div class="team-photo-placeholder">{contact.name}</div>
+                        </template>
+                        <div class="team-name">{contact.name}</div>
+                        <div class="team-title">{contact.displayTitle}</div>
+                        <template lwc:if={contact.nmls}>
+                            <div class="team-detail">{contact.nmlsLabel}</div>
+                        </template>
+                        <template lwc:if={contact.phone}>
+                            <div class="team-detail">{contact.phone}</div>
+                        </template>
+                        <template lwc:if={contact.email}>
+                            <div class="team-email">{contact.email}</div>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </aside>
+    </div>
+</template>

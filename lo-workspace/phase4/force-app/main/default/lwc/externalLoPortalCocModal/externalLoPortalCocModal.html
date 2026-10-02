@@ -1,0 +1,36 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="coc-title">
+        <div class="modal-card">
+            <header class="modal-header">
+                <h2 id="coc-title">Change of circumstance</h2>
+                <p>Submit a COC request for this loan. Processors will continue on the internal transaction page.</p>
+            </header>
+            <div class="modal-body">
+                <lightning-combobox
+                    label="Reason for change"
+                    value={reason}
+                    options={reasonOptions}
+                    onchange={handleReasonChange}
+                    required>
+                </lightning-combobox>
+                <template lwc:if={showLoanAmountField}>
+                    <lightning-input type="number" label="New base loan amount" onchange={handleAmountChange}></lightning-input>
+                </template>
+                <template lwc:if={showAppraisalField}>
+                    <lightning-input type="number" label="New appraised value" onchange={handleAppraisalChange}></lightning-input>
+                </template>
+                <template lwc:if={showRateField}>
+                    <lightning-input type="number" label="New rate" step="0.001" onchange={handleRateChange}></lightning-input>
+                </template>
+                <template lwc:if={showProgramField}>
+                    <lightning-input label="New program" value={newProgram} onchange={handleProgramChange}></lightning-input>
+                </template>
+                <lightning-textarea label="Notes" value={notes} onchange={handleNotesChange}></lightning-textarea>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick={handleClose} disabled={saving}>Cancel</button>
+                <button type="button" class="btn btn-brand" onclick={handleSubmit} disabled={disableSubmit}>Submit COC</button>
+            </footer>
+        </div>
+    </section>
+</template>

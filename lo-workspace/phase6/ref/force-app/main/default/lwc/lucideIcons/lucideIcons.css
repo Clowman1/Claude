@@ -1,0 +1,28 @@
+/**
+*****************************************************
+* @date created date : March 10, 2026
+* @description       : Renders Lucide icons via static resource
+* @author            : Andrei Karanko
+Modification Log:
+Ver   Date         Author                               Modification
+1.0   10.03.2026   Andrei Karanko                          Initial Version
+2.0   15.03.2026   Andrei Karanko                          Refactored to use Lucide static resource
+*****************************************************
+*/
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: inherit;
+  height: inherit;
+}
+
+.icon {
+  display: contents;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

@@ -1,0 +1,78 @@
+<template>
+    <div class="pd-head">
+        <h2 class="pd-title">Pre-Approval Details</h2>
+        <template lwc:if={showEdit}>
+            <button type="button" class="pd-btn pd-btn-outline" onclick={handleEdit}>Edit</button>
+        </template>
+    </div>
+    <template lwc:if={loading}>
+        <span class="pd-spinner" aria-hidden="true"></span>
+    </template>
+    <template lwc:elseif={loadError}>
+        <p class="pd-error" role="alert">{loadError}</p>
+    </template>
+    <template lwc:elseif={editing}>
+        <form class="pd-form" onsubmit={handleSave}>
+            <div class="pd-grid">
+                <label class="pd-field">Loan purpose
+                    <select class="pd-input" data-field="purpose" onchange={handleInput}>
+                        <template for:each={purposeOptions} for:item="o"><option key={o.value} value={o.value} selected={o.selected}>{o.label}</option></template>
+                    </select>
+                </label>
+                <label class="pd-field">Loan program<input class="pd-input" data-field="program" value={draft.program} oninput={handleInput} /></label>
+                <label class="pd-field">Loan Amount ($)<input class="pd-input" type="number" min="0" step="1" data-field="loanAmount" value={draft.loanAmount} oninput={handleInput} /></label>
+                <label class="pd-field">Down payment ($)<input class="pd-input" type="number" min="0" step="1" data-field="downPaymentAmount" value={draft.downPaymentAmount} oninput={handleInput} /></label>
+                <label class="pd-field">Down payment (%)<input class="pd-input" type="number" min="0" max="100" step="0.001" data-field="downPaymentPercent" value={draft.downPaymentPercent} oninput={handleInput} /></label>
+                <label class="pd-field">Estimated payment ($/mo)<input class="pd-input" type="number" min="0" step="1" data-field="estimatedPayment" value={draft.estimatedPayment} oninput={handleInput} /></label>
+                <label class="pd-field">Property type
+                    <select class="pd-input" data-field="propertyType" onchange={handleInput}>
+                        <template for:each={propertyTypeOptions} for:item="o"><option key={o.value} value={o.value} selected={o.selected}>{o.label}</option></template>
+                    </select>
+                </label>
+                <label class="pd-field">Buying timeline
+                    <select class="pd-input" data-field="buyingTimeline" onchange={handleInput}>
+                        <template for:each={timelineOptions} for:item="o"><option key={o.value} value={o.value} selected={o.selected}>{o.label}</option></template>
+                    </select>
+                </label>
+                <label class="pd-field">City<input class="pd-input" data-field="city" value={draft.city} oninput={handleInput} /></label>
+                <label class="pd-field">State<input class="pd-input" data-field="state" value={draft.state} oninput={handleInput} /></label>
+                <label class="pd-field">Purchase price ($)<input class="pd-input" type="number" min="0" step="1" data-field="purchasePrice" value={draft.purchasePrice} oninput={handleInput} /></label>
+                <label class="pd-field">Realtor buying agent
+                    <select class="pd-input" data-field="realtorId" onchange={handleInput}>
+                        <template for:each={realtorOptions} for:item="o"><option key={o.value} value={o.value} selected={o.selected}>{o.label}</option></template>
+                    </select>
+                </label>
+            </div>
+            <p class="pd-hint">Realtors come from your own partners (My Realtors).</p>
+            <template lwc:if={saveError}>
+                <p class="pd-error" role="alert">{saveError}</p>
+            </template>
+            <div class="pd-actions">
+                <button type="button" class="pd-btn pd-btn-outline" onclick={handleCancel} disabled={saving}>Cancel</button>
+                <button type="submit" class="pd-btn pd-btn-brand" disabled={saving}>Save</button>
+            </div>
+        </form>
+    </template>
+    <template lwc:else>
+        <dl class="pd-list">
+            <template for:each={rows} for:item="row">
+                <div key={row.label} class="pd-row">
+                    <dt class="pd-label">{row.label}</dt>
+                    <dd class="pd-value">{row.value}</dd>
+                </div>
+            </template>
+            <div class="pd-row">
+                <dt class="pd-label">Realtor buying agent</dt>
+                <dd class="pd-value">
+                    <template lwc:if={realtorIsLink}>
+                        <a class="pd-link" href="#" onclick={handleRealtorClick}>{realtorLabel}</a>
+                    </template>
+                    <template lwc:else>{realtorLabel}</template>
+                </dd>
+            </div>
+        </dl>
+        <template lwc:if={info.note}>
+            <p class="pd-note">{info.note}</p>
+        </template>
+    </template>
+</template>

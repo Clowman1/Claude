@@ -1,0 +1,347 @@
+<template>
+    <div class="perfect-day-page">
+        <template lwc:if={showSkeleton}>
+            <div class="page-inner" aria-busy="true" aria-label="Loading your Perfect Day">
+                <div class="skeleton-header">
+                    <div class="skeleton-line skeleton-line-sm"></div>
+                    <div class="skeleton-line skeleton-line-lg"></div>
+                </div>
+                <div class="skeleton-banner"></div>
+                <div class="skeleton-metrics">
+                    <div class="skeleton-metric"></div>
+                    <div class="skeleton-metric"></div>
+                    <div class="skeleton-metric"></div>
+                    <div class="skeleton-metric"></div>
+                </div>
+                <div class="skeleton-grid">
+                    <div class="skeleton-panel skeleton-panel-lg"></div>
+                    <div class="skeleton-panel"></div>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:elseif={errorMessage}>
+            <div class="page-inner">
+                <div class="error-state" role="alert">
+                    <p class="error-title">We couldn’t load your Perfect Day</p>
+                    <p class="error-copy">{errorMessage}</p>
+                    <button class="btn btn-primary" type="button" onclick={handleRefresh}>Retry</button>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:elseif={showFirstRun}>
+            <div class="page-inner">
+                <div class="first-run-card">
+                    <p class="welcome-eyebrow">{homeData.todayFormatted}</p>
+                    <h1 class="first-run-title">{firstRunTitle}</h1>
+                    <p class="first-run-copy">
+                        Answer a few short questions about how you grow business — realtor outreach,
+                        consumer conversations, social posts, past-client calls, and partner meetings.
+                        We turn your answers into daily priorities you can log in two taps.
+                    </p>
+                    <button class="btn btn-primary" type="button" onclick={handleStartSetup}>
+                        Start my setup
+                    </button>
+                    <p class="first-run-hint">Takes about two minutes · you can change every target later</p>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:elseif={showDashboard}>
+            <div class="page-inner">
+                <section class="welcome-banner" aria-labelledby="perfect-day-welcome">
+                    <div class="banner-top">
+                        <div class="welcome-left">
+                            <p class="welcome-eyebrow">{homeData.todayFormatted}</p>
+                            <h1 id="perfect-day-welcome" class="welcome-title">{welcomeGreeting}</h1>
+                            <div class="banner-meta">
+                                <span class={paceBadgeClass}>{homeData.paceStatus}</span>
+                                <template lwc:if={hasFocus}>
+                                    <span class="welcome-focus">{focusLabel} · {planUpdatedLabel}</span>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="banner-actions">
+                            <button class="btn btn-primary" type="button" onclick={handleBannerLog} disabled={isActionLoading}>
+                                Log activity
+                            </button>
+                            <template lwc:if={showInPersonEvents}>
+                                <button class="btn btn-secondary" type="button" onclick={handleInPersonInvite}>In Person Invite</button>
+                            </template>
+                            <button class="btn-link" type="button" onclick={handleViewScoreboard}>
+                                View weekly scoreboard
+                            </button>
+                            <button class="btn btn-secondary btn-refresh" type="button" onclick={handleRefresh} disabled={isRefreshing}>
+                                <span class={refreshIconClass} aria-hidden="true"><c-portal-icon name="refresh-cw" size="16"></c-portal-icon></span>
+                                {refreshButtonLabel}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="banner-progress">
+                        <div class="welcome-progress-header">
+                            <p class="completion-label">
+                                <span class="banner-count">{homeData.goalsCompleted}</span>
+                                of {homeData.goalsTotal} activity goals met today
+                            </p>
+                            <p class="completion-percent">{homeData.dailyCompletionPercent}%</p>
+                        </div>
+                        <div class="progress-track progress-track-lg" role="progressbar" aria-label="Perfect day completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow={homeData.dailyCompletionPercent}>
+                            <div class={completionProgressFillClass} style={completionProgressStyle}></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="home-layout">
+                    <section class="metrics-section home-item-metrics" aria-labelledby="daily-metrics-heading">
+                        <h2 id="daily-metrics-heading" class="sr-only">Daily summary metrics</h2>
+                        <ul class="metrics-grid">
+                            <template for:each={summaryMetrics} for:item="metric">
+                                <li key={metric.label}>
+                                    <button
+                                        class={metric.cardClass}
+                                        type="button"
+                                        data-record-set-key={metric.recordSetKey}
+                                        onclick={handleMetricClick}
+                                        disabled={metric.notDrillable}
+                                        aria-label={metric.label}
+                                    >
+                                        <div class="metric-top">
+                                            <span class="metric-label">{metric.label}</span>
+                                            <span class="metric-chevron" aria-hidden="true"><c-portal-icon name="chevron-right" size="16"></c-portal-icon></span>
+                                        </div>
+                                        <span class={metric.valueClass}>{metric.displayValue}</span>
+                                        <span class="metric-support">{metric.supportText}</span>
+                                        <template lwc:if={metric.hasProgress}>
+                                            <div class="progress-track progress-track-sm" aria-hidden="true">
+                                                <div class="progress-fill progress-fill-teal" style={metric.progressStyle}></div>
+                                            </div>
+                                        </template>
+                                        <span class="metric-drill-hint">View records</span>
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </section>
+
+                    <c-external-lo-today-plan
+                        rows={homeData.todayPlan}
+                        onlogactivity={handlePlanLog}
+                    ></c-external-lo-today-plan>
+
+                    <c-external-lo-activity-prompts
+                        prompts={homeData.prompts}
+                        onlogprompt={handlePromptLog}
+                        onsnoozeprompt={handlePromptSnooze}
+                    ></c-external-lo-activity-prompts>
+
+                    <c-external-lo-recent-log entries={homeData.recentLog}></c-external-lo-recent-log>
+
+                    <template lwc:if={showInPersonEvents}>
+                        <c-lo-ws-in-person-events class="home-item-in-person"></c-lo-ws-in-person-events>
+                    </template>
+
+                    <div class="home-item-priorities">
+                        <section class="panel priorities-panel" aria-labelledby="todays-priorities-heading">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 id="todays-priorities-heading" class="panel-title">Pipeline snapshot</h2>
+                                    <p class="panel-subtitle">Counts by revenue impact — open a queue to work the list</p>
+                                </div>
+                                <template lwc:if={urgentPriorityCount}>
+                                    <span class="urgent-pill">{urgentPriorityCount} urgent</span>
+                                </template>
+                            </div>
+                            <ul class="priority-list">
+                                <template for:each={priorities} for:item="priority">
+                                    <li key={priority.key}>
+                                        <button
+                                            class={priority.rowClass}
+                                            type="button"
+                                            data-priority-key={priority.key}
+                                            onclick={handlePriorityClick}
+                                            aria-label={priority.label}
+                                        >
+                                            <span class="priority-accent" aria-hidden="true"></span>
+                                            <span class={priority.iconWrapClass} aria-hidden="true">
+                                                <c-portal-icon
+                                                    class="priority-icon"
+                                                    name={priority.iconName}
+                                                    size="18"
+                                                ></c-portal-icon>
+                                            </span>
+                                            <div class="priority-body">
+                                                <div class="priority-title-row">
+                                                    <span class={priority.badgeClass}>{priority.count}</span>
+                                                    <span class="priority-name">{priority.label}</span>
+                                                    <span class={priority.urgencyLabelClass}>{priority.urgencyLabel}</span>
+                                                </div>
+                                                <p class="priority-description">{priority.description}</p>
+                                            </div>
+                                            <span class="priority-view-desktop">View <c-portal-icon name="chevron-right" size="14"></c-portal-icon></span>
+                                            <span class="priority-view-mobile" aria-hidden="true"><c-portal-icon name="chevron-right" size="16"></c-portal-icon></span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </section>
+
+                        <section class="panel goals-panel" aria-labelledby="daily-goals-heading">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 id="daily-goals-heading" class="panel-title">Goal Progress</h2>
+                                    <p class="panel-subtitle">{goalPeriodSummary}</p>
+                                </div>
+                                <div class="goal-tabs" role="tablist" aria-label="Goal period">
+                                    <template for:each={goalPeriodTabs} for:item="tab">
+                                        <button
+                                            key={tab.id}
+                                            class={tab.tabClass}
+                                            type="button"
+                                            role="tab"
+                                            data-period={tab.id}
+                                            aria-selected={tab.isActive}
+                                            onclick={handleGoalPeriodClick}
+                                        >
+                                            {tab.label}
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                            <template lwc:if={hasGoalRows}>
+                            <ul class="goal-list">
+                                <template for:each={activeGoalRows} for:item="goal">
+                                    <li key={goal.key}>
+                                        <button class="goal-row" type="button" data-goal-key={goal.key} onclick={handleGoalRowClick}>
+                                            <div class="goal-row-top">
+                                                <div>
+                                                    <p class="goal-label">{goal.label}</p>
+                                                    <p class="goal-progress-label">{goal.progressLabel}</p>
+                                                </div>
+                                                <span class={goal.badgeClass}>{goal.statusLabel}</span>
+                                            </div>
+                                            <div class="progress-track progress-track-sm" aria-hidden="true">
+                                                <div class={goal.barFillClass} style={goal.progressStyle}></div>
+                                            </div>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                            </template>
+                            <template lwc:else>
+                                <div class="goal-empty">
+                                    <p>No goals are configured for this period yet. Your admin sets the company baseline.</p>
+                                </div>
+                            </template>
+                            <p class="goal-footnote">
+                                <span class="goal-lock" aria-hidden="true"><c-portal-icon name="lock" size="14"></c-portal-icon></span>
+                                {goalFootnote}
+                            </p>
+                        </section>
+
+                        <nav class="quick-links" aria-label="Business development lists">
+                            <ul class="quick-links-grid">
+                                <template for:each={quickLinks} for:item="link">
+                                    <li key={link.key}>
+                                        <button
+                                            class="quick-link-card"
+                                            type="button"
+                                            data-view={link.view}
+                                            data-filter-key={link.filterKey}
+                                            onclick={handleQuickLinkClick}
+                                        >
+                                            <span class="quick-link-text">
+                                                <span class="quick-link-label">{link.label}</span>
+                                                <span class="quick-link-detail">{link.detail}</span>
+                                            </span>
+                                            <span class="quick-link-arrow" aria-hidden="true"><c-portal-icon name="arrow-right" size="16"></c-portal-icon></span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <c-portal-record-drawer
+            embedded-in-shell={embeddedInShell}
+            record-set-key={activeRecordSetKey}
+            onclose={handleDrawerClose}
+            onrecordschanged={handleDrawerRecordsChanged}
+        ></c-portal-record-drawer>
+
+        <c-portal-activity-modal
+            open={isActivityModalOpen}
+            categories={activityCategories}
+            initial-activity-key={activityModalKey}
+            initial-record-id={activityModalRecordId}
+            initial-object-api-name={activityModalObjectApiName}
+            initial-contact-name={activityModalContactName}
+            prompt-key={activityModalPromptKey}
+            subject-name={activityModalContactName}
+            onclose={closeActivityModal}
+            onlogged={handleActivityLogged}
+        ></c-portal-activity-modal>
+
+        <template lwc:if={showLogModal}>
+            <c-portal-communication-modal
+                open={isLogOutcomeOpen}
+                target-record-id={logRecordId}
+                object-api-name={logObjectApiName}
+                subject-name={logSubjectName}
+                subject-context={logSubjectContext}
+                phone={logPhone}
+                email={logEmail}
+                goal-credit={logGoalCredit}
+                onclose={closeLogOutcome}
+                onlogged={handleLogOutcomeFinished}
+            ></c-portal-communication-modal>
+        </template>
+
+        <template lwc:if={isDeferOpen}>
+            <section class="modal-backdrop" role="dialog" aria-modal="true" aria-label="Defer recommendation">
+                <div class="modal-card modal-card-sm">
+                    <div class="modal-header">
+                        <h2>Defer this recommendation</h2>
+                        <button class="modal-close" type="button" onclick={closeDeferModal} aria-label="Close" disabled={isActionLoading}><c-portal-icon name="x" size="18"></c-portal-icon></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-copy">It will return to Up Next at the time you choose.</p>
+                        <div role="radiogroup" aria-label="Remind me">
+                            <template for:each={deferOptions} for:item="option">
+                                <button
+                                    key={option.id}
+                                    type="button"
+                                    role="radio"
+                                    aria-checked={option.isSelected}
+                                    class={option.optionClass}
+                                    data-option={option.id}
+                                    onclick={handleDeferChoice}
+                                    disabled={isActionLoading}
+                                >
+                                    <span class="defer-option-radio" aria-hidden="true"></span>
+                                    <span>
+                                        <span class="defer-option-label">{option.label}</span>
+                                        <span class="defer-option-detail">{option.detail}</span>
+                                    </span>
+                                </button>
+                            </template>
+                        </div>
+                        <p class="defer-warning">Deferring a never-contacted lead may push it outside the contact SLA.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" onclick={closeDeferModal} disabled={isActionLoading}>Cancel</button>
+                        <button class="btn btn-primary" type="button" onclick={confirmDefer} disabled={isActionLoading}>
+                            <template lwc:if={isDeferring}>
+                                <span class="spinner" aria-hidden="true"></span>
+                            </template>
+                            {deferButtonLabel}
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </template>
+    </div>
+</template>

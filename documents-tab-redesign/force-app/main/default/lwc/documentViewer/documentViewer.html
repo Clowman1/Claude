@@ -60,10 +60,32 @@
 
 				<section class="dv-pane">
 					<div class="dv-pane__head">
-						<div>
-							<h3 class="dv-pane__heading">{selectedFolderName}</h3>
-							<p class="dv-pane__sub">Drag to reorder, or drop onto a folder on the left to move</p>
+						<div class="dv-pane__title">
+							<template if:true={hasVisibleFiles}>
+								<input
+									type="checkbox"
+									class="dv-check"
+									aria-label="Select every document shown in this folder"
+									title="Select all"
+									checked={allVisibleSelected}
+									onchange={handleSelectAllVisible}
+								/>
+							</template>
+							<div>
+								<h3 class="dv-pane__heading">{selectedFolderName}</h3>
+								<p class="dv-pane__sub">Drag to reorder, or drop onto a folder on the left to move</p>
+							</div>
 						</div>
+						<template if:true={hasSelection}>
+							<div class="dv-selection" role="status">
+								<span class="dv-selection__count">{selectionLabel}</span>
+								<button class="pill pill--primary" onclick={downloadSelected} title="Download the selected documents as a zip">
+									<lightning-icon icon-name="utility:download" size="xx-small"></lightning-icon>
+									<span>Download selected</span>
+								</button>
+								<button class="pill" onclick={handleClearSelection}>Clear</button>
+							</div>
+						</template>
 						<lightning-button-menu
 							alternative-text="Folder actions"
 							icon-size="small"
@@ -88,6 +110,14 @@
 									ondragover={handleCardDragOver}
 									ondrop={handleCardDrop}
 								>
+									<input
+										type="checkbox"
+										class="dv-check dv-card__check"
+										data-id={file.id}
+										aria-label={file.selectLabel}
+										checked={file.isSelected}
+										onchange={handleToggleSelect}
+									/>
 									<button type="button" class="dv-card__thumb" data-file-id={file.id} onclick={handleMobilePreview} title="Preview">
 										<lightning-icon icon-name={file.displayIcon} size="large" class="dv-card__fallback"></lightning-icon>
 										<template if:true={file.thumbnailUrl}>

@@ -1,0 +1,201 @@
+/**
+ * Created by andrk on 6/26/2024.
+ */
+
+:host {
+  --mn-border-radius: 0.5rem;
+}
+
+.mn__wrapper,
+.mn__dialog {
+  padding: 0;
+  border: none;
+  outline: 0;
+  box-shadow: none;
+  overflow: visible;
+  background-color: transparent;
+}
+
+.mn__wrapper {
+  width: 100%;
+
+  & .mn__header,
+  & .mn__body {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    overflow-wrap: break-word;
+    border-width: 2px;
+    border-style: solid;
+    margin: -2px; /* to compensate 1px gap between divs */
+  }
+
+  & .mn__header {
+    font-weight: 600;
+    border-top-left-radius: var(--mn-border-radius);
+    border-top-right-radius: var(--mn-border-radius);
+  }
+
+  & .mn__body {
+    border-bottom-left-radius: var(--mn-border-radius);
+    border-bottom-right-radius: var(--mn-border-radius);
+    border-top: none;
+  }
+
+  & .mn__close-button {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+
+    & .icon-close {
+      --slds-c-icon-color-background: transparent;
+      --sds-c-icon-color-background: transparent;
+      --slds-c-icon-color-foreground-default: rgb(255, 255, 255);
+      --sds-c-icon-color-foreground: rgb(255, 255, 255);
+    }
+  }
+
+  &:is(.mn__success) {
+    & .mn__header {
+      background-color: rgb(30, 130, 125);
+      color: #ffffff;
+      border-color: rgb(30, 130, 125);
+    }
+
+    & .mn__body {
+      background-color: rgb(230, 255, 250);
+      color: rgb(35, 78, 82);
+      border-color: rgb(56, 178, 172);
+    }
+
+    & > .mn__sliding-panel .mn__body {
+      border-left-width: 4px;
+    }
+
+    & > .mn__sliding-panel .mn__close-button .icon-close {
+      --slds-c-icon-color-foreground-default: rgb(35, 78, 82);
+      --sds-c-icon-color-foreground: rgb(35, 78, 82);
+    }
+  }
+
+  &:is(.mn__error) {
+    & .mn__header {
+      background-color: rgb(200, 55, 55);
+      color: #ffffff;
+      border-color: rgb(200, 55, 55);
+    }
+
+    & .mn__body {
+      background-color: rgb(255, 245, 245);
+      color: rgb(197, 48, 48);
+      border-color: rgb(245, 101, 101);
+    }
+
+    & > .mn__sliding-panel .mn__body {
+      border-left-width: 4px;
+    }
+
+    & > .mn__sliding-panel .mn__close-button .icon-close {
+      --slds-c-icon-color-foreground-default: rgb(197, 48, 48);
+      --sds-c-icon-color-foreground: rgb(197, 48, 48);
+    }
+  }
+
+  &:is(.mn__warning) {
+    & .mn__header {
+      background-color: rgb(192, 86, 33);
+      color: #ffffff;
+      border-color: rgb(192, 86, 33);
+    }
+
+    & .mn__body {
+      background-color: rgb(255, 250, 240);
+      color: rgb(155, 70, 25);
+      border-color: rgb(192, 86, 33);
+    }
+
+    & > .mn__sliding-panel .mn__body {
+      border-left-width: 4px;
+    }
+
+    & > .mn__sliding-panel .mn__close-button .icon-close {
+      --slds-c-icon-color-foreground-default: rgb(155, 70, 25);
+      --sds-c-icon-color-foreground: rgb(155, 70, 25);
+    }
+  }
+
+  &:is(.mn__info) {
+    & .mn__header {
+      background-color: rgb(45, 115, 190);
+      color: #ffffff;
+      border-color: rgb(45, 115, 190);
+    }
+
+    & .mn__body {
+      background-color: rgb(235, 248, 255);
+      color: rgb(43, 108, 176);
+      border-color: rgb(66, 153, 225);
+    }
+
+    & > .mn__sliding-panel .mn__body {
+      border-left-width: 4px;
+    }
+
+    & > .mn__sliding-panel .mn__close-button .icon-close {
+      --slds-c-icon-color-foreground-default: rgb(43, 108, 176);
+      --sds-c-icon-color-foreground: rgb(43, 108, 176);
+    }
+  }
+
+  & .mn__dialog {
+    max-width: 30rem;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+
+  & .mn__relative-modal {
+    max-width: 30rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  & .mn__inline-modal {
+    max-width: 30rem;
+    margin: 1rem auto;
+    cursor: pointer;
+  }
+
+  & .mn__sliding-panel {
+    position: absolute;
+    top: 30%;
+    right: 1rem;
+    max-width: 20rem;
+    cursor: pointer;
+    z-index: 9999;
+    transform: translateY(-50%) translateX(calc(100% + 2rem));
+    opacity: 0;
+    animation: mn-slide-in 0.35s ease-out forwards;
+
+    & .mn__body {
+      border-width: 1px;
+      border-style: solid;
+      margin: -1px;
+      border-top-left-radius: var(--mn-border-radius);
+      border-top-right-radius: var(--mn-border-radius);
+    }
+  }
+}
+
+@keyframes mn-slide-in {
+  to {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+  }
+}

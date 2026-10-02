@@ -1,0 +1,6 @@
+@import 'c/bdStyles';
+
+.title { margin: 0; font-size: 20px; font-weight: 800; color: #17233f; }
+.err { background: #fde7e7; color: #9f1d1d; border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.sm { font-size: 12.5px; }

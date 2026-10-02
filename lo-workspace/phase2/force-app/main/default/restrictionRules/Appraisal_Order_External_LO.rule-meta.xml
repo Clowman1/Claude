@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RestrictionRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <description>Outside LOs (External_LO permission) see only Appraisal Orders stamped with them. Internal users are not affected.</description>
+    <enforcementType>Restrict</enforcementType>
+    <masterLabel>External LO - Appraisal Orders</masterLabel>
+    <recordFilter>External_LO__c = $User.Id</recordFilter>
+    <targetEntity>Appraisal_Order__c</targetEntity>
+    <userCriteria>$Permission.External_LO = true</userCriteria>
+    <version>1</version>
+</RestrictionRule>

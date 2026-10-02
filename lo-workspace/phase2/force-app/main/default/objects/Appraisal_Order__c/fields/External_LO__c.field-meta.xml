@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>External_LO__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The outside (External) Loan Officer this record belongs to, stamped from its parent Lead or Transaction. Drives the External LO restriction rule; blank means outside LOs cannot see it.</description>
+    <externalId>false</externalId>
+    <label>External LO</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>External_LO_AppraisalOrders</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

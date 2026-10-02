@@ -1,0 +1,179 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:04:52.062Z",
+        "fileName": "unpackaged/objects/Lead.object",
+        "fullName": "Lead",
+        "id": "000000000000000AAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:04:52.062Z",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:04:53.942Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:04:53.942Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OfVGXMA3",
+    "messages": [
+      {
+        "fileName": "unpackaged/package.xml",
+        "problem": "Entity of type 'ValidationRule' named 'Lead.*' cannot be found"
+      }
+    ],
+    "status": "Succeeded",
+    "success": true,
+    "files": [
+      {
+        "fullName": "Lead.*",
+        "type": "ValidationRule",
+        "state": "Failed",
+        "error": "Entity of type 'ValidationRule' named 'Lead.*' cannot be found",
+        "problemType": "Error"
+      },
+      {
+        "fullName": "Lead.Lead_Source_Change_Restricted",
+        "type": "ValidationRule",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_Source_Change_Restricted.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Partner_Reassignment_Restricted",
+        "type": "ValidationRule",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Partner_Reassignment_Restricted.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\Lead.object-meta.xml"
+      },
+      {
+        "fullName": "Lead.Buyers_Agent_Required_for_Purchases",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Buyers_Agent_Required_for_Purchases.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Calls_Required_for_Status_Change",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Calls_Required_for_Status_Change.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Can_not_convert_without_Channel",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Can_not_convert_without_Channel.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Call_Back_must_have_Appt_Date",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Contacted_Call_Back_must_have_Appt_Date.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Docs_Received_Message",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Docs_Received_Message.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Docs_Requested_Message",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Docs_Requested_Message.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lawrence_Lanos_Rule",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lawrence_Lanos_Rule.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Rating_and_Loan_Amount_Fields_requr",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_Rating_and_Loan_Amount_Fields_requr.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_already_claimed",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_already_claimed.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Officers_Cannot_Change_Owner",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Officers_Cannot_Change_Owner.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Purpose_Is_Required",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Purpose_Is_Required.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Megan_Cannot_Reassign_Loan_Partner",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Megan_Cannot_Reassign_Loan_Partner.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Message_for_Contacted_Call_Back",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Message_for_Contacted_Call_Back.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.No_Owner_Change_on_Leads",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\No_Owner_Change_on_Leads.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Preapproval_Type_Mutual_Exclusion",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Preapproval_Type_Mutual_Exclusion.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Select_Channel_Before_Converting",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Select_Channel_Before_Converting.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Submission_Form_must_be_completed",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Submission_Form_must_be_completed.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Working_Message_Missing",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\validationRules\\Working_Message_Missing.validationRule-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

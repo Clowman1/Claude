@@ -1,0 +1,212 @@
+/* Matches leadRecordHero so the panel reads as the bottom half of the same banner.
+   Collapsed rows sit on the navy; anything containing form fields sits on a light card, because
+   SLDS input labels are dark by design and are illegible on a dark ground. */
+.panel {
+    background: linear-gradient(110deg, #142342 0%, #1c3155 58%, #2b3f5e 100%);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(17, 31, 56, 0.18);
+    color: #fff;
+    margin: -6px 0 14px;
+    padding: 16px 20px 18px;
+}
+
+.panel-head {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.panel-title {
+    color: #ffa534;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.add-btn {
+    background: linear-gradient(180deg, #ffb24a 0%, #ff9824 100%);
+    border: 1px solid #ff8c16;
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(255, 145, 31, 0.25);
+    color: #122242;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 7px 14px;
+}
+
+.add-btn:hover {
+    background: linear-gradient(180deg, #ffc066 0%, #ffa438 100%);
+}
+
+.cap-note,
+.empty {
+    color: #c3cfe2;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.empty {
+    margin: 0;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.row {
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.row-head {
+    align-items: center;
+    background: none;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    text-align: left;
+    width: 100%;
+}
+
+.row-head:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.row-name {
+    font-size: 1.05rem;
+    font-weight: 900;
+}
+
+.row-role {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    color: #e4ecf8;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    padding: 4px 9px;
+    text-transform: uppercase;
+}
+
+.row-warning {
+    background: rgba(255, 176, 74, 0.18);
+    border: 1px solid rgba(255, 176, 74, 0.5);
+    border-radius: 999px;
+    color: #ffd79a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 4px 10px;
+}
+
+.row-chevron {
+    --slds-c-icon-color-foreground-default: #cdd9ec;
+    margin-left: auto;
+}
+
+/* ---- light surfaces: everything with labels or field text ---- */
+
+.row-body,
+.draft {
+    background: #f6f8fc;
+    color: #142342;
+}
+
+.row-body {
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 16px 14px;
+}
+
+.draft {
+    border: 1px solid #d5dde9;
+    border-radius: 12px;
+    margin-top: 10px;
+    padding: 16px 14px;
+}
+
+.draft-title {
+    color: #5a6b85;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+}
+
+.field-grid {
+    display: grid;
+    gap: 12px 20px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.read-grid {
+    display: grid;
+    gap: 14px 42px;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+}
+
+.read-grid dt {
+    color: #5a6b85;
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.read-grid dd {
+    color: #142342;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.read-grid a {
+    color: #0b5cab;
+    font-weight: 700;
+}
+
+.remove-btn {
+    background: #fff;
+    border: 1px solid #d8a2a2;
+    border-radius: 999px;
+    color: #a4262c;
+    cursor: pointer;
+    font-size: 0.76rem;
+    font-weight: 800;
+    margin-top: 16px;
+    padding: 7px 14px;
+}
+
+.remove-btn:hover {
+    background: #fdf1f1;
+    border-color: #a4262c;
+}
+
+.draft-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+    .field-grid,
+    .read-grid {
+        grid-template-columns: 1fr;
+    }
+}

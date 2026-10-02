@@ -1,0 +1,43 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E1"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6oyIAA",
+      "Subject": "Lunch with Kelsey Lin",
+      "Location": "Ulele, Highland Ave",
+      "StartDateTime": "2026-08-26T16:00:00.000+0000",
+      "EndDateTime": "2026-08-26T17:00:00.000+0000",
+      "Description": "Demo meeting"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E2"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p9IAA",
+      "Subject": "Coffee with Derek Foster",
+      "Location": "Oxford Exchange",
+      "StartDateTime": "2026-09-19T12:00:00.000+0000",
+      "EndDateTime": "2026-09-19T13:00:00.000+0000",
+      "Description": "Demo meeting"
+    },
+    {
+      "attributes": {
+        "type": "Event",
+        "referenceId": "E3"
+      },
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "WhatId": "001Qi00001ax6p8IAA",
+      "Subject": "Site visit: Chen Custom Homes",
+      "Location": "South Tampa model home",
+      "StartDateTime": "2026-07-31T15:00:00.000+0000",
+      "EndDateTime": "2026-07-31T16:00:00.000+0000",
+      "Description": "Demo meeting"
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-01-25T16:39:51.000Z",
+        "fileName": "unpackaged/flows/Flow_to_Force_Company_field_to_Empty.flow",
+        "fullName": "Flow_to_Force_Company_field_to_Empty",
+        "id": "301AJ0000000X8KYAU",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:48:19.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-11-05T14:23:39.000Z",
+        "fileName": "unpackaged/flows/Lead_Keep_First_Owner_Assignment.flow",
+        "fullName": "Lead_Keep_First_Owner_Assignment",
+        "id": "301Qi00000LekGLIAZ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-11-05T14:23:42.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-10-22T09:23:22.000Z",
+        "fileName": "unpackaged/flows/Lead_Clear_Phone_and_Mobile_Phone.flow",
+        "fullName": "Lead_Clear_Phone_and_Mobile_Phone",
+        "id": "301Qi00000JioNzIAJ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-10-22T09:23:24.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-08-14T12:44:05.000Z",
+        "fileName": "unpackaged/flows/Lead_Assign_Follow_Up_Lead_to_Transactions.flow",
+        "fullName": "Lead_Assign_Follow_Up_Lead_to_Transactions",
+        "id": "301Qi00000eXdYEIA0",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:44:28.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-10-24T13:26:15.000Z",
+        "fileName": "unpackaged/flows/Lead_Event_Status_Changed.flow",
+        "fullName": "Lead_Event_Status_Changed",
+        "id": "301Qi00000KJ13ZIAT",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:44:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-10T16:06:57.000Z",
+        "fileName": "unpackaged/flows/Share_Leads_With_Lawrence_Lanos.flow",
+        "fullName": "Share_Leads_With_Lawrence_Lanos",
+        "id": "301Qi00000jYvJiIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:42:45.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-10T16:07:00.000Z",
+        "fileName": "unpackaged/flows/Shark_Tank_New_Lead.flow",
+        "fullName": "Shark_Tank_New_Lead",
+        "id": "301Qi00000jYvJjIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:42:51.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-10-10T16:07:03.000Z",
+        "fileName": "unpackaged/flows/Website_Lead_Internal_Notification.flow",
+        "fullName": "Website_Lead_Internal_Notification",
+        "id": "301Qi00000jYvJkIAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:43:06.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-01-11T18:49:37.000Z",
+        "fileName": "unpackaged/flows/Lead_Status_Change_Message_Sends.flow",
+        "fullName": "Lead_Status_Change_Message_Sends",
+        "id": "301AJ0000000UWJYA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-10-27T08:44:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-04T19:17:44.000Z",
+        "fileName": "unpackaged/flows/Lead_Branch_Assignment.flow",
+        "fullName": "Lead_Branch_Assignment",
+        "id": "301Qi00001L1wGSIAZ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-04T19:28:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-31T16:24:10.000Z",
+        "fileName": "unpackaged/flows/Lead_Default_Scenario_Manager.flow",
+        "fullName": "Lead_Default_Scenario_Manager",
+        "id": "301Qi00001Y4FKfIAN",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-31T16:24:51.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-03T17:35:45.000Z",
+        "fileName": "unpackaged/flows/Lead_Owner_Transfer_Email_Notification.flow",
+        "fullName": "Lead_Owner_Transfer_Email_Notification",
+        "id": "301Qi00001UOPEqIAP",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-03T17:35:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T15:41:45.980Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:41:45.980Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OfT53MAF",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "Flow_to_Force_Company_field_to_Empty",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Flow_to_Force_Company_field_to_Empty.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Keep_First_Owner_Assignment",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Keep_First_Owner_Assignment.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Clear_Phone_and_Mobile_Phone",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Clear_Phone_and_Mobile_Phone.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Assign_Follow_Up_Lead_to_Transactions",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Assign_Follow_Up_Lead_to_Transactions.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Event_Status_Changed",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Event_Status_Changed.flow-meta.xml"
+      },
+      {
+        "fullName": "Share_Leads_With_Lawrence_Lanos",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Share_Leads_With_Lawrence_Lanos.flow-meta.xml"
+      },
+      {
+        "fullName": "Shark_Tank_New_Lead",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Shark_Tank_New_Lead.flow-meta.xml"
+      },
+      {
+        "fullName": "Website_Lead_Internal_Notification",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Website_Lead_Internal_Notification.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Status_Change_Message_Sends",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Status_Change_Message_Sends.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Branch_Assignment",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Branch_Assignment.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Default_Scenario_Manager",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Default_Scenario_Manager.flow-meta.xml"
+      },
+      {
+        "fullName": "Lead_Owner_Transfer_Email_Notification",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\flows\\Lead_Owner_Transfer_Email_Notification.flow-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

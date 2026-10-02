@@ -39,20 +39,20 @@ private class TransactionDocuSignControllerTest {
     static void rejectsMissingFilesAndCoBorrowerEmail() {
         Id tId = setup(null);
         try {
-            TransactionDocuSignController.createDraft(tId, null, new List<Id>(), true, false);
+            TransactionDocuSignController.createDraft(tId, new List<String>(), new List<Id>(), true, false);
             Assert.fail('expected error');
         } catch (AuraHandledException e) {
             Assert.isTrue(e.getMessage().contains('Pick a template'));
         }
         try {
-            TransactionDocuSignController.createDraft(tId, 'Not A Template', null, false, false);
+            TransactionDocuSignController.createDraft(tId, new List<String>{ 'Not A Template' }, null, false, false);
             Assert.fail('expected error');
         } catch (AuraHandledException e) {
             Assert.isTrue(e.getMessage().contains('Unknown template'));
         }
         Id cvId = TransactionDocuSignController.getData(tId).files[0].versionId;
         try {
-            TransactionDocuSignController.createDraft(tId, null, new List<Id>{ cvId }, true, false);
+            TransactionDocuSignController.createDraft(tId, new List<String>(), new List<Id>{ cvId }, true, false);
             Assert.fail('expected error');
         } catch (AuraHandledException e) {
             Assert.isTrue(e.getMessage().contains('co-borrower has no email'));
@@ -65,17 +65,17 @@ private class TransactionDocuSignControllerTest {
         Id cvId = TransactionDocuSignController.getData(tId).files[0].versionId;
         // The package calls out to DocuSign; tests cannot, so only the envelope build is exercised here.
         try {
-            TransactionDocuSignController.createDraft(tId, 'Address LOX', new List<Id>{ cvId }, false, true);
+            TransactionDocuSignController.createDraft(tId, new List<String>{ 'Address LOX' }, new List<Id>{ cvId }, false, true);
         } catch (Exception e) {
             Assert.isNotNull(e.getMessage());
         }
         try {
-            TransactionDocuSignController.createDraft(tId, 'No HOA LOX', null, false, false);
+            TransactionDocuSignController.createDraft(tId, new List<String>{ 'No HOA LOX', 'Credit Inquiry LOX' }, null, false, false);
         } catch (Exception e) {
             Assert.isNotNull(e.getMessage());
         }
         try {
-            TransactionDocuSignController.getSenderView(tId, '00000000-0000-0000-0000-000000000000');
+            TransactionDocuSignController.getSenderView(tId, tId);
         } catch (Exception e) {
             Assert.isNotNull(e.getMessage());
         }

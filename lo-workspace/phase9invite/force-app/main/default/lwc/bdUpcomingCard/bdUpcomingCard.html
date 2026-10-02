@@ -1,0 +1,18 @@
+<template>
+    <section class="card pad2">
+        <div class="sechead"><h2 class="h2">{heading}</h2><template lwc:if={canEdit}><button class="linkish" onclick={openCalendar}>Open calendar</button></template></div>
+        <template lwc:if={hasEvents}>
+            <template for:each={events} for:item="e">
+                <button key={e.campaignId} class={e.boxCls} data-id={e.campaignId} onclick={openTracker}>
+                    <div class="date"><div class="lbl">{e.dow}</div><div class="dnum">{e.day}</div></div>
+                    <div class="grow left">
+                        <div class="strong">{e.name}</div>
+                        <div class="muted sm">{e.when}</div>
+                        <div class="sm rsvp">{e.rsvp}</div>
+                    </div>
+                </button>
+            </template>
+        </template>
+        <template lwc:else><div class="muted sm">{emptyText}</div></template>
+    </section>
+</template>

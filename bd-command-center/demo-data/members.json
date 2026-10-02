@@ -1,0 +1,172 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E1M0"
+      },
+      "CampaignId": "701Qi00001awnsnIAA",
+      "ContactId": "003Qi00001LQRRNIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE10",
+      "Invite_Email_Sent_At__c": "2026-09-25T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-25T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-25T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-25T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E2M0"
+      },
+      "CampaignId": "701Qi00001awnsoIAA",
+      "ContactId": "003Qi00001LQRRWIA5",
+      "Status": "Invitation Sent",
+      "Event_Invite_Token__c": "demoE20",
+      "Invite_Email_Sent_At__c": "2026-09-29T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-29T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-29T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-29T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M0"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRPIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE30",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M1"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRbIAP",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE31",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M2"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRQIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE32",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M3"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRSIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE33",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M4"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRTIA5",
+      "Status": "No - Unable to Attend",
+      "Event_Invite_Token__c": "demoE34",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M5"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRWIA5",
+      "Status": "Invitation Sent",
+      "Event_Invite_Token__c": "demoE35",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E3M6"
+      },
+      "CampaignId": "701Qi00001awnspIAA",
+      "ContactId": "003Qi00001LQRRRIA5",
+      "Status": "Invitation Sent",
+      "Event_Invite_Token__c": "demoE36",
+      "Invite_Email_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-26T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E4M0"
+      },
+      "CampaignId": "701Qi00001awnsqIAA",
+      "ContactId": "003Qi00001LQRRTIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE40",
+      "Invite_Email_Sent_At__c": "2026-09-16T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-16T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-16T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-16T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E5M0"
+      },
+      "CampaignId": "701Qi00001awnsrIAA",
+      "ContactId": "003Qi00001LQRRSIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE50",
+      "Invite_Email_Sent_At__c": "2026-09-17T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-17T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-17T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-17T12:00:00.000+0000"
+    },
+    {
+      "attributes": {
+        "type": "CampaignMember",
+        "referenceId": "E6M0"
+      },
+      "CampaignId": "701Qi00001awnssIAA",
+      "ContactId": "003Qi00001LQRRUIA5",
+      "Status": "Yes - Attending",
+      "Event_Invite_Token__c": "demoE60",
+      "Invite_Email_Sent_At__c": "2026-09-04T12:00:00.000+0000",
+      "Invite_SMS_Sent_At__c": "2026-09-04T12:00:00.000+0000",
+      "RSVP_Reminder_Sent_At__c": "2026-09-04T12:00:00.000+0000",
+      "Event_Reminder_Sent_At__c": "2026-09-04T12:00:00.000+0000"
+    }
+  ]
+}

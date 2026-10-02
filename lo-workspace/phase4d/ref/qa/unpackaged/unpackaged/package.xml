@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Lead.Leads_Notes_Form</members>
+        <members>Lead.Manual_lead_convert</members>
+        <members>Lead.Pre_Approval_Letter</members>
+        <members>Lead.Realtor_Convert</members>
+        <members>Lead.Sync_With_Arive</members>
+        <members>Transaction__c.Application_Template</members>
+        <members>Transaction__c.Back_Under_Contract</members>
+        <members>Transaction__c.Change_of_Circumstances</members>
+        <members>Transaction__c.MERS_Min_Capture</members>
+        <members>Transaction__c.Revert_To_Closing</members>
+        <members>Transaction__c.Submission_Form_Modern</members>
+        <members>Transaction__c.Sync_With_Arive</members>
+        <members>Transaction__c.Update_Data_From_UWM</members>
+        <name>QuickAction</name>
+    </types>
+    <version>62.0</version>
+</Package>

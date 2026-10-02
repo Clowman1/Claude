@@ -1,0 +1,73 @@
+<!--
+ - Created by BTB12 on 8/8/2022.
+ -->
+
+<apex:page id="Preapproval_Letter" standardController="Lead" showHeader="false" renderAs="pdf" applyHtmlTag="false" applyBodyTag="false">
+    <html>
+    <head>
+        <style type="text/css" media="print">
+            @page {
+                @top-center {
+                    content: element(header);
+                }
+                @bottom-center {
+                    content: element(footer);
+                }
+            }
+            div.header {
+                position: running(header);
+            }
+            div.footer {
+                display: block;
+                position: running(footer);
+            }
+        </style>
+    </head>
+    <body>
+    <div class="header" style="margin-bottom: 50px; text-align: center;">
+        <hr style="background: #001c54; height: 15px; padding-top:0px;"/>
+        <div style="margin-top: 10px;"><apex:image url="{!$Resource.Reach_Logo}"/></div>
+    </div>
+    <div class="letterBody" style="margin-bottom: 30px; padding-top: 40px;">
+        <p style="font-size: 14px;">To whom it may concern:</p>
+        <p style="font-size: 14px;">
+            I have issued this Pre-Approval Letter to certify that the below applicant(s) is/are pre-approved for
+            financing per Desktop Underwriter (DU) and/or Loan Prospector (LP).
+        </p>
+        <p style="font-size: 14px;">
+            The applicant(s) is/are pre-approved for the following terms provided that their creditworthiness and
+            financial position do not materially change prior to closing.
+        </p>
+        <p style="margin:0px; font-size: 14px;">Applicant(s) Name: <span>{!Lead.Name}</span></p>
+        <p style="margin:0px; font-size: 14px;">Financing Type: <span>{!Lead.Loan_Type_1st_TD__c}</span></p>
+        <p style="margin:0px; font-size: 14px;">Purchase Price: <span><apex:outputText value="{0, Number, Currency}"><apex:param value="{!Lead.Purchase_Price__c}"/></apex:outputText></span></p>
+        <p style="margin:0px; font-size: 14px;">Down Payment: <span><apex:outputText value="{0, Number, Currency}"><apex:param value="{!Lead.Down_Payment_Amount__c}"/></apex:outputText></span></p>
+        <p style="margin:0px; font-size: 14px;">Loan Amount: <span><apex:outputText value="{0, Number, Currency}"><apex:param value="{!Lead.Loan_Amount__c}"/></apex:outputText></span></p>
+        <p style="margin:0px; font-size: 14px;">Subject Property Type: <span>{!Lead.Property_Type__c}</span></p>
+        <p style="font-size: 14px;">Prior to issuing this letter, I performed a thorough review of the following documents.</p>
+        <apex:outputField value="{!Lead.Reviewed_Documents__c}"/>
+        <p style="font-size: 14px;">
+            I understand what it takes to meet a closing date, and the importance of doing so. Please know that
+            I have done my due diligence to ensure that the seller, selling agent, and listing agent are protected
+            from this transaction not closing due to a loan denial, and therefore, this offer should be looked at no
+            different than a cash offer.
+        </p>
+        <p style="font-size: 14px;">
+            If you have any questions regarding this application and the integrity of this letter, please don’t
+            hesitate to contact me. I am happy to provide the AUS findings, with terms specific to the subject
+            property, upon request.
+        </p>
+    </div>
+    <div class="footer-main">
+        <div class="profileImage" style="text-align: center;">
+            <apex:image url="{!$Resource.BrandonProfilePic}" style="width: 95%; height: auto;"/>
+        </div>
+        <div style="background-color:#D3D3D3;padding-top:1px;padding-bottom:1px;width:95%;margin-right:auto;margin-left:auto; margin-top:20px;">
+            <p style="text-align: center; font-size: 14px;"> {!$User.FirstName + ' ' + $User.LastName + ' | ' + $User.Phone + ' | ' + $User.Email}</p>
+            <p style="text-align: center; font-size: 14px;">327 Plaza Real Blvd, Suite 215 | Boca Raton, Florida 33432 | reachhomeloans.com</p>
+        </div>
+    </div>
+    <div class="footer"><hr style="background: #001c54; height: 15px; padding-top:0px;"/></div>
+    </body>
+    </html>
+</apex:page>

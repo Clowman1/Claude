@@ -1,0 +1,111 @@
+.al-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 31, 54, 0.45);
+    z-index: 9000;
+}
+
+.al-drawer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: min(28rem, 100%);
+    height: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 20px;
+    overflow: auto;
+    border-top: 4px solid #1b2a4a;
+}
+
+.al-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.al-title {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1b2a4a;
+}
+
+.al-row {
+    display: flex;
+    gap: 10px;
+}
+
+.al-row .al-field {
+    flex: 1 1 0;
+}
+
+.al-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #24386a;
+}
+
+.al-input {
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #c0d1e6;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #0f1f36;
+    background: #fff;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.al-locked {
+    background: #e8eef5;
+    color: #1b2a4a;
+}
+
+.al-hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: #3d6296;
+}
+
+.al-error {
+    margin: 0;
+    font-size: 13px;
+    color: #b91c1c;
+}
+
+.al-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.al-btn {
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.al-btn-brand {
+    background: #1d63c4;
+    color: #fff;
+}
+
+.al-btn-outline {
+    background: #fff;
+    border-color: #c0d1e6;
+    color: #243c60;
+}
+
+.al-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+}

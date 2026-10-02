@@ -1,0 +1,157 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": [
+    {
+      "refId": "E1S0",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCnMAJ"
+    },
+    {
+      "refId": "E1S1",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCoMAJ"
+    },
+    {
+      "refId": "E1S2",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCpMAJ"
+    },
+    {
+      "refId": "E1S3",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCqMAJ"
+    },
+    {
+      "refId": "E1S4",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCrMAJ"
+    },
+    {
+      "refId": "E2S0",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCsMAJ"
+    },
+    {
+      "refId": "E2S1",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCtMAJ"
+    },
+    {
+      "refId": "E2S2",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCuMAJ"
+    },
+    {
+      "refId": "E2S3",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCvMAJ"
+    },
+    {
+      "refId": "E2S4",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCwMAJ"
+    },
+    {
+      "refId": "E3S0",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCxMAJ"
+    },
+    {
+      "refId": "E3S1",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCyMAJ"
+    },
+    {
+      "refId": "E3S2",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyCzMAJ"
+    },
+    {
+      "refId": "E3S3",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD0MAJ"
+    },
+    {
+      "refId": "E3S4",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD1MAJ"
+    },
+    {
+      "refId": "E4S0",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD2MAJ"
+    },
+    {
+      "refId": "E4S1",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD3MAJ"
+    },
+    {
+      "refId": "E4S2",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD4MAJ"
+    },
+    {
+      "refId": "E4S3",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD5MAJ"
+    },
+    {
+      "refId": "E4S4",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD6MAJ"
+    },
+    {
+      "refId": "E5S0",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD7MAJ"
+    },
+    {
+      "refId": "E5S1",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD8MAJ"
+    },
+    {
+      "refId": "E5S2",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyD9MAJ"
+    },
+    {
+      "refId": "E5S3",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDAMAZ"
+    },
+    {
+      "refId": "E5S4",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDBMAZ"
+    },
+    {
+      "refId": "E6S0",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDCMAZ"
+    },
+    {
+      "refId": "E6S1",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDDMAZ"
+    },
+    {
+      "refId": "E6S2",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDEMAZ"
+    },
+    {
+      "refId": "E6S3",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDFMAZ"
+    },
+    {
+      "refId": "E6S4",
+      "type": "CampaignMemberStatus",
+      "id": "01YQi00000IeyDGMAZ"
+    }
+  ],
+  "warnings": []
+}

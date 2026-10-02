@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MutingPermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Mutes edit on Lead.Pre_Approval_Letter_HTML__c for outside LOs (read stays). The letter is saved only by LeadPreApprovalLetterController in system mode, which re-applies the LO's own signature card.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Pre_Approval_Letter_HTML__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <label>External Loan Officer Muting</label>
+</MutingPermissionSet>

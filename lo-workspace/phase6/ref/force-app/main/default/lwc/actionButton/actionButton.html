@@ -1,0 +1,16 @@
+<template>
+  <button class={buttonClass} disabled={isDisabled} onclick={handleClick}>
+    <template lwc:if={isLoading}>
+      <span class="action-button__spinner"></span>
+    </template>
+    <template lwc:else>
+      <template lwc:if={hasLeftIcon}>
+        <c-lucide-icons name={iconName} class="action-button__icon"></c-lucide-icons>
+      </template>
+      <span class="action-button__label">{label}</span>
+      <template lwc:if={hasRightIcon}>
+        <c-lucide-icons name={iconName} class="action-button__icon"></c-lucide-icons>
+      </template>
+    </template>
+  </button>
+</template>

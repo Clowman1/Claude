@@ -1,0 +1,5 @@
+<!--
+ - Created by andrk on 8/8/2024.
+ -->
+
+<apex:page id="pwa_LeadIntakeFormManifest" controller="pwa_LeadIntakeFormManifestController" contentType="application/json">{!content}</apex:page>

@@ -1,0 +1,103 @@
+<template lwc:render-mode="light">
+    <!-- Partner Workspace login page. One component, placed four times in the Login view (see variant). -->
+    <template lwc:if={isHero}>
+        <section class="rhl-hero" aria-label="Reach Home Loans Partner Workspace for loan officers">
+            <img class="rhl-hero-logo" src={logoWhite} alt="Reach Home Loans" />
+            <div class="rhl-hero-copy">
+                <h1>Your leads, clients &amp; partners.<br /><span>One workspace.</span></h1>
+                <p class="rhl-lede">Built for Reach Home Loans loan officers. Manage every relationship, from first conversation to closing day.</p>
+                <ul class="rhl-benefits">
+                    <li><span class="rhl-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg></span>Work your leads from first call to application</li>
+                    <li><span class="rhl-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="m9 14 2 2 4-4"></path></svg></span>Guide clients from pre-approval to clear to close</li>
+                    <li><span class="rhl-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20a6 6 0 0 1 12 0"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M15.5 14.2A5 5 0 0 1 21 19"></path></svg></span>Grow and manage your referral partners</li>
+                </ul>
+            </div>
+        <svg class="rhl-scene" viewBox="0 0 760 250" role="img" aria-label="Illustration of a neighborhood with a sold sign, a new lead reaching pre-approval and a clear-to-close notice">
+        <g fill="#253a6c" opacity=".7">
+        <path d="M20 170 L60 138 L100 170 V200 H20Z"></path>
+        <path d="M600 165 L645 130 L690 165 V200 H600Z"></path>
+        <path d="M690 172 L722 148 L754 172 V200 H690Z"></path>
+        <rect x="112" y="150" width="46" height="50"></rect><path d="M106 152 L135 128 L164 152Z"></path>
+        </g>
+        <path d="M0 196 C140 182 260 204 380 194 C520 182 620 200 760 190 V250 H0Z" fill="#253b70"></path>
+        <g>
+        <rect x="186" y="170" width="4" height="26" fill="#1b2a4a"></rect><circle cx="188" cy="160" r="18" fill="#35508f"></circle>
+        <rect x="560" y="168" width="4" height="26" fill="#1b2a4a"></rect><circle cx="562" cy="156" r="20" fill="#35508f"></circle>
+        <rect x="80" y="176" width="3" height="20" fill="#1b2a4a"></rect><circle cx="81.5" cy="168" r="12" fill="#304a86"></circle>
+        </g>
+        <g>
+        <rect x="222" y="138" width="92" height="62" fill="#34498a"></rect>
+        <path d="M212 142 L268 100 L324 142Z" fill="#445fa4"></path>
+        <rect x="236" y="154" width="18" height="16" rx="2" fill="#f2b84b" opacity=".9"></rect>
+        <rect x="282" y="154" width="18" height="16" rx="2" fill="#f2b84b" opacity=".55"></rect>
+        <rect x="258" y="172" width="18" height="28" rx="2" fill="#1f3160"></rect>
+        </g>
+        <g class="rhl-lift">
+        <rect x="346" y="120" width="132" height="82" rx="2" fill="#eef1f8"></rect>
+        <path d="M332 126 L412 64 L492 126Z" fill="#ffffff"></path>
+        <rect x="446" y="76" width="14" height="30" fill="#e6ebf5"></rect>
+        <rect x="364" y="138" width="26" height="22" rx="3" fill="#f2b84b"></rect>
+        <rect x="434" y="138" width="26" height="22" rx="3" fill="#f2b84b"></rect>
+        <path d="M377 138 V160 M364 149 H390 M447 138 V160 M434 149 H460" stroke="#d99a2b" stroke-width="1.5"></path>
+        <rect x="399" y="162" width="26" height="40" rx="3" fill="#1b2a4a"></rect>
+        <circle cx="419" cy="183" r="1.8" fill="#f2b84b"></circle>
+        </g>
+        <g>
+        <rect x="514" y="136" width="4" height="64" fill="#e8ecf5"></rect>
+        <rect x="514" y="140" width="46" height="4" fill="#e8ecf5"></rect>
+        <path d="M526 144 V150 M552 144 V150" stroke="#e8ecf5" stroke-width="1.5"></path>
+        <rect x="518" y="150" width="42" height="28" rx="3" fill="#ffffff"></rect>
+        <rect x="518" y="150" width="42" height="8" rx="3" fill="#1b2a4a"></rect>
+        <text x="539" y="173" text-anchor="middle" font-size="11" font-weight="700" fill="#c0392b">SOLD</text>
+        </g>
+        <g class="rhl-lift">
+        <rect x="552" y="40" width="196" height="62" rx="12" fill="#ffffff"></rect>
+        <circle cx="580" cy="71" r="14" fill="#e7f6ee"></circle>
+        <path d="M573 71 l5 5 l9 -10" stroke="#1f9d5c" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+        <text x="602" y="66" font-size="13" font-weight="700" fill="#1b2a4a">Clear to Close</text>
+        <text x="602" y="84" font-size="11" fill="#64748b">Closing Friday · 10:00 AM</text>
+        </g>
+        <g class="rhl-lift">
+        <rect x="16" y="40" width="240" height="72" rx="12" fill="#ffffff"></rect>
+        <circle cx="44" cy="76" r="16" fill="#e7f6ee"></circle>
+        <g stroke="#1f9d5c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="41" cy="71" r="4"></circle><path d="M33 84 a8 8 0 0 1 16 0"></path><path d="m47 76 3 3 6 -6"></path>
+        </g>
+        <text x="70" y="69" font-size="12.5" font-weight="700" fill="#1b2a4a">New Lead to Pre-Approve!</text>
+        <rect x="70" y="80" width="58" height="18" rx="9" fill="#eef2ff"></rect>
+        <text x="99" y="92.5" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3f51b5">New Lead</text>
+        <path d="M134 89 H148 m-4 -4 4 4 -4 4" stroke="#94a3b8" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+        <rect x="154" y="80" width="84" height="18" rx="9" fill="#e7f6ee"></rect>
+        <text x="196" y="92.5" text-anchor="middle" font-size="9.5" font-weight="600" fill="#1f7a4a">Pre-Approved ✓</text>
+        </g>
+        <path d="M256 78 C290 62 315 56 340 70 M492 80 C515 72 535 70 552 72" stroke="rgba(255,255,255,.35)" stroke-width="1.5" stroke-dasharray="3 5" fill="none"></path>
+        </svg>
+        </section>
+    </template>
+
+    <template lwc:if={isWelcome}>
+        <div class="rhl-welcome">
+            <img class="rhl-welcome-logo" src={logo} alt="Reach Home Loans" />
+            <h2>Welcome back</h2>
+            <p>Sign in to your Partner Workspace.</p>
+        </div>
+    </template>
+
+    <template lwc:if={isHelp}>
+        <p class="rhl-help">Need access? Contact your Reach Home Loans representative.</p>
+    </template>
+
+    <template lwc:if={isFooter}>
+        <footer class="rhl-foot">
+            <div class="rhl-eho" role="img" aria-label="Equal Housing Opportunity">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 2 14h4v15h20V14h4L16 3Zm0 4.2L22.5 12.5V26h-13V12.5L16 7.2Z" fill="currentColor"></path><rect x="11.5" y="15" width="9" height="2.6" fill="currentColor"></rect><rect x="11.5" y="20" width="9" height="2.6" fill="currentColor"></rect></svg>
+                <span>Equal Housing<br />Opportunity</span>
+            </div>
+            <div class="rhl-foot-info">
+                <span><strong>Reach Home Loans LLC</strong></span><span class="rhl-sep">|</span><span>327 Plaza Real #215, Boca Raton, FL 33432</span><span class="rhl-sep">|</span><span>(754) 946-4292</span><br />
+                <span>Company NMLS #2266637</span><span class="rhl-sep">|</span><span><a href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/2266637" target="_blank" rel="noopener">NMLS Consumer Access</a></span>
+            </div>
+            <div class="rhl-foot-copy">&copy; {year} Reach Home Loans LLC. All rights reserved.</div>
+        </footer>
+    </template>
+</template>

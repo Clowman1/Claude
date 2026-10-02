@@ -1,0 +1,82 @@
+<template>
+    <div class="appraisal">
+        <template lwc:if={loading}>
+            <p class="muted" role="status">Loading the appraisal…</p>
+        </template>
+        <template lwc:elseif={noOrder}>
+            <p class="muted">No appraisal has been ordered on this loan yet.</p>
+        </template>
+        <template lwc:else>
+            <template lwc:if={errorMessage}>
+                <p class="notice" role="alert">{errorMessage}</p>
+            </template>
+
+            <section class="card" aria-labelledby="appraisal-order-heading">
+                <h3 id="appraisal-order-heading" class="card-title">Order {order.orderNumber}</h3>
+                <dl class="facts">
+                    <div><dt>Status</dt><dd>{order.appraisalStatus}</dd></div>
+                    <div><dt>Product</dt><dd>{order.productOrdered}</dd></div>
+                    <div><dt>Property</dt><dd>{address}</dd></div>
+                    <div><dt>Needed by</dt><dd><lightning-formatted-date-time value={order.dateNeeded}></lightning-formatted-date-time></dd></div>
+                    <div><dt>Inspection scheduled</dt><dd><lightning-formatted-date-time value={order.inspectionScheduledDate}></lightning-formatted-date-time></dd></div>
+                    <div><dt>Inspection completed</dt><dd><lightning-formatted-date-time value={order.inspectionCompletedDate}></lightning-formatted-date-time></dd></div>
+                    <div><dt>Estimated completion</dt><dd><lightning-formatted-date-time value={order.estCompletionDate}></lightning-formatted-date-time></dd></div>
+                </dl>
+            </section>
+
+            <template lwc:if={hasTimeline}>
+                <section class="card" aria-labelledby="appraisal-timeline-heading">
+                    <h3 id="appraisal-timeline-heading" class="card-title">Timeline</h3>
+                    <ol class="timeline">
+                        <template for:each={timeline} for:item="item">
+                            <li key={item.key}>
+                                <span class="timeline-title">{item.title}</span>
+                                <span class="muted">{item.detail}</span>
+                                <lightning-formatted-date-time class="muted" value={item.occurredOn} year="numeric" month="short" day="numeric" hour="numeric" minute="2-digit"></lightning-formatted-date-time>
+                            </li>
+                        </template>
+                    </ol>
+                </section>
+            </template>
+
+            <section class="card" aria-labelledby="appraisal-docs-heading">
+                <h3 id="appraisal-docs-heading" class="card-title">Documents</h3>
+                <template lwc:if={hasDocuments}>
+                    <ul class="docs">
+                        <template for:each={documents} for:item="doc">
+                            <li key={doc.key}>
+                                <button type="button" class="link-btn" data-fileid={doc.OrderDocumentID} onclick={handleDownload}>{doc.DocumentFileName}</button>
+                                <lightning-formatted-date-time class="muted" value={doc.DocumentSubmittedOn} year="numeric" month="short" day="numeric"></lightning-formatted-date-time>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:else>
+                    <p class="muted">No documents from the appraisal company yet.</p>
+                </template>
+            </section>
+
+            <section class="card" aria-labelledby="appraisal-comments-heading">
+                <h3 id="appraisal-comments-heading" class="card-title">Comments</h3>
+                <template lwc:if={hasComments}>
+                    <ul class="comments">
+                        <template for:each={comments} for:item="c">
+                            <li key={c.key}>
+                                <p class="comment-meta">{c.CreatedBy} <span class="muted">{c.UserTypeName}</span></p>
+                                <p class="comment-body">{c.Comment}</p>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:else>
+                    <p class="muted">No comments yet.</p>
+                </template>
+                <lightning-textarea label="Send a comment to the appraisal company" value={newComment}
+                    onchange={handleCommentInput} max-length="2000"></lightning-textarea>
+                <button type="button" class="send-btn" disabled={cannotSend} onclick={handleSendComment}>
+                    {sendLabel}
+                </button>
+            </section>
+        </template>
+    </div>
+</template>

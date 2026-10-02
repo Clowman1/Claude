@@ -1,0 +1,96 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Campaign",
+        "referenceId": "E1"
+      },
+      "Name": "Coffee with Fred · Priya Shah",
+      "Type": "Event",
+      "Status": "Planned",
+      "IsActive": true,
+      "StartDate": "2026-10-01",
+      "EndDate": "2026-10-01",
+      "Event_Time__c": "08:30:00.000Z",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Description": "Location: Kahwa Coffee, Central Ave"
+    },
+    {
+      "attributes": {
+        "type": "Campaign",
+        "referenceId": "E2"
+      },
+      "Name": "Lunch with Fred · Tom Nguyen",
+      "Type": "Event",
+      "Status": "Planned",
+      "IsActive": true,
+      "StartDate": "2026-10-05",
+      "EndDate": "2026-10-05",
+      "Event_Time__c": "12:00:00.000Z",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Description": "Location: Ciccio, Water Street"
+    },
+    {
+      "attributes": {
+        "type": "Campaign",
+        "referenceId": "E3"
+      },
+      "Name": "Happy Hour: CPA & Title Partner Mixer",
+      "Type": "Event",
+      "Status": "Planned",
+      "IsActive": true,
+      "StartDate": "2026-10-02",
+      "EndDate": "2026-10-02",
+      "Event_Time__c": "17:30:00.000Z",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Description": "Location: Ciccio Water Street rooftop"
+    },
+    {
+      "attributes": {
+        "type": "Campaign",
+        "referenceId": "E4"
+      },
+      "Name": "Coffee with Fred · Nora Castillo",
+      "Type": "Event",
+      "Status": "Completed",
+      "IsActive": true,
+      "StartDate": "2026-09-22",
+      "EndDate": "2026-09-22",
+      "Event_Time__c": "09:00:00.000Z",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Description": "Location: Buddy Brew, Kennedy Blvd",
+      "BD_Outcome__c": "Held"
+    },
+    {
+      "attributes": {
+        "type": "Campaign",
+        "referenceId": "E5"
+      },
+      "Name": "Lunch with Fred · Greg Ellison",
+      "Type": "Event",
+      "Status": "Completed",
+      "IsActive": true,
+      "StartDate": "2026-09-23",
+      "EndDate": "2026-09-23",
+      "Event_Time__c": "12:00:00.000Z",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Description": "Location: Oxford Exchange"
+    },
+    {
+      "attributes": {
+        "type": "Campaign",
+        "referenceId": "E6"
+      },
+      "Name": "Coffee with Fred · Ben Alvarez",
+      "Type": "Event",
+      "Status": "Completed",
+      "IsActive": true,
+      "StartDate": "2026-09-10",
+      "EndDate": "2026-09-10",
+      "Event_Time__c": "08:00:00.000Z",
+      "OwnerId": "005Qi00000iOSkzIAG",
+      "Description": "Location: Kahwa Coffee, Central Ave",
+      "BD_Outcome__c": "Held"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Partner Login</masterLabel>
+    <description>Branded pieces of the Partner Workspace login page: hero panel, welcome heading, help line and compliance footer.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="variant" type="String" label="Section" datasource="hero,welcome,help,footer" default="hero" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

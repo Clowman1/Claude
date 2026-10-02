@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>LO_Workspace_Oversight</name>
+    </customPermissions>
+    <description>LO Workspace managers (Christopher Lowman, Brandon Brotsky, Adam Stephens): duplicate-blocked alerts now, the oversight tab in Phase 8.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LO Workspace Oversight</label>
+</PermissionSet>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>LoLandingPageWebhook</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Integrations site guest user only: run LoLandingPageWebhook and publish LO_Workspace_Intake__e. All Lead work runs in the event subscriber as Automated Process.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LO_Workspace_Intake__e.Payload__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LO Landing Page Webhook Guest Access</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>LO_Workspace_Intake__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+</PermissionSet>

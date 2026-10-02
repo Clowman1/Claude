@@ -1,0 +1,19 @@
+@import 'c/bdStyles';
+
+.title { margin: 0; font-size: 20px; font-weight: 800; color: #17233f; }
+.err { background: #fde7e7; color: #9f1d1d; border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.list { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; }
+.res { border: 1px solid #e3e9f2; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; }
+.res-top, .dup, .trow { display: flex; align-items: center; gap: 10px; }
+.dup { background: #fff; border-radius: 10px; padding: 10px 12px; }
+.pick { display: flex; flex-direction: column; gap: 8px; }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.grow { flex-grow: 1; min-width: 0; }
+.strong { font-weight: 700; }
+.ink { color: #17233f; }
+.small { font-size: 12.5px; }
+.table { max-height: 320px; overflow-y: auto; border: 1px solid #e3e9f2; border-radius: 12px; }
+.trow { padding: 8px 12px; border-top: 1px solid #eef2f7; }
+.trow:first-child { border-top: 0; }
+.rn { width: 28px; font-size: 12px; }

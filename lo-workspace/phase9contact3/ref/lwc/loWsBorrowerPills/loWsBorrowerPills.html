@@ -1,0 +1,27 @@
+<template>
+    <div class="bp-row" role="group" aria-label="Borrowers">
+        <template for:each={decoratedPills} for:item="pill">
+            <button key={pill.id} type="button" class={pill.pillClass} aria-pressed={pill.pressed} data-id={pill.id} onclick={handleSelect}>{pill.label}</button>
+        </template>
+        <template lwc:if={canEdit}>
+            <button type="button" class="bp-pill bp-pill-add" onclick={handleAddOpen}>+ Add borrower</button>
+        </template>
+    </div>
+    <template lwc:if={adding}>
+        <form class="bp-form" onsubmit={handleAddSave} novalidate>
+            <div class="bp-grid">
+                <label class="bp-field">First name *<input class="bp-input" data-field="firstName" value={form.firstName} oninput={handleInput} /></label>
+                <label class="bp-field">Last name *<input class="bp-input" data-field="lastName" value={form.lastName} oninput={handleInput} /></label>
+                <label class="bp-field">Phone *<input class="bp-input" type="tel" data-field="phone" value={form.phone} oninput={handleInput} /></label>
+                <label class="bp-field">Email *<input class="bp-input" type="email" data-field="email" value={form.email} oninput={handleInput} /></label>
+            </div>
+            <div class="bp-actions">
+                <button type="button" class="bp-btn bp-btn-outline" onclick={handleAddCancel} disabled={saving}>Cancel</button>
+                <button type="submit" class="bp-btn bp-btn-brand" disabled={saving}>Add borrower</button>
+            </div>
+        </form>
+    </template>
+    <template lwc:if={error}>
+        <p class="bp-error" role="alert">{error}</p>
+    </template>
+</template>

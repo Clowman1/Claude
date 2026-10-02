@@ -1,0 +1,279 @@
+<template>
+    <template lwc:if={isDetailView}>
+        <template lwc:if={detail}>
+            <main class="detail-page">
+                <div class="detail-page-inner">
+                    <button type="button" class="back-link" onclick={handleBack}><c-portal-icon name="arrow-left" size="16"></c-portal-icon>My Realtors</button>
+                    <header class="detail-header-card">
+                        <div class="detail-header-main">
+                            <div class="detail-title-row">
+                                <h1 class="detail-title">{detail.summary.name}</h1>
+                                <template lwc:if={hasStage}>
+                                    <span class="badge badge-stage">{detail.summary.stage}</span>
+                                </template>
+                                <span class="badge badge-neutral">{detail.summary.partnerType}</span>
+                                <template lwc:if={detail.summary.houseLocked}>
+                                    <span class="badge badge-dark">House account</span>
+                                </template>
+                                <template lwc:if={detail.summary.followUpDue}>
+                                    <span class="badge badge-warn">Follow-up due</span>
+                                </template>
+                            </div>
+                            <p class="detail-primary">{detail.summary.company} · {detail.summary.market}</p>
+                            <p class="detail-meta">{daysSinceTouchLabel} · {sharedBuyersLabel}</p>
+                            <template lwc:if={detail.summary.houseLocked}>
+                                <p class="warn-copy inline-warn">House account — logging is restricted to the in-house team.</p>
+                            </template>
+                        </div>
+                        <div class="detail-header-actions">
+                            <template lwc:if={canLog}>
+                                <button type="button" class="btn btn-brand" onclick={handleLogOpen}>Log communication</button>
+                            </template>
+                            <template lwc:if={hasStage}>
+                                <label class="stage-label">My stage
+                                    <select class="stage-select" onchange={handleDetailStageChange} disabled={stageSaving}>
+                                        <template for:each={stageOptions} for:item="option">
+                                            <option key={option.value} value={option.value} selected={option.selected}>{option.value}</option>
+                                        </template>
+                                    </select>
+                                </label>
+                                <button type="button" class="btn btn-outline" onclick={handleUntag}>Remove from my list</button>
+                            </template>
+                        </div>
+                    </header>
+
+                    <div class="detail-grid">
+                        <div class="detail-column-main">
+                            <section class="detail-card">
+                                <h2 class="detail-card-title">Shared pipeline</h2>
+                                <template lwc:if={hasRelatedLeads}>
+                                    <ul class="pipeline-list">
+                                        <template for:each={relatedLeads} for:item="lead">
+                                            <li key={lead.id} class="pipeline-item">
+                                                <div class="pipeline-main">
+                                                    <button
+                                                        type="button"
+                                                        class="record-link"
+                                                        data-id={lead.id}
+                                                        onclick={handleOpenLead}
+                                                    >
+                                                        {lead.name}
+                                                    </button>
+                                                    <span class={lead.statusClass}>{lead.status}</span>
+                                                </div>
+                                                <p class="pipeline-meta">{lead.primary}</p>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template lwc:else>
+                                    <p class="empty-copy">No shared borrowers yet. Leads referred by this partner will appear here.</p>
+                                </template>
+                            </section>
+
+                            <section class="detail-card">
+                                <h2 class="detail-card-title">Activity history</h2>
+                                <template lwc:if={detail.activityEntries.length}>
+                                    <ul class="activity-list">
+                                        <template for:each={detail.activityEntries} for:item="entry">
+                                            <li key={entry.id} class="activity-item">
+                                                <div class="activity-top">
+                                                    <strong>{entry.outcome}</strong>
+                                                    <span>{entry.timestamp}</span>
+                                                </div>
+                                                <p class="activity-channel">{entry.channel}</p>
+                                                <template lwc:if={entry.note}>
+                                                    <p class="activity-note">{entry.note}</p>
+                                                </template>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template lwc:else>
+                                    <p class="empty-copy">No communication logged yet.</p>
+                                </template>
+                            </section>
+                        </div>
+
+                        <div class="detail-column-side">
+                            <section class="detail-card">
+                                <h2 class="detail-card-title">Contact</h2>
+                                <ul class="contact-list">
+                                    <template lwc:if={detail.summary.phone}>
+                                        <li>
+                                            <span class="contact-label">Phone</span>
+                                            <a class="contact-value" href={detailPhoneHref}>{detail.summary.phone}</a>
+                                        </li>
+                                    </template>
+                                    <template lwc:if={detail.summary.email}>
+                                        <li>
+                                            <span class="contact-label">Email</span>
+                                            <a class="contact-value" href={detailEmailHref}>{detail.summary.email}</a>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <div class="contact-meta">
+                                    <p>{daysSinceTouchLabel}</p>
+                                    <p>{sharedBuyersLabel}</p>
+                                </div>
+                                <p class="contact-hint">Keep touching this partner and they stay on your list — log every call, text, or visit here.</p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </template>
+        <template lwc:else>
+            <main class="detail-page">
+                <div class="detail-page-inner detail-loading" aria-busy="true" aria-label="Loading partner">
+                    <span class="spinner spinner-lg" aria-hidden="true"></span>
+                    <p class="detail-loading-copy">Loading partner…</p>
+                </div>
+            </main>
+        </template>
+    </template>
+
+    <template lwc:else>
+        <c-portal-list-layout
+            title="My Realtors"
+            subtitle={listSubtitle}
+            search-value={search}
+            search-placeholder="Search all partners by name, brokerage, or market"
+            filters={filterChips}
+            loading={loading}
+            is-empty={isListEmpty}
+            empty-title="No partners in this window"
+            empty-message={emptyMessage}
+            result-label={resultLabel}
+            row-type="generic"
+            items={listItems}
+            show-banner
+            onsearchchange={handleSearchChangeEvent}
+            onfilterchange={handleFilterChangeEvent}
+            onrowaction={handleRowAction}
+        >
+            <button slot="actions" type="button" class="btn btn-navy" onclick={handleAddOpen}>Add partner</button>
+            <template lwc:if={isInternal}>
+                <p slot="banner">
+                    Partners are shared across Reach to prevent duplicates. Your list and your stages are yours alone: other loan officers never see who you are working.
+                </p>
+            </template>
+            <template lwc:else>
+                <p slot="banner">
+                    Realtors are shared across the company to prevent duplicates. This list is built from your logged communication — keep touching a partner and they stay on your list. House accounts are locked to the Reach in-house team.
+                </p>
+            </template>
+        </c-portal-list-layout>
+        <template lwc:if={errorMessage}>
+            <p class="form-error" role="alert">{errorMessage}</p>
+        </template>
+    </template>
+
+    <template lwc:if={addOpen}>
+        <section class="drawer-backdrop">
+            <aside class="drawer">
+                <h2>Add a partner</h2>
+                <input class="search-input" type="search" value={partnerSearch} oninput={handlePartnerSearchChange} placeholder="Search shared partners" />
+                <template lwc:if={searching}>
+                    <p class="search-status" role="status">Searching…</p>
+                </template>
+                <template lwc:if={searchResults.length}>
+                    <ul class="search-results">
+                        <template for:each={decoratedSearchResults} for:item="result">
+                            <li key={result.id} class="search-result-row">
+                                <div>
+                                    <p>{result.name}</p>
+                                    <p class="meta">{result.company}</p>
+                                </div>
+                                <button type="button" class="btn btn-outline" data-id={result.id} onclick={handleLinkPartner} disabled={result.linkDisabled}>
+                                    {result.linkLabel}
+                                </button>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:if={searchError}>
+                    <p class="form-error" role="alert">{searchError}</p>
+                </template>
+                <form class="create-form" onsubmit={handleCreatePartnerSubmit}>
+                    <h3>Create new</h3>
+                    <label>Name<input data-field="name" value={form.name} oninput={handleFormChange} required /></label>
+                    <label>Phone<input data-field="phone" value={form.phone} oninput={handleFormChange} /></label>
+                    <label>Email<input data-field="email" value={form.email} oninput={handleFormChange} /></label>
+                    <label>Company<input data-field="company" value={form.company} oninput={handleFormChange} required /></label>
+                    <label>Market<input data-field="market" value={form.market} oninput={handleFormChange} /></label>
+                    <template lwc:if={isInternal}>
+                        <label>Partner type
+                            <select data-field="partnerType" onchange={handleFormChange}>
+                                <template for:each={partnerTypeOptions} for:item="option">
+                                    <option key={option.value} value={option.value} selected={option.selected}>{option.value}</option>
+                                </template>
+                            </select>
+                        </label>
+                    </template>
+                    <template lwc:if={formError}>
+                        <p class="form-error" role="alert">{formError}</p>
+                    </template>
+                    <template lwc:if={matchResults.length}>
+                        <ul class="search-results">
+                            <template for:each={decoratedMatchResults} for:item="match">
+                                <li key={match.id} class="search-result-row">
+                                    <div>
+                                        <p>{match.name}</p>
+                                        <p class="meta">{match.company}</p>
+                                    </div>
+                                    <button type="button" class="btn btn-brand" data-id={match.id} onclick={handleTagMatch} disabled={match.tagDisabled}>
+                                        {match.tagLabel}
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                    <div class="drawer-actions">
+                        <button type="button" class="btn btn-outline" onclick={handleAddClose}>Cancel</button>
+                        <button type="submit" class="btn btn-brand" disabled={saving}>
+                            <template lwc:if={saving}>
+                                <span class="spinner" aria-hidden="true"></span>
+                            </template>
+                            {createPartnerLabel}
+                        </button>
+                    </div>
+                </form>
+            </aside>
+        </section>
+    </template>
+
+    <template lwc:if={stagePartner}>
+        <section class="drawer-backdrop">
+            <aside class="drawer">
+                <h2>{stagePartner.name}</h2>
+                <label>My stage
+                    <select onchange={handleStageSelect}>
+                        <template for:each={stageOptions} for:item="option">
+                            <option key={option.value} value={option.value} selected={option.selected}>{option.value}</option>
+                        </template>
+                    </select>
+                </label>
+                <div class="drawer-actions">
+                    <button type="button" class="btn btn-outline" onclick={handleStageClose}>Cancel</button>
+                    <button type="button" class="btn btn-brand" onclick={handleStageSave} disabled={stageSaving}>Save</button>
+                </div>
+            </aside>
+        </section>
+    </template>
+
+    <template lwc:if={showLogModal}>
+        <c-portal-communication-modal
+            open={logOpen}
+            target-record-id={logRecordId}
+            object-api-name="Account"
+            subject-name={logSubjectName}
+            subject-context={logSubjectContext}
+            phone={logPhone}
+            email={logEmail}
+            goal-credit={logGoalCredit}
+            onclose={handleLogClose}
+            onlogged={handleLogged}
+        ></c-portal-communication-modal>
+    </template>
+</template>

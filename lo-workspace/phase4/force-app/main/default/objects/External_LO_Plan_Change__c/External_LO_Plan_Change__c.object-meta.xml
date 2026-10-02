@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>One row per save of an outside LO's weekly plan (setup Q&amp;A): a snapshot managers can review. Owned by the LO; managers see it through the role hierarchy.</description>
+    <enableActivities>false</enableActivities>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <label>External LO Plan Change</label>
+    <nameField>
+        <displayFormat>PC-{000000}</displayFormat>
+        <label>Plan Change</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>External LO Plan Changes</pluralLabel>
+    <sharingModel>Private</sharingModel>
+    <externalSharingModel>Private</externalSharingModel>
+</CustomObject>

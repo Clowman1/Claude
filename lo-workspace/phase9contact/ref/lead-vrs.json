@@ -1,0 +1,91 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03d5x000000VLO0AAO"
+        },
+        "ValidationName": "No_Owner_Change_on_Leads",
+        "Active": true,
+        "ErrorMessage": "You do not have permission to change record ownership for this record."
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03d5x000000VLXYAA4"
+        },
+        "ValidationName": "Lead_already_claimed",
+        "Active": true,
+        "ErrorMessage": "This record has already been claimed. You cannot change the record owner."
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi000000FDcrIAG"
+        },
+        "ValidationName": "Calls_Required_for_Status_Change",
+        "Active": true,
+        "ErrorMessage": "Please Log an Activity to Update the Lead’s Status"
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi000000JWtpIAG"
+        },
+        "ValidationName": "Lead_Rating_and_Loan_Amount_Fields_requr",
+        "Active": true,
+        "ErrorMessage": "The Loan Amount field must be filled in before applying for pre-approval"
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi000000JjSrIAK"
+        },
+        "ValidationName": "Lawrence_Lanos_Rule",
+        "Active": true,
+        "ErrorMessage": "Lawrence Lanos is only able to claim leads from The Nickley Group and from Nickley ISA lead source"
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi000001GS9RIAW"
+        },
+        "ValidationName": "Preapproval_Type_Mutual_Exclusion",
+        "Active": true,
+        "ErrorMessage": "Only one preapproval type can be selected."
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi00000272PBIAY"
+        },
+        "ValidationName": "Loan_Officers_Cannot_Change_Owner",
+        "Active": true,
+        "ErrorMessage": "Loan Officers cannot change the owner of a Lead. Please contact an Admin if this Lead needs to be reassigned."
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi000002GhxVIAS"
+        },
+        "ValidationName": "Loan_Partner_Reassignment_Restricted",
+        "Active": true,
+        "ErrorMessage": "Only an Admin or the currently assigned Loan Partner can change the Loan Partner on this Lead. Please contact an Admin if this Lead needs a different Loan Partner."
+      },
+      {
+        "attributes": {
+          "type": "ValidationRule",
+          "url": "/services/data/v67.0/tooling/sobjects/ValidationRule/03dQi000002H9nJIAS"
+        },
+        "ValidationName": "Lead_Source_Change_Restricted",
+        "Active": true,
+        "ErrorMessage": "Lead Source is locked once it has been set. Only the Lead Owner, the assigned Loan Partner, or an Admin can change it. Please contact an Admin if this Lead Source is wrong."
+      }
+    ],
+    "totalSize": 9,
+    "done": true
+  },
+  "warnings": []
+}

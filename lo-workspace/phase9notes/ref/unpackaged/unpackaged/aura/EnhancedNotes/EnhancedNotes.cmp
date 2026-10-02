@@ -1,0 +1,153 @@
+<!--
+ - Created by J9 on 8/19/2021.
+ -->
+
+<aura:component description="EnhancedNotes" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForRecordHome" controller="EnhancedNotesController">
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/> 
+
+    <aura:attribute name="listOfNotes" type="Object"/>
+    <aura:attribute name="searchText" type="String"/>
+    <aura:attribute name="filteredNotes" type="Object[]"/>
+    <aura:attribute name="filterCategory" type="String[]" default="[]"/>
+    <aura:attribute name="selectedTypeTab" type="String" default="Note"/>
+    <aura:attribute name="showInbound" type="Boolean" default="true"/>
+    <aura:attribute name="showOutbound" type="Boolean" default="true"/>
+    <aura:attribute name="isExpanded" type="Boolean" default="false"/>
+    <aura:attribute name="listOfUsers" type="String[]"/>
+    <aura:attribute name="canEdit" type="Boolean"/>
+    <lightning:empApi aura:id="empApi"/> 
+
+    <lightning:card title="" variant="base">
+        <lightning:layout horizontalAlign="spread" verticalAlign="center">
+            <lightning:layout verticalAlign="center">
+                <lightning:layoutItem class="ncs-searchBar-width">
+                        <span onkeydown="{!c.searchKeyDown}">
+                            <lightning:input class="ncs-searchBar-margin" label="Input" placeholder="Search Notes (Press Enter to Search)" type="text" variant="label-hidden" value="{!v.searchText}"></lightning:input>
+                        </span>
+                </lightning:layoutItem>
+                <lightning:layoutItem>
+                    <lightning:select class="ncs-filterBar-margin" aura:id="selectedUser" label="Filter By User" onchange="{!c.filter}">
+                        <option text="All" value=""/>
+                        <aura:iteration items="{!v.listOfUsers}" var="userName">
+                            <option text="{!userName}" value="{!userName}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layoutItem >
+                <lightning:button onclick="{!c.handleShowModal}" class="slds-theme_brand" variant="brand" label="New"></lightning:button>
+            </lightning:layoutItem>
+        </lightning:layout>
+
+        <div class="slds-card__body_inner">
+            <lightning:layout>
+                <lightning:layoutItem flexibility="grow" class="span-margin">
+                    <span onclick="{!c.filterCategory}" data-role="Loan Officer" class=" slds-align_absolute-center" style="cursor: pointer">
+                        <lightning:icon iconName="action:new_person_account" size="x-small" variant="slds-icon-inverse"></lightning:icon>
+                    </span>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-title slds-text-color_weak">Loan Officer</div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="grow" class="span-margin">
+                    <span onclick="{!c.filterCategory}" data-role="Opener" class=" slds-align_absolute-center" style="cursor: pointer">
+                        <lightning:icon iconName="action:add_contact" size="x-small" variant="slds-icon-inverse"></lightning:icon>
+                    </span>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-title slds-text-color_weak">Opener</div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="grow" class="span-margin">
+                    <span onclick="{!c.filterCategory}" data-role="Processor" class=" slds-align_absolute-center" style="cursor: pointer">
+                        <lightning:icon iconName="action:new_note" size="x-small" variant="slds-icon-inverse"></lightning:icon>
+                    </span>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-title slds-text-color_weak">Processor</div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="grow" class="span-margin">
+                    <span onclick="{!c.filterCategory}" data-role="Closer" class=" slds-align_absolute-center" style="cursor: pointer">
+                        <lightning:icon iconName="action:join_group" size="x-small" variant="slds-icon-inverse"></lightning:icon>
+                    </span>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-title slds-text-color_weak">Closer</div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="grow" class="span-margin">
+                    <span onclick="{!c.filterCategory}" data-role="Funder" class=" slds-align_absolute-center" style="cursor: pointer">
+                        <lightning:icon iconName="action:new_lead" size="x-small" variant="slds-icon-inverse"></lightning:icon>
+                    </span>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-title slds-text-color_weak">Funder</div>
+                    </div>
+                </lightning:layoutItem>
+                <lightning:layoutItem flexibility="grow" class="span-margin">
+                    <span onclick="{!c.filterCategory}" data-role="Management" class=" slds-align_absolute-center" style="cursor: pointer">
+                        <lightning:icon iconName="action:join_group" size="x-small" variant="slds-icon-inverse"></lightning:icon>
+                    </span>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-text-title slds-text-color_weak">Management</div>
+                    </div>
+                </lightning:layoutItem>
+            </lightning:layout>
+
+        
+            <lightning:tabset selectedTabId="{!v.selectedTypeTab}" onselect="{!c.filter}">
+                <lightning:tab label="Calls" id="Call">
+                    <lightning:layout>
+                        <!--
+                        <lightning:layoutItem class="span-margin">
+                            <lightning:input type="toggle" label="Inbound" name="inbound" checked="{!v.showInbound}" onchange="{!c.filter}"
+                                messageToggleActive="" messageToggleInactive=""
+                            />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="span-margin">
+                            <lightning:input type="toggle" label="Outbound" name="outbound" checked="{!v.showOutbound}" onchange="{!c.filter}"
+                                messageToggleActive="" messageToggleInactive=""
+                            />
+                        </lightning:layoutItem>
+						-->
+                    </lightning:layout>
+                </lightning:tab>
+                <lightning:tab label="Texts" id="Text">
+                    <lightning:layout>
+                        <!--
+                        <lightning:layoutItem class="span-margin">
+                            <lightning:input type="toggle" label="Inbound" name="inbound" checked="{!v.showInbound}" onchange="{!c.filter}"
+                                messageToggleActive="" messageToggleInactive=""
+                            />
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="span-margin">
+                            <lightning:input type="toggle" label="Outbound" name="outbound" checked="{!v.showOutbound}" onchange="{!c.filter}"
+                                messageToggleActive="" messageToggleInactive=""
+                            />
+                        </lightning:layoutItem>
+                        -->
+                    </lightning:layout>
+                </lightning:tab>
+                <lightning:tab label="Meetings" id="Meeting">
+                </lightning:tab>
+                <lightning:tab label="Notes" id="Note">
+                </lightning:tab>
+            </lightning:tabset>
+
+            <div class="slds-p-around_large ncs-scroll" >
+                <aura:if isTrue="{!if(not(empty(v.filteredNotes)),true,false)}">
+                    <aura:iteration items="{!v.filteredNotes}" var="note"> 
+                        <c:NoteRow filteredNotes="{!note}" canEdit="{!note.IsSameUser__c}"/>
+                    </aura:iteration>
+                    <aura:set attribute="else">
+                        <div class="slds-illustration slds-illustration_small" aria-hidden="true" style="margin-top: 50px">
+                            <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt="" style="width: auto;height: 150px"/>
+                            <div class="slds-text-longform slds-text-color_weak">
+                                <h2 style="font-size: 12px">There have been no notes created.</h2>
+                                <lightning:button onclick="{!c.handleShowModal}" class="slds-theme_brand" variant="brand" label="Create New Note"></lightning:button>
+                            </div>
+                        </div>
+                    </aura:set>
+                </aura:if>
+            </div>
+
+        </div>
+    </lightning:card>
+</aura:component>

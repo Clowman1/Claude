@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BD_Stage__c</fullName>
+    <label>BD Stage</label>
+    <description>Business development pipeline stage.</description>
+    <type>Picklist</type>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <valueSet><restricted>true</restricted><valueSetDefinition><sorted>false</sorted><value><fullName>Prospect</fullName><default>false</default><label>Prospect</label></value><value><fullName>Contacted</fullName><default>false</default><label>Contacted</label></value><value><fullName>Meeting Set</fullName><default>false</default><label>Meeting Set</label></value><value><fullName>Met</fullName><default>false</default><label>Met</label></value><value><fullName>Active Partner</fullName><default>false</default><label>Active Partner</label></value><value><fullName>Dormant</fullName><default>false</default><label>Dormant</label></value></valueSetDefinition></valueSet>
+</CustomField>

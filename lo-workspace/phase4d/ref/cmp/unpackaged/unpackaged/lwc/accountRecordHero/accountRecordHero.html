@@ -1,0 +1,92 @@
+<template>
+    <section class="hero">
+        <template if:true={isLoading}>
+            <div class="loading">Loading account banner...</div>
+        </template>
+
+        <template if:false={isLoading}>
+            <div class="hero-left">
+                <p class="eyebrow">Reach Home Loans</p>
+                <div class="title-row">
+                    <h1>{name}</h1>
+                    <template if:true={phone}>
+                        <span class="contact-pill">{phone}</span>
+                    </template>
+                    <template if:true={email}>
+                        <span class="contact-pill">{email}</span>
+                    </template>
+                </div>
+
+                <div class="chips">
+                    <template for:each={chips} for:item="chip">
+                        <span key={chip} class="chip">{chip}</span>
+                    </template>
+                </div>
+
+                <template if:true={canCreateLead}>
+                    <div class="hero-actions">
+                        <button class="hero-action" type="button" onclick={handleCreateLead}>
+                            Create Lead
+                        </button>
+                    </div>
+                </template>
+            </div>
+
+            <div class="info-panel">
+                <div class="info-item">
+                    <span>Account Owner</span>
+                    <strong>{ownerName}</strong>
+                </div>
+                <div class="info-item">
+                    <span>Preferred LO</span>
+                    <strong>{preferredLoName}</strong>
+                </div>
+                <div class="info-item">
+                    <span>Follow Up LO</span>
+                    <strong>{followUpLoName}</strong>
+                </div>
+                <div class="info-item">
+                    <span>Last SMS</span>
+                    <strong>{lastSms}</strong>
+                </div>
+            </div>
+        </template>
+    </section>
+
+    <template if:true={showCreateLeadModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="create-lead-modal-heading" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseCreateLead}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" variant="inverse" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="create-lead-modal-heading" class="slds-text-heading_medium">Create Lead from Person Account</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p class="slds-m-bottom_medium">
+                        Choose the loan purpose for the new Consumer Lead. This value will be saved on the Lead when it is created.
+                    </p>
+                    <lightning-radio-group
+                        name="loanPurpose"
+                        label="Loan Purpose"
+                        options={loanPurposeOptions}
+                        value={selectedLoanPurpose}
+                        onchange={handleLoanPurposeChange}
+                        type="radio"
+                        required>
+                    </lightning-radio-group>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" type="button" onclick={handleCloseCreateLead} disabled={isCreatingLead}>
+                        Cancel
+                    </button>
+                    <button class="slds-button slds-button_brand" type="button" onclick={handleSubmitCreateLead} disabled={isCreateLeadDisabled}>
+                        Create Lead
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

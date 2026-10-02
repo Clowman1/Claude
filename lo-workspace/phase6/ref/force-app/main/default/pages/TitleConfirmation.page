@@ -1,0 +1,102 @@
+<apex:page controller="TitleAgents_ShippingLabelsController">
+    <apex:includeLightning />
+    <apex:stylesheet value="{!$Resource.titleconfirmation}"/>
+    <style>
+        .ncs-hidden {
+        display:none;
+        }
+    </style>
+    <script>
+    
+    $Lightning.use("c:TitleConfirmationFileUploadOut", function() {
+        $Lightning.createComponent(
+            "c:TitleConfirmationFileUpload",
+            { recordId: "{!$CurrentPage.parameters.rid}" },
+            "lightningContainer",
+            function(cmp) { console.log("Aura component loaded"); }
+        );
+    });
+    
+    function updateTheConfirmation(){
+        confirm();
+    }
+    function acceptPackage(){
+        confirm();
+    }
+    function initialReject(){
+        if(document.getElementsByClassName('MessageBox')[0].value == ''){
+            let msg = prompt('Please fill in an Explanation of why it is Rejected before Submitting');
+            if(msg == null || msg == ''){
+                alert('You needed to enter an explanation. Please try again.');
+                return;
+            }
+            document.getElementsByClassName('MessageBox')[0].value = msg;
+        }
+        titleMessage(document.getElementsByClassName('MessageBox')[0].value);
+        alert("Thank you for giving us your updated notes. We will be looking at this as soon as possible.");
+        document.getElementsByClassName('MessageBox')[0].value = "";
+    }
+    </script>
+    <html style="font-size: 16px;">
+        <body class="u-body u-xl-mode" id="resultPanel"> 
+            <section class="skrollable u-clearfix u-image u-parallax u-shading u-section-1" id="sec-615a" data-image-width="1600" data-image-height="1067" style="background-image: linear-gradient(0deg, rgba(0,27,84,0.75), rgba(0,27,84,0.75)), url({!URLFOR($Resource.titleBackground)});"> 
+                <div class="u-clearfix u-sheet u-sheet-1">
+                    <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
+                        <div class="u-layout">
+                            <div class="u-layout-col">
+                                <div class="u-size-30">
+                                    <div class="u-layout-row">
+                                        <div class="u-container-style u-layout-cell u-left-cell u-size-30 u-layout-cell-1">
+                                            <div class="u-container-layout u-container-layout-1">
+                                                <img class="u-image u-image-default u-preserve-proportions u-image-1" src="{!$Resource.reachInverseLogo}" alt="" data-image-width="220" data-image-height="81"/>
+                                            </div>
+                                        </div>
+                                        <div class="u-align-right u-container-style u-layout-cell u-right-cell u-size-30 u-layout-cell-2">
+                                            <div class="u-container-layout u-container-layout-2">
+                                                <h4 class="u-text u-text-1">{!fileName}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="{!IF(isError, '', 'ncs-hidden')}">                        
+                                    <h2 class="u-align-center u-heading-font u-subtitle u-text u-text-2" style="">Uh Oh.... There was an issue loading this page.<br/><br/> Please go back to your email and click the link again. <br/><br/><br/>If that does not work, please contact Reach Home Loans.</h2><br/>
+                                </div>
+                                <div class="u-size-30 {!IF(isError, 'ncs-hidden', '')}">
+                                    <div class="u-layout-row">
+                                        <div class="u-container-style u-layout-cell u-left-cell u-right-cell u-size-60 u-layout-cell-3">
+                                            <div class="u-container-layout u-container-layout-3">
+                                                
+                                                <div style=" padding:40px;" class="u-align-center u-form-group u-form-submit">
+                                                    <h2 class=" {!IF(isConfirmed,'ncs-hidden','')} u-align-center u-heading-font u-subtitle u-text u-text-2" style="">Can you please confirm closing package is Acceptable?</h2><br/>
+                                                    <a onclick="acceptPackage();" href="#" class=" {!IF(isConfirmed,'ncs-hidden','')} u-border-none u-btn u-btn-submit u-button-style u-custom-color-1 u-btn-1">Click Here to Accept Closing Package</a>
+                                                    <a onclick="initialReject();" href="#" class=" {!IF(isConfirmed,'ncs-hidden','')} u-border-none u-btn u-btn-submit u-button-style u-btn-1" style="background:red; color:white;">Reject Closing Package with Explanation</a><br/>
+                                                    <div class=" {!IF(isConfirmed,'ncs-hidden','')}" style="width:80%; margin-left:10%; ">
+                                                        <div class="u-form-group u-form-message">
+                                                            <textarea placeholder="Explanation of Rejection." rows="4" cols="50" id="message-dad1" name="message" class="MessageBox u-border-1 u-border-grey-30 u-input u-input-rectangle u-white" required=""></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <h2 style="margin-bottom: 10px!important;" class="u-align-center u-heading-font u-subtitle u-text u-text-2 {!IF(isConfirmed, '','ncs-hidden')}">Thank you for your continued partnership</h2>
+                                                    <div style="width:80%; margin-left:10%; margin-top: 15px;" class="u-form-group u-form-message">
+                                                        <div id="lightningContainer" />
+                                                    </div>
+                                                </div>
+                                                <div class="u-form u-form-1  {!IF(isConfirmed, '','ncs-hidden')}" style="margin-top:30px;">
+                                                    <apex:form >                                
+                                                        <apex:actionFunction name="confirm" action="{!acceptClosingPackage}"   />
+                                                        <apex:actionFunction name="titleMessage" action="{!rejectClosingPackage}" reRender="resultPanel"  >                                       
+                                                            <apex:param name="notes" value="" assignTo="{!notes}" />
+                                                        </apex:actionFunction>
+                                                    </apex:form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </body>
+    </html>
+</apex:page>

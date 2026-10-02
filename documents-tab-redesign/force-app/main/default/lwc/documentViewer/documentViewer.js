@@ -16,7 +16,22 @@ import applyUploadDetails from '@salesforce/apex/DocumentViewerController.applyU
 
 
 export default class DocumentViewer extends NavigationMixin(LightningElement) {
+	_contextRecordKey;
 	@api recordId;
+
+	// Set by the Partner Workspace portal, which embeds this viewer outside a record page (Nimbus, 2026-09-30).
+	@api
+	get contextRecordKey() {
+		return this._contextRecordKey;
+	}
+
+	set contextRecordKey(value) {
+		this._contextRecordKey = value;
+	}
+
+	get resolvedRecordId() {
+		return this.contextRecordKey || this.recordId;
+	}
 	@track isLoading = true;
 	@track allFolders = [];
 	@track folders = [];
@@ -58,9 +73,13 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 	dropTargetId;
 	dropBefore = true;
 
+	// Ticked documents, kept across folders so a download can mix them. Replaced, never mutated,
+	// so the template re-renders.
+	selectedIds = new Set();
+
 	connectedCallback() {
 		this.showSpinner();
-		getDocs({recordId: this.recordId})
+		getDocs({recordId: this.resolvedRecordId})
 			.then((result) => {
 				this.onGetDocsSuccess(result);
 				this.closeSpinner();
@@ -277,7 +296,8 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 	// own rules about placement. Written as "not a Transaction" rather than "is a Lead" so an
 	// unexpected or late-arriving recordId leaves the button visible rather than silently gone.
 	get canAddDocument() {
-		return !(typeof this.recordId === 'string' && this.recordId.startsWith(this.TRANSACTION_ID_PREFIX));
+		const id = this.resolvedRecordId;
+		return !(typeof id === 'string' && id.startsWith(this.TRANSACTION_ID_PREFIX));
 	}
 
 	get folderOptions() {
@@ -368,12 +388,15 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 
 		this.setFolders(this.docs);
 		this.allFolders = [...this.folders];
+		// Forget ticks on documents that are gone after a reload (deleted, or unlinked elsewhere).
+		const present = new Set(this.docs.map((doc) => doc.id));
+		this.selectedIds = new Set([...this.selectedIds].filter((id) => present.has(id)));
 		const stillThere = this.allFolders.some((folder) => folder.name === this.selectedFolderName);
 		if (!stillThere) {
 			const firstWithFiles = this.allFolders.find((folder) => folder.data.length > 0);
 			this.selectedFolderName = (firstWithFiles || this.allFolders[0] || {}).name;
 		}
-		getLoanConditions({recordId: this.recordId})
+		getLoanConditions({recordId: this.resolvedRecordId})
 			.then((conditions) => {
 				const conditionOptions = [{label:'None', value: 'None'}];
 				for (const condition of conditions) {
@@ -478,7 +501,7 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		const newFolderName = this.folderToRename.newName;
 
 		const params = {
-			recordId : this.recordId,
+			recordId : this.resolvedRecordId,
 			oldFolderName : oldFolderName,
 			newFolderName : newFolderName.trim()
 		};
@@ -640,7 +663,7 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 
 	handleFolderChange(event) {
 		const params = {
-			recordId: this.recordId,
+			recordId: this.resolvedRecordId,
 			fileId: this.fileToChangeFolder.id,
 			newFolderName: this.newFolderForFile
 		};
@@ -783,11 +806,70 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		return folder.data
 			.filter((file) => this.matchesFilter(file))
 			.map((file) => {
+				const isSelected = this.selectedIds.has(file.id);
 				let cssClass = 'dv-card';
+				if (isSelected) cssClass += ' is-selected';
+				if (this.hasSelection) cssClass += ' is-selecting';
 				if (file.id === this.dragFileId) cssClass += ' is-dragging';
 				if (file.id === this.dropTargetId) cssClass += this.dropBefore ? ' drop-before' : ' drop-after';
-				return { ...file, cssClass };
+				return { ...file, cssClass, isSelected, selectLabel: `Select ${file.fileNameWithType}` };
 			});
+	}
+
+	get hasSelection() {
+		return this.selectedIds.size > 0;
+	}
+
+	get selectionLabel() {
+		const count = this.selectedIds.size;
+		const inThisFolder = (this.selectedFolder?.data || []).filter((file) => this.selectedIds.has(file.id)).length;
+		const elsewhere = count - inThisFolder;
+		const base = `${count} selected`;
+		return elsewhere ? `${base} (${elsewhere} in other folders)` : base;
+	}
+
+	get allVisibleSelected() {
+		const files = this.visibleFiles;
+		return files.length > 0 && files.every((file) => this.selectedIds.has(file.id));
+	}
+
+	handleToggleSelect(event) {
+		const id = event.target.dataset.id;
+		const next = new Set(this.selectedIds);
+		if (event.target.checked) {
+			next.add(id);
+		} else {
+			next.delete(id);
+		}
+		this.selectedIds = next;
+	}
+
+	// Acts on what is on screen, so with a search typed it ticks only the matches.
+	handleSelectAllVisible(event) {
+		const next = new Set(this.selectedIds);
+		for (const file of this.visibleFiles) {
+			if (event.target.checked) {
+				next.add(file.id);
+			} else {
+				next.delete(file.id);
+			}
+		}
+		this.selectedIds = next;
+	}
+
+	handleClearSelection() {
+		this.selectedIds = new Set();
+	}
+
+	downloadSelected() {
+		const files = this.docs.filter((doc) => this.selectedIds.has(doc.id));
+		if (!files.length) {
+			return;
+		}
+		this[NavigationMixin.Navigate]({
+			type: 'standard__webPage',
+			attributes: { url: this.getDownloadUrl(files) }
+		});
 	}
 
 	get hasVisibleFiles() {
@@ -937,7 +1019,7 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		this.folders = folders;
 		this.allFolders = [...folders];
 
-		moveFiles({ recordId: this.recordId, folderName, orderedFileIds: orderedIds })
+		moveFiles({ recordId: this.resolvedRecordId, folderName, orderedFileIds: orderedIds })
 			.then(() => {
 				if (fromFolder !== folderName) {
 					this.showToast(`Moved to ${folderName}`, this.SUCCESS_TOAST_VARIANT);

@@ -1,0 +1,683 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtorProspects/externalLoRealtorProspects.html",
+        "fullName": "externalLoRealtorProspects/externalLoRealtorProspects.html",
+        "id": "0RdQi0000007VSYKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:02:34.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtorProspects/externalLoRealtorProspects.js",
+        "fullName": "externalLoRealtorProspects/externalLoRealtorProspects.js",
+        "id": "0RdQi0000007VSZKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:02:34.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtorProspects/externalLoRealtorProspects.css",
+        "fullName": "externalLoRealtorProspects/externalLoRealtorProspects.css",
+        "id": "0RdQi0000007VSaKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:02:34.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalListLayout/portalListLayout.css",
+        "fullName": "portalListLayout/portalListLayout.css",
+        "id": "0RdQi0000007QZQKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:05.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalListLayout/portalListLayout.html",
+        "fullName": "portalListLayout/portalListLayout.html",
+        "id": "0RdQi0000007QZRKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:05.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalListLayout/portalListLayout.js",
+        "fullName": "portalListLayout/portalListLayout.js",
+        "id": "0RdQi0000007QZSKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:01:51.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLoans/externalLoLoans.js",
+        "fullName": "externalLoLoans/externalLoLoans.js",
+        "id": "0RdQi0000007QYvKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLoans/externalLoLoans.html",
+        "fullName": "externalLoLoans/externalLoLoans.html",
+        "id": "0RdQi0000007QYwKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLoans/externalLoLoans.css",
+        "fullName": "externalLoLoans/externalLoLoans.css",
+        "id": "0RdQi0000007QYyKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalUtils/portalUtils.js",
+        "fullName": "portalUtils/portalUtils.js",
+        "id": "0RdQi0000007QZ4KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:02:34.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLeads/externalLoLeads.html",
+        "fullName": "externalLoLeads/externalLoLeads.html",
+        "id": "0RdQi0000007QZ5KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:23.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLeads/externalLoLeads.css",
+        "fullName": "externalLoLeads/externalLoLeads.css",
+        "id": "0RdQi0000007QZ7KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:23.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLeads/externalLoLeads.js",
+        "fullName": "externalLoLeads/externalLoLeads.js",
+        "id": "0RdQi0000007QZ8KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:23.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.js",
+        "fullName": "externalLoRealtors/externalLoRealtors.js",
+        "id": "0RdQi0000007QZIKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.html",
+        "fullName": "externalLoRealtors/externalLoRealtors.html",
+        "id": "0RdQi0000007QZJKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.css",
+        "fullName": "externalLoRealtors/externalLoRealtors.css",
+        "id": "0RdQi0000007QZKKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPreApprovals/externalLoPreApprovals.css",
+        "fullName": "externalLoPreApprovals/externalLoPreApprovals.css",
+        "id": "0RdQi0000007QZ9KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T00:46:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPreApprovals/externalLoPreApprovals.html",
+        "fullName": "externalLoPreApprovals/externalLoPreApprovals.html",
+        "id": "0RdQi0000007QZAKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T00:46:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPreApprovals/externalLoPreApprovals.js",
+        "fullName": "externalLoPreApprovals/externalLoPreApprovals.js",
+        "id": "0RdQi0000007QZCKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T00:46:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoPastClients/externalLoPastClients.js",
+        "fullName": "externalLoPastClients/externalLoPastClients.js",
+        "id": "0RdQi0000007VSIKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoPastClients/externalLoPastClients.html",
+        "fullName": "externalLoPastClients/externalLoPastClients.html",
+        "id": "0RdQi0000007VSJKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoPastClients/externalLoPastClients.css",
+        "fullName": "externalLoPastClients/externalLoPastClients.css",
+        "id": "0RdQi0000007VSKKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:02:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsAddLeadForm/loWsAddLeadForm.html",
+        "fullName": "loWsAddLeadForm/loWsAddLeadForm.html",
+        "id": "0RdQi0000007eKDKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsAddLeadForm/loWsAddLeadForm.css",
+        "fullName": "loWsAddLeadForm/loWsAddLeadForm.css",
+        "id": "0RdQi0000007eKFKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:12.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsAddLeadForm/loWsAddLeadForm.js",
+        "fullName": "loWsAddLeadForm/loWsAddLeadForm.js",
+        "id": "0RdQi0000007eKGKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:23.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:57.000Z",
+        "fileName": "unpackaged/classes/LoWsLeadDetailsService.cls",
+        "fullName": "LoWsLeadDetailsService",
+        "id": "01pQi000003Iuy7IAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:57.000Z",
+        "fileName": "unpackaged/classes/LoWsLeadDetailsServiceTest.cls",
+        "fullName": "LoWsLeadDetailsServiceTest",
+        "id": "01pQi000003Iuy8IAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:16.000Z",
+        "fileName": "unpackaged/classes/ExternalLoPortalController.cls",
+        "fullName": "ExternalLoPortalController",
+        "id": "01pQi000003CdX1IAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/ExternalLoPortalService.cls",
+        "fullName": "ExternalLoPortalService",
+        "id": "01pQi000003CdX3IAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-08-31T17:37:16.000Z",
+        "fileName": "unpackaged/classes/ExternalLoLeadService.cls",
+        "fullName": "ExternalLoLeadService",
+        "id": "01pQi000003CdWzIAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:46:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T21:53:01.254Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T21:53:01.254Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OiqwMMAR",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "externalLoRealtorProspects",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtorProspects\\externalLoRealtorProspects.css"
+      },
+      {
+        "fullName": "externalLoRealtorProspects",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtorProspects\\externalLoRealtorProspects.html"
+      },
+      {
+        "fullName": "externalLoRealtorProspects",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtorProspects\\externalLoRealtorProspects.js"
+      },
+      {
+        "fullName": "externalLoRealtorProspects",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtorProspects\\externalLoRealtorProspects.js-meta.xml"
+      },
+      {
+        "fullName": "portalListLayout",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\portalListLayout\\portalListLayout.css"
+      },
+      {
+        "fullName": "portalListLayout",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\portalListLayout\\portalListLayout.html"
+      },
+      {
+        "fullName": "portalListLayout",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\portalListLayout\\portalListLayout.js"
+      },
+      {
+        "fullName": "portalListLayout",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\portalListLayout\\portalListLayout.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoLoans",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLoans\\externalLoLoans.css"
+      },
+      {
+        "fullName": "externalLoLoans",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLoans\\externalLoLoans.html"
+      },
+      {
+        "fullName": "externalLoLoans",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLoans\\externalLoLoans.js"
+      },
+      {
+        "fullName": "externalLoLoans",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLoans\\externalLoLoans.js-meta.xml"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\portalUtils\\portalUtils.js"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\portalUtils\\portalUtils.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLeads\\externalLoLeads.css"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLeads\\externalLoLeads.html"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLeads\\externalLoLeads.js"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoLeads\\externalLoLeads.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtors\\externalLoRealtors.css"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtors\\externalLoRealtors.html"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtors\\externalLoRealtors.js"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoRealtors\\externalLoRealtors.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoPreApprovals",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPreApprovals\\externalLoPreApprovals.css"
+      },
+      {
+        "fullName": "externalLoPreApprovals",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPreApprovals\\externalLoPreApprovals.html"
+      },
+      {
+        "fullName": "externalLoPreApprovals",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPreApprovals\\externalLoPreApprovals.js"
+      },
+      {
+        "fullName": "externalLoPreApprovals",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPreApprovals\\externalLoPreApprovals.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoPastClients",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPastClients\\externalLoPastClients.css"
+      },
+      {
+        "fullName": "externalLoPastClients",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPastClients\\externalLoPastClients.html"
+      },
+      {
+        "fullName": "externalLoPastClients",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPastClients\\externalLoPastClients.js"
+      },
+      {
+        "fullName": "externalLoPastClients",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\externalLoPastClients\\externalLoPastClients.js-meta.xml"
+      },
+      {
+        "fullName": "loWsAddLeadForm",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsAddLeadForm\\loWsAddLeadForm.css"
+      },
+      {
+        "fullName": "loWsAddLeadForm",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsAddLeadForm\\loWsAddLeadForm.html"
+      },
+      {
+        "fullName": "loWsAddLeadForm",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsAddLeadForm\\loWsAddLeadForm.js"
+      },
+      {
+        "fullName": "loWsAddLeadForm",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\lwc\\loWsAddLeadForm\\loWsAddLeadForm.js-meta.xml"
+      },
+      {
+        "fullName": "LoWsLeadDetailsService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsLeadDetailsService.cls"
+      },
+      {
+        "fullName": "LoWsLeadDetailsService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsLeadDetailsService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsLeadDetailsServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsLeadDetailsServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsLeadDetailsServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LoWsLeadDetailsServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoPortalController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\ExternalLoPortalController.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\ExternalLoPortalController.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\ExternalLoPortalService.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\ExternalLoPortalService.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoLeadService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\ExternalLoLeadService.cls"
+      },
+      {
+        "fullName": "ExternalLoLeadService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\ExternalLoLeadService.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

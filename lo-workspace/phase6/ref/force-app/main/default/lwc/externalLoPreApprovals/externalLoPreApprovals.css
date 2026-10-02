@@ -1,0 +1,5 @@
+@import 'c/portalSharedStyles';
+
+:host {
+    display: block;
+}

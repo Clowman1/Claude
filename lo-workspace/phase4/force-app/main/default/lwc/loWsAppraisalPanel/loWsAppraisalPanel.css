@@ -1,0 +1,18 @@
+.appraisal { display: grid; gap: 1rem; }
+.card { background: #fff; border: 1px solid #e2e6ee; border-radius: 12px; padding: 1rem 1.25rem; }
+.card-title { margin: 0 0 0.75rem; font-size: 0.95rem; font-weight: 700; color: #1b2a4a; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem 1.25rem; margin: 0; }
+.facts dt { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; }
+.facts dd { margin: 0.15rem 0 0; font-weight: 600; color: #1f2937; }
+.timeline, .docs, .comments { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.timeline li, .docs li { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: baseline; }
+.timeline-title { font-weight: 600; color: #1b2a4a; }
+.comments li { border-left: 3px solid #c9d3e6; padding-left: 0.75rem; }
+.comment-meta { margin: 0; font-size: 0.8rem; font-weight: 600; color: #24386a; }
+.comment-body { margin: 0.2rem 0 0; white-space: pre-wrap; }
+.muted { color: #64748b; font-size: 0.85rem; margin: 0; }
+.notice { margin: 0; padding: 0.6rem 0.9rem; border-radius: 8px; background: #fff7e6; color: #8a5a00; }
+.link-btn { background: none; border: 0; padding: 0; color: #24386a; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.send-btn { margin-top: 0.6rem; padding: 0.5rem 1rem; border: 0; border-radius: 8px; background: #1b2a4a; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.send-btn:disabled { opacity: 0.5; cursor: default; }
+.link-btn:focus-visible, .send-btn:focus-visible { outline: 2px solid #24386a; outline-offset: 2px; }

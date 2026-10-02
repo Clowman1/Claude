@@ -1,0 +1,120 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-10T14:21:22.000Z",
+        "fileName": "unpackaged/objects/Zoom_Webhook_Config__mdt.object",
+        "fullName": "Zoom_Webhook_Config__mdt",
+        "id": "01IQi00000EXGabMAH",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-10T14:21:22.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T15:46:10.135Z",
+        "fileName": "unpackaged/objects/Lead.object",
+        "fullName": "Lead",
+        "id": "000000000000000AAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:46:10.135Z",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-27T15:15:48.000Z",
+        "fileName": "unpackaged/permissionsets/Zoom_Webhook_Guest_Access.permissionset",
+        "fullName": "Zoom_Webhook_Guest_Access",
+        "id": "0PSQi000000KHeDOAW",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-27T15:23:46.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T15:46:10.406Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T15:46:10.406Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OfTOPMA3",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "Zoom_Webhook_Config__mdt.Alert_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Zoom_Webhook_Config__mdt\\fields\\Alert_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Zoom_Webhook_Config__mdt.Webhook_Secret__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Zoom_Webhook_Config__mdt\\fields\\Webhook_Secret__c.field-meta.xml"
+      },
+      {
+        "fullName": "Zoom_Webhook_Config__mdt.Zoom_Account_Id__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Zoom_Webhook_Config__mdt\\fields\\Zoom_Account_Id__c.field-meta.xml"
+      },
+      {
+        "fullName": "Zoom_Webhook_Config__mdt",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Zoom_Webhook_Config__mdt\\Zoom_Webhook_Config__mdt.object-meta.xml"
+      },
+      {
+        "fullName": "Lead.LeadSource",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\fields\\LeadSource.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Consumer_Lead_record_type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Consumer_Lead_record_type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Officer_Lead_Record_Type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Loan_Officer_Lead_Record_Type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Lead_record_type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Realtor_Lead_record_type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Zoom_Webhook_Guest_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase6\\ref\\force-app\\main\\default\\permissionsets\\Zoom_Webhook_Guest_Access.permissionset-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

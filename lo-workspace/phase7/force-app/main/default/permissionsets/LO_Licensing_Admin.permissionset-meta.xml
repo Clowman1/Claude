@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Admins only: edit a loan officer's licensing info (NMLS # and Licensed States) on the User record. Printed on the Pre-Approval Letter signature card.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Licensed_States__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.NMLS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LO Licensing Admin</label>
+</PermissionSet>

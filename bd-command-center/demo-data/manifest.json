@@ -1,0 +1,208 @@
+{
+  "createdOn": "2026-09-29",
+  "marker": "BD DEMO DATA - delete after CEO demo",
+  "accounts": [
+    {
+      "id": "001Qi00001ax6ovIAA",
+      "contactId": "003Qi00001LQRRNIA5",
+      "name": "Priya Shah"
+    },
+    {
+      "id": "001Qi00001ax6owIAA",
+      "contactId": "003Qi00001LQRROIA5",
+      "name": "Dana Whitfield"
+    },
+    {
+      "id": "001Qi00001ax6oxIAA",
+      "contactId": "003Qi00001LQRRPIA5",
+      "name": "Marcus Ortega"
+    },
+    {
+      "id": "001Qi00001ax6oyIAA",
+      "contactId": "003Qi00001LQRRQIA5",
+      "name": "Kelsey Lin"
+    },
+    {
+      "id": "001Qi00001ax6ozIAA",
+      "contactId": "003Qi00001LQRRRIA5",
+      "name": "Jordan Pierce"
+    },
+    {
+      "id": "001Qi00001ax6p0IAA",
+      "contactId": "003Qi00001LQRRSIA5",
+      "name": "Greg Ellison"
+    },
+    {
+      "id": "001Qi00001ax6p1IAA",
+      "contactId": "003Qi00001LQRRTIA5",
+      "name": "Nora Castillo"
+    },
+    {
+      "id": "001Qi00001ax6p2IAA",
+      "contactId": "003Qi00001LQRRUIA5",
+      "name": "Ben Alvarez"
+    },
+    {
+      "id": "001Qi00001ax6p3IAA",
+      "contactId": "003Qi00001LQRRVIA5",
+      "name": "Sam Patel"
+    },
+    {
+      "id": "001Qi00001ax6p4IAA",
+      "contactId": "003Qi00001LQRRWIA5",
+      "name": "Tom Nguyen"
+    },
+    {
+      "id": "001Qi00001ax6p5IAA",
+      "contactId": "003Qi00001LQRRXIA5",
+      "name": "Rachel Kim"
+    },
+    {
+      "id": "001Qi00001ax6p6IAA",
+      "contactId": "003Qi00001LQRRYIA5",
+      "name": "Alicia Brenner"
+    },
+    {
+      "id": "001Qi00001ax6p7IAA",
+      "contactId": "003Qi00001LQRRZIA5",
+      "name": "Michael Reyes"
+    },
+    {
+      "id": "001Qi00001ax6p8IAA",
+      "contactId": "003Qi00001LQRRaIAP",
+      "name": "Laura Chen"
+    },
+    {
+      "id": "001Qi00001ax6p9IAA",
+      "contactId": "003Qi00001LQRRbIAP",
+      "name": "Derek Foster"
+    }
+  ],
+  "tasks": [
+    "00TQi00001cvTtMMAU",
+    "00TQi00001cvTtNMAU",
+    "00TQi00001cvTtOMAU",
+    "00TQi00001cvTtPMAU",
+    "00TQi00001cvTtQMAU",
+    "00TQi00001cvTtRMAU",
+    "00TQi00001cvTtSMAU",
+    "00TQi00001cvTtTMAU",
+    "00TQi00001cvTtUMAU",
+    "00TQi00001cvTtVMAU",
+    "00TQi00001cvTtWMAU",
+    "00TQi00001cvTtXMAU",
+    "00TQi00001cvTtYMAU",
+    "00TQi00001cvTtZMAU",
+    "00TQi00001cvTtaMAE",
+    "00TQi00001cvTtbMAE",
+    "00TQi00001cvTtcMAE",
+    "00TQi00001cvTtdMAE",
+    "00TQi00001cvTteMAE",
+    "00TQi00001cvTtfMAE",
+    "00TQi00001cvTtgMAE",
+    "00TQi00001cvTthMAE"
+  ],
+  "events": [
+    "00UQi00000aF7PRMA0",
+    "00UQi00000aF7PSMA0",
+    "00UQi00000aF7PTMA0",
+    "00UQi00000aF88bMAC",
+    "00UQi00000aF88cMAC",
+    "00UQi00000aF88dMAC",
+    "00UQi00000aF88eMAC",
+    "00UQi00000aF88fMAC",
+    "00UQi00000aF88gMAC"
+  ],
+  "emailMessages": [
+    "02sQi00001GXmihIAD",
+    "02sQi00001GXmiiIAD",
+    "02sQi00001GXmijIAD",
+    "02sQi00001GXmikIAD"
+  ],
+  "callInsights": [
+    "a2OQi00000ix4ZJMAY",
+    "a2OQi00000ix4ZKMAY",
+    "a2OQi00000ix4ZLMAY",
+    "a2OQi00000ix4ZMMAY"
+  ],
+  "campaigns": [
+    "701Qi00001awnsnIAA",
+    "701Qi00001awnsoIAA",
+    "701Qi00001awnspIAA",
+    "701Qi00001awnsqIAA",
+    "701Qi00001awnsrIAA",
+    "701Qi00001awnssIAA"
+  ],
+  "campaignMemberStatuses": [
+    "01YQi00000IeyCnMAJ",
+    "01YQi00000IeyCoMAJ",
+    "01YQi00000IeyCpMAJ",
+    "01YQi00000IeyCqMAJ",
+    "01YQi00000IeyCrMAJ",
+    "01YQi00000IeyCsMAJ",
+    "01YQi00000IeyCtMAJ",
+    "01YQi00000IeyCuMAJ",
+    "01YQi00000IeyCvMAJ",
+    "01YQi00000IeyCwMAJ",
+    "01YQi00000IeyCxMAJ",
+    "01YQi00000IeyCyMAJ",
+    "01YQi00000IeyCzMAJ",
+    "01YQi00000IeyD0MAJ",
+    "01YQi00000IeyD1MAJ",
+    "01YQi00000IeyD2MAJ",
+    "01YQi00000IeyD3MAJ",
+    "01YQi00000IeyD4MAJ",
+    "01YQi00000IeyD5MAJ",
+    "01YQi00000IeyD6MAJ",
+    "01YQi00000IeyD7MAJ",
+    "01YQi00000IeyD8MAJ",
+    "01YQi00000IeyD9MAJ",
+    "01YQi00000IeyDAMAZ",
+    "01YQi00000IeyDBMAZ",
+    "01YQi00000IeyDCMAZ",
+    "01YQi00000IeyDDMAZ",
+    "01YQi00000IeyDEMAZ",
+    "01YQi00000IeyDFMAZ",
+    "01YQi00000IeyDGMAZ"
+  ],
+  "campaignMembers": [
+    "00vQi00000arfebIAA",
+    "00vQi00000arfecIAA",
+    "00vQi00000arfedIAA",
+    "00vQi00000arfeeIAA",
+    "00vQi00000arfefIAA",
+    "00vQi00000arfegIAA",
+    "00vQi00000arfehIAA",
+    "00vQi00000arfeiIAA",
+    "00vQi00000arfejIAA",
+    "00vQi00000arfekIAA",
+    "00vQi00000arfelIAA",
+    "00vQi00000arfemIAA"
+  ],
+  "callLogs": [
+    "a2AQi00000MZ76nMAD",
+    "a2AQi00000MZ76oMAD",
+    "a2AQi00000MZ76pMAD",
+    "a2AQi00000MZ76qMAD",
+    "a2AQi00000MZ76rMAD",
+    "a2AQi00000MZ76sMAD",
+    "a2AQi00000MZ76tMAD",
+    "a2AQi00000MZ76uMAD",
+    "a2AQi00000MZ76vMAD",
+    "a2AQi00000MZ76wMAD",
+    "a2AQi00000MZ76xMAD",
+    "a2AQi00000MZ76yMAD",
+    "a2AQi00000MZ76zMAD",
+    "a2AQi00000MZ770MAD",
+    "a2AQi00000MZ771MAD",
+    "a2AQi00000MZ772MAD",
+    "a2AQi00000MZ773MAD",
+    "a2AQi00000MZ774MAD",
+    "a2AQi00000MZ775MAD"
+  ],
+  "notes": {
+    "unmatchedCallTasks": "2 of the tasks have no WhatId/WhoId (Unmatched calls tray)",
+    "marketingUser": "UserPermissionsMarketingUser turned ON for clowman@reachhomeloans.com on 2026-09-29 to create the campaigns",
+    "autoCreated": "Call_Log__c rows were created by the Task_Create_Call_Log flow"
+  }
+}

@@ -1,0 +1,58 @@
+<!--
+*****************************************************
+* @date created date : Feb 20, 2025
+* @description       :
+* @author            : Andrei Karanko
+Modification Log:
+Ver   Date         Author                               Modification
+1.0   20.02.2025   Andrei Karanko                          Initial Version
+*****************************************************
+ -->
+
+<!-- Formatted Field -->
+<template>
+  <template lwc:if={isText}>
+    <lightning-formatted-text value={fieldValue}></lightning-formatted-text>
+  </template>
+
+  <template lwc:elseif={isDate}>
+    <lightning-formatted-date-time value={fieldValue} year="numeric" month="2-digit" day="2-digit"> </lightning-formatted-date-time>
+  </template>
+
+  <template lwc:elseif={isDateTime}>
+    <lightning-formatted-date-time value={fieldValue} year="numeric" month="2-digit" day="2-digit" hour="2-digit" minute="2-digit">
+    </lightning-formatted-date-time>
+  </template>
+
+  <template lwc:elseif={isCurrency}>
+    <lightning-formatted-number value={fieldValue} format-style="currency" currency-code="USD"> </lightning-formatted-number>
+  </template>
+
+  <template lwc:elseif={isInteger}>
+    <lightning-formatted-number value={fieldValue} minimum-fraction-digits="0" maximum-fraction-digits="0"> </lightning-formatted-number>
+  </template>
+
+  <template lwc:elseif={isDecimal}>
+    <lightning-formatted-number value={fieldValue} minimum-fraction-digits="2" maximum-fraction-digits="2"> </lightning-formatted-number>
+  </template>
+
+  <template lwc:elseif={isPercent}>
+    <lightning-formatted-number value={fieldValue} format-style={percentFormatStyle} maximum-fraction-digits="2"> </lightning-formatted-number>
+  </template>
+
+  <template lwc:elseif={isBoolean}>
+    <lightning-input label="Boolean field" variant="label-hidden" type="checkbox" checked={fieldValue} disabled> </lightning-input>
+  </template>
+
+  <template lwc:elseif={isEmail}>
+    <lightning-formatted-email value={fieldValue} hide-icon></lightning-formatted-email>
+  </template>
+
+  <template lwc:elseif={isPhone}>
+    <lightning-formatted-phone value={fieldValue}></lightning-formatted-phone>
+  </template>
+
+  <template lwc:else>
+    <lightning-formatted-text value={fieldValue}></lightning-formatted-text>
+  </template>
+</template>

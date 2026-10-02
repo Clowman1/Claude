@@ -1,0 +1,92 @@
+<apex:page renderAs="pdf" contentType="application/pdf" standardController="Transaction__c" showHeader="false" applyHtmlTag="false">
+<html>
+<head>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            position: relative;
+            width: 720px; /* Зменшена ширина */
+            height: 960px; /* Пропорційно зменшена висота */
+            background-color: white;
+        }
+
+        .form-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .absolute-field {
+            position: absolute;
+            font-size: 11.25px; /* Зменшено на 6.25% від 12px */
+            font-weight: bold;
+            color: black;
+        }
+
+        #reach_tin { top: 177px; left: 14px; max-width: 220px; }
+        #borrower_ssn_truncated { top: 177px; left: 176px; max-width: 220px; }
+        #borrower_name_field { top: 237px; left: 14px; max-width: 220px; }
+        #primary_address { top: 283px; left: 14px; max-width: 220px; }
+        #city_and_state_address { top: 335px; left: 14px; max-width: 220px; }
+        #number_of_properties { top: 392px; left: 14px; max-width: 220px; }
+        #other { top: 388px; left: 234px; max-width: 220px; }
+        #loan_number { top: 433px; left: 14px; max-width: 220px; }
+        #pull_prior_year { top: 97px; left: 525px; max-width: 220px; }
+        #daily_interest_field { top: 132px; left: 350px; max-width: 220px; }
+        #loan_amount { top: 174px; left: 350px; max-width: 220px; }
+        #zero_field { top: 215px; left: 352px; max-width: 220px; }
+        #loan_type_upfront { top: 219px; left: 487px; max-width: 220px; }
+        #discount_points { top: 249px; left: 352px; max-width: 220px; }
+        #checkbox_occupancy_primary { top: 264px; left: 353px; max-width: 220px; }
+        #address_description { top: 342px; left: 339px; max-width: 220px; }
+        #funding_date { top: 171px; left: 479px; max-width: 220px; }
+        #funding_date_11 { top: 443px; left: 615px; max-width: 220px; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <img src="{!URLFOR($Resource.Form1098B)}" alt="Form 1098"/>
+        <div id="reach_tin" class="absolute-field">87-3122555</div>
+        <div id="borrower_name_field" class="absolute-field">
+            {!Transaction__c.Borrower_Name__r.FirstName} {!Transaction__c.Borrower_Name__r.LastName}
+        </div>
+        <div id="borrower_ssn_truncated" class="absolute-field">
+            {!IF(LEN(Transaction__c.Borrower_Name__r.SSN__pc) == 11, 
+            'XXX-XX-' & RIGHT(Transaction__c.Borrower_Name__r.SSN__pc, 4), 
+            Transaction__c.Borrower_Name__r.SSN__pc)}
+        </div>
+        <div id="primary_address" class="absolute-field">{!Transaction__c.Form_Adress__c}</div>
+        <div id="city_and_state_address" class="absolute-field">{!Transaction__c.Form_Ciy_And_State__c}</div>
+        <div id="number_of_properties" class="absolute-field">1</div>
+        <div id="other" class="absolute-field">N/A</div>
+        <div id="loan_number" class="absolute-field">{!Transaction__c.Loan_Number__c}</div>
+        <div id="pull_prior_year" class="absolute-field">{!YEAR(TODAY()) - 2001}</div>
+        <div id="daily_interest_field" class="absolute-field">{!Transaction__c.Daily_Interest__c}</div>
+        <div id="loan_amount" class="absolute-field">
+            {!TEXT(Transaction__c.Loan_Amount_1st__c)}
+        </div>
+        <div id="zero_field" class="absolute-field">0</div>
+        <div id="loan_type_upfront" class="absolute-field">{!Transaction__c.Mortgage_Form_Insurance__c}</div>
+        <div id="discount_points" class="absolute-field">{!Transaction__c.Discount_Points__c}</div>
+        <div class="absolute-field" id="checkbox_occupancy_primary">
+            {!Transaction__c.Occupancy_Primary_Check__c}
+        </div>
+        <div id="address_description" class="absolute-field">{!Transaction__c.Form_Property_Full_Address__c}</div>
+        <div id="funding_date" class="absolute-field">
+            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                <apex:param value="{!Transaction__c.Funding_Date__c}" />
+            </apex:outputText>
+        </div>
+        <div id="funding_date_11" class="absolute-field">
+            <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                <apex:param value="{!Transaction__c.Funding_Date__c}" />
+            </apex:outputText>
+        </div>
+    </div>
+</body>
+</html>
+</apex:page>
