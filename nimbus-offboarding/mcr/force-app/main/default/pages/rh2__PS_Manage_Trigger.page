@@ -1,0 +1,332 @@
+<apex:page controller="rh2.PS_Manage_Trigger_Controller" title="Rollup Helper Real Time Enablement" sidebar="false"  applyBodyTag="false" docType="html-5.0" showHeader="true">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+	<head> 
+    	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    	<apex:includeScript value="{!URLFOR($Resource.rh2__PT_JSZip, '/dist/jszip.js')}"/>
+    	<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+ 
+    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />  
+    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }" />
+    	<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/customMessage.css') }" />
+        <apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }"  />
+ 
+	</head>
+	<style>		
+ 
+		.customMessage {
+		    margin: 5px 0!important;		    
+		}
+ 
+	</style>
+     
+	<script type="text/javascript">
+		var zipFile = new JSZip();
+		zipFile.generate();
+		
+		var rh = rh || {};
+        var overwriteFlag;
+                
+        rh.j$ = jQuery.noConflict();
+        rh.j$(document).ready(function() {
+            if({!mdapiVars.MetadataConnectionWarning}){
+				createRemoteSite('{!JSENCODE(sessionId)}', 'RH_mdapi', '{!JSENCODE(deployVars.host)}', '{!JSENCODE(deployVars.host)}');
+			}
+			
+			overridePageMessagesNormalSize();
+
+       		selectBreadcrumb_HS();
+       		
+       		if({!pgBehavior.renderButton} == false && {!deployVars.deployed} == false) { 
+            	document.getElementById("deploy").disabled = true;
+				document.getElementById("remove").disabled = true;
+			}			   
+        });
+	</script>
+ 
+	<apex:form id="form">
+	<apex:slds />
+	<div class="slds-scope " role="main"> 	
+		
+		<div class="slds-card grayBackground">
+  			<header class="slds-card__header">
+	       		<nav role="navigation">
+    				<ol class="slds-breadcrumb slds-list_horizontal">
+    					<li class="slds-list__item slds-text-heading_label home-crumb"><a href="{!URLFOR($Page.PS_landingPage)}">{!$Label.Home}</a></li>
+   		   				<li class="slds-list__item slds-text-heading_label setting-crumb"><a href="{!URLFOR($Page.PS_Allsettings)}">{!$Label.AllRollupSetting}</a></li>
+						<li class="slds-list__item slds-text-heading_label"><a href="{!URLFOR($Page.PS_Select_Object)}">{!$Label.EnableRealtime}</a></li>
+       				</ol>
+        		</nav>
+  			</header>
+  		</div>
+  		<br />
+		<div class="slds-page-header">
+  			<div class="slds-grid">
+    			<div class="slds-col slds-has-flexi-truncate">
+      				<div class="slds-media">    					
+        				<div class="slds-media__body">
+          					<div class="slds-grid">
+            					<h1 class="slds-text-heading_medium slds-m-right_medium slds-truncate slds-align-middle" >{!$Label.AddRemoveRealtime} {!deployVars.deployObjectName}</h1>
+							</div>
+							<apex:commandLink onclick="showModal(true, 'realtimeRunInfoModal')" rerender="realtimeRunInfoModal" styleClass="slds-button slds-button_neutral" style="float:right; margin-right: 15px;margin-top: -30px;">{!$Label.rh2__About}</apex:commandLink>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="slds-card grayBackground">
+		<apex:outputPanel rendered="{!NOT(ISBLANK(FkTriggersForObject))}" id="builtInFkTriggers">
+			<div class="slds-box slds-box_x-small slds-theme_alt-inverse" style="width:98%;">
+				<p>{!$Label.rh2__PleaseNoteByDefaultForeignKey} {!deployVars.deployObjectName} {!$Label.rh2__RollupsUsing} {!FkTriggersForObject} {!$Label.rh2__ForeignKeyEnabledForRealtime}.</p>
+			</div>
+		</apex:outputPanel>
+		<apex:outputpanel rendered="{!deployVars.deployed}" id="deployedMessage">
+			<apex:outputPanel rendered="{!pgBehavior.invalidSession}" id="invalidSessionOnRemove">
+				<div class="slds-theme_warning">
+					<span>
+						&nbsp;{!invalidSessionMessage}
+					</span> <br/> <br/> 
+                    <center>
+						<b><apex:commandLink action="{!navigateToAuthPage}" value="Authenticate Rollup Helper" target="_blank"/></b>
+						<br/><br/>
+                    </center>
+                </div> <br/>
+			</apex:outputPanel>
+			<apex:outputPanel rendered="{! !pgBehavior.invalidSession}" id="removePageMessages">
+				<apex:pageMessages escape="false" />
+			</apex:outputPanel>
+			<div class="slds-grid">
+				<div class="slds-col slds-size_1-of-3"></div>
+				<apex:outputPanel styleClass="slds-box slds-theme_default slds-grid_align-center slds-m-top_medium slds-col slds-size_1-of-3" rendered="{!AND(deployVars.deployed, pgBehavior.renderButton)}">
+					<div align="center">
+						<apex:outputPanel rendered="{!!deployVars.triggerDisabled}">
+							<p>
+								{!$Label.rh2__ApexTrigger} <b> {!deployVars.triggerName} </b> {!$Label.rh2__IsInstalled}
+							</p>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!deployVars.triggerDisabled}">
+							<p>
+								{!$Label.rh2__ApexTrigger} <b> {!deployVars.triggerName} </b> {!$Label.rh2__IsInstalledAndInactive}
+							</p>
+							<p>
+								{!$Label.rh2__PleaseEnsureTriggerIsActive}
+							</p>
+							<br/>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!deployVars.testDeployed && !existingDifferentForeignKeyTrigger}">
+							<p>  		
+								{!$Label.rh2__ApexClass} <b> {!deployVars.triggerTestName} </b> {!$Label.rh2__IsInstalled}		
+							</p>
+							<p>
+								{!$Label.rh2__Click} <b>{!$Label.rh2__Remove}</b> {!$Label.rh2__ClickRemoveToUninstall}
+							</p>
+						</apex:outputPanel>
+						<p>	
+							<br/> 
+							<b>{!$Label.SkipRunningTests}?</b> &nbsp;
+							<apex:inputCheckbox value="{!runSpecifiedTests}">
+								<apex:actionSupport event="onchange" action="{!updateTestSetting}" rerender="testAlert"/>
+							</apex:inputCheckbox>
+						</p>
+					</div>
+				</apex:outputPanel>
+				<div class="slds-col slds-size_1-of-3"></div>			
+			</div>
+		</apex:outputpanel>
+		<apex:outputpanel rendered="{!IF(AND(NOT(deployVars.deployed), pgBehavior.renderButton), TRUE, FALSE)}" id="notDeployedMessage">
+			<apex:outputPanel rendered="{!pgBehavior.invalidSession}" id="invalidSessionOnDeploy">
+				<div class="slds-theme_warning">
+					<span>
+						&nbsp;{!invalidSessionMessage}
+					</span> <br/> <br/>
+                    <center>
+						<b><apex:commandLink action="{!navigateToAuthPage}" value="Authenticate Rollup Helper" target="_blank"/></b>
+						<br/><br/>
+                    </center>
+                </div> <br/>
+			</apex:outputPanel>
+			<apex:outputPanel rendered="{! !pgBehavior.invalidSession}" id="deployPageMessages">
+				<apex:pageMessages escape="false" />
+			</apex:outputPanel>
+			<center>
+			<div class="slds-box slds-size_1-of-3 slds-theme_default slds-grid_align-center slds-m-top_medium" align="center">
+  				<p>
+					{!$Label.ApexTrigger} <b> {!deployVars.triggerName} </b> {!$Label.DoesNotExist}.
+				  </p>
+				<apex:outputPanel rendered="{!!deployVars.testDeployed && !existingDifferentForeignKeyTrigger}">
+					<p>  		
+						{!$Label.rh2__ApexClass} <b> {!deployVars.triggerTestName} </b> {!$Label.rh2__DoesNotExist}.	
+					</p>
+				</apex:outputPanel>
+				<p>
+					{!$Label.Click} <b> {!$Label.rh2__Deploy} {!deployVars.deployObjectName} {!$Label.rh2__Trigger}</b> {!$Label.ToInstallTheApexTrigger}.
+				</p>
+				<p>	
+					<br/> 
+					<b>{!$Label.SkipRunningTests}?</b> &nbsp;
+					<apex:inputCheckbox value="{!runSpecifiedTests}">
+						<apex:actionSupport event="onchange" action="{!updateTestSetting}" rerender="testAlert"/>
+					</apex:inputCheckbox>
+				</p>
+			</div>
+			</center>		
+			<apex:outputPanel id="testAlert">
+				<apex:outputPanel rendered="{!runSpecifiedTests}">
+				<center>
+					<div class="slds-size_1-of-3 slds-notify slds-notify_alert slds-theme_warning slds-align_absolute-center" role="alert">
+						<b>{!$Label.rh2__PleaseNoteItIsRecommended}</b>
+					</div>
+				</center>
+				</apex:outputPanel>
+			</apex:outputPanel>
+		</apex:outputpanel>
+        <apex:outputpanel rendered="{!IF(AND(deployVars.deployed, NOT(pgBehavior.renderButton)), TRUE, FALSE)}" id="preDeployedMessage">
+            
+		<div class="slds-grid">
+			<div class="slds-col slds-size_1-of-3"></div>
+			<div class="slds-box slds-col slds-size_1-of-3 slds-theme_default slds-m-top_medium" align="center">
+				<apex:outputPanel rendered="{!!deployVars.triggerDisabled}">
+					<p>
+						{!$Label.rh2__ApexTrigger} <b> {!deployVars.defaultTriggerName} </b> {!$Label.rh2__WasDeployedByDefault}
+					</p>
+				</apex:outputPanel>
+				<apex:outputPanel rendered="{!deployVars.triggerDisabled}">
+					<p>
+						{!$Label.rh2__ApexTrigger} <b> {!deployVars.defaultTriggerName} </b> {!$Label.rh2__WasDeployedByDefaultAndInactive}
+					</p>
+					<p>
+						{!$Label.rh2__PleaseEnsureTriggerIsActive}
+					</p>
+					<br/>
+				</apex:outputPanel>
+  				<p>
+					{!$Label.TheseTriggersAreNot}
+  				</p>
+  				<p>
+					{!$Label.Click} <b>{!$Label.rh2__Back}</b> {!$Label.ClickBackToReturn}
+				</p>
+			</div>
+			<div class="slds-col slds-size_1-of-3"></div>	
+		</div>
+ 
+		</apex:outputpanel>
+    	<div class="slds-grid slds-grid_align-center">
+    		<apex:outputPanel styleclass="slds-col slds-m-top_medium" rendered="{!pgBehavior.displayButtons}" style="margin-left:auto; margin-right:auto;">   			 			
+				<apex:commandLink rendered="{!!deployVars.Deployed}" styleClass="slds-button slds-button_brand" id="deploy" onclick="generateZip(); overridePageMessagesNormalSize();" rerender="none">
+					<apex:outputText >{!$Label.rh2__Deploy} {!deployVars.deployObjectName} {!$Label.rh2__Trigger}</apex:outputText>
+				</apex:commandLink>
+				<apex:commandLink rendered="{!deployVars.Deployed && pgBehavior.renderButton}" styleClass="slds-button slds-button_brand" id="remove" onclick="generateZip(); overridePageMessagesNormalSize();" rerender="none">
+					<apex:outputText rendered="{!deployVars.Deployed}">{!$Label.rh2__Remove} {!deployVars.deployObjectName} {!$Label.rh2__Trigger}</apex:outputText>
+				</apex:commandLink>	
+				<apex:commandLink rendered="{!pgBehavior.renderButton && IsContentDocumentFK}" styleClass="slds-button slds-button_neutral" id="fkReturn" action="{!doSelectMasterObject}" rerender="none">
+					<apex:param name="masterAPI" value="ContentDocumentLink" assignTo="{!deployVars.deployObjectName}"/>
+					<apex:outputText rendered="{!IsContentDocumentFK}">{!$Label.rh2__View} ContentDocumentLink {!$Label.rh2__Trigger}</apex:outputText>
+				</apex:commandLink>
+				&nbsp;
+				<apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.rh2__Back}" action="{!backPressed}" />
+			</apex:outputPanel>
+		</div>
+		<apex:outputPanel rendered="{!IsContentDocumentLink && pgBehavior.displayButtons}">
+			<div class="slds-grid">
+				<div class="slds-col slds-size_1-of-3"></div>
+				<div class="slds-box slds-col slds-size_1-of-3 slds-theme_default slds-m-top_medium" align="center">
+						<p>
+							{!$Label.DeployingContentDocumentFKTriggers}
+						</p>
+						<br/> For additional information, please view our knowledge article on&nbsp;<apex:outputLink target="_blank" value="https://passagetech.my.site.com/KnowledgeBase/s/article/ContentDocumentLink-Test-and-Trigger-1578080055503">ContentDocumentLink triggers</apex:outputLink>.
+				</div>
+				<div class="slds-col slds-size_1-of-3"></div>	
+			</div>
+			<div class="slds-grid slds-grid_align-center">
+				<apex:outputPanel styleClass="slds-col slds-m-top_medium" style="margin-left:auto; margin-right:auto;">
+					<apex:commandLink styleClass="slds-button slds-button_brand" id="fkdeploy" action="{!doSelectMasterObject}" rerender="none" status="loading">
+						<apex:param name="masterAPI" value="ContentDocument&fkobj=CDL" assignTo="{!deployVars.deployObjectName}"/>
+						<apex:outputText >{!$Label.rh2__View} ContentDocument Foreign Key {!$Label.rh2__Trigger}</apex:outputText>
+					</apex:commandLink>  			 			
+				</apex:outputPanel>
+			</div>
+		</apex:outputPanel>
+		<div class="slds-grid slds-m-vertical_small"><span></span></div>
+	</div>	
+		<br />	
+		<div class="slds-card grayBackground">
+     		<header class="slds-card__header slds-grid" style="background-color: #f3f3f3;">
+     			<div class="slds-col">
+               		<h3 class="slds-text-heading_small slds-truncate">{!$Label.RealtimeTriggersInOrg}</h3>
+               	</div>		
+     		</header>
+     		<body>
+    			 <section class="slds-card__body slds-grid">
+    			 	<table class="slds-table slds-table_bordered slds-max-medium-table_stacked" id="table" >
+    			 	<tbody>
+    			 		<apex:repeat value="{!apexTriggersToDisplayMap}" var="trigKey">
+   				 			<tr>
+   				 			<td>
+   								<a href="/{!apexTriggersToDisplayMap[trigKey]}" target="_blank">{!trigKey}</a>
+							</td>
+							</tr>
+						</apex:repeat>
+    			 	</tbody>
+   				 	</table>
+   				 </section>
+   			</body>
+     	</div>	
+		
+		<div id="realtimeRunInfoModal" style="display: none;">
+			<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<div class="slds-modal__header">
+						<button type="button" onclick="showModal(false, 'realtimeRunInfoModal')" class="slds-button slds-button_icon-inverse slds-modal__close">
+							<svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+								<use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+							</svg>
+						</button>
+						<h2 class="slds-text-heading_medium">About Running Realtime Rollups</h2>
+					</div>
+					<div class="slds-modal__content slds-p-around_medium">
+						To allow realtime updates for rollups, a trigger will need to be deployed for the source object of the rollup. Once deployed, updates to the trigger object will run all rollups that have the trigger object as the source object. If a rollup uses a formula field as its source field, realtime runs of the rollup will only be triggered when a source record is updated in a way that causes the formula field value to change.<br/><br/>
+						To get updated information rolled up from existing source records, the associated rollups with the trigger source object will need to be run manually.<br/><br/>
+						Realtime may be disabled for the source object from the Enable Real Time Rollups page, or disabled per rollup by selecting "Disable Realtime" from the Advanced Configuration section on the rollup's page.
+					</div>
+					<div class="slds-modal__footer">
+						<apex:commandButton styleClass="slds-button slds-button_neutral" onclick="showModal(false, 'realtimeRunInfoModal');" rerender="realtimeRunInfoModal" value="{!$Label.rh2__Close}" />
+					</div>
+				</div>
+			</div>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>    
+		<apex:actionPoller action="{!checkAsyncRequestVF}" interval="5" rerender="form, deployedMessage" oncomplete="overridePageMessagesNormalSize();" rendered="{!!pgBehavior.displayButtons}" id="poller"/>
+ 
+		<apex:actionFunction name="deployZip" action="{!deployZip}" rendered="{!pgBehavior.displayButtons}" rerender="form, deployedMessage, poller" oncomplete="overridePageMessagesNormalSize();">
+			<apex:param name="data" assignTo="{!ZipData}" value=""/>
+		</apex:actionFunction> 
+        
+		<apex:actionFunction name="deployZipLightning" action="{!deployZipLightning}" rendered="{!pgBehavior.displayButtons}" rerender="form, deployedMessage, poller" oncomplete="overridePageMessagesNormalSize();">
+			<apex:param name="data" assignTo="{!zipData}" value=""/>
+		</apex:actionFunction>
+        
+		<apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
+			<c:zip name="generateZip" id="czip" oncomplete="deployZip(data);" rendered="{!pgBehavior.displayButtons}">
+				<c:zipEntry path="package.xml" data="{!PackageXml}"/>
+				<c:zipEntry path="destructiveChanges.xml" data="{!DestructiveChangesXml}" rendered="{!deployVars.Deployed}"/>
+				<c:zipEntry path="classes/{!deployVars.triggerTestName}.cls-meta.xml" data="{!TriggerTestCodeMetadata}" rendered="{!NOT(deployVars.Deployed)}"/>
+				<c:zipEntry path="classes/{!deployVars.triggerTestName}.cls" data="{!TriggerTestCode}" rendered="{!NOT(deployVars.Deployed)}"/>
+				<c:zipEntry path="triggers/{!deployVars.triggerName}.trigger-meta.xml" data="{!TriggerCodeMetadata}" rendered="{!NOT(deployVars.Deployed)}"/>
+				<c:zipEntry path="triggers/{!deployVars.triggerName}.trigger" data="{!TriggerCode}" rendered="{!NOT(deployVars.Deployed)}"/>
+			</c:zip>
+		</apex:outputPanel>
+		<apex:outputPanel rendered="{!$User.UIThemeDisplayed != 'Theme3'}">
+			<c:zip name="generateZip" id="czipLightning" oncomplete="deployZipLightning(data);" rendered="{!pgBehavior.displayButtons}">
+				<c:zipEntry path="package.xml" data="{!PackageXml}"/>
+				<c:zipEntry path="destructiveChanges.xml" data="{!DestructiveChangesXml}" rendered="{!deployVars.Deployed}"/>
+				<c:zipEntry path="classes/{!deployVars.triggerTestName}.cls-meta.xml" data="{!TriggerTestCodeMetadata}" rendered="{!NOT(deployVars.Deployed)}"/>
+				<c:zipEntry path="classes/{!deployVars.triggerTestName}.cls" data="{!TriggerTestCode}" rendered="{!NOT(deployVars.Deployed)}"/>
+				<c:zipEntry path="triggers/{!deployVars.triggerName}.trigger-meta.xml" data="{!TriggerCodeMetadata}" rendered="{!NOT(deployVars.Deployed)}"/>
+				<c:zipEntry path="triggers/{!deployVars.triggerName}.trigger" data="{!TriggerCode}" rendered="{!NOT(deployVars.Deployed)}"/>
+			</c:zip>
+		</apex:outputPanel>
+		
+	</div>
+	</apex:form>
+</html>
+</apex:page>

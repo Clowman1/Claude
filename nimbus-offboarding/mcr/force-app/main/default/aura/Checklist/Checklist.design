@@ -1,0 +1,11 @@
+<!--
+ - Created by Akram on 10/8/2020.
+ -->
+
+<design:component  label="Custom Checklist">
+    <design:attribute name="fields" label="Fields for Checklist" />
+    <design:attribute name="configuration" label="Fields for Checklist" />    
+    <design:attribute name="alternateRecordId" label="Alternate Record ID (Deprecated)" />    
+    <design:attribute name="fieldToQueryFor" label="Lookup Field if Referencing A Related Record" />
+    <design:attribute name="sobjectName" label="SObject API Name" />  
+</design:component>

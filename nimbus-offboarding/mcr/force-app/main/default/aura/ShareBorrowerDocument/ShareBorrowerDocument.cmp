@@ -1,0 +1,88 @@
+<aura:component implements="lightning:availableForFlowScreens" controller="ShareBorrowerDocumentController">
+    <aura:handler name="init" value="{!this}" action="{!c.handleInit}"/>
+    
+    <aura:attribute name="recordId" type="String" access="global" />
+    <aura:attribute name="distributions" type="ContentDistribution[]" access="global" />
+    
+    <aura:attribute name="isLoading" type="Boolean" />
+
+    <aura:attribute name="subject" type="String" />
+    <aura:attribute name="htmlBody" type="String" />
+    
+    <aura:attribute name="emailTemplatesByFolder" type="Object" />
+    
+    <aura:attribute name="folders" type="String[]" />
+    <aura:attribute name="selectedFolderName" type="String"  />
+    
+    <aura:attribute name="emailTemplates" type="String[]" />
+    <aura:attribute name="selectedEmailTemplateId" type="String"  />
+    
+    <aura:attribute name="sendToLead" type="Boolean" default="FALSE" />
+    <aura:attribute name="additionalEmails" type="String"  />
+    
+    <aura:attribute name="record" type="sObject"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Id,Title_Closer_Email__c,Buying_Agent_TC_Email__c,Realtor_Buying_Agent_Email__c"
+                      targetFields="{!v.record}"
+					  targetError="{!v.recordLoadError}"
+                      recordUpdated="{!c.handleRecordUpdated}"
+ 
+                      />
+
+    <aura:html tag="style">
+        .slds-modal__container { width: 90%; max-width: 90% !important; } .quick-actions-panel .slds-modal__content {
+        height: 100% !important; max-height: unset !important; }
+    </aura:html>
+
+    <div style="position:relative;">
+        <aura:if isTrue="{!v.isLoading}">
+            <lightning:spinner alternativeText="Loading" size="small" />
+
+        </aura:if>
+        
+        <div>
+            <lightning:select name="folderSelect" class="slds-m-vertical_small" onchange="{!c.handleFolderChange}" value="{!v.selectedFolderName}" label="Select Folder" required="true">
+                <aura:iteration items="{!v.folders}" var="folder">
+                    <option value="{!folder}">{!folder}</option>
+                </aura:iteration>
+            </lightning:select>
+        </div>
+        
+        <aura:if isTrue="{!NOT(EMPTY(v.emailTemplates))}">
+            
+            <lightning:select name="emailSelect" class="slds-m-vertical_small" onchange="{!c.handleEmailSelect}" value="{!v.selectedEmailTemplateId}" label="Select Email Template" required="true">
+                <option value="">Choose email...</option>
+                <aura:iteration items="{!v.emailTemplates}" var="template">
+                    <option value="{!template.Id}">{!template.Name}</option>
+                </aura:iteration>
+            </lightning:select>
+            
+        </aura:if>
+        
+        <aura:if isTrue="{!NOT(EMPTY(v.htmlBody))}">
+            <!--<lightning:input type="text" label="Subject"  value="{!v.subject}" />
+            <lightning:inputRichText variant="bottom-toolbar" value="{!v.htmlBody}" />-->
+            
+            <aura:if isTrue="{!NOT(EMPTY(v.record))}">
+                <div class="slds-m-vertical_small">
+                    <lightning:input aura:id="sendToLead" type="checkbox" label="Send To Title Closer" checked="{!v.sendToLead}" />
+                    <span>({!if(v.record != null, v.record.Title_Closer_Email__c, 'no title closer email')})</span>
+                    <lightning:input aura:id="additionalEmails" value="{!v.additionalEmails}" label="Additional Emails" class="input" />
+                    <lightning:button variant="brand" class="slds-m-vertical_x-small" label="Send" onclick="{!c.handleEmailSend}" />
+                </div>
+            </aura:if>
+            
+            <div class="slds-m-top_medium slds-m-bottom_small slds-scoped-notification slds-media slds-media_center slds-scoped-notification_light" role="status">
+                <div class="slds-media__body">
+                    <p>PREVIEW</p>
+                </div>
+            </div>
+            
+            <lightning:formattedRichText value="{!v.htmlBody}"/>
+            
+            
+        </aura:if>
+    </div>
+</aura:component>

@@ -1,0 +1,46 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" 
+                controller="TitleConfirmationFileUploadController" 
+                access="global">
+    <aura:attribute name="recordId" type="String" access="global" />
+    <aura:attribute name="successStatus" type="String" />
+    <aura:attribute name="isLoading" type="Boolean" />
+    
+    <aura:attribute name="fileNames" type="String[]" default="[]"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div style="position:relative;">
+        <aura:if isTrue="{!v.isLoading}">
+        	<lightning:spinner alternativeText="Loading" size="small" />
+        </aura:if>
+        
+        <div class="slds-p-around_small" style="background:#fff;">
+
+            <aura:if isTrue="{!v.successStatus}">
+                <div class="slds-scoped-notification slds-media slds-media_center slds-theme_success">
+                    <div class="slds-media__body">
+                        {!v.successStatus}
+                    </div>
+                </div>
+            </aura:if>        
+            
+            <div class="slds-p-around_small">
+                <p class="slds-text-heading_medium">Upload following documents</p>
+                <br/>
+                <ul>
+                    <li>1. Executed Closing Package</li>
+                    <li>2. Seller’s Closing Disclosure (If Applicable)</li>
+                    <li>3. Title’s ALTA</li>
+                </ul>
+                <br/>
+                <p>Each individual file must be less than 4.5MB</p>
+            </div>
+            
+            <p class="slds-p-horizontal_small">
+                <lightning:input type="file" label="Attachment" name="file" multiple="true" accept=".jpg, .jpeg, .pdf, .png" onchange="{! c.handleFilesChange }"/>
+            </p>
+        </div>
+    </div>
+
+	
+</aura:component>

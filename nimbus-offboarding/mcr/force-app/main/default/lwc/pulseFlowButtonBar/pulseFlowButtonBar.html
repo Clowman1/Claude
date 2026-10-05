@@ -1,0 +1,18 @@
+<template>
+    <div class="button-bar">
+        <p if:true={barLabel} style={barLabelStyle} class="bar-label">{barLabel}</p>
+        <template for:each={buttonArray} for:item="button">
+            <lightning-button 
+                key={button.label} 
+                label={button.label} 
+                variant={button.variant} 
+                icon-name={button.icon}
+                icon-position={button.iconPosition}
+                onclick={handleButtonClick}
+                style={buttonLabelStyle}
+                class="button-spacing"
+                data-value={button.value}>
+            </lightning-button>
+        </template>
+    </div>
+</template>

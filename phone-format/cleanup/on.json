@@ -1,0 +1,109 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-03T13:54:15.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-03T13:53:42.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "FlowDefinition",
+          "created": false,
+          "createdDate": "2026-10-03T13:53:50.000Z",
+          "deleted": false,
+          "fileName": "flowDefinitions/Transaction_CLA_Automation_1.flowDefinition",
+          "fullName": "Transaction_CLA_Automation_1",
+          "id": "300Qi00000M0CnjIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "Workflow",
+          "created": false,
+          "createdDate": "2026-10-03T13:53:50.000Z",
+          "deleted": false,
+          "fileName": "workflows/Transaction__c.workflow",
+          "fullName": "Transaction__c",
+          "id": "01If2000001QBu5EAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "WorkflowRule",
+          "created": false,
+          "createdDate": "2026-10-03T13:53:50.000Z",
+          "deleted": false,
+          "fileName": "workflows/Transaction__c.workflow",
+          "fullName": "Transaction__c.Transaction Closing Date change",
+          "id": "01Q5x000000KgXoEAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-03T13:53:50.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001Tz4LKAS",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-03T13:54:15.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 3,
+    "numberComponentsTotal": 3,
+    "numberFiles": "5",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-03T13:53:43.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": 1367,
+    "files": [
+      {
+        "fullName": "Transaction_CLA_Automation_1",
+        "type": "FlowDefinition",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\phone-format\\cleanup\\on\\force-app\\main\\default\\flowDefinitions\\Transaction_CLA_Automation_1.flowDefinition-meta.xml"
+      },
+      {
+        "fullName": "Transaction__c",
+        "type": "Workflow",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\phone-format\\cleanup\\on\\force-app\\main\\default\\workflows\\Transaction__c.workflow-meta.xml"
+      },
+      {
+        "fullName": "Transaction__c.Transaction Closing Date change",
+        "type": "WorkflowRule",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\phone-format\\cleanup\\on\\force-app\\main\\default\\workflows\\Transaction__c.workflow-meta.xml"
+      }
+    ],
+    "zipFileCount": 3,
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001Tz4LKAS%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

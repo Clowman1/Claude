@@ -1,0 +1,68 @@
+<apex:page controller="TwilioSF.LightningOutController" lightningStylesheets="true" sidebar="false">
+    <apex:includeLightning />
+    <apex:stylesheet value="{!URLFOR($Resource.TwilioSF__VFtoast, '/vftoast/css/vfToast.css')}" />
+    <style>
+        html body.sfdcBody {
+        padding: 0;
+        }
+        
+        .slds-scope .slds-page-header {
+        background: #F4F6F9;
+        border-bottom: 1px solid #CCCCCC;
+        }
+                
+        .slds-scope .slds-card+.slds-card {
+        margin-top: 0;
+        }        
+        
+    </style>
+    <body>
+        <div class="slds-scope">
+            <div id="slds-notify_container" class="slds-notify_container"></div>
+            <div class="slds-page-header slds-m-bottom_large">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-avatar slds-avatar_large">
+                            <img class="twilio-icon" src="{!$Resource.TwilioIconSVG}"/>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Twilio Configuration">Twilio Configuration</h1>
+                        <p class="slds-text-body_small slds-line-height_reset">Connect Salesforce to your Twilio account</p>
+                    </div>
+                </div>  
+            </div>
+            <div class="slds-grid slds-col slds-size_1-of-1" id="twilioSetup" /> 
+            
+        </div>
+        
+        <script>
+        
+        
+        $Lightning.use("{!JSENCODE(namespace)}:TwilioConfigApp", function() { 
+            $Lightning.createComponent(
+                "{!JSENCODE(namespace)}:TwilioConfig",
+                { },
+                "twilioSetup",
+                function () {
+                    $A.eventService.addHandler({ "event": "{!JSENCODE(namespace)}:vfToast", "handler" : toast});
+                }
+            );
+        });
+        
+        var toast = function(event) {
+            Toaster.create({
+                title: event.getParam('title'),
+                message: event.getParam('message'),
+                type: event.getParam('type'),
+                mode: event.getParam('mode'),
+                duration: event.getParam('duration')
+            });
+        };
+        
+        </script>
+        
+        <apex:includeScript value="{!URLFOR($Resource.TwilioSF__VFtoast, '/vftoast/js/lib/vfToast.js')}" />
+    </body> 
+    
+</apex:page>

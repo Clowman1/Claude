@@ -1,0 +1,218 @@
+<apex:page title="Rollup Helper Manage Setting Deployment" controller="rh2.PS_Use_Case_Controller" sidebar="false"  applyBodyTag="false" docType="html-5.0" showHeader="true">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+	<head> 
+    	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    	<apex:includeScript value="{!URLFOR($Resource.rh2__PT_JSZip, '/dist/jszip.js')}"/>
+    	<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+		<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.js')}" />
+		<apex:stylesheet value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.css')}" />
+ 
+    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/rh_breadcrumbs.js')}" />  
+    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }" />
+    	<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/customMessage.css') }" />
+    	<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }" />
+    	<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/msd.css') }" />
+ 
+	</head>
+
+	<style>
+	.message{
+		opacity: 1;
+	}
+	</style>
+    
+    <script>
+        
+
+     //Verify namespace is ready
+        var rh = rh || {};
+        var overwriteFlag;
+
+
+                
+        rh.j$ = jQuery.noConflict();
+        rh.j$(document).ready(function() {
+            if({!mdInfo.MetadataConnectionWarning})
+            {
+				createRemoteSite('{!JSENCODE(mdInfo.sessionId)}', 'RH_mdapi', '{!JSENCODE(mdInfo.host)}', '{!JSENCODE(mdInfo.host)}');
+            }
+        });
+
+		function removeUseCase(){
+			RemoveUseCaseAction();
+		}
+	
+		function navigateToUseCasePage(){
+			NavigateToUseCasePage();
+		}
+
+		function callTargetFieldScript(){
+			CreateTargetField();			
+		}
+    </script>
+     
+	
+	<apex:form id="form">
+	<apex:slds />
+	<apex:actionFunction name="CreateTargetField" action="{!createTargetField}" status="loading"/>
+	<apex:actionFunction name="CreateRollup" action="{!createUseCase}"/>
+	<apex:actionFunction name="CreateAndRunRollup" action="{!createUseCaseAndRun}"/>
+	<apex:actionFunction name="RemoveUseCaseAction" action="{!removeUseCase}" status="loading"/>
+	<apex:actionFunction name="NavigateToUseCasePage" action="{!navigateToUseCasePage}"/>
+	<apex:actionFunction name="RefreshPageAfterDeletion" action="{!selectUseCase}"/>
+	<apex:actionStatus id="loading" onstart="loading(true)" onstop="loading(false)" />
+	
+	<div class="slds-scope" id="thePage" role="main">	
+		<c:Loading_Spinner opacity="1"/>
+		<div class="slds-card grayBackground">
+  			<header class="slds-card__header">
+	       		<nav role="navigation">
+    				<ol class="slds-breadcrumb slds-list_horizontal">
+    					<li class="slds-list__item slds-text-heading_label home-crumb"><a href="{!URLFOR($Page.PS_landingPage)}">{!$Label.Home}</a></li>
+   		   				<li class="slds-list__item slds-text-heading_label setting-crumb"><a href="{!URLFOR($Page.rh2__PS_Use_Case_Deployment)}">{!$Label.AllUseCases}</a></li>
+       				</ol>
+        		</nav>
+  			</header>
+  		</div>
+  		<br/>
+		<div class="slds-page-header">
+  			<div class="slds-grid">
+    			<div class="slds-col slds-has-flexi-truncate">
+      				<div class="slds-media">    					
+        				<div class="slds-media__body">
+         					 <p class="slds-text-heading_label">{!$Label.RollupHelper}</p>
+          					<div class="slds-grid">
+            					<h1 class="slds-text-heading_medium slds-m-right_small slds-truncate slds-align-middle" >{!$Label.Deploy} {!ucData.useCaseName} {!$Label.RollupHelperSetting}</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<br/>
+		<apex:outputpanel rendered="{!!useCaseDeployed}">
+			<apex:outputPanel rendered="{!invalidSession}" id="invalidSessionWarning">
+				<div class="slds-theme_warning">
+					<span>
+						&nbsp;{!invalidSessionMessage}
+					</span> <br/> <br/> 
+                    <center>
+						<b><apex:commandLink action="{!navigateToAuthPage}" value="Authenticate Rollup Helper" target="_blank"/></b>
+						<br/><br/>
+                    </center>
+                </div> <br/>
+			</apex:outputPanel>
+			<apex:outputPanel rendered="{! !invalidSession}" id="pageMessages">
+				<apex:pageMessages escape="false" />
+			</apex:outputPanel>
+			<div class="slds-grid grayBackground topBackground">
+				
+				<div class="slds-col slds-grid_align-center" align="center">
+					<apex:outputPanel rendered="{!useCaseFieldDeployed}">
+						<br/>
+						<strong>{!$Label.rh2__The} {!data.fieldName} {!$Label.rh2__FieldIsDeployed}</strong>
+						<br/><br/>
+					</apex:outputPanel>
+					<apex:outputpanel rendered="{!AND(useCaseFieldDeployed, !ucData.targetFieldAccessible)}">
+						<div class="grayBackground">
+						<div class="slds-box slds-theme_alt-inverse" style="width:52%;">
+							<apex:outputText value="{!data.fieldName} {!$Label.rh2__IsCurrentlyNotAccessible}"/>
+							<br/>
+							<apex:outputLink style="background-color: rgb(3, 45, 96)" rendered="{! $User.UIThemeDisplayed != 'Theme3' }" target="_blank" value="{!data.lightingFieldAccessibilityLink}">{!$Label.rh2__AdjustFieldAccessibility}</apex:outputLink>
+							<apex:outputLink style="background-color: rgb(3, 45, 96)" rendered="{! $User.UIThemeDisplayed == 'Theme3' }" target="_blank" value="{!data.classicFieldAccessibilityLink}">{!$Label.rh2__AdjustFieldAccessibility}</apex:outputLink>
+						</div>
+						</div>
+					</apex:outputpanel>
+					<div class="slds-box slds-theme_default slds-grid_align-center slds-m-top_medium" align="center" style="width:30%;">
+						<p>
+							{!$Label.RollupHelperSetting} <b> {!ucData.useCaseName} </b> {!$Label.DoesNotExist}.
+						</p>
+						<apex:outputPanel rendered="{!!useCaseFieldDeployed}">
+							<p>
+								{!$Label.rh2__Click} <b>{!$Label.rh2__Deploy} {!ucData.useCaseName} {!$Label.rh2__Field}</b> {!$Label.rh2__ToDeployField}
+							</p>
+							<br/>
+							<div style="padding-bottom:8px;">{!$Label.rh2__SetFLSOptional}:</div>
+							<div>
+								<apex:outputText value="{!$Label.rh2__PermissionSet}: " />
+								<apex:selectList id="permissionSetId" value="{!selectedPermissionSetId}" size="1">
+									<apex:selectOptions value="{!AllPermissionSets}" />
+								</apex:selectList>
+							</div>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!useCaseFieldDeployed}">
+							<p>
+								{!$Label.rh2__Click} <b>{!$Label.rh2__Deploy} {!ucData.useCaseName} {!$Label.rh2__Setting}</b> {!$Label.rh2__ToDeployRHSetting}
+							</p>
+						</apex:outputPanel>
+					</div>
+				</div>			
+							
+			</div>
+			<div id="createFieldAndRollup" class="slds-grid slds-grid_align-center grayBackground paddedBackground">
+				<apex:outputPanel rendered="{!!useCaseFieldDeployed}" id="createField" styleclass="slds-col slds-m-top_medium" style="margin-left:auto; margin-right:auto;">
+					<apex:commandButton styleClass="slds-button slds-button_brand" rendered="{!!useCaseDeployed}" id="deployRemoveField" rerender="createFieldAndRollup" onclick="callTargetFieldScript();" status="loading" reRender="messages" value="{!$Label.rh2__Deploy} {!ucData.useCaseName} {!$Label.rh2__Field}"/>
+					&nbsp;
+					<apex:outputLink styleClass="slds-button slds-button_neutral" value="{!URLFOR($Page.rh2__PS_Use_Case_Deployment)}">{!$Label.rh2__Back}</apex:outputLink>
+				</apex:outputPanel>
+				<apex:outputPanel rendered="{!OR(AND(useCaseFieldDeployed, !isRollupLimitReached), AND(useCaseFieldDeployed, unlimitedRollups))}" id="CreateAndRunRollup" styleclass="slds-col slds-m-top_medium" style="margin-left:auto; margin-right:auto;">					
+					<apex:commandButton styleClass="slds-button slds-button_brand" rendered="{!!useCaseDeployed}" id="deployRemoveSetting2" rerender="createFieldAndRollup" onclick="CreateAndRunRollup();" status="loading" reRender="messages" value="{!$Label.rh2__DeployandRun} {!ucData.useCaseName} {!$Label.rh2__Setting}"/>
+					&nbsp;
+					<apex:outputLink styleClass="slds-button slds-button_neutral" value="{!URLFOR($Page.rh2__PS_Use_Case_Deployment)}">{!$Label.rh2__Back}</apex:outputLink>
+				</apex:outputPanel>    
+				<apex:outputPanel rendered="{!AND(!unlimitedRollups, useCaseFieldDeployed, isRollupLimitReached) }" id="createRollup" styleclass="slds-col slds-m-top_medium" style="margin-left:auto; margin-right:auto;">					
+					<apex:commandButton styleClass="slds-button slds-button_brand" rendered="{!!useCaseDeployed}" id="deployRemoveSetting" rerender="createFieldAndRollup" onclick="CreateRollup();" status="loading" reRender="messages" value="{!$Label.rh2__Deploy} {!ucData.useCaseName} {!$Label.rh2__Setting}"/>
+                    &nbsp;	
+                    <apex:outputLink styleClass="slds-button slds-button_neutral" value="{!URLFOR($Page.rh2__PS_Use_Case_Deployment)}">{!$Label.rh2__Back}</apex:outputLink>
+                </apex:outputPanel>              
+			</div>
+		</apex:outputpanel>
+		<center>
+			<apex:outputpanel id="mainPanel" rendered="{!useCaseDeployed}">		
+				<div class="grayBackground topBackground">
+					<br/>
+					<apex:outputpanel rendered="{!AND(useCaseFieldDeployed, !ucData.targetFieldAccessible)}">
+						<div class="slds-box slds-theme_alt-inverse" style="width:52%;">
+							<apex:outputText value="{!data.fieldName} {!$Label.rh2__IsCurrentlyNotAccessible}"/>
+							<br/>
+							<apex:outputLink style="background-color: rgb(3, 45, 96)" rendered="{! $User.UIThemeDisplayed != 'Theme3' }" target="_blank" value="{!data.lightingFieldAccessibilityLink}">{!$Label.rh2__AdjustFieldAccessibility}</apex:outputLink>
+							<apex:outputLink style="background-color: rgb(3, 45, 96)" rendered="{! $User.UIThemeDisplayed == 'Theme3' }" target="_blank" value="{!data.classicFieldAccessibilityLink}">{!$Label.rh2__AdjustFieldAccessibility}</apex:outputLink>
+						</div>
+					</apex:outputpanel>
+					<div class="slds-grid">
+						<div class="slds-col slds-size_1-of-3" style="border-left: 1px solid rgb(201, 201, 201);"></div>
+						<div class="slds-col slds-size_1-of-3 slds-box slds-theme_default slds-grid_align-center slds-m-top_medium" align="center">
+							<p>
+								{!$Label.RollupHelperSetting} <b> {!ucData.useCaseName} </b> {!$Label.Exists}.
+							</p>
+							<p>
+								{!$Label.Click} <b>{!$Label.rh2__Delete} {!ucData.useCaseName} {!$Label.rh2__Setting}</b> {!$Label.ToDeleteRHSetting}
+							</p>
+						</div>
+						<div class="slds-col slds-size_1-of-3" style="border-right: 1px solid rgb(201, 201, 201);"></div>						
+					</div>
+					<div class="slds-grid slds-grid_align-center grayBackground paddedBackground">
+						<apex:outputPanel styleclass="slds-col slds-m-top_medium" style="margin-left:auto; margin-right:auto;">
+							<apex:commandButton styleClass="slds-button slds-button_brand" onclick="removeUseCase();" value="{!$Label.rh2__Delete} {!ucData.useCaseName} {!$Label.rh2__Setting}" rerender="none" status="loading"/>
+							&nbsp;
+							<apex:outputLink styleClass="slds-button slds-button_neutral" value="{!URLFOR($Page.rh2__PS_Use_Case_Deployment)}">{!$Label.rh2__Back}</apex:outputLink>
+						</apex:outputPanel>
+						<br />
+					</div>
+				</div>
+			</apex:outputpanel>
+		</center>
+		
+		
+		<br/>
+        <div class="slds-box slds-box_small slds-theme_shade" style="box-shadow: 0 2px 2px 0 rgb(0 0 0 / 10%);">
+            <div class="slds-text-heading_small"><strong>{!$Label.rh2__Description}</strong></div>
+			<div class="slds-text-body_small"><span>{!ucData.useCaseLongDescription}</span></div>
+        </div>
+        
+	</div>
+	
+	</apex:form>
+</html>
+</apex:page>

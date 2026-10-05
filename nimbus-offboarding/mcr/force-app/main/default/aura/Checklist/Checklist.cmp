@@ -1,0 +1,198 @@
+<!--
+ - Created by Akram on 10/8/2020.
+ -->
+
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" controller="ChecklistController">
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+    <aura:attribute name="checklist" type="Object" access="global" default="{ 'items' : [] }"/>
+    <aura:attribute name="checkListCount" type="String" access="global" />
+    <aura:attribute name="isLoading" type="Object" access="global" default="true"/>
+    <aura:attribute name="fields" type="String" access="global"/>
+    <aura:handler event="force:refreshView" action="{! c.init}" />
+    <aura:attribute name="configuration" type="String" access="global"/>
+    <aura:attribute name="sobjectName" type="String" access="global"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="alternateRecordId" type="String" access="global"/>
+    <aura:attribute name="fieldToQueryFor" type="String" access="global"/>
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+	<aura:attribute name="formRecordId" type="String"/>
+    <aura:attribute name="showHelpText" type="String"/>
+    <aura:attribute name="lastSavedFieldApiName" type="String" default=""/>
+    <aura:attribute name="pendingBpsSave" type="Boolean" default="false"/>
+    <aura:attribute name="showBpsVerificationModal" type="Boolean" default="false"/>
+    <aura:attribute name="isBpsVerificationChecked" type="Boolean" default="false"/>
+    <aura:attribute name="isSavingBpsVerification" type="Boolean" default="false"/>
+    <aura:attribute name="bpsVerificationBpsValue" type="String" default=""/>
+    <aura:attribute name="bpsVerificationLoanNumber" type="String" default=""/>
+    <aura:attribute name="bpsVerificationBorrowerName" type="String" default=""/>
+
+    <lightning:card title="{!v.checklist.title}" iconName="custom:custom18" variant="base">
+        <aura:if isTrue="{!v.spinner}">
+            <div aura:id="spinnerId" class="slds-spinner_container">
+                <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </aura:if>
+        <div class="slds-card__body_inner">
+          <div class="progress-bar-container">
+            <h2>{!v.checkListCount}% Complete</h2>
+            <div class="progress-bar">
+                <span aura:id="percentBar" style="{! 'width: ' + v.checkListCount + '%'}" class="percentage"></span>
+            </div>
+          </div>
+			<aura:if isTrue="{!not(empty(v.checklist.objectType))}">
+                <lightning:recordEditForm  onsuccess="{!c.toggleAllClosed}" aura:id="recordLoader" recordId="{!v.formRecordId}" objectApiName="{!v.sobjectName}">
+
+                    <aura:iteration items="{!v.checklist.items}" var="item" >
+                        <aura:if isTrue="{!item.isVisible}">
+                            <lightning:layout aura:id="checklistItem" class="slds-m-bottom_small  slds-p-around_xx-small slds-border_bottom" horizontalAlign="spread" verticalAlign="center" >
+                                <lightning:layoutItem class="slds-size_6-of-12">
+                                    <lightning:layout horizontalAlign="spread" verticalAlign="center">
+                                        <lightning:layoutItem >
+                                            <div class="slds-media">
+                                                <div data-item="{!item.fieldName}" class=" slds-media__figure">
+                                                    <p class="slds-text-body_regular">{!item.label}</p>
+                                                    <aura:if isTrue="{!v.showHelpText}">
+                                                        <br/><p style="width:400px" class="slds-size_6-of-12 slds-text-color_weak">{!item.helpText} </p>
+                                                    </aura:if>
+                                                </div>
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-size_6-of-12">
+                                    <aura:if isTrue="{!or(equals(item.fieldType, 'DATETIME'),equals(item.fieldType, 'DATE'))}">
+                                        <aura:if isTrue="{!empty(item.completedDate)}">
+                                            <div data-item="{!item.fieldName}">
+                                                <lightning:button class="checklist-button">
+                                                    <p class="checklist-button-hover-text" data-item="{!item.fieldName}" onclick="{!c.toggleEditDate}">Complete</p>
+                                                    <p class="checklist-button-text">Open</p>
+                                                </lightning:button>
+                                            </div>
+                                            <aura:set attribute="else" >
+                                                <div class="slds-text-body_regular slds-text-color_weak ">
+                                                    <aura:if isTrue="{!not(item.isEdit)}">
+                                                        <lightning:layout verticalAlign="center">
+                                                            <lightning:outputField variant="label-hidden" fieldName="{!item.fieldName}"/>
+                                                            <!--                                                    <div onclick="{!c.toggleEdit}" data-item="{!item.apiName}">-->
+                                                            <!--                                                        <lightning:icon size="xx-small" iconName="utility:edit"/>-->
+                                                            <!--                                                    </div>-->
+                                                        </lightning:layout>
+                                                        <aura:set attribute="else">
+                                                            <lightning:layout verticalAlign="center">
+                                                                <lightning:inputField value="{!item.modifiedValue}" fieldName="{!item.fieldName}"/>
+                                                                <!--                                                        <div onclick="{!c.updateField}" data-item="{!item.apiName}">-->
+                                                                <!--                                                            <lightning:icon size="xx-small" iconName="utility:save"/>-->
+                                                                <!--                                                        </div>-->
+                                                            </lightning:layout>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </div>
+                                            </aura:set>
+                                        </aura:if>
+                                        <aura:set attribute="else">
+                                            <div class="slds-text-body_regular slds-text-color_weak ">
+                                                <aura:if isTrue="{!not(item.isEdit)}">
+                                                    <lightning:layout verticalAlign="center">
+                                                        <lightning:outputField variant="label-hidden" fieldName="{!item.fieldName}"/>
+                                                        <div onclick="{!c.toggleEdit}" class="slds-m-left_medium" style="cursor:pointer;" data-item="{!item.fieldName}">
+                                                            <lightning:icon size="xx-small" iconName="utility:edit" style="pointer-events:none;" />
+                                                        </div>
+                                                    </lightning:layout>
+                                                    <aura:set attribute="else">
+                                                        <lightning:layout verticalAlign="center">
+                                                            <lightning:inputField variant="label-hidden" fieldName="{!item.fieldName}"/>
+                                                            <div onclick="{!c.updateField}" class="slds-m-left_medium" style="cursor:pointer;" data-item="{!item.fieldName}">
+                                                                <lightning:icon size="xx-small" iconName="utility:save" style="pointer-events:none;" />
+                                                            </div>
+                                                        </lightning:layout>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </aura:set>
+                                    </aura:if>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </aura:if>
+                    </aura:iteration>
+                </lightning:recordEditForm>
+			</aura:if>
+        </div>
+    </lightning:card>
+    <aura:if isTrue="{!v.showBpsVerificationModal}">
+        <section class="bps-verification-overlay" role="dialog" aria-modal="true" aria-labelledby="bpsVerificationTitle">
+            <div class="bps-verification-modal">
+                <div class="bps-verification-header">
+                    <div class="bps-verification-icon-wrap">
+                        <lightning:icon iconName="utility:shield" size="small" class="bps-verification-icon"/>
+                    </div>
+                    <div>
+                        <h2 id="bpsVerificationTitle" class="bps-verification-title">BPS / Gross Compensation Verification</h2>
+                        <p class="bps-verification-subtitle">Mandatory compliance review confirmation</p>
+                    </div>
+                </div>
+
+                <div class="bps-verification-body">
+                    <div class="bps-verification-context">
+                        <div class="bps-context-item">
+                            <p class="bps-context-label">Loan Number</p>
+                            <p class="bps-context-value">{!v.bpsVerificationLoanNumber}</p>
+                        </div>
+                        <div class="bps-context-item">
+                            <p class="bps-context-label">Borrower</p>
+                            <p class="bps-context-value">{!v.bpsVerificationBorrowerName}</p>
+                        </div>
+                        <div class="bps-context-item bps-context-item-full">
+                            <p class="bps-context-label">BPS Value to Verify</p>
+                            <p class="bps-context-bps">{!v.bpsVerificationBpsValue} bps</p>
+                        </div>
+                    </div>
+
+                    <p class="bps-verification-statement">
+                        This confirms that the Post-Closing Specialist has completed a full review of the BPS / Gross Compensation for the above-referenced loan. The review included reconciliation of:
+                    </p>
+
+                    <ul class="bps-verification-list">
+                        <li>Final Closing Disclosure (including compensation, discount points, and lender credits)</li>
+                        <li>Lock Confirmation</li>
+                        <li>Purchase Advice (if applicable)</li>
+                    </ul>
+
+                    <p class="bps-verification-statement bps-verification-statement-end">
+                        Compensation has been verified as accurate and consistent with lock terms and investor documentation.
+                    </p>
+
+                    <div class="{!'bps-verification-checkbox-wrap ' + if(v.isBpsVerificationChecked, 'checked', '')}">
+                        <lightning:input
+                            type="checkbox"
+                            label="I confirm that I have completed the full BPS / Gross Compensation review as described above."
+                            checked="{!v.isBpsVerificationChecked}"
+                            onchange="{!c.handleVerificationCheckboxChange}" />
+                    </div>
+                </div>
+
+                <div class="bps-verification-footer">
+                    <p class="bps-verification-warning">
+                        <aura:if isTrue="{!not(v.isBpsVerificationChecked)}">
+                            You must check the box above to proceed
+                        </aura:if>
+                    </p>
+                    <button
+                        class="{!'bps-verification-confirm ' + if(v.isBpsVerificationChecked, 'is-enabled', 'is-disabled')}"
+                        onclick="{!c.confirmBpsVerification}"
+                        disabled="{!or(not(v.isBpsVerificationChecked), v.isSavingBpsVerification)}">
+                        <aura:if isTrue="{!v.isSavingBpsVerification}">
+                            Saving...
+                            <aura:set attribute="else">
+                                Confirm Verification
+                            </aura:set>
+                        </aura:if>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </aura:if>
+</aura:component>

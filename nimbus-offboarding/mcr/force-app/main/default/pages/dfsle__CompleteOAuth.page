@@ -1,0 +1,125 @@
+<apex:page id="CompleteOAuth" controller="dfsle.AuthController" title="{!$Label.dfsle__DocuSign}" showHeader="false"
+           sideBar="false">
+
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__loginUtils}"/>
+
+    <apex:slds />
+
+    <script>
+      function endOAuth(response, loginInformation) {
+        if (loginInformation && loginInformation.target) {
+
+          var isCommunity = ({!NOT(ISNULL($Site.SiteId))} && '{!$Site.SiteId}' !== '');
+
+          // Community users cannot grant consent themselves as the OAuth redirect URI cannot be pre-defined.
+          if (loginInformation.type === loginUtils.Type.DEVELOPER
+            && (isCommunity || loginInformation.status === loginUtils.Status.FAILURE)) {
+
+            // redirect locally if developer-initiated login and OAuth failed
+            var redirectTo = loginInformation.target;
+            // ensure exactly one leading slash for local path
+            redirectTo = '/' + redirectTo.replace(/^\/+/, '');
+            // append status and message to query string
+            if (redirectTo.indexOf('?') === -1) {
+              redirectTo += '?dfsle__status=' + encodeURIComponent(loginInformation.status);
+            } else {
+              redirectTo += '&dfsle__status=' + encodeURIComponent(loginInformation.status);
+            }
+            if (loginInformation.message) {
+              redirectTo += '&dfsle__message=' + encodeURIComponent(loginInformation.message);
+            }
+
+            // do the redirect
+            if (typeof sforce !== 'undefined' && sforce && (!!sforce.one)) {
+              sforce.one.navigateToURL(redirectTo, true);
+            } else {
+              window.location.replace(redirectTo);
+            }
+          } else if (loginInformation.type === loginUtils.Type.SETUP
+              || loginInformation.status !== loginUtils.Status.SUCCESS) {
+
+            // Setup user will complete Salesforce OAuth later, or user did not grant consent
+            if (window.opener) {
+              window.opener.postMessage({
+                response: response,
+                loginInformation: loginInformation
+              }, loginInformation.target);
+            }
+            window.close();
+          } else {
+            // Non-setup user, continue with Salesforce OAuth
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AuthController.beginSalesforceOAuth}',
+              loginInformation.type,
+              loginInformation.target,
+              function (loginUrl, response) {
+                if (response.status) { // redirect to Salesforce login page
+                  if (typeof sforce !== 'undefined' && sforce && (!!sforce.one)) {
+                    sforce.one.navigateToURL(stringUtils.unescapeHtml(loginUrl), true);
+                  } else {
+                    window.location.replace(stringUtils.unescapeHtml(loginUrl));
+                  }
+                } else {
+                  showToast(response.message);
+                }
+              });
+          }
+        }
+      }
+
+      function showToast(errorMessage) {
+        document.getElementById('error-message').textContent = errorMessage;
+        document.getElementById('toast').classList.remove('slds-hidden');
+      }
+
+      function hideToast() {
+        document.getElementById('toast').classList.add('slds-hidden');
+      }
+
+      Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AuthController.completeDocuSignOAuth}',
+        '{!JSENCODE($CurrentPage.parameters.code)}',
+        '{!JSENCODE($CurrentPage.parameters.state)}',
+        '{!JSENCODE($CurrentPage.parameters.error)}',
+        '{!JSENCODE($CurrentPage.parameters.error_message)}',
+        function (loginInformation, response) {
+          if (response.status) {
+            endOAuth(response, loginInformation);
+          } else {
+            showToast(response.message);
+          }
+        });
+    </script>
+
+    <!-- loading spinner -->
+    <div id="spinner" role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+        <span class="slds-assistive-text">{!$Label.Loading}</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+    </div>
+
+    <!-- toast -->
+    <div id="toast" class="slds-hidden" style="height: 4rem;">
+        <div class="slds-notify_container slds-is-relative">
+            <div class="slds-notify slds-notify_toast slds-theme_error" role="alert">
+                <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top">
+                <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                         xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#error')}"/>
+                </svg>
+            </span>
+                <div class="slds-notify__content">
+                    <h2 id="error-message" class="slds-text-heading_small"></h2>
+                </div>
+                <button class="slds-button slds-button_icon slds-notify__close slds-button_icon-inverse"
+                        title="{!$Label.Close}"
+                        onclick='hideToast()'>
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                             xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#close')}"/>
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</apex:page>

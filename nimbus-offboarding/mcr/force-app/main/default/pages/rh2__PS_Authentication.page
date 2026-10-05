@@ -1,0 +1,128 @@
+<apex:page controller="rh2.PS_Authentication_Controller" title="Rollup Helper Authentication" standardStylesheets="false" sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    	<apex:includeScript value="{!URLFOR($Resource.rh2__PT_JSZip, '/dist/jszip.js')}"/>
+    	<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+ 
+    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />  
+    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }" />
+    	<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/customMessage.css') }" />
+        <apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }"  />
+    </head>
+    <script>
+        var rh = rh || {};
+        rh.j$ = jQuery.noConflict();
+        rh.j$(document).ready(function(){
+            overridePageMessages();
+        });
+    </script>
+    <apex:slds />
+    <apex:form id="form">
+        <div class="slds-scope " role="main"> 	
+            
+            <div class="slds-card grayBackground">
+                <header class="slds-card__header">
+                    <nav role="navigation">
+                        <ol class="slds-breadcrumb slds-list_horizontal">
+                            <li class="slds-list__item slds-text-heading_label home-crumb"><a href="{!URLFOR($Page.PS_landingPage)}">{!$Label.Home}</a></li>
+                            <li class="slds-list__item slds-text-heading_label setting-crumb"><a href="{!URLFOR($Page.PS_Allsettings)}">{!$Label.AllRollupSetting}</a></li>
+                        </ol>
+                    </nav>
+                </header>
+            </div>
+            <br />
+            <div class="slds-page-header">
+                  <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                          <div class="slds-media">    					
+                            <div class="slds-media__body">
+                                  <div class="slds-grid">
+                                    <h1 class="slds-text-heading_medium slds-m-right_medium slds-truncate slds-align-middle" >Rollup Helper Authentication</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>	
+            <div class="slds-card grayBackground">
+                <apex:outputPanel id="noAccessMessage">
+                    <apex:outputpanel rendered="{! AND(NOT(hasAccess), NOT(hasAccessTokenPresent))}">
+                        <apex:pageMessages escape="false" />
+                        <center>
+                        <div class="slds-box slds-size_1-of-2 slds-theme_default slds-grid_align-center slds-m-top_medium" align="center">
+                            <p>
+                                Rollup Helper currently does not have metadata access to deploy apex triggers, classes, or custom fields.
+                            </p>
+                            
+                            <p>
+                                Please Click <b>Grant Rollup Helper Access</b> 
+                                to allow Rollup Helper to deploy triggers and create custom fields.
+                            </p>
+                            <br/>
+                            <p>
+                                After clicking Allow on the next page, you will be prompted to log in again and be
+                                directed to this page to verify. 
+                            </p>
+                            <p>
+                                <b>Please Note:</b> Rollup Helper metadata access is only valid for the Timeout value set in Session Settings, and must be approved again if access expires.
+                            </p>
+                        </div>
+                        </center>
+                    </apex:outputpanel>
+                </apex:outputPanel>
+                <apex:outputPanel id="noAccessWithTokenPresent">
+                    <apex:outputpanel rendered="{! AND(NOT(hasAccess), hasAccessTokenPresent)}">
+                        <apex:pageMessages escape="false" />
+                        <center>
+                        <div class="slds-box slds-size_1-of-2 slds-theme_default slds-grid_align-center slds-m-top_medium" align="center">
+                            <p>
+                                Please Click <b>Verify Access</b> to confirm whether Rollup Helper has access to deploy triggers, classes, or custom fields.
+                            </p>
+
+                            <p>
+                                <b>Please Note:</b> Rollup Helper metadata access is only valid for the Timeout value set in Session Settings, and must be approved again if access expires.
+                            </p>
+                        </div>
+                        </center>
+                    </apex:outputpanel>
+                </apex:outputPanel>
+                <apex:outputPanel id="accessVerified">
+                    <apex:outputpanel rendered="{! hasAccess}">
+                        <apex:pageMessages escape="false" />
+                        <center>
+                        <div class="slds-box slds-size_1-of-2 slds-theme_default slds-grid_align-center slds-m-top_medium" align="center">
+                            <p>
+                                Rollup Helper has access to deploy triggers, classes and fields. This page may safely be closed.
+                            </p>
+
+                            <p>
+                                Please navigate back to where the original metadata request was made, and refresh the page.
+                            </p>
+
+                            <p>
+                                <b>Please Note:</b> Rollup Helper metadata access is only valid for the Timeout value set in Session Settings, and must be approved again if access expires.
+                            </p>
+                        </div>
+                        </center>
+                    </apex:outputpanel>
+                </apex:outputPanel>
+                <div class="slds-grid slds-grid_align-center">
+                    <apex:outputPanel styleclass="slds-col slds-m-top_medium" style="margin-left:auto; margin-right:auto;" id="accessButtons">   			 			
+                        <apex:commandLink rendered="{! AND(NOT(hasAccess), NOT(hasAccessTokenPresent))}" styleClass="slds-button slds-button_brand" id="authLink" action="{!generateAuthenticationLink}" target="_top">
+                            <apex:outputText >Grant Rollup Helper Access</apex:outputText>
+                        </apex:commandLink>
+                        <apex:commandLink rendered="{! AND(NOT(hasAccess), hasAccessTokenPresent)}" styleClass="slds-button slds-button_brand" id="remove" action="{!confirmAccessToken}" oncomplete="overridePageMessages();" rerender="noAccessWithTokenPresent,accessVerified,accessButtons">
+                            <apex:outputText >Verify Access</apex:outputText>
+                        </apex:commandLink>	                      
+                    </apex:outputPanel>
+                    <br/><br/><br/>
+                </div>
+            </div>
+        </div>
+        <br/><br/>
+        <c:PS_additionalInformation />
+        </apex:form>
+    </html>
+</apex:page>

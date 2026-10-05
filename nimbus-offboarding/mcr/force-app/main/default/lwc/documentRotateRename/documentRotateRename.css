@@ -1,0 +1,75 @@
+.rotate-body {
+    min-height: 22rem;
+    position: relative;
+}
+
+.rotate-toolbar {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.rotate-title {
+    flex: 1 1 20rem;
+}
+
+.rotate-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* The stage keeps a fixed frame so a quarter-turn does not shove the footer down the page. */
+.preview-stage {
+    align-items: center;
+    background: #f4f6f9;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+    display: flex;
+    height: 30rem;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0.75rem;
+}
+
+.rotate-preview {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 140ms ease;
+}
+
+.rotate-preview--pdf {
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+/* At a quarter turn the element's own height becomes the visible width, so swap the box it fills. */
+.preview-stage--quarter .rotate-preview {
+    max-height: 100%;
+    max-width: 28rem;
+}
+
+.preview-stage--quarter .rotate-preview--pdf {
+    height: 28rem;
+    width: 30rem;
+}
+
+.rotate-note {
+    color: #5b6473;
+    font-size: 0.85rem;
+    margin: 0 0 0.5rem;
+}
+
+.rotate-error {
+    background: #fdeceb;
+    border: 1px solid #f5b8b3;
+    border-radius: 4px;
+    color: #a8332b;
+    font-size: 0.87rem;
+    margin-bottom: 0.75rem;
+    padding: 0.6rem 0.8rem;
+}

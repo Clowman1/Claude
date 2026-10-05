@@ -1,0 +1,150 @@
+<template>
+    <template lwc:if={showCard}>
+        <section class="panel" aria-labelledby="appointments-heading">
+            <div class="panel-head">
+                <h2 id="appointments-heading" class="panel-title">Upcoming appointments</h2>
+                <button type="button" class="linkish" onclick={openCalendar}>Open calendar</button>
+            </div>
+            <template lwc:if={error}><p class="empty">{error}</p></template>
+            <template lwc:elseif={hasCardRows}>
+                <ul class="list">
+                    <template for:each={cardRows} for:item="e">
+                        <li key={e.key} class="row">
+                            <div class="date"><span class="dow">{e.dow}</span><span class="dnum">{e.day}</span></div>
+                            <div class="body">
+                                <button type="button" class="subject" data-id={e.id} onclick={openEvent}>{e.subject}</button>
+                                <p class="meta">{e.time}</p>
+                                <template lwc:if={e.hasRelated}>
+                                    <button type="button" class="related" data-id={e.relatedId} data-type={e.relatedType} onclick={openRelated}>{e.relatedName}</button>
+                                </template>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+                <template lwc:if={moreCount}><p class="empty">+{moreCount} more this week in the calendar</p></template>
+            </template>
+            <template lwc:else><p class="empty">Nothing on your calendar for the next 7 days.</p></template>
+        </section>
+    </template>
+
+    <template lwc:if={calendarOpen}>
+        <section class="backdrop" role="dialog" aria-modal="true" aria-label="My calendar" onclick={closeDetail}>
+            <div class="modal">
+                <div class="modal-head">
+                    <div class="head-left">
+                        <button type="button" class="nav-btn" onclick={goPrev} aria-label="Previous">‹</button>
+                        <button type="button" class="nav-btn" onclick={goToday}>Today</button>
+                        <button type="button" class="nav-btn" onclick={goNext} aria-label="Next">›</button>
+                        <h2 class="modal-title">{title}</h2>
+                    </div>
+                    <div class="head-right">
+                        <div class="pills" role="group" aria-label="Calendar view">
+                            <template for:each={viewChips} for:item="v">
+                                <button key={v.id} type="button" class={v.cls} data-id={v.id} aria-pressed={v.pressed} onclick={handleView}>{v.label}</button>
+                            </template>
+                        </div>
+                        <button type="button" class="nav-btn" onclick={closeCalendar} aria-label="Close">✕</button>
+                    </div>
+                </div>
+
+                <div class="modal-body" aria-busy={loading}>
+                    <template lwc:if={calError}><p class="empty">{calError}</p></template>
+
+                    <!-- Month grid (desktop / tablet) -->
+                    <template lwc:if={isMonthGrid}>
+                        <div class="month">
+                            <template for:each={weekdayLabels} for:item="w">
+                                <div key={w.key} class="wd">{w.label}</div>
+                            </template>
+                            <template for:each={monthCells} for:item="c">
+                                <div key={c.key} class={c.cls}>
+                                    <button type="button" class={c.numCls} data-iso={c.iso} onclick={openDay}>{c.num}</button>
+                                    <template for:each={c.chips} for:item="e">
+                                        <button key={e.key} type="button" class={e.chipCls} data-id={e.id} onclick={openEventDetail} title={e.subject}>
+                                            <span class="chip-time">{e.short}</span> {e.subject}
+                                        </button>
+                                    </template>
+                                    <template lwc:if={c.more}>
+                                        <button type="button" class="more" data-iso={c.iso} onclick={openDay}>+{c.more} more</button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Month on phones: agenda list -->
+                    <template lwc:if={isMonthAgenda}>
+                        <template lwc:if={monthAgendaEmpty}><p class="empty">Nothing scheduled this month.</p></template>
+                        <template for:each={monthAgenda} for:item="d">
+                            <div key={d.key} class="agenda-day">
+                                <button type="button" class="agenda-head" data-iso={d.iso} onclick={openDay}>{d.label}</button>
+                                <template for:each={d.events} for:item="e">
+                                    <button key={e.key} type="button" class={e.chipCls} data-id={e.id} onclick={openEventDetail}>
+                                        <span class="chip-time">{e.time}</span> {e.subject}
+                                    </button>
+                                </template>
+                            </div>
+                        </template>
+                    </template>
+
+                    <!-- Week / Day time grid -->
+                    <template lwc:if={isGrid}>
+                        <div class="tg" style={gridColsStyle}>
+                            <div class="corner"></div>
+                            <template for:each={gridDays} for:item="d">
+                                <button key={d.key} type="button" class={d.headCls} data-iso={d.iso} onclick={openDay}>{d.label}</button>
+                            </template>
+                            <template lwc:if={hasAllDay}>
+                                <div class="allday-label">All day</div>
+                                <template for:each={gridDays} for:item="d">
+                                    <div key={d.key} class="allday">
+                                        <template for:each={d.allDay} for:item="e">
+                                            <button key={e.key} type="button" class={e.chipCls} data-id={e.id} onclick={openEventDetail}>{e.subject}</button>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                            <div class="hours" style={gridHeightStyle}>
+                                <template for:each={hours} for:item="h">
+                                    <div key={h.key} class="hour-label">{h.label}</div>
+                                </template>
+                            </div>
+                            <template for:each={gridDays} for:item="d">
+                                <div key={d.key} class="day-col" style={gridHeightStyle}>
+                                    <template for:each={hours} for:item="h">
+                                        <div key={h.key} class="hour-line"></div>
+                                    </template>
+                                    <template for:each={d.blocks} for:item="e">
+                                        <button key={e.key} type="button" class={e.blockCls} style={e.blockStyle} data-id={e.id} onclick={openEventDetail}>
+                                            <span class="block-time">{e.time}</span>
+                                            <span class="block-subject">{e.subject}</span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <template lwc:if={selected}>
+                    <div class="popover" style={popoverStyle} role="dialog" aria-label="Event details" onclick={stop}>
+                        <p class="pop-time">{selected.time}</p>
+                        <p class="pop-subject">{selected.subject}</p>
+                        <template lwc:if={selected.hasRelated}><p class="meta">{selected.relatedName}</p></template>
+                        <template lwc:if={selected.location}><p class="meta">{selected.location}</p></template>
+                        <div class="pop-actions">
+                            <template lwc:if={selected.hasRelated}>
+                                <button type="button" class="pop-btn pop-primary" onclick={openSelectedRelated}>Open</button>
+                            </template>
+                            <button type="button" class="pop-btn" onclick={openSelectedEvent}>Event</button>
+                            <button type="button" class="pop-btn" onclick={closeDetail}>Close</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </section>
+    </template>
+    <template lwc:if={trackerId}>
+        <c-bd-event-tracker campaign-id={trackerId} can-edit onclose={closeTracker}></c-bd-event-tracker>
+    </template>
+</template>

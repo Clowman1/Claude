@@ -1,0 +1,7 @@
+<apex:page controller="smagicinteract.RedirectPageController" action="{!updateMessage}">
+    <apex:outputText rendered="{!closeWindow}" id="close">
+        <script>
+        	window.close();
+        </script>
+    </apex:outputText>
+</apex:page>

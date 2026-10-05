@@ -1,0 +1,152 @@
+<template>
+    <section class="detail-shell">
+        <lightning-record-edit-form
+            record-id={recordId}
+            object-api-name="Lead"
+            onsuccess={handleSuccess}>
+            <lightning-messages></lightning-messages>
+
+            <div class="detail-toolbar">
+                <div>
+                    <p class="detail-kicker">Admin Preview</p>
+                    <h2>Lead details restructured into workflow cards</h2>
+                </div>
+                <div class="detail-actions">
+                    <lightning-button
+                        label="Reset"
+                        variant="neutral"
+                        onclick={handleReset}>
+                    </lightning-button>
+                    <lightning-button
+                        label="Save Changes"
+                        variant="brand"
+                        type="submit">
+                    </lightning-button>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <article class="detail-card">
+                    <div class="detail-card-header">
+                        <p class="detail-kicker">Lead Routing</p>
+                        <h3>Ownership and pipeline setup</h3>
+                    </div>
+                    <div class="field-grid">
+                        <lightning-input-field field-name="Status"></lightning-input-field>
+                        <lightning-input-field field-name="OwnerId"></lightning-input-field>
+                        <lightning-input-field field-name="Loan_Partner__c"></lightning-input-field>
+                        <lightning-input-field field-name="LeadSource"></lightning-input-field>
+                        <lightning-input-field field-name="Biz_Dev__c"></lightning-input-field>
+                        <lightning-input-field field-name="Branch__c"></lightning-input-field>
+                        <lightning-input-field field-name="Rating"></lightning-input-field>
+                        <lightning-input-field field-name="Appointment_Date_Time__c"></lightning-input-field>
+                    </div>
+                </article>
+
+                <article class="detail-card">
+                    <div class="detail-card-header">
+                        <p class="detail-kicker">Borrower Contact</p>
+                        <h3>Communication-first fields</h3>
+                    </div>
+                    <div class="field-grid">
+                        <lightning-input-field field-name="Name"></lightning-input-field>
+                        <lightning-input-field field-name="Phone"></lightning-input-field>
+                        <lightning-input-field field-name="Email"></lightning-input-field>
+                        <lightning-input-field field-name="Best_Time_to_Contact__c"></lightning-input-field>
+                        <lightning-input-field field-name="Credit_Import_Date__c"></lightning-input-field>
+                        <lightning-input-field field-name="Credit_Repair_Company__c"></lightning-input-field>
+                        <lightning-input-field field-name="Previous_Loan_Officer__c"></lightning-input-field>
+                        <lightning-input-field field-name="Opt_Out_from_SMS_Automation__c"></lightning-input-field>
+                    </div>
+                </article>
+
+                <article class="detail-card">
+                    <div class="detail-card-header">
+                        <p class="detail-kicker">Referral Context</p>
+                        <h3>Source and partner relationships</h3>
+                    </div>
+                    <div class="field-grid">
+                        <lightning-input-field field-name="Referral_Source__c"></lightning-input-field>
+                        <lightning-input-field field-name="Realtor_Buying_Agent__c"></lightning-input-field>
+                        <lightning-input-field field-name="Realtor_Lead_Source__c"></lightning-input-field>
+                        <lightning-input-field field-name="Previous_Loan_Officer__c"></lightning-input-field>
+                    </div>
+                </article>
+
+                <article class="detail-card">
+                    <div class="detail-card-header">
+                        <p class="detail-kicker">Loan Snapshot</p>
+                        <h3>High-signal loan details</h3>
+                    </div>
+                    <div class="field-grid">
+                        <lightning-input-field field-name="Loan_Amount__c"></lightning-input-field>
+                        <lightning-input-field field-name="Loan_Purpose__c"></lightning-input-field>
+                        <lightning-input-field field-name="Value_of_Property__c"></lightning-input-field>
+                        <lightning-input-field field-name="Property_State__c"></lightning-input-field>
+                    </div>
+                </article>
+            </div>
+
+            <section class="detail-secondary">
+                <div class="detail-secondary-header">
+                    <p class="detail-kicker">Expanded Detail Section</p>
+                    <h3>Lower details reframed into editable categories</h3>
+                </div>
+
+                <div class="detail-grid">
+                    <article class="detail-card detail-card-secondary">
+                        <div class="detail-card-header">
+                            <p class="detail-kicker">Loan Structure</p>
+                            <h3>Core financing setup</h3>
+                        </div>
+                        <div class="field-grid">
+                            <lightning-input-field field-name="Loan_Purpose__c"></lightning-input-field>
+                            <lightning-input-field field-name="Loan_Type_1st_TD__c"></lightning-input-field>
+                            <lightning-input-field field-name="Loan_Amount__c"></lightning-input-field>
+                            <lightning-input-field field-name="Loan_Details__c"></lightning-input-field>
+                        </div>
+                    </article>
+
+                    <article class="detail-card detail-card-secondary">
+                        <div class="detail-card-header">
+                            <p class="detail-kicker">Financial Profile</p>
+                            <h3>Money fields with more emphasis</h3>
+                        </div>
+                        <div class="field-grid">
+                            <lightning-input-field field-name="Down_Payment_Amount__c"></lightning-input-field>
+                            <lightning-input-field field-name="Purchase_Price__c"></lightning-input-field>
+                            <lightning-input-field field-name="Household_Income__c"></lightning-input-field>
+                            <lightning-input-field field-name="Value_of_Property__c"></lightning-input-field>
+                        </div>
+                    </article>
+
+                    <article class="detail-card detail-card-secondary">
+                        <div class="detail-card-header">
+                            <p class="detail-kicker">Borrower Preferences</p>
+                            <h3>Contact timing and notes</h3>
+                        </div>
+                        <div class="field-grid">
+                            <lightning-input-field field-name="Best_Time_to_Contact__c"></lightning-input-field>
+                            <div class="field-grid-wide">
+                                <lightning-input-field field-name="Comments__c"></lightning-input-field>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="detail-card detail-card-secondary">
+                        <div class="detail-card-header">
+                            <p class="detail-kicker">Property Basics</p>
+                            <h3>Address and location context</h3>
+                        </div>
+                        <div class="field-grid">
+                            <div class="field-grid-wide">
+                                <lightning-input-field field-name="Address"></lightning-input-field>
+                            </div>
+                            <lightning-input-field field-name="Property_State__c"></lightning-input-field>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </lightning-record-edit-form>
+    </section>
+</template>

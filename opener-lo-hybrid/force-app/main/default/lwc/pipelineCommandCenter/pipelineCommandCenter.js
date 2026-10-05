@@ -25,6 +25,7 @@ import markAccountPropertySold from '@salesforce/apex/PipelineCommandCenterContr
 import logPastClientManualCall from '@salesforce/apex/PipelineCommandCenterController.logPastClientManualCall';
 import logRealtorInPersonTouch from '@salesforce/apex/PipelineCommandCenterController.logRealtorInPersonTouch';
 import logRealtorManualCall from '@salesforce/apex/PipelineCommandCenterController.logRealtorManualCall';
+import logBenPreApprovalManualCall from '@salesforce/apex/PipelineCommandCenterController.logBenPreApprovalManualCall';
 import createRealtorPartner from '@salesforce/apex/PipelineCommandCenterController.createRealtorPartner';
 import createConsumerLead from '@salesforce/apex/PipelineCommandCenterController.createConsumerLead';
 import createRealtorLead from '@salesforce/apex/PipelineCommandCenterController.createRealtorLead';
@@ -33,6 +34,7 @@ import saveUserColumnPreferences from '@salesforce/apex/PipelineCommandCenterCon
 import searchReachEmployees from '@salesforce/apex/RealtorEventWorkspaceController.searchReachEmployees';
 import addCoHosts from '@salesforce/apex/RealtorEventWorkspaceController.addCoHosts';
 import addAllNickleyTeamInvitees from '@salesforce/apex/RealtorEventWorkspaceController.addAllNickleyTeamInvitees';
+import ApprovedInvestorsModal, { OPEN_LIST_VIEW } from 'c/approvedInvestorsModal';
 
 const OBJECT_OPTIONS = [
     { label: 'Transactions', value: 'Transaction__c' },
@@ -94,6 +96,9 @@ const COMMAND_CENTER_COLUMNS = [
     { key: 'birthday', label: 'Birthday', objects: ['Account'] },
     { key: 'rating', label: 'Rating', objects: ['Account'] }
 ];
+
+// The Approved Investors quick button opens a modal instead of this list view.
+const APPROVED_INVESTORS_LIST_VIEW = 'Investor_Accounts';
 
 export default class PipelineCommandCenter extends NavigationMixin(LightningElement) {
     statusCards = [];
@@ -359,6 +364,21 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         if (!objectApiName || !filterName) {
             return;
         }
+        if (filterName === APPROVED_INVESTORS_LIST_VIEW) {
+            this.openApprovedInvestors(objectApiName, filterName);
+            return;
+        }
+        this.navigateToListView(objectApiName, filterName);
+    }
+
+    async openApprovedInvestors(objectApiName, filterName) {
+        const result = await ApprovedInvestorsModal.open({ size: 'large', label: 'Approved Investors' });
+        if (result === OPEN_LIST_VIEW) {
+            this.navigateToListView(objectApiName, filterName);
+        }
+    }
+
+    navigateToListView(objectApiName, filterName) {
         this[NavigationMixin.Navigate]({
             type: 'standard__objectPage',
             attributes: {
@@ -1303,7 +1323,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             await logRealtorManualCall({ accountId });
             // Reload the tab so My Last Call and the cadence colour both reflect the new call.
             this.pipelineTabs = this.pipelineTabs.map((tab) =>
-                tab.key === 'myNickleyRealtors' ? { ...tab, rowsLoaded: false } : tab
+                this.isRealtorAccountTab(tab.key) ? { ...tab, rowsLoaded: false } : tab
             );
             await this.loadActiveNickleyRealtorTab();
             this.dispatchEvent(
@@ -1313,6 +1333,35 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
                     variant: 'success'
                 })
             );
+        } catch (error) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Unable to log call',
+                    message: this.extractError(error),
+                    variant: 'error'
+                })
+            );
+        } finally {
+            this.manualCallSavingId = undefined;
+        }
+    }
+
+    async handleBenPreApprovalManualCall(event) {
+        const leadId = event.currentTarget.dataset.recordId;
+        if (!leadId || this.manualCallSavingId) {
+            return;
+        }
+        this.manualCallSavingId = leadId;
+        try {
+            await logBenPreApprovalManualCall({ leadId });
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Call logged',
+                    message: 'Manual Ben call logged. This lead is back in the normal contact rotation.',
+                    variant: 'success'
+                })
+            );
+            await refreshApex(this.wiredDashboardResult);
         } catch (error) {
             this.dispatchEvent(
                 new ShowToastEvent({
@@ -1336,7 +1385,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             await logRealtorInPersonTouch({ accountId });
             // Reload the tab so the stamp and the cadence colour both reflect the new touch.
             this.pipelineTabs = this.pipelineTabs.map((tab) =>
-                tab.key === 'myNickleyRealtors' ? { ...tab, rowsLoaded: false } : tab
+                this.isRealtorAccountTab(tab.key) ? { ...tab, rowsLoaded: false } : tab
             );
             await this.loadActiveNickleyRealtorTab();
             this.dispatchEvent(
@@ -1803,11 +1852,15 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         }
     }
 
+    isRealtorAccountTab(tabKey) {
+        return ['myNickleyRealtors', 'benRealtorAccounts'].includes(tabKey || '');
+    }
+
     async loadActiveNickleyRealtorTab() {
-        if (this.activePipelineTabKey !== 'myNickleyRealtors' || this.nickleyRealtorTabLoading) {
+        if (!this.isRealtorAccountTab(this.activePipelineTabKey) || this.nickleyRealtorTabLoading) {
             return;
         }
-        const activeTab = this.pipelineTabs.find((tab) => tab.key === 'myNickleyRealtors');
+        const activeTab = this.pipelineTabs.find((tab) => tab.key === this.activePipelineTabKey);
         if (!activeTab || activeTab.rowsLoaded) {
             return;
         }
@@ -1816,7 +1869,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             const rows = await getNickleyRealtorRows();
             this.pipelineTabs = this.decorateTabs(
                 this.pipelineTabs.map((tab) =>
-                    tab.key === 'myNickleyRealtors'
+                    tab.key === this.activePipelineTabKey
                         ? {
                               ...tab,
                               rows,
@@ -2109,10 +2162,6 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         return this.isPastClientDashboard ? 'Create New Realtor Account' : 'Create New Realtor Partner';
     }
 
-    get showQuickButtons() {
-        return !this.isPastClientDashboard;
-    }
-
     get showRealtorEventActions() {
         // Scheduling events is for designated event hosts, which Apex already resolves as
         // isRealtorEventHost. Keying off the Nickley Realtor tab instead handed these buttons to
@@ -2385,10 +2434,10 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         if (tabKey === 'locksExpiring' && this.isTodayDate(row.displayDate)) {
             classes.push('pcc-row-urgent');
         }
-        if (tabKey === 'myNickleyRealtors' && row.callCadenceAlert === 'red') {
+        if (this.isRealtorAccountTab(tabKey) && row.callCadenceAlert === 'red') {
             classes.push('pcc-row-nickley-call-red');
         }
-        if (tabKey === 'myNickleyRealtors' && row.callCadenceAlert === 'orange') {
+        if (this.isRealtorAccountTab(tabKey) && row.callCadenceAlert === 'orange') {
             classes.push('pcc-row-nickley-call-orange');
         }
         return classes.join(' ');
@@ -2481,8 +2530,8 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             ),
             this.buildBenMasterGroup(
                 'realtorLeads',
-                'Realtor Leads',
-                'Realtor pipeline grouped by status.',
+                'Realtors',
+                'Realtor leads by status, plus your realtor accounts.',
                 'pcc-ben-master-realtor'
             ),
             this.buildBenMasterGroup(
@@ -2585,7 +2634,8 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         return this.applySavedMasterGroupOrder('joey', [
             this.buildJoeyMasterGroup('joeOlmsted', 'Joe Olmsted', 'pcc-joey-master-joe'),
             this.buildJoeyMasterGroup('zachFritz', 'Zach Fritz', 'pcc-joey-master-zach'),
-            this.buildJoeyMasterGroup('berkeleyPeterson', 'Berkeley Peterson', 'pcc-joey-master-berkeley')
+            this.buildJoeyMasterGroup('berkeleyPeterson', 'Berkeley Peterson', 'pcc-joey-master-berkeley'),
+            this.buildJoeyMasterGroup('myLeads', 'My Leads', 'pcc-joey-master-rhett')
         ].filter((group) => group.hasTabs));
     }
 
@@ -2674,6 +2724,10 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         if (key.startsWith('rhettDelaney')) {
             return 'rhettDelaney';
         }
+        // Joey's own leads (same keys as Megan's own tabs). Gated so plain LOs keep flat tabs.
+        if (this.hasJoeyAssistantTabs && this.isMeganOwnMasterTabKey(key)) {
+            return 'myLeads';
+        }
         return '';
     }
 
@@ -2697,10 +2751,11 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         const tabKeys = this.pipelineTabs.map((tab) => tab.key || '');
         const hasMeganOwnTabs = tabKeys.some((key) => this.isMeganOwnMasterTabKey(key));
         const hasMeganPartnerTabs = tabKeys.some((key) => key.startsWith('brandon') || key.startsWith('zachFritz'));
-        const hasJoeyAssistantTabs = tabKeys.some(
-            (key) => key.startsWith('joeOlmsted') || key.startsWith('berkeleyPeterson') || key.startsWith('rhettDelaney')
-        );
-        return hasMeganOwnTabs && hasMeganPartnerTabs && !hasJoeyAssistantTabs;
+        return hasMeganOwnTabs && hasMeganPartnerTabs && !this.hasJoeyAssistantTabs;
+    }
+
+    get hasJoeyAssistantTabs() {
+        return this.pipelineTabs.some((tab) => /^(joeOlmsted|berkeleyPeterson|rhettDelaney)/.test(tab.key || ''));
     }
 
     joeyTabsForGroup(groupKey) {
@@ -2984,7 +3039,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             }
         }
         const requiredKeys = availableColumns.filter((column) => column.required).map((column) => column.key);
-        if (tab.key === 'myNickleyRealtors') {
+        if (this.isRealtorAccountTab(tab.key)) {
             requiredKeys.push('nextEvent', 'myLastCall', 'myLastText', 'myLastInPersonTouch', 'notes');
         }
         if (tab.key === 'stagnantPreApprovals') {
@@ -3353,12 +3408,17 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
     }
 
     get isNickleyRealtorTab() {
-        return this.activePipelineTabKey === 'myNickleyRealtors';
+        return this.isRealtorAccountTab(this.activePipelineTabKey);
     }
 
     // The assigned Realtor list logs in person conversations instead of opening the row editor.
+    // Ben's Pre-Approval tabs log a manual call instead of editing.
     get showRealtorEditColumn() {
-        return this.canEditActivePipelineTabRows && !this.isNickleyRealtorTab;
+        return this.canEditActivePipelineTabRows && !this.isNickleyRealtorTab && !this.isBenPreApprovalTab;
+    }
+
+    get isBenPreApprovalTab() {
+        return this.benGroupKeyForTab(this.activePipelineTabKey) === 'preApprovalClients';
     }
 
     get pastClientActionLabel() {
@@ -3380,7 +3440,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
     }
 
     get isActionablePipelineTab() {
-        if (this.activePipelineTabKey === 'myNickleyRealtors') {
+        if (this.isNickleyRealtorTab) {
             return false;
         }
         return this.isTransactionPipelineTab || this.isAccountPipelineTab || this.isLeadActionTab;
@@ -3409,9 +3469,16 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         return !!this.rawActiveCustomColumns.length;
     }
 
+    // The Biz Dev Contact List renders its own component rather than the shared row table, so it
+    // has to opt out of every generic table branch below.
+    get isBizDevContactTab() {
+        return this.activePipelineTabKey === 'bizDevContacts';
+    }
+
     get usesEditableColumnTable() {
         return (
             !this.showBenEmptyGroup &&
+            !this.isBizDevContactTab &&
             !this.isOpenerWorkflowTab &&
             !this.isCloserWorkflowTab &&
             !this.isConversionMetricsTab &&

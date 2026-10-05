@@ -1,0 +1,97 @@
+/**
+ * Created by BTB12 on 8/19/2024.
+ */
+
+:host{
+    --hide-contact-card : hidden;
+}
+
+.imbus-contact-card-container {
+    margin:10px 16px;
+    height: 100%;
+    padding: 12px;
+    background: #F9FAFB;
+    visibility: var(--hide-contact-card, hidden);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    display: inline-flex;
+    max-width:190px;
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.contact-card-wrapper {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+    display: flex;
+}
+
+.contact-card-image {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(0deg, #C7B9DA 0%, #C7B9DA 100%);
+    border-radius: 40px;
+}
+
+.contact-card-details {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    display: flex;
+}
+
+.contact-card-info {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    display: flex;
+}
+
+.contact-card-name-title {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+}
+
+.contact-card-name {
+    align-self: stretch;
+    text-align: center;
+    color: #101828;
+    font-size: 18px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    line-height: 28px;
+    word-wrap: break-word;
+}
+
+.contact-card-title {
+    align-self: stretch;
+    text-align: center;
+    color: #6941C6;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    line-height: 24px;
+    word-wrap: break-word;
+}
+
+.contact-card-contact {
+    align-self: stretch;
+    text-align: center;
+    color: #475467;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    line-height: 24px;
+    word-wrap: break-word;
+}

@@ -1,0 +1,52 @@
+<apex:page Controller="smagicinteract.FeedbackController" title="SMS Magic-Feedback" tabStyle="SM_Home__tab">
+
+<apex:pageMessages escape="false" id="pageMessage"/> 
+ 
+<apex:form id="confForm">
+<apex:pageBlock title="{!$Label.smagicinteract__fdbck}" id="mainBlock">
+
+<apex:pageBlockSection title="{!$Label.smagicinteract__chs_ctgry} ">
+<apex:facet name="header">
+	<h3>{!$Label.smagicinteract__chs_ctgry}</h3>
+</apex:facet>
+	<apex:selectList size="1" value="{!selectedCategory}" style="margin-left:110px;">
+	    <apex:selectOption itemValue="Feature Request" itemLabel="{!$Label.smagicinteract__feature_request}"/>
+	    <apex:selectOption itemValue="Bug Report" itemLabel="{!$Label.smagicinteract__bug_report}"/>
+	    <apex:selectOption itemValue="General" itemLabel="{!$Label.smagicinteract__general}"/>
+	</apex:selectList>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection id="feedbackDetails" columns="10" title="{!$Label.smagicinteract__etr_ur_fdbck}" >
+<apex:facet name="header">
+	<h3>{!$Label.smagicinteract__etr_ur_fdbck}</h3>
+</apex:facet>
+
+<table cellspacing="10px" style="margin-left:-20px;" >
+    <tr><td class="labelCol" style="text-align:left;">{!$Label.SBJCT}</td>
+    <td>
+    	<apex:outputPanel styleClass="requiredInput" layout="block">
+    	<apex:outputPanel styleClass="requiredBlock" layout="block"/>
+	    <apex:inputText style="width:410px;text-align:left margin-left:200px;" value="{!subject}" maxlength="200"/>
+	    </apex:outputPanel>
+    </td>
+       
+    </tr>
+    <tr> <td class="labelCol" style="text-align:left;">{!$Label.smagicinteract__dscrptn} </td>   
+    <td><apex:inputTextArea id="feedbackText"  style="width:410px;height:60px;text-align:left;" value="{!feedbackText}"></apex:inputTextArea> </td>
+    </tr>
+     
+    <tr><td class="labelCol" style="text-align:left;">{!$Label.smagicinteract__attchmnt} </td>
+    <td><apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"/></td>
+    </tr>
+    
+</table>
+</apex:pageBlockSection>
+
+<apex:pageBlockButtons location="bottom">
+    <apex:commandButton action="{!submit}" value="{!$Label.smagicinteract__sbmt}"/>
+    <apex:commandButton action="{!cancel}" value="{!$Label.smagicinteract__cncl}"/>
+</apex:pageBlockButtons>
+
+</apex:pageBlock>
+</apex:form>
+</apex:page>

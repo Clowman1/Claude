@@ -1,0 +1,51 @@
+<apex:page rendered="true" standardController="Contact" extensions="rcsfl.PhoneNumbersContactController" showHeader="false" standardStylesheets="false" applyHtmlTag="false" 
+  applyBodyTag="false" contentType="text/html">
+<apex:outputText escape="false" value="{!"<!DOCTYPE html>"}"/>
+<html>
+    <head>
+        <meta charset="utf-8"></meta>
+        <base href="{!$Resource.Salesforce1}/"></base>
+        <link rel="stylesheet" type="text/css" href="styles/sf1-numbers-table.css"/>
+        <link rel="stylesheet" type="text/css" href="styles/sf1-call.css"/>
+    </head>
+    
+    <body>
+        <table class="rc-phones-table">
+            <apex:repeat value="{!nonEmptyPhoneFieldNameList}" var="phoneFieldName">
+                <tr>
+                    <td>
+                        <span class="rc-phone-field"> {!phoneFieldNameToLabel[phoneFieldName]} </span> 
+                        <span class="rc-phone-number"> {!phoneFieldNameToPhoneNumber[phoneFieldName]} </span>
+                    </td>
+                </tr>
+            </apex:repeat>
+        </table>
+        
+        <div id="rc-phones-modal">
+            <div class="rc-popover-calls">
+                <div class="rc-popover-row" id="rc-popover-phone">
+                    <div class="rc-call-option-wrapper">
+                        <img src="images/phone-icon.png" class="rc-call-icon" />
+                        <span class="rc-popover-option"> Phone Call </span>
+                    </div>
+                </div>
+                
+                <div class="rc-popover-row" id="rc-popover-app">
+                    <div class="rc-call-option-wrapper">
+                        <img src="images/ringcentral-icon.png" class="rc-call-icon" />
+                        <span class="rc-popover-option"> RingCentral Call </span>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="rc-popover-cancel-button">
+                <div class="rc-popover-row rc-cancel-row">
+                    <span class="rc-popover-option"> Cancel </span>
+                </div>
+            </div>
+        </div>
+        <script src='scripts/sf1-call.js'> </script>
+    </body>
+</html>
+</apex:page>

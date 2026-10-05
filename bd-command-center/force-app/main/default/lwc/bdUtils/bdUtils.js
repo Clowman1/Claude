@@ -18,7 +18,7 @@ export function duration(seconds) {
 
 export function formatPhone(digits) {
     if (!digits || digits.length !== 10) return digits || '';
-    return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+    return digits.slice(0, 3) + '-' + digits.slice(3, 6) + '-' + digits.slice(6);
 }
 
 export function whenLabel(value) {
@@ -48,4 +48,32 @@ export function dayParts(ymd) {
         day: String(d.getDate()),
         label: d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })
     };
+}
+// One event card row (Upcoming / Events / To confirm): day box, "time · venue", RSVP counts.
+export function eventRow(e) {
+    const d = dayParts(e.startDate);
+    return {
+        ...e, dow: d.dow, day: d.day,
+        when: (e.timeLabel || '') + (e.location ? ' · ' + e.location : ''),
+        who: e.partnerNames.join(', ') + (e.invited > e.partnerNames.length ? ' +' + (e.invited - e.partnerNames.length) : ''),
+        rsvp: e.attending + ' attending · ' + e.awaiting + ' awaiting' + (e.declined ? ' · ' + e.declined + ' declined' : ''),
+        boxCls: 'ev ' + (e.awaiting === 0 && e.attending > 0 ? 'ev-ok' : 'ev-wait')
+    };
+}
+// Copies text to the clipboard; falls back to a hidden textarea where the async API is blocked.
+export async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (e) {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(area);
+        return ok;
+    }
 }

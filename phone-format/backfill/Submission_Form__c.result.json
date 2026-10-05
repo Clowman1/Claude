@@ -1,0 +1,20 @@
+{
+  "name": "FailedRecordDetailsError",
+  "message": "Job finished being processed but failed to process 1 records.",
+  "exitCode": 1,
+  "actions": [
+    "Get the job results by running: \"sf data bulk results -o clowman@reachhomeloans.com --job-id 750Qi000017rITmIAM\".",
+    "View the job in the org: \"sf org open -o clowman@reachhomeloans.com --path '/lightning/setup/AsyncApiJobStatus/page?address=%2F750Qi000017rITmIAM'\"."
+  ],
+  "context": "DataUpdateBulk",
+  "data": {
+    "jobId": "750Qi000017rITmIAM",
+    "state": "JobComplete"
+  },
+  "stack": "FailedRecordDetailsError: Job finished being processed but failed to process 1 records.\n    at SfCommandError.from (file:///C:/Users/ChristopherLowman/AppData/Roaming/npm/node_modules/@salesforce/cli/node_modules/@salesforce/sf-plugins-core/lib/SfCommandError.js:48:16)\n    at DataUpdateBulk.catch (file:///C:/Users/ChristopherLowman/AppData/Roaming/npm/node_modules/@salesforce/cli/node_modules/@salesforce/sf-plugins-core/lib/sfCommand.js:332:47)\n    at DataUpdateBulk._run (C:\\Users\\ChristopherLowman\\AppData\\Roaming\\npm\\node_modules\\@salesforce\\cli\\node_modules\\@oclif\\core\\lib\\command.js:187:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Config.runCommand (C:\\Users\\ChristopherLowman\\AppData\\Roaming\\npm\\node_modules\\@salesforce\\cli\\node_modules\\@oclif\\core\\lib\\config\\config.js:422:25)\n    at async run (C:\\Users\\ChristopherLowman\\AppData\\Roaming\\npm\\node_modules\\@salesforce\\cli\\node_modules\\@oclif\\core\\lib\\main.js:97:16)\n    at async file:///C:/Users/ChristopherLowman/AppData/Roaming/npm/node_modules/@salesforce/cli/bin/run.js:15:1",
+  "cause": "undefined",
+  "warnings": [],
+  "code": "FailedRecordDetailsError",
+  "status": 1,
+  "commandName": "DataUpdateBulk"
+}

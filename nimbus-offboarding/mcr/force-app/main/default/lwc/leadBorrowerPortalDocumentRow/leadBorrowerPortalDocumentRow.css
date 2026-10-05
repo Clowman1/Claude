@@ -1,0 +1,227 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.imbus-table-row {
+    border-collapse: collapse;
+    display: grid;
+    grid-template-columns: minmax(0, .5fr) minmax(146px, .4fr) minmax(0, 1fr) minmax(148px, .7fr);
+    min-width: 100%;
+}
+
+.imbus-table-row > div {
+    align-items: flex-start;
+    display: flex;
+}
+
+/* Pill above the file count, not beside it. */
+.status-cell {
+    flex-direction: column;
+}
+
+.imbus-status-text {
+    align-items: center;
+    border-radius: 16px;
+    display: flex;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 18px;
+    padding: 2px 15px;
+    text-align: center;
+    width: fit-content;
+}
+
+.imbus-status-text[data-status="Approved"],
+.imbus-status-text[data-status="Cleared"] {
+    background: #ECFDF3;
+    color: #027A48;
+}
+
+.imbus-status-text[data-status="Review"] {
+    background: #e8e1f6;
+    color: #6b45ae;
+}
+
+.imbus-status-text[data-status="Requested"],
+.imbus-status-text[data-status="New"] {
+    background: #f6e8e1;
+    color: #bd4f22;
+}
+
+.request-name,
+.request-description {
+    color: #344054;
+    font-size: 13px;
+    line-height: 18px;
+    overflow-wrap: anywhere;
+}
+
+.upload-actions,
+.mobile-actions {
+    display: flex;
+    gap: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+    .imbus-table-row {
+        column-gap: 8px;
+        grid-template-columns: minmax(72px, .85fr) minmax(112px, 1.25fr) minmax(118px, .9fr);
+    }
+}
+/* Guest users cannot use lightning-file-upload, so this is a hand-built drop
+   zone over a hidden file input. */
+.file-input {
+    display: none;
+}
+
+.drop-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.5rem 0.85rem;
+    border: 1px dashed #9aa7b4;
+    border-radius: 6px;
+    background: #f8fafc;
+    color: #33475b;
+    font-size: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.drop-zone:hover,
+.drop-zone:focus-visible {
+    border-color: #0082cb;
+    background: #eef6fc;
+    outline: none;
+}
+
+.drop-zone:focus-visible {
+    box-shadow: 0 0 0 2px rgba(0, 130, 203, 0.4);
+}
+
+.drop-zone--active {
+    border-color: #0082cb;
+    border-style: solid;
+    background: #e2f0fa;
+}
+
+.drop-zone--busy {
+    cursor: progress;
+    opacity: 0.75;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-needed {
+    background: #fdf0e4;
+    color: #8a5a0f;
+}
+
+.status-partial {
+    background: #eef2f6;
+    color: #33475b;
+}
+
+.status-submitted {
+    background: #e2efe8;
+    color: #1c6f4d;
+}
+
+.status-uploading {
+    background: #e2f0fa;
+    color: #0067a8;
+}
+
+.file-count {
+    margin-top: 0.25rem;
+    font-size: 0.76rem;
+    color: #5b6473;
+}
+
+.upload-confirmation {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: #1c6f4d;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.upload-check {
+    font-weight: 700;
+}
+
+/* Not an error: the file was accepted. It is a nudge to send a better one. */
+.upload-warning {
+    margin-top: 0.4rem;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: #8a5a00;
+    background: #fff8ec;
+    border: 1px solid #f2dcb6;
+    border-radius: 6px;
+}
+
+.upload-error {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: #a8332b;
+}
+/* The basket: files added but not yet sent to the loan team. */
+.status-ready {
+    background: #eef4ff;
+    color: #1c4587;
+}
+
+.pending-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+}
+
+.pending-item {
+    align-items: center;
+    background: #f5f8ff;
+    border: 1px solid #dbe5f7;
+    border-radius: 6px;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.pending-name {
+    color: #22314f;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+.pending-remove {
+    background: none;
+    border: none;
+    color: #a03b43;
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.3rem;
+    text-decoration: underline;
+}
+
+.pending-remove:hover {
+    color: #7d2d34;
+}

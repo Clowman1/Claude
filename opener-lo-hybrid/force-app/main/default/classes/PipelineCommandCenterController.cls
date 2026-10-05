@@ -107,6 +107,7 @@ public with sharing class PipelineCommandCenterController {
         'mstraight@reachhomeloans.com'
     };
     private static final String BRANDON_BROTSKY_USERNAME = 'bbrotsky@reachhomeloans.com';
+    private static final String ADAM_STEPHENS_USERNAME = 'astephens@reachhomeloans.com';
     private static final String ZACHARY_FRITZ_USERNAME = 'zfritz@reachhomeloans.com';
     private static final String MEGAN_STRAIGHT_USERNAME = 'mstraight@reachhomeloans.com';
     private static final String JOE_OLMSTED_USERNAME = 'jolmsted@reachhomeloans.com';
@@ -130,7 +131,8 @@ public with sharing class PipelineCommandCenterController {
         'zfritz@reachhomeloans.com' => 'Zach Fritz',
         'jolmsted@reachhomeloans.com' => 'Joe Olmsted',
         'rdelaney@reachhomeloans.com' => 'Rhett Delaney',
-        'manny@reachhomeloans.com' => 'Manuel Anagnostou'
+        'manny@reachhomeloans.com' => 'Manuel Anagnostou',
+        'benjamin@reachhomeloans.com' => 'Ben Bondarevsky'
     };
     // Hosts whose Realtors tab is scoped by account ownership and Biz Dev designation instead of by
     // Nickley_Realtor_LO__c, because their realtors are not Nickley Group partners. Maps the host's
@@ -138,6 +140,11 @@ public with sharing class PipelineCommandCenterController {
     private static final Map<String, String> OWNER_SCOPED_REALTOR_HOSTS = new Map<String, String>{
         'Rhett Delaney' => 'Biz Dev - Delaney',
         'Manuel Anagnostou' => 'Biz Dev - Anagnostou'
+    };
+    // Hosts whose Realtors tab is scoped by Biz Dev designation alone -- no ownership clause,
+    // because they own consumer Person Accounts that are not their realtor partners.
+    private static final Map<String, String> DESIGNATION_SCOPED_REALTOR_HOSTS = new Map<String, String>{
+        'Ben Bondarevsky' => 'Biz Dev - Bondarevsky'
     };
     // Hosts whose quick button set is fixed -- they do not get the Edit Buttons control.
     private static final Set<String> FIXED_QUICK_BUTTON_USERNAMES = new Set<String>{
@@ -321,6 +328,13 @@ public with sharing class PipelineCommandCenterController {
     private static final Set<String> WEBINAR_MARKETING_USERNAMES = new Set<String>{
         'ernesto@reachhomeloans.com'
     };
+    private static final String NURTURING_LEAD_STATUS = 'Nurturing';
+    // Statuses a Lead holds before anyone has met with the borrower.  Any other status in a
+    // Lead's history (Working, Documents Requested, Pre-Approval, ...) means they showed for an appt.
+    private static final Set<String> PRE_APPOINTMENT_LEAD_STATUSES = new Set<String>{
+        'New', 'Contact Attempt 1', 'Contact Attempt 2', 'Contact Attempt 3', 'Contact Attempt 4',
+        'Contact Attempt 5', 'Contacted/Call Back', NURTURING_LEAD_STATUS
+    };
     private static final Set<String> SOCIAL_MEDIA_LEAD_SOURCES = new Set<String>{
         'Website', 'Website - Purchase', 'Instagram', 'Instagram-Linktree', 'IGDM',
         'Facebook Lead Ad', 'Facebook_nc_purchase', 'Facebook - Landing Refi',
@@ -343,7 +357,9 @@ public with sharing class PipelineCommandCenterController {
         Boolean managementCommandCenter = currentUserUsesManagementCommandCenterHeader();
         Boolean rhettDelaney = currentUserIsRhettDelaney();
         String nickleyRealtorLOLabel = currentUserNickleyRealtorLOLabel();
-        Boolean nickleyRealtorHost = nickleyRealtorLOLabel != null;
+        // Ben is a realtor host for scoping and logging, but his Home is the Past Client layout:
+        // he must not pick up the Nickley host tabs or quick buttons.
+        Boolean nickleyRealtorHost = nickleyRealtorLOLabel != null && !pastClientPipeline;
         // Every Nickley Realtor host now gets this, so it is no longer a per-name list. This flag
         // drives two things in the LWC: the My Realtor Events tab, and showJoeyMasterGroups, which
         // splits the whole tab set into the Leads / Transactions / Realtors master groups.
@@ -360,7 +376,7 @@ public with sharing class PipelineCommandCenterController {
             data.statusCards = new List<StatusCard>();
             data.pipelineRows = new List<PipelineRow>();
             data.pipelineTabs = new List<PipelineTab>();
-            data.quickButtons = new List<QuickButton>();
+            data.quickButtons = new List<QuickButton>{ approvedInvestorsQuickButton() };
             data.queueShortcuts = new List<QuickButton>();
             data.pipelineTitle = 'Consumer Webinar Performance';
             data.pipelineSubtitle = 'Grouped by webinar date.';
@@ -452,6 +468,18 @@ public with sharing class PipelineCommandCenterController {
                     'Loan Officer'
                 )
             );
+            hybridTabs.addAll(tagMasterGroup(
+                new List<PipelineTab>{ new PipelineTab(
+                    'allMyLeads',
+                    'All My Leads',
+                    'Every unconverted lead you own, in any status.',
+                    'Lead',
+                    applyLoanOfficerLeadCells(buildAllOwnedLeads(UserInfo.getUserId())),
+                    buildLoanOfficerLeadColumns()
+                ) },
+                MASTER_GROUP_LOAN_OFFICER,
+                'Loan Officer'
+            ));
             data.pipelineTabs = hybridTabs;
         }
         applyLatestProcessorNotesToTransactionTabs(data.pipelineTabs);
@@ -459,7 +487,8 @@ public with sharing class PipelineCommandCenterController {
         data.quickButtons = (ceoPipeline || pastClientPipeline)
             ? new List<QuickButton>()
             : (nickleyRealtorHost ? nickleyRealtorHostQuickButtons() : getUserQuickButtons());
-        if ((leadPipeline || nickleyRealtorHost) && data.quickButtons != null) {
+        // Every Command Center variant gets Approved Investors; the LWC opens it as a modal.
+        if (data.quickButtons != null) {
             data.quickButtons.add(approvedInvestorsQuickButton());
         }
         data.queueShortcuts = openerPipeline ? openerQueueShortcuts() : (closerPipeline ? closerQueueShortcuts() : (fundingLockDeskPipeline ? fundingLockDeskQueueShortcuts() : defaultQueueShortcuts()));
@@ -476,13 +505,49 @@ public with sharing class PipelineCommandCenterController {
         data.isPastClientDashboard = pastClientPipeline;
         data.isRhettDelaney = rhettDelaney;
         data.isNickleyRealtorHost = nickleyRealtorHost;
-        if (nickleyRealtorLOLabel != null) {
+        if (nickleyRealtorHost) {
             data.pipelineTabs.add(buildNickleyRealtorStubTab(nickleyRealtorLOLabel));
         }
         if (realtorEventHost) {
             data.pipelineTabs.add(buildMyRealtorEventsTab());
         }
+        if (currentUserIsBizDevOwner()) {
+            data.pipelineTabs.add(buildBizDevContactTab());
+        }
         return data;
+    }
+
+    // The owners' business development list. The tab is a shell: the LWC renders
+    // c-biz-dev-contact-list for this key rather than the shared row table, so no rows or columns
+    // are built here. Only the count is needed, for the tab badge.
+    private static PipelineTab buildBizDevContactTab() {
+        PipelineTab tab = new PipelineTab(
+            'bizDevContacts',
+            'Biz Dev Contact List',
+            'Business development contacts with their RingCentral call and text history, upcoming meetings and notes.',
+            'Account',
+            new List<PipelineRow>()
+        );
+        tab.rowsLoaded = true;
+        tab.count = bizDevContactCount();
+        return tab;
+    }
+
+    private static Integer bizDevContactCount() {
+        Schema.RecordTypeInfo info = Schema.SObjectType.Account
+            .getRecordTypeInfosByDeveloperName()
+            .get('BizDev_Expansion');
+        if (info == null) {
+            return 0;
+        }
+        Id recordTypeId = info.getRecordTypeId();
+        return [SELECT COUNT() FROM Account WHERE RecordTypeId = :recordTypeId];
+    }
+
+    private static Boolean currentUserIsBizDevOwner() {
+        String currentUsername = UserInfo.getUserName();
+        return BRANDON_BROTSKY_USERNAME.equalsIgnoreCase(currentUsername)
+            || ADAM_STEPHENS_USERNAME.equalsIgnoreCase(currentUsername);
     }
 
     @AuraEnabled(cacheable=true)
@@ -599,7 +664,8 @@ public with sharing class PipelineCommandCenterController {
         if (!isWebinar && !isSocial) {
             throw new AuraHandledException('Unsupported marketing dashboard.');
         }
-        if (metric != 'leads' && metric != 'preApproved' && metric != 'transactions' && metric != 'funded') {
+        if (metric != 'leads' && metric != 'preApproved' && metric != 'transactions' && metric != 'funded' &&
+            metric != 'showedThenNurtured') {
             throw new AuraHandledException('Unsupported marketing metric.');
         }
 
@@ -618,7 +684,13 @@ public with sharing class PipelineCommandCenterController {
         }
 
         List<MarketingRawDataRow> rows = new List<MarketingRawDataRow>();
-        if (metric == 'leads' || metric == 'preApproved') {
+        Map<Id, List<String>> showedStatusesByLeadId = new Map<Id, List<String>>();
+        if (metric == 'showedThenNurtured') {
+            showedStatusesByLeadId = showedForApptStatusesByLeadId(new Map<Id, Lead>([
+                SELECT Id FROM Lead WHERE LeadSource IN :sources AND Status = :NURTURING_LEAD_STATUS
+            ]).keySet());
+        }
+        if (metric == 'leads' || metric == 'preApproved' || metric == 'showedThenNurtured') {
             for (Lead leadRecord : [
                 SELECT Id, Name, LeadSource, Status, Owner.Name, Realtor_Buying_Agent__r.Name, CreatedDate, Webinar_Date__c,
                     Pre_Approval_Date__c, IsConverted, Converted_Transaction_ID__r.Webinar_Date__c
@@ -627,6 +699,9 @@ public with sharing class PipelineCommandCenterController {
                 ORDER BY CreatedDate DESC
             ]) {
                 if (metric == 'preApproved' && leadRecord.Pre_Approval_Date__c == null) {
+                    continue;
+                }
+                if (metric == 'showedThenNurtured' && !showedStatusesByLeadId.containsKey(leadRecord.Id)) {
                     continue;
                 }
                 Date effectiveWebinarDate = leadRecord.Webinar_Date__c;
@@ -642,8 +717,11 @@ public with sharing class PipelineCommandCenterController {
                 if (isSocial && !allCohorts && leadRecord.LeadSource != cohortLabel) {
                     continue;
                 }
+                String statusText = showedStatusesByLeadId.containsKey(leadRecord.Id)
+                    ? leadRecord.Status + ' (reached ' + String.join(showedStatusesByLeadId.get(leadRecord.Id), ', ') + ')'
+                    : leadRecord.Status;
                 rows.add(new MarketingRawDataRow(
-                    leadRecord.Id, leadRecord.Name, 'Lead', leadRecord.LeadSource, leadRecord.Status,
+                    leadRecord.Id, leadRecord.Name, 'Lead', leadRecord.LeadSource, statusText,
                     leadRecord.Owner == null ? null : leadRecord.Owner.Name,
                     leadRecord.Realtor_Buying_Agent__r == null ? null : leadRecord.Realtor_Buying_Agent__r.Name,
                     leadRecord.CreatedDate,
@@ -682,6 +760,7 @@ public with sharing class PipelineCommandCenterController {
     private static WebinarMarketingDashboardData buildMarketingDashboard(Set<String> leadSources) {
         WebinarMarketingDashboardData dashboard = new WebinarMarketingDashboardData();
         Map<String, WebinarCohortRow> cohortsByKey = new Map<String, WebinarCohortRow>();
+        Map<Id, WebinarCohortRow> cohortByNurturedLeadId = new Map<Id, WebinarCohortRow>();
 
         for (Lead leadRecord : [
             SELECT Id, Webinar_Date__c, Status, Pre_Approval_Date__c,
@@ -705,6 +784,16 @@ public with sharing class PipelineCommandCenterController {
                 dashboard.preApprovalCount++;
             }
             incrementStatus(cohort.leadStatusCounts, leadRecord.Status);
+            if (leadRecord.Status == NURTURING_LEAD_STATUS) {
+                cohort.nurturingCount++;
+                dashboard.nurturingCount++;
+                cohortByNurturedLeadId.put(leadRecord.Id, cohort);
+            }
+        }
+
+        for (Id leadId : showedForApptStatusesByLeadId(cohortByNurturedLeadId.keySet()).keySet()) {
+            cohortByNurturedLeadId.get(leadId).showedThenNurturedCount++;
+            dashboard.showedThenNurturedCount++;
         }
 
         for (Transaction__c transactionRecord : [
@@ -725,17 +814,53 @@ public with sharing class PipelineCommandCenterController {
         dashboard.leadToPreApprovalRate = percentageText(dashboard.preApprovalCount, dashboard.leadCount);
         dashboard.preApprovalToTransactionRate = percentageText(dashboard.transactionCount, dashboard.preApprovalCount);
         dashboard.leadToFundedRate = percentageText(dashboard.fundedOrPostClosedCount, dashboard.leadCount);
+        dashboard.showedThenNurturedRate = percentageText(dashboard.showedThenNurturedCount, dashboard.nurturingCount);
         dashboard.cohorts = new List<WebinarCohortRow>();
         for (WebinarCohortRow cohort : cohortsByKey.values()) {
             cohort.leadToPreApprovalRate = percentageText(cohort.preApprovalCount, cohort.leadCount);
             cohort.preApprovalToTransactionRate = percentageText(cohort.transactionCount, cohort.preApprovalCount);
             cohort.leadToFundedRate = percentageText(cohort.fundedOrPostClosedCount, cohort.leadCount);
+            cohort.showedThenNurturedRate = percentageText(cohort.showedThenNurturedCount, cohort.nurturingCount);
             cohort.leadStatusMix = statusMixText(cohort.leadStatusCounts);
             cohort.transactionStatusMix = statusMixText(cohort.transactionStatusCounts);
             dashboard.cohorts.add(cohort);
         }
         dashboard.cohorts.sort();
         return dashboard;
+    }
+
+    // Nurtured Lead Id -> the post-appointment statuses its history reached, in first-seen order.
+    // Leads that never got past the contact-attempt statuses are left out.
+    private static Map<Id, List<String>> showedForApptStatusesByLeadId(Set<Id> nurturedLeadIds) {
+        Map<Id, List<String>> statusesByLeadId = new Map<Id, List<String>>();
+        if (nurturedLeadIds.isEmpty()) {
+            return statusesByLeadId;
+        }
+        for (LeadHistory historyRecord : [
+            SELECT LeadId, OldValue, NewValue
+            FROM LeadHistory
+            WHERE Field = 'Status' AND LeadId IN :nurturedLeadIds
+            ORDER BY CreatedDate
+        ]) {
+            for (Object value : new List<Object>{ historyRecord.OldValue, historyRecord.NewValue }) {
+                String status = value == null ? null : String.valueOf(value);
+                if (!isShowedForApptStatus(status)) {
+                    continue;
+                }
+                if (!statusesByLeadId.containsKey(historyRecord.LeadId)) {
+                    statusesByLeadId.put(historyRecord.LeadId, new List<String>());
+                }
+                if (!statusesByLeadId.get(historyRecord.LeadId).contains(status)) {
+                    statusesByLeadId.get(historyRecord.LeadId).add(status);
+                }
+            }
+        }
+        return statusesByLeadId;
+    }
+
+    @TestVisible
+    private static Boolean isShowedForApptStatus(String status) {
+        return String.isNotBlank(status) && !PRE_APPOINTMENT_LEAD_STATUSES.contains(status);
     }
 
     private static WebinarCohortRow getWebinarCohort(Map<String, WebinarCohortRow> cohortsByKey, Date webinarDate) {
@@ -958,7 +1083,10 @@ public with sharing class PipelineCommandCenterController {
             return accountIds;
         }
         List<Account> scopedAccounts;
-        if (OWNER_SCOPED_REALTOR_HOSTS.containsKey(loLabel)) {
+        if (DESIGNATION_SCOPED_REALTOR_HOSTS.containsKey(loLabel)) {
+            String designationOnly = DESIGNATION_SCOPED_REALTOR_HOSTS.get(loLabel);
+            scopedAccounts = [SELECT Id FROM Account WHERE Biz_Dev_Designation__c = :designationOnly];
+        } else if (OWNER_SCOPED_REALTOR_HOSTS.containsKey(loLabel)) {
             // These hosts have no realtors assigned via Nickley_Realtor_LO__c, so their list is the
             // realtors they own or that carry their Biz Dev designation. The second clause keeps
             // consumer Person Accounts they own out of what is presented as a Realtor list.
@@ -1642,6 +1770,40 @@ public with sharing class PipelineCommandCenterController {
             Status = 'Completed',
             CallType = 'Outbound',
             Description = 'Manual call logged from Ben Bondarevsky\'s Past Client Command Center.'
+        );
+        insert manualCall;
+        return manualCall.Id;
+    }
+
+    // Manual Call Log on Ben's Pre-Approval tabs. Owned by Ben (not the clicker) because every one
+    // of those tabs only resets its rotation on an outbound call Task owned by Ben on the Lead.
+    @AuraEnabled
+    public static Id logBenPreApprovalManualCall(Id leadId) {
+        if (leadId == null) {
+            throw new AuraHandledException('A Lead is required.');
+        }
+        Id benUserId = activeUserIdByUsername(BEN_BONDAREVSKY_USERNAME);
+        if (benUserId == null) {
+            throw new AuraHandledException('Ben Bondarevsky is not an active user.');
+        }
+        List<Lead> leads = [SELECT Id, Status FROM Lead WHERE Id = :leadId LIMIT 1];
+        if (leads.isEmpty()) {
+            throw new AuraHandledException('Unable to locate that Lead.');
+        }
+        if (leads[0].Status != 'Pre-Approval') {
+            throw new AuraHandledException('Manual calls can only be logged here for leads in Pre-Approval status.');
+        }
+        Task manualCall = new Task(
+            WhoId = leadId,
+            OwnerId = benUserId,
+            Subject = 'Manual Ben Call - Pre-Approval',
+            ActivityDate = Date.today(),
+            Status = 'Completed',
+            CallType = 'Outbound',
+            InteractionType__c = 'Call',
+            rcsfl__call_start_time__c = System.now(),
+            Direction__c = 'Outbound',
+            Description = 'Manual Ben call logged from Ben Bondarevsky\'s Pre-Approval Command Center tab. Call was placed outside RingCentral.'
         );
         insert manualCall;
         return manualCall.Id;
@@ -3887,6 +4049,24 @@ public with sharing class PipelineCommandCenterController {
         return rows;
     }
 
+    @TestVisible
+    private static List<PipelineRow> buildAllOwnedLeads(Id ownerId) {
+        List<PipelineRow> rows = new List<PipelineRow>();
+        for (Lead leadRecord : [
+            SELECT Id, Name, Status, CreatedDate, LastActivityDate, LeadSource, Phone, Email,
+                Appointment_Date_Time__c, Pre_Approval_Date__c, Loan_Details__c, Loan_Amount__c, Loan_Purpose__c,
+                Biz_Dev__c, Realtor_Buying_Agent__r.Name, Loan_Partner__r.Name, Owner.Name
+            FROM Lead
+            WHERE IsConverted = false
+            AND OwnerId = :ownerId
+            ORDER BY LastModifiedDate DESC
+            LIMIT 500
+        ]) {
+            rows.add(new PipelineRow(leadRecord));
+        }
+        return rows;
+    }
+
     private static List<PipelineRow> buildAssignedLeadsForBizDev(Set<Id> leadScopeUserIds, Integer rowLimit, Date minimumCreatedDate, String bizDevValue) {
         List<PipelineRow> rows = new List<PipelineRow>();
         if (String.isBlank(bizDevValue)) {
@@ -5003,33 +5183,46 @@ public with sharing class PipelineCommandCenterController {
                 new Set<Id>{ currentUserId }
             ));
         }
+        // Joey also takes his own leads now: Megan's My Leads tab set, scoped to him as owner.
+        tabs.addAll(buildOwnLoanOfficerTabs(
+            currentUserId,
+            buildLeadRowsByOwnerScope(new Set<Id>{ currentUserId }, null, null, false, 'active', 50)
+        ));
         return tabs;
+    }
+
+    // The "My Leads" tab set: an LO's own leads and transactions. Megan's and Joey's Command
+    // Centers both use it; the LWC groups these exact keys under the My Leads master tab.
+    private static List<PipelineTab> buildOwnLoanOfficerTabs(Id ownerId, List<PipelineRow> ownActiveLeadRows) {
+        Set<Id> ownerIds = new Set<Id>{ ownerId };
+        List<TableColumn> leadColumns = buildLoanOfficerLeadColumns();
+        List<TableColumn> preApprovalLeadColumns = buildPreApprovalLeadColumns();
+        List<TableColumn> transactionColumns = buildLoanOfficerTransactionColumns();
+        return new List<PipelineTab>{
+            new PipelineTab('assigned', 'Active Leads', 'Your own active leads in contact, application, document, and contract statuses.', 'Lead', applyLoanOfficerLeadCells(ownActiveLeadRows), leadColumns),
+            new PipelineTab('newLeadAlerts', 'New Leads Alert', 'Your own leads currently in New status.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'new', 50)), leadColumns),
+            new PipelineTab('stagnant', 'Stagnant Leads', 'Your own open leads with no activity in the last 7 days.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'stagnant', 50)), leadColumns),
+            new PipelineTab('activePreApprovals', 'Active Pre-Approvals', 'Your own leads currently in Pre-Approval status.', 'Lead', applyPreApprovalLeadCells(buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'activePreApproval', 100)), preApprovalLeadColumns),
+            new PipelineTab('stagnantPreApprovals', 'Stagnant Pre-Approvals', 'Your own pre-approved leads without RingCentral call, SMS, or email activity for 6+ days.', 'Lead', applyPreApprovalLeadCells(buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'stagnantPreApproval', 50)), preApprovalLeadColumns),
+            new PipelineTab('preApprovalCallsToday', 'Pre-Approval Calls Today', 'Your own pre-approved leads with an event today or no future event scheduled.', 'Lead', buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'preApprovalCallsToday', 100), buildPreApprovalCallsTodayColumns()),
+            new PipelineTab('attention', 'Leads Needing Attention', 'Your own purchase leads matching the Lead Appointment Report attention criteria.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'attention', 50)), leadColumns),
+            new PipelineTab('eventsToday', 'Leads with Events Today', 'Your own leads with calendar events scheduled today.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(ownerIds, null, null, false, 'eventsToday', 50)), leadColumns),
+            new PipelineTab('disclosuresNeedingSigned', 'Disclosures Needing Signed', 'Your own transactions in Disclosures Out status where disclosures have not been received.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(ownerIds, null, null, false, 'disclosures', 100)), transactionColumns),
+            new PipelineTab('loanOfficerActiveTransactions', 'My Active Transactions', 'Your own transactions that are still in active statuses.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(ownerIds, null, null, false, 'active', 100)), transactionColumns),
+            new PipelineTab('loanOfficerClosedThisMonth', 'Transactions Closed this Month', 'Your own funded, review, and post-closed files with a funding date in the current month.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(ownerIds, null, null, false, 'closedThisMonth', 100)), transactionColumns)
+        };
     }
 
     private static List<PipelineTab> buildMeganPartnerPipelineTabs(List<PipelineRow> ownActiveLeadRows) {
         Id meganUserId = UserInfo.getUserId();
-        Set<Id> meganUserIds = new Set<Id>{ meganUserId };
         User brandon = getActiveUserByUsername(BRANDON_BROTSKY_USERNAME);
         Id brandonUserId = brandon == null ? null : brandon.Id;
         User zach = getActiveUserByUsername(ZACHARY_FRITZ_USERNAME);
         Id zachUserId = zach == null ? null : zach.Id;
         List<TableColumn> leadColumns = buildLoanOfficerLeadColumns();
-        List<TableColumn> preApprovalLeadColumns = buildPreApprovalLeadColumns();
         List<TableColumn> transactionColumns = buildLoanOfficerTransactionColumns();
 
-        List<PipelineTab> tabs = new List<PipelineTab>{
-            new PipelineTab('assigned', 'Active Leads', 'Your own active leads in contact, application, document, and contract statuses.', 'Lead', applyLoanOfficerLeadCells(ownActiveLeadRows), leadColumns),
-            new PipelineTab('newLeadAlerts', 'New Leads Alert', 'Your own leads currently in New status.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'new', 50)), leadColumns),
-            new PipelineTab('stagnant', 'Stagnant Leads', 'Your own open leads with no activity in the last 7 days.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'stagnant', 50)), leadColumns),
-            new PipelineTab('activePreApprovals', 'Active Pre-Approvals', 'Your own leads currently in Pre-Approval status.', 'Lead', applyPreApprovalLeadCells(buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'activePreApproval', 100)), preApprovalLeadColumns),
-            new PipelineTab('stagnantPreApprovals', 'Stagnant Pre-Approvals', 'Your own pre-approved leads without RingCentral call, SMS, or email activity for 6+ days.', 'Lead', applyPreApprovalLeadCells(buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'stagnantPreApproval', 50)), preApprovalLeadColumns),
-            new PipelineTab('preApprovalCallsToday', 'Pre-Approval Calls Today', 'Your own pre-approved leads with an event today or no future event scheduled.', 'Lead', buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'preApprovalCallsToday', 100), buildPreApprovalCallsTodayColumns()),
-            new PipelineTab('attention', 'Leads Needing Attention', 'Your own purchase leads matching the Lead Appointment Report attention criteria.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'attention', 50)), leadColumns),
-            new PipelineTab('eventsToday', 'Leads with Events Today', 'Your own leads with calendar events scheduled today.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(meganUserIds, null, null, false, 'eventsToday', 50)), leadColumns),
-            new PipelineTab('disclosuresNeedingSigned', 'Disclosures Needing Signed', 'Your own transactions in Disclosures Out status where disclosures have not been received.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(meganUserIds, null, null, false, 'disclosures', 100)), transactionColumns),
-            new PipelineTab('loanOfficerActiveTransactions', 'My Active Transactions', 'Your own transactions that are still in active statuses.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(meganUserIds, null, null, false, 'active', 100)), transactionColumns),
-            new PipelineTab('loanOfficerClosedThisMonth', 'Transactions Closed this Month', 'Your own funded, review, and post-closed files with a funding date in the current month.', 'Transaction__c', applyLoanOfficerTransactionCells(buildTransactionRowsByLoanOfficerScope(meganUserIds, null, null, false, 'closedThisMonth', 100)), transactionColumns)
-        };
+        List<PipelineTab> tabs = buildOwnLoanOfficerTabs(meganUserId, ownActiveLeadRows);
 
         if (brandonUserId != null) {
             tabs.add(new PipelineTab('brandonActiveLeads', 'Brandon Active Leads', 'Brandon Brotsky leads where you are the Loan Partner.', 'Lead', applyLoanOfficerLeadCells(buildLeadRowsByOwnerScope(new Set<Id>(), brandonUserId, meganUserId, true, 'active', 50)), leadColumns));
@@ -5152,6 +5345,19 @@ public with sharing class PipelineCommandCenterController {
         tabs.add(buildRealtorLeadTab('benRealtorMeetingComplete', 'Realtor - Meeting Complete', 'Realtor leads owned by Ben in Meeting Complete status.', 'Meeting Complete'));
         tabs.add(buildRealtorLeadTab('benRealtorActive', 'Realtor - Active', 'Realtor leads owned by Ben in Active status.', 'Active'));
         tabs.add(buildRealtorLeadTab('benRealtorWorking', 'Realtor - Working', 'Realtor leads owned by Ben in Working status.', 'Working'));
+        // Same rows, columns, cadence colouring and logging actions as the Realtor Management tab
+        // Joe and Zach use -- only the scope differs (Biz Dev - Bondarevsky instead of a Nickley
+        // assignment). Key must stay benRealtor* so it lands in Ben's Realtors master tab.
+        PipelineTab realtorAccountsTab = new PipelineTab(
+            'benRealtorAccounts',
+            'Realtor Accounts (BizDev Ben)',
+            'Realtor partners carrying the Biz Dev - Bondarevsky designation.',
+            'Account',
+            buildNickleyRealtorRows('Ben Bondarevsky'),
+            buildNickleyRealtorColumns()
+        );
+        realtorAccountsTab.rowsLoaded = true;
+        tabs.add(realtorAccountsTab);
         return tabs;
     }
 
@@ -9287,6 +9493,9 @@ public with sharing class PipelineCommandCenterController {
         @AuraEnabled public String leadToPreApprovalRate { get; set; }
         @AuraEnabled public String preApprovalToTransactionRate { get; set; }
         @AuraEnabled public String leadToFundedRate { get; set; }
+        @AuraEnabled public Integer nurturingCount { get; set; }
+        @AuraEnabled public Integer showedThenNurturedCount { get; set; }
+        @AuraEnabled public String showedThenNurturedRate { get; set; }
         @AuraEnabled public List<WebinarCohortRow> cohorts { get; set; }
 
         public WebinarMarketingDashboardData() {
@@ -9297,6 +9506,9 @@ public with sharing class PipelineCommandCenterController {
             leadToPreApprovalRate = 'N/A';
             preApprovalToTransactionRate = 'N/A';
             leadToFundedRate = 'N/A';
+            nurturingCount = 0;
+            showedThenNurturedCount = 0;
+            showedThenNurturedRate = 'N/A';
             cohorts = new List<WebinarCohortRow>();
         }
     }
@@ -9337,6 +9549,9 @@ public with sharing class PipelineCommandCenterController {
         @AuraEnabled public String leadToPreApprovalRate { get; set; }
         @AuraEnabled public String preApprovalToTransactionRate { get; set; }
         @AuraEnabled public String leadToFundedRate { get; set; }
+        @AuraEnabled public Integer nurturingCount { get; set; }
+        @AuraEnabled public Integer showedThenNurturedCount { get; set; }
+        @AuraEnabled public String showedThenNurturedRate { get; set; }
         @AuraEnabled public String leadStatusMix { get; set; }
         @AuraEnabled public String transactionStatusMix { get; set; }
         public Date webinarDate { get; set; }
@@ -9355,6 +9570,9 @@ public with sharing class PipelineCommandCenterController {
             leadToPreApprovalRate = 'N/A';
             preApprovalToTransactionRate = 'N/A';
             leadToFundedRate = 'N/A';
+            nurturingCount = 0;
+            showedThenNurturedCount = 0;
+            showedThenNurturedRate = 'N/A';
             leadStatusMix = 'None yet';
             transactionStatusMix = 'None yet';
         }

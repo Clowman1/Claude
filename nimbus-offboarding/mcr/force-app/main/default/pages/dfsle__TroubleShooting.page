@@ -1,0 +1,38 @@
+<apex:page sidebar="false" showHeader="true" controller="dfsle.TroubleShootingController">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__loginUtils}"/>
+
+    <style type="text/css">
+        /* CSS to override default padding applied in Lightning Experience */
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        /* CSS to override default padding applied in Classic Experience */
+        .bodyDiv .outerNoSidebar, .noSidebarCell, .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        /* CSS for background image */
+        .ds-whiteBackground {
+            background: rgb(255, 255, 255);
+        }
+    </style>
+
+    <div id="ds-pageContent">
+        <div id="ds-troubleShooting" class="ds-whiteBackground">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      $Lightning.use('{!JSENCODE(namespace)}:TroubleShootingApp', function () {
+        $Lightning.createComponent('{!JSENCODE(namespace)}:troubleShooting', {}, 'ds-troubleShooting', function () {
+        });
+      });
+    </script>
+
+    </html>
+</apex:page>

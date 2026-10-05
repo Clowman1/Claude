@@ -1,0 +1,42 @@
+<template>
+    <!-- <div class="container">
+        <h3>Daily Progress</h3>
+        <hr/>
+    </div> -->
+
+    <lightning-card>
+
+        <h3 slot="title">
+            <lightning-icon icon-name="standard:dataset" size="small" class="brand-color-utility-icon"></lightning-icon>
+            <span class="icon-text slds-m-left_small" >Log Activity</span>
+        </h3>
+
+        <!-- <lightning-button label="New Activity" slot="actions"></lightning-button> -->
+        <div class="content-outer slds-p-horizontal_medium">
+            <div class="slds-p-top_x-small" style="border-top: solid 1px #ededed">
+
+                <lightning-layout >
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button icon-name="utility:call" label="Add Call" title="Add Call" onclick={handleAddCall} variant="neutral"></lightning-button>
+                    </lightning-layout-item>
+                
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button icon-name="utility:sms" label="Add Text" title="Add Text" onclick={handleAddText} variant="neutral"></lightning-button>
+                    </lightning-layout-item>
+                
+                    <lightning-layout-item  padding="around-small">
+                        <lightning-button icon-name="utility:email" label="Add Email" title="Add Email" onclick={handleAddEmail} variant="neutral"></lightning-button>
+                    </lightning-layout-item>
+                
+                    <lightning-layout-item  padding="around-small">
+                        <lightning-button icon-name="utility:event" label="Add Meeting" title="Add Meeting" onclick={handleAddMeeting} variant="neutral"></lightning-button>
+                    </lightning-layout-item>
+                
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button icon-name="utility:home" label="Add Open House" title="Add Open House" onclick={handleAddOpenHouse} variant="neutral"></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+    </lightning-card>
+</template>

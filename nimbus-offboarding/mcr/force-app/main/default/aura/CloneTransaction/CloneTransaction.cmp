@@ -1,0 +1,8 @@
+<aura:component description="CloneTransaction" implements="force:hasRecordId,flexipage:availableForAllPageTypes,force:lightningQuickAction" controller="TransactionController">
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <lightning:layout horizontalAlign="center">
+        <lightning:layoutItem >
+            <p style="font-size: 15px">...Please wait while Transaction is cloning</p>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

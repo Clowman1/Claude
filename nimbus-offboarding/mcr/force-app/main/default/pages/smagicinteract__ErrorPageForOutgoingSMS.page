@@ -1,0 +1,8 @@
+<apex:page standardController="smagicinteract__smsMagic__c">
+
+<apex:pageBlock title="{!$Label.smagicinteract__error_title}" >
+
+	 {!$Label.smagicinteract__out_err_msg}
+	   
+</apex:pageBlock>
+</apex:page>

@@ -1,0 +1,66 @@
+<apex:page id="CompleteSalesforceOAuth" controller="dfsle.AuthController" title="{!$Label.dfsle__DocuSign}" showHeader="false"
+           sideBar="false">
+    <apex:slds />
+
+    <apex:includeScript value="{!$Resource.dfsle__loginUtils}"/>
+
+    <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+        <span class="slds-assistive-text">{!$Label.Loading}</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+    </div>
+
+    <script>
+      function endOAuth(response, loginInformation) {
+        if (loginInformation
+          && loginInformation.type === loginUtils.Type.DEVELOPER
+          && loginInformation.target) {
+
+          // ensure exactly one leading slash for local path
+          var redirectTo = '/' + loginInformation.target.replace(/^\/+/, '');
+          // append status and message to query string
+          if (redirectTo.indexOf('?') === -1) {
+            redirectTo += '?dfsle__status=' + encodeURIComponent(loginInformation.status);
+          } else {
+            redirectTo += '&dfsle__status=' + encodeURIComponent(loginInformation.status);
+          }
+          if (loginInformation.status === 'Failure' && loginInformation.message) {
+            redirectTo += '&dfsle__message=' + encodeURIComponent(loginInformation.message);
+          }
+
+          // do the redirect
+          if (typeof sforce !== 'undefined' && sforce && (!!sforce.one)) {
+            sforce.one.navigateToURL(redirectTo, true);
+          } else {
+            window.location.replace(redirectTo);
+          }
+        } else if (window.opener) {
+          var oauthComplete = false;
+          try {
+            if (window.opener.endSalesforceOAuth) {
+              window.opener.endSalesforceOAuth(response, loginInformation);
+              oauthComplete = true;
+            }
+          } catch {
+          } finally {
+            if (!oauthComplete && loginInformation && loginInformation.target) {
+              window.opener.postMessage({
+                response: response,
+                loginInformation: loginInformation
+              }, loginInformation.target);
+            }
+            window.close();
+          }
+        }
+      }
+
+      Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AuthController.completeSalesforceOAuth}',
+        '{!JSENCODE($CurrentPage.parameters.code)}',
+        '{!JSENCODE($CurrentPage.parameters.state)}',
+        '{!JSENCODE($CurrentPage.parameters.error)}',
+        '{!JSENCODE($CurrentPage.parameters.error_message)}' || '{!JSENCODE($CurrentPage.parameters.error_description)}',
+        function (loginInformation, response) {
+          endOAuth(response, loginInformation);
+        });
+    </script>
+</apex:page>

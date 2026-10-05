@@ -1,0 +1,19 @@
+<apex:page title="{!$Label.dfsle__DocuSign}" controller="dfsle.EnvelopeActionSummaryController" action="{!handleEnvelopeAction}">
+  <apex:includeLightning />
+  <div id="postEnvelopeActionId" />
+  <script>
+    var _sourceId = '{!JSENCODE($CurrentPage.parameters.sId)}';
+    var _event = '{!JSENCODE($CurrentPage.parameters.event)}';
+    var _namespace = '{!JSENCODE(namespace)}';
+    $Lightning.use(_namespace + ':EnvelopeActionSummary', function () {
+      $Lightning.createComponent(_namespace + ':postEnvelopeAction',
+        {
+          recordId: _sourceId,
+          eventResult: _event
+        },
+        "postEnvelopeActionId",
+        function (cmp) {
+        });
+    });
+  </script>
+</apex:page>

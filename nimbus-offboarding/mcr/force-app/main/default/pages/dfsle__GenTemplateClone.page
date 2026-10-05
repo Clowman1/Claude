@@ -1,0 +1,59 @@
+<apex:page sidebar="false" showHeader="true" standardController="dfsle__GenTemplate__c"
+           extensions="dfsle.GenController" title="{!$Label.dfsle__DocuSign}">
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+
+    <style type="text/css">
+        .bodyDiv {
+            min-height: 320px;
+        }
+    </style>
+
+    <div id="lightning">
+        <div id="spinner">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">{!$Label.Loading}</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="error" class="slds-container slds-container_large slds-container_center slds-p-around_large"
+         style="display: none">
+        <div class="slds-notify_container slds-is-relative">
+            <div class="slds-notify slds-notify_toast slds-theme_error slds-size_1-of-1 slds-m-around_none slds-p-right_large slds-grid_align-center"
+                 role="status">
+                <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top"
+                      title="Error">
+                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                             xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#error')}"></use>
+                    </svg>
+                </span>
+                <div class="slds-notify__content">
+                    <h2 id="errorMessage" class="slds-text-heading_small"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var errorMessage = '{!JSENCODE($Label.FailedToCloneGenTemplate)}';
+        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.GenController.clone}', '{!GenTemplate__c.Id}',
+            function (result, event) {
+                if (event.status === true) {
+                    var cloneRecordId = result.id;
+                    navUtils.navigateToSObject(cloneRecordId);        
+                }
+                else {
+                    document.getElementById('spinner').style.display = 'none';
+                    document.getElementById('error').style.display = 'block';
+                    document.getElementById('errorMessage').innerHTML = stringUtils.format('{0} {1}', errorMessage, event.message);
+                    
+                }
+            });
+    </script>
+
+</apex:page>

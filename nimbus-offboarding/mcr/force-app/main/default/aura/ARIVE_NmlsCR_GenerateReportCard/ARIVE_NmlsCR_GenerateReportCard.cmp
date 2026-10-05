@@ -1,0 +1,66 @@
+<!--
+ - Created by Zeyad Jabra on 8/17/2019.
+ -->
+
+<aura:component controller="ARIVE_NmlsCallReportController" description="ARIVE_NmlsCR_GenerateReportCard">
+    <aura:attribute name="report" type="Object" required="true" access="global"/>
+    <aura:attribute name="step" type="Integer" required="true" access="global"/>
+    <aura:attribute name="isLoading" type="Boolean"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:card title="Select Date Range For Report" variant="base">
+        <aura:set attribute="actions">
+            <lightning:button class="slds-theme_brand arive-generate-report-button" onclick="{!c.generateReportData}"
+                              variant="brand" label="Generate Report"/>
+        </aura:set>
+
+        <aura:if isTrue="{! !v.isLoading}">
+            <lightning:layout class="slds-p-horizontal-small">
+                <lightning:layoutItem size="6" padding="horizontal-small">
+                    <lightning:select name="quarter" label="Select Quarter" value="{!v.report.quarter}">
+                        <option value="1">Q1</option>
+                        <option value="2">Q2</option>
+                        <option value="3">Q3</option>
+                        <option value="4">Q4</option>
+                    </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem size="6" padding="horizontal-small">
+                    <lightning:select name="year" label="Select Year" value="{!v.report.year}">
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                    </lightning:select>
+                </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout multipleRows="true" class="slds-p-around-medium">
+                <lightning:layoutItem size="12">
+                    <div class="slds-text-heading-small slds-text-color_weak slds-float-left slds-p-bottom-small">
+                        Select States to report on:
+                    </div>
+                </lightning:layoutItem>
+                <aura:if isTrue="{!v.report.states}">
+                    <aura:iteration items="{!v.report.states}" var="state">
+                        <lightning:layoutItem>
+                            <lightning:input checked="{!state.value}" type="checkbox" label="{!state.name}"
+                                             variant="standard"></lightning:input>
+                        </lightning:layoutItem>
+                    </aura:iteration>
+                </aura:if>
+            </lightning:layout>
+
+            <aura:set attribute="else">
+                <lightning:layout horizontalAlign="center" verticalAlign="center">
+                    <lightning:layoutItem padding="around-large">
+                        <!--                        <img src="{!$Resource.nmlscr_generatingReport}"/><br/>-->
+                        <p class="slds-p-around_x-small">Generating Report...</p>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </aura:set>
+        </aura:if>
+    </lightning:card>
+</aura:component>

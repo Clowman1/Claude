@@ -69,3 +69,5 @@ section.card { overflow: hidden; }
     .grid2, .split { flex-direction: column; }
     .colside, .plist { width: 100%; }
 }
+.col-over { outline: 2px dashed #244d8f; outline-offset: -2px; background: #e6eefb; }
+.kcard[draggable="true"] { cursor: grab; }

@@ -1,0 +1,213 @@
+<apex:page controller="smagicinteract.SMHomeController" tabStyle="SM_Home__tab" action="{!chkOpenSetupWizard}">
+    
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+<apex:includeScript value="{!$Resource.smagicinteract__jquery}" />
+<script>
+
+   $(document).ready(function(){    
+   updatemeter();
+   detectBrowser();
+   });
+   function addHistory(){
+		var stateObj = { };
+    	var currentUrl = window.location.href;
+		history.pushState(stateObj, null, currentUrl);
+	}
+    function redirectTo(url,retURL){
+    	if(typeof sforce !='undefined' && sforce.one) {
+                addHistory();
+                sforce.one.navigateToURL(url,true);
+            }
+            else {
+                window.location.href = url+'?retURL='+retURL;
+            }
+    }   
+    function openTab(url){
+    	if(typeof sforce !='undefined' && sforce.one) {
+    			addHistory();
+    	        var urlArray = url.split('apex/');
+    	        var packageUrl = '/apex/smagicinteract__'+urlArray[1];
+                sforce.one.navigateToURL(packageUrl,true);
+            }
+            else {   
+                window.open(url);
+            }
+    }
+    function detectBrowser() {
+        if(!(typeof InstallTrigger !== 'undefined' && sforce && sforce.one)){
+    		var link = document.getElementById('smsMagicLink');
+        	link.setAttribute('target', '_blank');
+        }
+    }
+    function updatemeter() { 
+
+     var stepComplete = document.getElementById('{!$Component.stepcomplete}').innerHTML;              
+     if( stepComplete == 6 ) { 
+       document.getElementById('progressbar-container').style.visibility = "hidden" ; 
+     }  
+     else {                                   
+       document.getElementById('stepinfotext').innerHTML = stepComplete ;
+       var complete = (stepComplete/6)*150 ;
+       document.getElementById('iprogressbar').style.width = complete + 'px'  ;                
+     }              
+    }
+                  
+</script>
+
+<style type="text/css">
+        .custPopup{
+            background-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #000000;
+            z-index: 9999;
+            padding:10px;
+            position: absolute;
+            width: 350px;
+            left:40%;
+            top:250px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        #progressbar {
+            background-color: #fff; 
+            border: solid 1px grey;
+            padding: 0px;
+            width:150px;    
+        }
+        
+        #iprogressbar {
+            background-color: #2AABAB ;
+            width: 00px; /* Adjust with JavaScript */
+            height: 15px;   
+        }    
+
+</style>
+<c:Expired_Message_Component isPanelVisible="{!showExpiredMessage}"/>
+
+<c:subscriptionChangeMessage showPanel="{!showSubscriptionChangeMessage}" />
+<apex:outputPanel rendered="{!isVisible}" >
+ 
+<apex:outputtext value="{!stepComplete}" id="stepcomplete"   style="display:none"   /> 
+    
+<apex:sectionHeader title="{!$Label.smagicinteract__smhome_page_section_title} - {!$User.FirstName} {!$User.LastName}" subtitle="{!$Label.smagicinteract__smhome_page_section_subtitle}"/>
+       		<div id="progressbar-container" >
+       			<a href="#" onclick="redirectTo('/apex/smagicinteract__SetupWizard')">
+        			<div id="progressbar" style="float:right;width:150px">
+            			<div id="iprogressbar"></div>
+        			</div>
+        			<span style="float:right;margin-right:20px;vertical-align:middle;"> {!$Label.SETP_WIZRD_STEPS_COMPLTN_MSG} <span id="stepinfotext"></span> {!$Label.SETP_WIZRD_STEPS_COMPLTN_MSG1}</span>
+        			<div style="clear:both;"></div>
+       		 	</a>
+       		</div>
+       <br/>
+<apex:pageBlock title="{!$Label.smagicinteract__smhome_page_section_title}" >
+<apex:form >
+<apex:outputPanel >
+    	<apex:commandLink style="float:right" value="{!$Label.smagicinteract__help_msg}" id="theCommandLink" title="{!$Label.smagicinteract__help_msg}" onclick="openTab('{!helpLink}');return false;" />    
+    </apex:outputPanel><br/><br/>
+
+<apex:pageMessages id="pgMsg" escape="false"/>
+
+<apex:outputPanel styleClass="popupBackground"  rendered="{!isConfigurationDone}"/>
+<apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isConfigurationDone}"  >
+<div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+       <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;"> {!$Label.PENDING_CONFIGURATION_MSG_HEADER}  </div> 
+</div>
+       <br /><br />
+       <apex:outputPanel style="font-size:15px;">
+{!$Label.smagicinteract__pending_configuration_msg_body} <br/><br/><br/><br/>
+       </apex:outputPanel>
+       <apex:outputPanel >
+       <table width ="100%">
+       <tr>
+       <td align="center">
+                <apex:commandButton title="{!$Label.smagicinteract__pending_configuration_msg_ok_button}" value="  {!$Label.smagicinteract__pending_configuration_msg_ok_button}  " action="{!openSetUpWizard}"/>
+       </td>
+       </tr>
+       </table>
+       </apex:outputPanel>
+</apex:outputPanel>
+
+<apex:pageBlockSection title="" columns="2" rendered="{!showRegistration}">
+<apex:facet name="header"> {!$Label.smagicinteract__smhome_registration_section_title} </apex:facet>
+<apex:outputText value="{!$Label.smagicinteract__smhome_registration_header}" />
+<apex:actionFunction name="executeWS" action="{!executeWS}"></apex:actionFunction>
+<apex:commandButton action="{!manualRegister}" value="{!$Label.smagicinteract__smhome_register_button}" onComplete="executeWS();"/>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="" columns="1" rendered="{!showApiKeyConfiguration}">
+<apex:facet name="header"> {!$Label.smagicinteract__smhome_api_key_title} </apex:facet>
+<apex:outputLabel value="{!$Label.smagicinteract__setup_step_2_api_key_label}" for="apiKey"/>
+<apex:inputText value="{!apiKey}" id="apiKey" maxlength="256"/>
+<apex:commandButton value="{!$Label.smagicinteract__save_button}" action="{!saveApiKey}"/>
+</apex:pageBlockSection>
+</apex:form>
+<apex:pageBlockSection title="" columns="2">
+<apex:facet name="header"> {!$Label.smagicinteract__sms_magic_info_title} </apex:facet>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="{!$Label.smagicinteract__accountid_label}" for="accountId"/>
+<apex:outputText value="{!accountId}"  id="accountId"/>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem rendered="{!IF(usingThirdPartyPipe, false, true)}">
+<apex:outputLabel value="{!$Label.smagicinteract__remaining_credits_label}" for="availableCredits"   />
+<apex:outputText value=""  id="availableCredits">
+{!availableCredits}
+&nbsp;&nbsp;&nbsp;<a id="smsMagicLink" target="" href="https://sms-magic.com/pricing/topup" style="color:red;">{!$Label.CREDITS_BUY_LINK}
+</a>
+</apex:outputText>
+</apex:pageBlockSectionItem>
+<apex:pageBlockSectionItem >
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+<apex:outputLabel value="{!$Label.smagicinteract__package_type_label}" for="pkgType"   />
+<apex:outputText value=""  id="pkgType">
+{!pkgType}   
+</apex:outputText>
+</apex:pageBlockSectionItem>
+
+<apex:pageBlockSectionItem >
+</apex:pageBlockSectionItem>
+
+
+</apex:pageBlockSection>
+
+
+<apex:pageBlockSection title="" columns="1"  rendered="{!isRegistered}">
+<apex:facet name="header"> {!$Label.smagicinteract__recent_sms_section_title} </apex:facet>
+<apex:enhancedList type="smagicinteract__smsMagic__c" height="300"></apex:enhancedList>
+</apex:pageBlockSection>
+
+
+<apex:pageBlockSection title="" columns="1"  rendered="{!isRegistered}">
+<apex:facet name="header"> {!$Label.smagicinteract__recent_inbound_sms_section_title} </apex:facet>
+<apex:enhancedList type="smagicinteract__Incoming_SMS__c" height="300"></apex:enhancedList>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="" columns="1"  rendered="{!isRegistered}">
+<apex:facet name="header"> {!$Label.smagicinteract__sms_template_label} </apex:facet>
+<apex:enhancedList type="smagicinteract__SMS_Template__c" height="300"></apex:enhancedList>
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+</apex:outputPanel>
+
+</apex:page>

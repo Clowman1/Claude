@@ -225,10 +225,10 @@ public with sharing class LoWsLeadDetailsService {
         }
     }
 
-    /** My tag on this realtor goes to Active Partner if it is still a prospect stage. Never downgrades. */
+    /** My tag on this realtor goes to Active Partner from any other stage, Dormant included (owner, 2026-10-02). */
     public static void activateRealtor(Id realtorId) {
         External_User_Assignment__c tag = LoWsPartnerTagService.myTags(new Set<Id>{ realtorId }).get(realtorId);
-        if (tag != null && LoWsPartnerTagService.PROSPECT_STAGES.contains(tag.Stage__c ?? LoWsPartnerTagService.DEFAULT_STAGE)) {
+        if (tag != null && tag.Stage__c != 'Active Partner') {
             LoWsPartnerTagService.setStage(realtorId, 'Active Partner');
         }
     }

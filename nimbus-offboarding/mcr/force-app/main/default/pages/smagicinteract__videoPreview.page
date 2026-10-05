@@ -1,0 +1,64 @@
+<apex:page showHeader="false">
+    <style>
+        .embed-responsive {
+        position: relative;
+        display: block;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        }
+        .embed-responsive .embed-responsive-item,
+        .embed-responsive iframe,
+        .embed-responsive embed,
+        .embed-responsive object,
+        .embed-responsive video {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        }
+        .embed-responsive-16by9 {
+        padding-bottom: 56.25%;
+        }
+        .embed-responsive-4by3 {
+        padding-bottom: 75%;
+        }
+    </style>
+    <div class="embed-responsive embed-responsive-16by9">
+    	<video class="embed-responsive-item" id="video" controls="true" >
+        <source type="video/mp4" />
+        Your browser does not support HTML5 video.
+    </video>
+    </div>
+
+    <script>
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    }
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    function onPageLoad() {
+        var videoSrc = getParameterByName('videoSrc');
+        var vid = document.getElementById('video');
+        vid.src = videoSrc;
+    }
+
+    if (document.readyState === "complete" ||
+        (document.readyState !== "loading" && !document.documentElement.doScroll)) {
+        onPageLoad();
+    } else {
+        document.addEventListener("DOMContentLoaded", onPageLoad);
+    }
+    </script>
+
+</apex:page>

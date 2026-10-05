@@ -1,0 +1,5 @@
+<!--
+ - Created by andrk on 8/8/2024.
+ -->
+
+<apex:page id="pwa_LeadIntakeFormServiceWorker" controller="pwa_LeadIntakeFormServiceWorker" contentType="text/javascript">{!content}</apex:page>

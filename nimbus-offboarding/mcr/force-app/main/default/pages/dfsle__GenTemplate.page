@@ -1,0 +1,78 @@
+<apex:page sidebar="false" showHeader="true" standardController="dfsle__GenTemplate__c" title="{!$Label.dfsle__DocuSign}" extensions="dfsle.GenController">
+    <apex:includeLightning />
+    <apex:slds />
+    <style type="text/css">
+        #lightning {
+            /*            background-color: #f7f9fb;*/
+            position: relative;
+            height: 100%;
+            min-height: 100vh;
+        }
+
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        .noSidebarCell #lightning {
+            height: auto;
+            min-height: 0;
+        }
+
+        .noSidebarCell #lightning #spinner {
+            min-height: 20rem;
+        }
+
+        .bodyDiv .outerNoSidebar,
+        .noSidebarCell,
+        .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        #auraErrorMessage {
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+        }
+    </style>
+
+    <div id="lightning">
+        <div id="spinner">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">{!$Label.loading}</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      var navigate = function (event) {
+        var recordId = event.getParam('recordId');
+        if (typeof sforce != 'undefined') {
+          sforce.one.navigateToSObject(recordId);
+        } else {
+          window.location.href = '/' + recordId;
+        }
+      };
+      var _navigateToURL = function (event) {
+        var url = event.getParam('url');
+        window.open(url, '_blank');
+      };
+      var ns = '{!JSENCODE(namespace)}';
+      $Lightning.use(ns + ':GenTemplateApp', function () {
+        $Lightning.createComponent(ns + ':GenTemplate', {
+          templateId: '{!JSENCODE($CurrentPage.parameters.id)}',
+          isCreating: '{!JSENCODE($CurrentPage.parameters.isEdit)}' !== 'true',
+          isClassic: '{!$User.UIThemeDisplayed}' === 'Theme3'
+        }, 'lightning', function (component, status, errorMessage) {
+          if (status === 'SUCCESS') {
+            document.getElementById('spinner').style.display = 'none';
+          } else {
+            // TODO: handle error?
+          }
+          $A.eventService.addHandler({'event': 'force:navigateToSObject', 'handler': navigate});
+          $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': _navigateToURL});
+        });
+      });
+    </script>
+</apex:page>

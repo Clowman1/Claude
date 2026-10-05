@@ -1,0 +1,25 @@
+.THIS lightning-output-field span, .THIS lightning-input-field legend, .THIS lightning-input-field label, .THIS lightning-helptext{
+    display:none !important;
+}
+.THIS lightning-input-field, .THIS lightning-output-field{
+    margin:0 !important;
+    width:100%
+}
+.THIS .checklist-button{
+    background:red;
+    color:white;
+    display: block;
+}
+.THIS .checklist-button:hover{
+    background:green;
+    color:white;
+    display: block;
+}
+
+.THIS .checklist-button-hover-text,.THIS .checklist-button:hover .checklist-button-text{
+    display:none;
+}
+
+.THIS .checklist-button-text,.THIS .checklist-button:hover .checklist-button-hover-text{
+    display:block;
+}

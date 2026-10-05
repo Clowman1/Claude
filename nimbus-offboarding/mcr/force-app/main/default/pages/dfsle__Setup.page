@@ -1,0 +1,223 @@
+<apex:page sidebar="false" showHeader="true" controller="dfsle.SetupController" title="{!$Label.dfsle__SetupPageTitle}">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__stringUtilsVF}"/>
+    <apex:includeScript value="{!$Resource.dfsle__loginUtils}"/>
+    <apex:stylesheet value="{!$Resource.dfsle__dstooltip}"/>
+
+    <apex:form >
+        <apex:actionFunction name="redirectToNewTemplateUrl" action="{!redirectOnNewTemplate}" reRender="">
+            <apex:param name="id" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="redirectToNewConfigUrl" action="{!redirectToNewConfigUrl}" reRender="">
+            <apex:param name="id" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+
+    <style type="text/css">
+        /* CSS to override default padding applied in Lightning Experience */
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        /* CSS to override default padding applied in Classic Experience */
+        .bodyDiv .outerNoSidebar, .noSidebarCell, .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        /* CSS for positioning the spinner container */
+        .noSidebarCell #ds-spinner {
+            height: calc(100vh - 165px);
+        }
+
+        /* CSS for background image */
+        .ds-blue-brand {
+            background: rgb(176, 196, 223);
+            background-image: url({!URLFOR($Resource.lightningBlueBackground)});
+            background-repeat: repeat-x;
+        }
+    </style>
+
+    <div id="ds-pageContent" style="display: none;" class="ds-blue-brand">
+        <div id="ds-unifiedAppSetupSection"></div>
+    </div>
+
+    <div id="ds-spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+      var navigateToURL = function (event) {
+        var url = event.getParam('url');
+        window.open(url, '_blank');
+      };
+
+      function showError(component, payload) {
+        var evt = component.getEvent('toastEvent');
+        var parameters = {
+          show: true,
+          mode: 'error'
+        };
+        if (typeof payload === 'string') {
+          parameters.message = payload;
+        } else {
+          try {
+            var data = JSON.parse(payload);
+            parameters.message = data.message;
+            parameters.detail = data;
+          } catch (err) {
+            parameters.message = payload;
+          }
+        }
+        evt.setParams(parameters);
+        evt.fire();
+      }
+
+      function beginOAuth(component, environment, otherUrl) {
+        try {
+          Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.SetupController.beginDocuSignOAuth}',
+            window.location.origin,
+            environment,
+            otherUrl,
+            function (result, event) {
+              if (event && event.status) {
+                var width = 600;
+                var height = 600;
+                var left = (screen.width / 2) - (width / 2);
+                var top = (screen.height / 2) - (height / 2);
+
+                var w = window.open(stringUtilsVF.unescapeHtml(result), 'oauth', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+                if (!w) {
+                  showError(component, '{!JSENCODE($Label.DisablePopUp)}');
+                  component.set('v.loading', false);
+                  return;
+                }
+
+                var onMessage = function (event) {
+                  if (event.origin === window.location.origin) {
+                    window.removeEventListener('message', onMessage);
+                    var evt = component.getEvent('oauthEvent');
+                    evt.setParams({
+                      response: event.data.response, loginInformation: event.data.loginInformation
+                    });
+                    evt.fire();
+                  }
+                };
+
+                var closeTimer = setInterval(function () {
+                  if (!w || w.closed) {
+                    clearInterval(closeTimer);
+                    var evt = component.getEvent('loadingEvent');
+                    evt.setParams({
+                      isLoading: false
+                    });
+                    evt.fire();
+                  }
+                }, 500);
+
+                window.addEventListener('message', onMessage);
+                w.focus();
+              } else {
+                showError(component, event.message);
+                component.set('v.loading', false);
+              }
+            });
+        } catch (err) {
+          showError(component, err);
+          component.set('v.loading', false);
+        }
+      }
+
+      function beginSalesforceOAuth(component) {
+        try {
+          Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.SetupController.beginSalesforceOAuth}',
+            loginUtils.Type.SETUP,
+            window.location.origin,
+            function (result, event) {
+              if (event && event.status) {
+                window.endSalesforceOAuth = function (response, loginInformation) {
+                  var evt = component.getEvent('salesforceOAuthEvent');
+                  evt.setParams({
+                    response: response,
+                    loginInformation: loginInformation
+                  });
+                  evt.fire();
+                };
+
+                var width = 600;
+                var height = 600;
+                var left = (screen.width / 2) - (width / 2);
+                var top = (screen.height / 2) - (height / 2);
+
+                var w = window.open(stringUtilsVF.unescapeHtml(result), 'oauth', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+                if (!w) {
+                  showError(component, '{!JSENCODE($Label.DisablePopUp)}');
+                  component.set('v.loading', false);
+                  return;
+                }
+
+                var closeTimer = setInterval(function () {
+                  if (!w || w.closed) {
+                    clearInterval(closeTimer);
+                    var evt = component.getEvent('loadingEvent');
+                    evt.setParams({
+                      isLoading: false
+                    });
+                    evt.fire();
+                  }
+                }, 500);
+
+              } else {
+                showError(component, event.message);
+                component.set('v.loading', false);
+              }
+            });
+        } catch (err) {
+          showError(component, err);
+          component.set('v.loading', false);
+        }
+      }
+
+      function showSetupComponent() {
+        document.getElementById('ds-spinner').style.display = 'none';
+        document.getElementById('ds-pageContent').style.display = 'block';
+      }
+
+      function showSetupSpinner() {
+        document.getElementById('ds-spinner').style.display = 'block';
+        document.getElementById('ds-pageContent').style.display = 'none';
+      }
+
+      var navigateToNewTemplateUrl = function (templateId) {
+        if (templateId != null) {
+          redirectToNewTemplateUrl(templateId);
+        }
+      };
+
+      var navigateToNewEnvelopeConfigUrl = function (configId) {
+        if (configId != null) {
+          redirectToNewConfigUrl(configId);
+        }
+      };
+
+      $Lightning.use('{!JSENCODE(namespace)}:SetupApp', function () {
+        $Lightning.createComponent('{!JSENCODE(namespace)}:Setup', {
+          beginOAuth: beginOAuth,
+          beginSalesforceOAuth: beginSalesforceOAuth,
+          showSetupComponent: showSetupComponent,
+          showSetupSpinner: showSetupSpinner,
+          navigateToNewTemplateUrl: navigateToNewTemplateUrl,
+          navigateToNewEnvelopeConfigUrl: navigateToNewEnvelopeConfigUrl
+        }, 'ds-unifiedAppSetupSection', function (component, status, errorMessage) {
+          $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': navigateToURL});
+        });
+      });
+    </script>
+
+    </html>
+</apex:page>

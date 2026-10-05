@@ -1,0 +1,128 @@
+<template>
+    <div class="backdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-label="Add partner">
+            <div class="mh">
+                <h2 class="title">Add partner</h2>
+                <div class="seg" role="tablist">
+                    <button class={findClass} role="tab" onclick={showFind}>Find existing</button>
+                    <button class={createClass} role="tab" onclick={showCreate}>Create new</button>
+                    <button class={importClass} role="tab" onclick={showImport}>Import contacts</button>
+                </div>
+            </div>
+
+            <div class="mb">
+                <template lwc:if={error}><div class="err" role="alert">{error}</div></template>
+
+                <template lwc:if={isFind}>
+                    <lightning-input type="search" label="Search Salesforce" placeholder="Name, company, email or phone"
+                        value={term} onchange={handleTerm}></lightning-input>
+                    <div class="list">
+                        <template for:each={hits} for:item="h">
+                            <div key={h.id} class="res">
+                                <div class="res-top">
+                                    <div class="grow">
+                                        <div class="strong">{h.name}</div>
+                                        <div class="muted small">{h.sub}</div>
+                                    </div>
+                                    <template lwc:if={h.typeLabel}><span class={h.typeCls}>{h.typeLabel}</span></template>
+                                    <template lwc:if={h.inMyBook}><span class="chip yes">In your book</span></template>
+                                    <template lwc:else>
+                                        <button class="btn btn-s" data-id={h.id} onclick={startPick}>Add</button>
+                                    </template>
+                                </div>
+                                <template lwc:if={h.picking}>
+                                    <div class="pick">
+                                        <div class="lbl">Industry</div>
+                                        <div class="pills">
+                                            <template for:each={h.pills} for:item="p">
+                                                <button key={p.value} class={p.cls} data-value={p.value} onclick={pickFindIndustry}>{p.value}</button>
+                                            </template>
+                                        </div>
+                                        <div><button class="btn btn-p btn-s" data-id={h.id} disabled={busy} onclick={confirmAddExisting}>Add to my book</button></div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template lwc:if={isCreate}>
+                    <div class="two">
+                        <lightning-input label="First name" data-field="firstName" value={firstName} onchange={handleField} required></lightning-input>
+                        <lightning-input label="Last name" data-field="lastName" value={lastName} onchange={handleField} required></lightning-input>
+                    </div>
+                    <lightning-input type="tel" label="Mobile phone" data-field="phone" value={phone} onchange={handleField} onblur={checkDuplicates}></lightning-input>
+                    <lightning-input type="email" label="Email" data-field="email" value={email} onchange={handleField} onblur={checkDuplicates}></lightning-input>
+
+                    <template lwc:if={hasDuplicates}>
+                        <div class="alert" role="alert">
+                            <div class="strong">This contact already exists</div>
+                            <div class="small">Select them instead of creating a duplicate.</div>
+                            <template for:each={duplicates} for:item="d">
+                                <div key={d.id} class="dup">
+                                    <div class="grow">
+                                        <div class="strong ink">{d.name}</div>
+                                        <div class="muted small">{d.sub} · matched on {d.matched}</div>
+                                    </div>
+                                    <template lwc:if={d.typeLabel}><span class={d.typeCls}>{d.typeLabel}</span></template>
+                                    <template lwc:if={d.inMyBook}><span class="chip yes">In your book</span></template>
+                                    <template lwc:else>
+                                        <button class="btn btn-p btn-s" data-id={d.id} disabled={busy} onclick={selectDuplicate}>Select</button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <div>
+                        <div class="lbl">Industry</div>
+                        <div class="pills">
+                            <template for:each={createPills} for:item="p">
+                                <button key={p.value} class={p.cls} data-value={p.value} onclick={pickCreateIndustry}>{p.value}</button>
+                            </template>
+                        </div>
+                    </div>
+                    <lightning-input label="Company" data-field="company" value={company} onchange={handleField}></lightning-input>
+                </template>
+
+                <template lwc:if={isImport}>
+                    <div class="muted small">
+                        Upload a CSV (save Excel as CSV). Columns are matched by name: First Name, Last Name (or Name), Phone, Email,
+                        Company, Industry. Every row is checked against Salesforce before anything is saved.
+                    </div>
+                    <lightning-input type="file" label="Contact file" accept=".csv" onchange={handleFile}></lightning-input>
+                    <template lwc:if={hasImportRows}>
+                        <div class="strong small">{importSummary}</div>
+                        <template lwc:if={needsDefaultIndustry}>
+                            <lightning-combobox label="Industry for rows without one" options={industryOptions}
+                                value={importDefaultIndustry} onchange={handleDefaultIndustry}></lightning-combobox>
+                        </template>
+                        <div class="table">
+                            <template for:each={importRows} for:item="r">
+                                <div key={r.key} class="trow">
+                                    <span class="rn muted">{r.rowNumber}</span>
+                                    <div class="grow">
+                                        <div class="strong">{r.name}</div>
+                                        <div class="muted small">{r.contact}</div>
+                                        <template lwc:if={r.message}><div class="small">{r.message}</div></template>
+                                    </div>
+                                    <span class={r.actionCls}>{r.actionLabel}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+            </div>
+
+            <div class="mf">
+                <button class="btn" onclick={close}>Close</button>
+                <template lwc:if={isCreate}>
+                    <button class="btn btn-p" disabled={createDisabled} onclick={create}>Create partner</button>
+                </template>
+                <template lwc:if={isImport}>
+                    <button class="btn btn-p" disabled={commitDisabled} onclick={runImport}>Import</button>
+                </template>
+            </div>
+        </section>
+    </div>
+</template>

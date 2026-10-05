@@ -1,0 +1,11 @@
+<apex:page showHeader="true" sidebar="false">
+    <apex:includeLightning rendered="true"/>
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("smagicinteract:ConversationViewCreator", function() {
+            $Lightning.createComponent("smagicinteract:ConversationViewCreatorComponent",{},"lightning",function(cmp) {});
+        });
+    </script>
+
+</apex:page>

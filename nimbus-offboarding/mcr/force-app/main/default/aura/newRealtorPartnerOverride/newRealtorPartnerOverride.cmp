@@ -1,0 +1,91 @@
+<aura:component controller="PersonAccountDuplicateService" implements="lightning:actionOverride,flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="isSaving" type="Boolean" default="false"/>
+    <aura:attribute name="showDuplicateModal" type="Boolean" default="false"/>
+    <aura:attribute name="duplicateMatches" type="List" default="[]"/>
+    <aura:attribute name="phoneOnlyMatch" type="Boolean" default="false"/>
+
+    <section class="realtor-override">
+        <header class="override-hero">
+            <p>Reach Home Loans</p>
+            <h1>Create New Realtor Partner</h1>
+            <span>Create a Realtor Person Account with only the fields needed to start the relationship.</span>
+        </header>
+        <div class="override-body">
+            <lightning:recordEditForm
+                aura:id="realtorForm"
+                objectApiName="Account"
+                recordTypeId="012f20000010aScAAI"
+                onsubmit="{!c.handleSubmit}"
+                onsuccess="{!c.handleSuccess}"
+                onerror="{!c.handleError}">
+                <lightning:messages/>
+
+                <div class="form-section">
+                    <h2>Required Details</h2>
+                    <div class="form-grid">
+                        <lightning:inputField fieldName="FirstName" required="true"/>
+                        <lightning:inputField fieldName="LastName" required="true"/>
+                        <lightning:inputField fieldName="PersonMobilePhone" required="true"/>
+                        <lightning:inputField fieldName="PersonEmail" required="true"/>
+                        <lightning:inputField fieldName="Biz_Dev_Designation__c" required="true"/>
+                    </div>
+                </div>
+
+                <div class="form-section form-section-muted">
+                    <h2>Partner Details</h2>
+                    <div class="form-grid">
+                        <lightning:inputField fieldName="PersonTitle"/>
+                        <lightning:inputField fieldName="Realtor_Group__c"/>
+                        <lightning:inputField fieldName="Transaction_Coordinator__c"/>
+                        <lightning:inputField fieldName="Realtor_Individual_License_Number__c"/>
+                        <lightning:inputField fieldName="Company_License_Number__c"/>
+                    </div>
+                </div>
+
+                <footer class="override-footer">
+                    <lightning:button label="Cancel" onclick="{!c.cancel}" disabled="{!v.isSaving}"/>
+                    <lightning:button type="submit" variant="brand" label="Create Realtor Partner" disabled="{!v.isSaving}"/>
+                </footer>
+            </lightning:recordEditForm>
+        </div>
+
+        <aura:if isTrue="{!v.showDuplicateModal}">
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <h2 class="slds-modal__title">This person is already in Salesforce</h2>
+                        <p class="slds-m-top_x-small slds-text-body_small">
+                            Open the existing account instead of creating a new one.
+                        </p>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <aura:iteration items="{!v.duplicateMatches}" var="match">
+                            <div class="dup-row">
+                                <div>
+                                    <div class="dup-name">{!match.name}</div>
+                                    <div class="dup-meta">Matched on {!match.matchedOn}</div>
+                                    <div class="dup-meta">{!match.phone} {!match.email}</div>
+                                    <div class="dup-meta">{!match.brokerage} {!match.realtorGroup}</div>
+                                    <div class="dup-meta">Loan files: {!match.loanFiles}</div>
+                                </div>
+                                <lightning:button label="Open this account" variant="brand"
+                                    value="{!match.accountId}" onclick="{!c.useExistingAccount}"/>
+                            </div>
+                        </aura:iteration>
+                        <aura:if isTrue="{!v.phoneOnlyMatch}">
+                            <p class="dup-hint">
+                                Only the phone number matched. If this is a different agent at the same
+                                office, close this and enter that agent's own direct mobile number rather
+                                than the office line.
+                            </p>
+                        </aura:if>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button label="Back to the form" onclick="{!c.closeDuplicateModal}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </section>
+</aura:component>

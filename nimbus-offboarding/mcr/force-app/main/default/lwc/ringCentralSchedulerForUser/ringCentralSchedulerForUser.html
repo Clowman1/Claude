@@ -1,0 +1,15 @@
+<template>
+    <lightning-card title="RingCentral SMS Scheduler">
+        <div class="slds-p-around_medium">
+            <lightning-button 
+                label="Schedule SMS Jobs"
+                onclick={handleSchedule}
+                variant="brand">
+            </lightning-button>
+
+            <template if:true={message}>
+                <p class="slds-m-top_medium">{message}</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

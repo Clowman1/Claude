@@ -1,0 +1,6 @@
+<apex:page id="CLMCommunityDocLauncher" controller="dfsle.CLMCommunityDocLauncherController"
+           standardStylesheets="false" lightningStyleSheets="true" title="{!$Label.dfsle__DocuSignCLM}"
+           action="{!redirectToCLM}"
+           sidebar="false"  showHeader="false">
+    <apex:pageMessages />
+</apex:page>

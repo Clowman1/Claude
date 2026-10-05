@@ -1,0 +1,41 @@
+<apex:page controller="smagicinteract.EndpointConfigController" tabstyle="SM_Home__tab"> 
+
+	<apex:form >
+	<apex:pageMessages escape="false" id="pageMessage"/> 
+
+	<apex:pageBlock id="main" title="{!$Label.smagicinteract__confg_endpnt}"  rendered="{! isConfigAllowable }" >
+
+		<apex:pageBlockSection id="sectionURL" title="{!$Label.smagicinteract__set_url}"  >
+		<apex:facet name="header">
+			<h3>{!$Label.smagicinteract__set_url}</h3>
+		</apex:facet>
+
+			<label>{!$Label.smagicinteract__cur_endpnt}</label> 
+			<apex:outputText value="{!currentURL}" />	
+
+			<label>{!$Label.smagicinteract__new_endpnt}</label> 
+			<apex:inputText value="{!newURL}" style="width:600px"/>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockSection id="sectionURLMMS" title="{!$Label.smagicinteract__set_mms_url}" rendered="{!isMMSEnabled}" >
+		<apex:facet name="header">
+			<h3>{!$Label.smagicinteract__set_mms_url}</h3>
+		</apex:facet>
+
+			<label>{!$Label.smagicinteract__cur_endpnt}</label> 
+			<apex:outputText value="{!currentMMSURL}" />	
+
+			<label>{!$Label.smagicinteract__new_endpnt}</label> 
+			<apex:inputText value="{!newMMSURL}" style="width:600px"/>
+		</apex:pageBlockSection>
+
+	<apex:pageBlockButtons id="buttonsBlock">
+		<apex:commandButton id="Save" action="{!save}" value="{!$Label.smagicinteract__save}" title="{!$Label.smagicinteract__save}"    />
+		<apex:commandButton id="Cancel" action="{!redirectToHome}"   value="{!$Label.smagicinteract__cancel}" title="{!$Label.smagicinteract__cancel}" />
+	</apex:pageBlockButtons>
+
+
+	</apex:pageBlock>
+	</apex:form>
+
+	</apex:page>

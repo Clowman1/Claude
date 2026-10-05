@@ -1,0 +1,4 @@
+<apex:page id="FederatedSearchDocumentView" controller="dfsle.DocumentPreviewController">
+    <apex:iframe src="{!resourceToken}" id="theIframe"/>
+    <script>document.getElementById('theIframe').height = window.innerHeight;</script>
+</apex:page>

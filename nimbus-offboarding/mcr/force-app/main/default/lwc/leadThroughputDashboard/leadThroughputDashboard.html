@@ -1,0 +1,334 @@
+<template>
+    <div class="mp-root">
+        <header class="mp-header">
+            <div class="mp-license-strip">
+                Licensed states: FL, CA, CO, GA, LA, MD, NC, NJ, PA, SC, TN, TX, VA
+            </div>
+            <div class="mp-header-left">
+                <div class="mp-icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="mp-icon">
+                        <path d="M4 19h16v2H4v-2Zm2-2h3V7H6v10Zm5 0h3V3h-3v14Zm5 0h3V11h-3v6Z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="mp-title">Throughput Analytics</div>
+                    <div class="mp-subtitle">Loan Officer Performance Dashboard</div>
+                </div>
+            </div>
+            <div class="mp-header-right">
+                <span class="mp-badge">Data updated: Just now</span>
+            </div>
+        </header>
+
+        <main class="mp-main">
+            <section class="mp-intro">
+                <div class="mp-h2">Conversion Metrics</div>
+                <div class="mp-p">
+                    Analyze lead conversion throughput across different stages of the pipeline. Use the filters below to slice by Loan Officer, Lead Source, Loan Purpose, and Timeframe.
+                </div>
+            </section>
+
+            <section class="mp-panel">
+                <div class="mp-panel-head">
+                    <span class="mp-panel-head-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" class="mp-icon-sm">
+                            <path d="M10 18h4v-2h-4v2Zm-7-8v2h18v-2H3Zm3-6v2h12V4H6Z"></path>
+                        </svg>
+                    </span>
+                    <span>Dashboard Filters</span>
+                </div>
+
+                <div class="mp-grid-4">
+                    <div class="mp-field">
+                        <label class="mp-label">Loan Officers</label>
+                        <div class="mp-multi">
+                            <button class="mp-multi-trigger" type="button" onclick={toggleOwnerMenu}>
+                                {ownerSelectionLabel}
+                            </button>
+                            <template if:true={isOwnerMenuOpen}>
+                                <div class="mp-backdrop" onclick={closeOwnerMenu}></div>
+                                <div class="mp-multi-menu" onclick={handleOwnerMenuClick}>
+                                    <div class="mp-multi-actions">
+                                        <button class="mp-multi-action" type="button" onclick={selectAllOwners}>Select all</button>
+                                        <button class="mp-multi-action" type="button" onclick={clearAllOwners}>Clear</button>
+                                    </div>
+                                    <div class="mp-multi-search">
+                                        <input
+                                            class="mp-filter-input"
+                                            type="search"
+                                            placeholder="Search loan officers..."
+                                            value={ownerSearchTerm}
+                                            oninput={handleOwnerSearchChange} />
+                                    </div>
+                                    <div class="mp-multi-list" role="listbox" aria-label="Loan Officer selection">
+                                        <template for:each={filteredOwnerOptions} for:item="opt">
+                                            <label key={opt.value} class="mp-check">
+                                                <input
+                                                    class="mp-check-input"
+                                                    type="checkbox"
+                                                    checked={opt.selected}
+                                                    data-id={opt.value}
+                                                    onchange={handleOwnerToggle} />
+                                                <template if:true={opt.avatarUrl}>
+                                                    <img class="mp-avatar mp-avatar-sm" src={opt.avatarUrl} alt="" />
+                                                </template>
+                                                <span class="mp-check-label">{opt.label}</span>
+                                            </label>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="mp-field">
+                        <label class="mp-label">Lead Source</label>
+                        <lightning-combobox
+                            label=""
+                            value={leadSource}
+                            options={leadSourceOptions}
+                            onchange={handleLeadSourceChange}
+                            disabled={isLeadSourceLoading}>
+                        </lightning-combobox>
+                    </div>
+
+                    <div class="mp-field">
+                        <label class="mp-label">Loan Purpose</label>
+                        <lightning-combobox
+                            label=""
+                            value={loanPurpose}
+                            options={loanPurposeOptions}
+                            onchange={handleLoanPurposeChange}>
+                        </lightning-combobox>
+                    </div>
+
+                    <div class="mp-field">
+                        <label class="mp-label">Timeframe</label>
+                        <div class="mp-grid-2">
+                            <lightning-combobox
+                                label=""
+                                value={timeframeType}
+                                options={timeframeTypeOptions}
+                                onchange={handleTimeframeTypeChange}>
+                            </lightning-combobox>
+
+                            <template if:true={isQuarterYearMode}>
+                                <div class="mp-multi">
+                                    <button class="mp-multi-trigger" type="button" onclick={toggleQuarterMenu}>
+                                        {quarterSelectionLabel}
+                                    </button>
+                                    <template if:true={isQuarterMenuOpen}>
+                                        <div class="mp-backdrop" onclick={closeQuarterMenu}></div>
+                                        <div class="mp-multi-menu" onclick={handleQuarterMenuClick}>
+                                            <div class="mp-multi-actions">
+                                                <button class="mp-multi-action" type="button" onclick={selectAllQuarters}>Select all</button>
+                                                <button class="mp-multi-action" type="button" onclick={clearAllQuarters}>Clear</button>
+                                            </div>
+                                            <div class="mp-multi-search">
+                                                <input
+                                                    class="mp-filter-input"
+                                                    type="search"
+                                                    placeholder="Search quarters..."
+                                                    value={quarterSearchTerm}
+                                                    oninput={handleQuarterSearchChange} />
+                                            </div>
+                                            <div class="mp-multi-list" role="listbox" aria-label="Quarter selection">
+                                                <template for:each={filteredQuarterOptions} for:item="opt">
+                                                    <label key={opt.value} class="mp-check">
+                                                        <input
+                                                            class="mp-check-input"
+                                                            type="checkbox"
+                                                            checked={opt.selected}
+                                                            data-id={opt.value}
+                                                            onchange={handleQuarterToggle} />
+                                                        <span class="mp-check-label">{opt.label}</span>
+                                                    </label>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <template if:true={errorMessage}>
+                <div class="mp-error">{errorMessage}</div>
+            </template>
+
+            <template if:true={isLoading}>
+                <div class="mp-loading">
+                    <lightning-spinner alternative-text="Loading throughput metrics" size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:true={showSelectOwnersHint}>
+                <div class="mp-info">
+                    Select one or more Loan Officers to view metrics.
+                </div>
+            </template>
+
+            <template if:true={showSelectQuartersHint}>
+                <div class="mp-info">
+                    Select one or more quarters to view metrics.
+                </div>
+            </template>
+
+            <template if:true={hasTiles}>
+                <section class="mp-tiles">
+                    <template for:each={ownerTiles} for:item="tile">
+                        <article key={tile.ownerId} class="mp-tile">
+                            <div class="mp-tile-head">
+                                <div class="mp-tile-nameRow">
+                                    <template if:true={tile.ownerAvatarUrl}>
+                                        <img class="mp-avatar" src={tile.ownerAvatarUrl} alt="" />
+                                    </template>
+                                    <div class="mp-tile-name">{tile.ownerName}</div>
+                                </div>
+                            </div>
+                            <div class="mp-tile-grid">
+                                <button
+                                    class="mp-stat mp-stat-blue mp-stat-clickable"
+                                    type="button"
+                                    data-owner-id={tile.ownerId}
+                                    data-owner-name={tile.ownerName}
+                                    data-tile-key="NEW_TO_PRE_APPROVAL"
+                                    onclick={handleTileClick}>
+                                    <div class="mp-stat-label">New → Pre-Approval</div>
+                                    <div class="mp-stat-main">{tile.newToPreApprovalPct}%</div>
+                                    <div class="mp-stat-sub">{tile.newToPreApprovalRatio}</div>
+                                </button>
+                                <button
+                                    class="mp-stat mp-stat-green mp-stat-clickable"
+                                    type="button"
+                                    data-owner-id={tile.ownerId}
+                                    data-owner-name={tile.ownerName}
+                                    data-tile-key="NEW_TO_POST_CLOSED"
+                                    onclick={handleTileClick}>
+                                    <div class="mp-stat-label">New → Post-Closed</div>
+                                    <div class="mp-stat-main">{tile.newToPostClosedPct}%</div>
+                                    <div class="mp-stat-sub">{tile.newToPostClosedRatio}</div>
+                                </button>
+                                <button
+                                    class="mp-stat mp-stat-purple mp-stat-clickable"
+                                    type="button"
+                                    data-owner-id={tile.ownerId}
+                                    data-owner-name={tile.ownerName}
+                                    data-tile-key="PRE_APPROVAL_TO_POST_CLOSED"
+                                    onclick={handleTileClick}>
+                                    <div class="mp-stat-label">Pre-Approval → Post-Closed</div>
+                                    <div class="mp-stat-main">{tile.preApprovalToPostClosedPct}%</div>
+                                    <div class="mp-stat-sub">{tile.preApprovalToPostClosedRatio}</div>
+                                </button>
+                            </div>
+                        </article>
+                    </template>
+                </section>
+            </template>
+
+            <template if:true={isDrilldownOpen}>
+                <div class="mp-modal-backdrop" onclick={closeDrilldown}></div>
+                <section class="mp-modal" role="dialog" aria-modal="true" aria-label="Throughput drilldown">
+                    <header class="mp-modal-head">
+                        <div>
+                            <div class="mp-modal-title">{drilldownOwnerName}: {drilldownTileLabel}</div>
+                            <div class="mp-modal-subtitle">Numerator records for the selected timeframe</div>
+                        </div>
+                        <button class="mp-modal-close" type="button" onclick={closeDrilldown} aria-label="Close">×</button>
+                    </header>
+
+                    <div class="mp-modal-body">
+                        <template if:true={drilldownErrorMessage}>
+                            <div class="mp-error">{drilldownErrorMessage}</div>
+                        </template>
+
+                        <template if:true={isDrilldownLoading}>
+                            <div class="mp-loading">
+                                <lightning-spinner alternative-text="Loading drilldown" size="small"></lightning-spinner>
+                            </div>
+                        </template>
+
+                        <template if:true={drilldownHasRows}>
+                            <div class="mp-table-wrap">
+                                <table class="mp-table" aria-label="Drilldown results">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Creation Date</th>
+                                            <th scope="col">Pre-Approval Date</th>
+                                            <template if:true={showPostClosedColumn}>
+                                                <th scope="col">Post-Closed Date</th>
+                                            </template>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={drilldownRows} for:item="row">
+                                            <tr key={row.recordId}>
+                                                <td>
+                                                    <a href={row.recordUrl} target="_blank" rel="noopener">
+                                                        {row.name}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <lightning-formatted-date-time value={row.basisDateTime} year="numeric" month="2-digit" day="2-digit">
+                                                    </lightning-formatted-date-time>
+                                                </td>
+                                                <td>
+                                                    <lightning-formatted-date-time
+                                                        value={row.preApprovalDate}
+                                                        time-zone="UTC"
+                                                        year="numeric"
+                                                        month="2-digit"
+                                                        day="2-digit">
+                                                    </lightning-formatted-date-time>
+                                                </td>
+                                                <template if:true={showPostClosedColumn}>
+                                                    <td>
+                                                        <lightning-formatted-date-time
+                                                            value={row.postClosedDate}
+                                                            time-zone="UTC"
+                                                            year="numeric"
+                                                            month="2-digit"
+                                                            day="2-digit">
+                                                        </lightning-formatted-date-time>
+                                                    </td>
+                                                </template>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </template>
+
+                        <template if:false={drilldownHasRows}>
+                            <template if:false={isDrilldownLoading}>
+                                <div class="mp-info">No records found for this tile and timeframe.</div>
+                            </template>
+                        </template>
+                    </div>
+
+                    <footer class="mp-modal-foot">
+                        <div class="mp-modal-foot-left">
+                            <span class="mp-muted">Total: {drilldownTotalCount}</span>
+                        </div>
+                        <div class="mp-modal-foot-right">
+                            <lightning-combobox
+                                class="mp-page-size"
+                                label="Rows per page"
+                                variant="label-hidden"
+                                value={drilldownPageSize}
+                                options={drilldownPageSizeOptions}
+                                onchange={handleDrilldownPageSizeChange}>
+                            </lightning-combobox>
+                            <button class="mp-page-btn" type="button" onclick={handleDrilldownPrev} disabled={disableDrilldownPrev}>Prev</button>
+                            <span class="mp-muted">Page {drilldownPageNumber} / {drilldownTotalPages}</span>
+                            <button class="mp-page-btn" type="button" onclick={handleDrilldownNext} disabled={disableDrilldownNext}>Next</button>
+                        </div>
+                    </footer>
+                </section>
+            </template>
+        </main>
+    </div>
+</template>

@@ -1,0 +1,98 @@
+.detail-shell {
+    padding: 4px 0 12px;
+}
+
+.detail-toolbar,
+.detail-card-header,
+.detail-secondary-header {
+    align-items: end;
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+}
+
+.detail-toolbar {
+    margin-bottom: 16px;
+}
+
+.detail-kicker {
+    color: #f28c28;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.detail-toolbar h2,
+.detail-card-header h3,
+.detail-secondary-header h3 {
+    color: #16243e;
+    margin: 4px 0 0;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.detail-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.detail-card {
+    background: #fff;
+    border: 1px solid #d8e2ef;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(18, 34, 58, 0.08);
+    padding: 18px 20px;
+}
+
+.detail-card-secondary,
+.detail-secondary {
+    background: linear-gradient(180deg, #fbfcfe 0%, #f4f7fb 100%);
+}
+
+.detail-secondary {
+    border: 1px solid #d8e2ef;
+    border-radius: 18px;
+    margin-top: 18px;
+    padding: 18px 20px;
+}
+
+.field-grid {
+    column-gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 16px;
+}
+
+.field-grid-wide {
+    grid-column: 1 / -1;
+}
+
+:host ::slotted(lightning-input-field) {
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .detail-grid,
+    .field-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .detail-toolbar,
+    .detail-card-header,
+    .detail-secondary-header {
+        align-items: start;
+        flex-direction: column;
+    }
+
+    .detail-actions {
+        width: 100%;
+    }
+}

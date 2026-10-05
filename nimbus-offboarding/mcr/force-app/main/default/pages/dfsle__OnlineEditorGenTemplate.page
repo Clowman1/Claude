@@ -1,0 +1,373 @@
+<apex:page id="OnlineEditorGenTemplate" sidebar="false" showHeader="false" standardController="dfsle__GenTemplate__c"
+           title="{!$Label.dfsle__DocuSign}" extensions="dfsle.OnlineEditorController" standardStylesheets="false"
+           applyHtmlTag="false">
+    <html>
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__jquery}"/>
+    <apex:includeScript value="{!$Resource.dfsle__dsEditor}"/>
+    <apex:includeScript value="{!$Resource.dfsle__scmwidgetsjs}"/>
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__userEvents}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__OnlineEditorJS}"/>
+
+    <script type="application/javascript">
+      Visualforce.remoting.timeout = 120000;
+
+      var templateDetails = '{!JSENCODE(templateJson)}';
+      var initErrorMessage = '{!JSENCODE(errorMessage)}';
+
+      RemoteActions = {
+        getUserProperties: '{!$RemoteAction.OnlineEditorController.getUserProperties}',
+        deleteTemplate: '{!$RemoteAction.OnlineEditorController.deleteTemplate}',
+        getLayouts: '{!$RemoteAction.OnlineEditorController.getLayouts}',
+        getMergeFields: '{!$RemoteAction.OnlineEditorController.getMergeFields}',
+        updateLayouts: '{!$RemoteAction.OnlineEditorController.updateLayouts}',
+        generateDownloadToken: '{!$RemoteAction.OnlineEditorController.generateDownloadToken}',
+        generateUploadToken: '{!$RemoteAction.OnlineEditorController.generateUploadToken}',
+        getTemplateFolderId: '{!$RemoteAction.OnlineEditorController.getTemplateFolderId}',
+        getSpringTemplateIdInUUIDFormat: '{!$RemoteAction.OnlineEditorController.getSpringTemplateIdInUUIDFormat}',
+        updateTemplateIdInSalesforce: '{!$RemoteAction.OnlineEditorController.updateTemplate}',
+        // FIXME: This is pointing to the same method as updateTemplateIdInSalesforce. Also the names are overly verbose.
+        updateFileDetailsInSalesforce: '{!$RemoteAction.OnlineEditorController.updateTemplate}',
+        getEntityRecords: '{!$RemoteAction.OnlineEditorController.getEntityRecords}',
+        getEntityRecordsWithSearch: '{!$RemoteAction.OnlineEditorController.getEntityRecordsWithSearch}',
+        getMergeData: '{!$RemoteAction.OnlineEditorController.getMergeData}',
+        convertDocxToHtml: '{!$RemoteAction.OnlineEditorController.convertDocxToHtml}',
+        getIsAuthorized: '{!$RemoteAction.OnlineEditorController.getIsAuthorized}'
+      };
+
+      Configuration = {
+        isCreating: !{!editMode},
+        isEditing: {!editMode},
+        isGenerating: false,
+        initError: initErrorMessage,
+        hasInitError: !!initErrorMessage,
+        namespace: '{!JSENCODE(namespace)}',
+        docuSignAccountId: '{!JSENCODE(docuSignAccountId)}',
+        docuSignUserId: '{!JSENCODE(docuSignUserId)}',
+        docuSignEnvironment: '{!JSENCODE(docuSignEnvironment)}',
+        template: templateDetails ? Object.freeze(JSON.parse(templateDetails)) : {},
+        layoutActionName: '{!layoutActionName}',
+        layoutActionType: '{!layoutActionType}',
+        templateListUrl: '{!templateListUrl}',
+        translationPath: '{!$Resource.dsEditorTranslations}',
+        userLanguage: '{!JSENCODE(userLanguage)}',
+      };
+
+      Labels = {
+        templateCreatedLabel: '{!JSENCODE($Label.OnlineEditorTemplateCreated_1)}',
+        templatePublishedLabel: '{!JSENCODE($Label.OnlineEditorAfterPublish_1)}',
+        templateUpdatedLabel: '{!JSENCODE($Label.OnlineEditorTemplateUpdated_1)}',
+        templateInvalidSourceLabel: '{!JSENCODE($Label.InvalidSource)}',
+        templateExportDataIsUndefinedLabel: '{!JSENCODE($Label.ExportDataIsUndefinedLabel)}',
+        templateInvalidPathLabel: '{!JSENCODE($Label.InvalidPathLabel)}',
+        templateUndefinedLabel: '{!JSENCODE($Label.UndefinedOnlineEditorTemplate)}',
+        templateSaveValidationLabel: '{!JSENCODE($Label.OnlineEditorSaveValidation)}',
+        templateSCMHrefUndefinedLabel: '{!JSENCODE($Label.SCMHrefUndefined)}',
+        apiError_3: '{!JSENCODE($Label.ApiError_3)}',
+        UnauthorizedQueryMessage: '{!JSENCODE($Label.UnauthorizedQueryMessage)}'
+      };
+    </script>
+
+    <style type="text/css">
+        .ds-white-brand {
+            background: white;
+        }
+
+        .onlineEditorToolbarIcon {
+            background: rgb(243, 242, 242);
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .slds-page-header__title {
+            font-weight: 600;
+            height: 16px;
+            width: fit-content;
+        }
+
+        .slds-scope .slds-page-header {
+            font-size: 15px;
+        }
+
+        .templateConfigContentContainer {
+            max-width: 581px;
+            margin: auto;
+        }
+
+        .col {
+            flex: 1 !important;
+        }
+
+        #ds-spinner {
+            height: calc(100vh - 165px);
+        }
+
+        #onlineEditor {
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 60px);
+        }
+
+        #IEWarning {
+            margin-top: 40vh;
+            display: none;
+        }
+
+        #onlineEditorPublish {
+            background: rgb(36, 99, 209);
+            border-color: rgb(36, 99, 209);
+        }
+
+        .onlineEditorMainContentHeader {
+            font-size: 16px !important;
+            color: #080707 !important;;
+            font-weight: bold;
+        }
+
+        .onlineEditorSubContentHeader {
+            font-size: 13px !important;
+            color: #080707 !important;;
+            font-weight: bold;
+        }
+
+        .onlineEditorContentDescription {
+            font-size: 13px !important;
+            color: #3E3E3C !important;;
+        }
+
+        .onlineEditorContentText {
+            font-size: 13px !important;
+            color: #080707 !important;;
+        }
+
+        #onlineEditorButtonNameInput {
+            min-width: 340px;
+            height: 32px;
+        }
+
+        .onlineEditorMainContentContainer {
+            border: none !important;
+        }
+
+        .slds-truncate {
+            height: 100% !important;
+        }
+
+        .slds-path__scroller_inner {
+            position: sticky;
+        }
+
+        .hide-on-start-up {
+            display: none;
+        }
+
+        .layout-default {
+            padding: 8px !important;
+        }
+
+        .layout-checkbox[type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux:after {
+            top: 44% !important;
+            left: 50% !important;
+            height: .35rem !important;
+            width: .70rem !important;
+        }
+    </style>
+
+    <div class="slds-scope">
+        <div id="IEWarning" class="slds-grid">
+            <div class="slds-col slds-size_1-of-1">
+                <svg class="slds-align_absolute-center slds-icon_large slds-icon slds-icon-text-default slds-p-bottom_medium"
+                     aria-hidden="true">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                         xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#warning')}"/>
+                </svg>
+                <h3 class="slds-text-align_center">
+                    {!$Label.IEValidationError}
+                </h3>
+            </div>
+        </div>
+        <div id="toastNotificationContainer"></div>
+        <div id="editModal"></div>
+        <!-- Toolbar -->
+        <div id="onlineEditorToolBar" class="slds-page-header slds-border_bottom slds-grid">
+            <div class="col">
+                <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-custom">
+                         <img class="slds-is-relative slds-icon onlineEditorToolbarIcon" src="{!$Resource.adflogo}"
+                              alt=""/>
+                    </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <span>{!$Label.TemplateConfigurationLabel}</span>
+                                <div class="slds-page-header__title slds-grid">
+                                    <div class="slds-col slds-truncate">
+                                        <h1 class="slds-page-header__title slds-truncate">
+                                            <apex:outputPanel id="templateHeader"><strong
+                                                        id="templateNameHeader">{!templateName}</strong>
+                                            </apex:outputPanel>
+                                        </h1>
+                                    </div>
+                                    <div class="slds-col">
+                                        <button class="slds-button slds-button_icon slds-m-left_x-small"
+                                                title="{!$Label.Edit}" id="onlineEditorEdit">
+                                            <svg class="slds-button__icon" aria-hidden="true">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                     xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#edit')}"/>
+                                            </svg>
+                                            <span class="slds-assistive-text">{!$Label.Edit}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="slds-path">
+                    <div class="slds-grid slds-path__track">
+                        <div class="slds-grid slds-path__scroller-container">
+                            <div class="slds-path__scroller" role="application">
+                                <div class="slds-path__scroller_inner">
+                                    <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                        <li id="onlineEditorStep1" class="slds-path__item  slds-is-incomplete"
+                                            role="presentation">
+                                            <a id="onlineEditorStepLink1" aria-selected="false"
+                                               class="slds-path__link onlineEditor_link"
+                                               href="javascript:void(0);" role="option"
+                                               tabindex="-1">
+                                                <span class="slds-path__stage">
+                                                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                    <use xmlns="http://www.w3.org/2000/svg"
+                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                         xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#check')}"></use>
+                                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path
+                                                                  d="M8.8 20.1l-7.6-7.6c-.3-.3-.3-.8 0-1.1l1-1c.2-.2.7-.2 1 0l5.7 5.8c.2.2.5.2.7 0L20.8 4.9c.3-.3.8-.3 1 0l1 1c.3.3.3.7 0 1l-13 13.2c-.3.3-.8.3-1 0z"></path></svg>
+                                                  </svg>
+                                                </span>
+                                                <span class="slds-path__title">{!$Label.CreateLabel}</span>
+                                            </a>
+                                        </li>
+                                        <li id="onlineEditorStep2" class="slds-path__item slds-is-incomplete"
+                                            role="presentation">
+                                            <a id="onlineEditorStepLink2" aria-selected="false"
+                                               class="slds-path__link onlineEditor_link"
+                                               href="javascript:void(0);" role="option"
+                                               tabindex="-1">
+                                                <span class="slds-path__stage">
+                                                  <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                    <use xmlns="http://www.w3.org/2000/svg"
+                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                         xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#check')}"></use>
+                                                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path
+                                                                  d="M8.8 20.1l-7.6-7.6c-.3-.3-.3-.8 0-1.1l1-1c.2-.2.7-.2 1 0l5.7 5.8c.2.2.5.2.7 0L20.8 4.9c.3-.3.8-.3 1 0l1 1c.3.3.3.7 0 1l-13 13.2c-.3.3-.8.3-1 0z"></path></svg>
+                                                  </svg>
+                                                </span>
+                                                <span class="slds-path__title">{!$Label.DeployLabel}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class='slds-float_right'>
+                    <!-- Step 1 -->
+                    <div>
+                        <button id="onlineEditorTemplateCancel"
+                                class="slds-button slds-button_neutral">{!$Label.Cancel}</button>
+                        <button id="onlineEditorSaveClose" class="slds-button slds-button_brand">{!$Label.Next}</button>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="hide-on-start-up">
+                        <button id="onlineEditorPublishCancel"
+                                class="slds-button slds-button_neutral">{!$Label.Cancel}</button>
+                        <button id="onlineEditorPublish"
+                                class="slds-button slds-button_brand">{!$Label.PublishLabel}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step Three -->
+        <div id="inputFilePanel" class="hide-on-start-up">
+            <div class="ds-white-brand slds-p-around_xx-large">
+                <div class="slds-box onlineEditorMainContentContainer">
+                    <div class="slds-grid-vertical templateConfigContentContainer">
+                        <label class="slds-form-element__label onlineEditorMainContentHeader"><strong>{!$Label.SetFileNameRules}</strong></label>
+                        <div class="slds-col slds-p-vertical_small slds-grid">
+
+                            <div class="slds-grid">
+                                <div class="slds-grid-vertical">
+                                    <label class="slds-form-element__label" for="fileNameInput">
+                                        {!$Label.FileName}</label>
+                                    <input type="text" id="fileNameInput" required="" class="slds-input"
+                                           maxlength="255"/>
+                                </div>
+                                <div class="slds-grid-vertical slds-p-horizontal_medium">
+                                    <label class="slds-form-element__label" for="fileSuffix">
+                                        {!$Label.FileSuffix}</label>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-select_container">
+                                            <select class="slds-select" id="fileSuffix">
+                                                <option value="">{!$Label.SelectAnOptionNoDash}</option>
+                                                <option>{!$Label.StartingObjectName}</option>
+                                                <option>{!$Label.Date}</option>
+                                                <option>{!$Label.StartingObjectNameAndDate}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="slds-col slds-p-top_medium">
+                            <label class="slds-form-element__label onlineEditorMainContentHeader"><Strong>{!$Label.AddCustomButton}</Strong></label>
+                        </div>
+                        <label class="slds-form-element__label onlineEditorContentDescription">{!$Label.OnlineEditorButtonPublishPrompt}</label>
+
+                        <div class="slds-col slds-p-vertical_medium">
+                            <label class="slds-form-element__label" for="onlineEditorButtonNameInput">
+                                <abbr class="slds-required" title="required">* </abbr>{!$Label.ButtonLabel}</label>
+                            <div class="slds-form-element__control">
+                                <apex:outputPanel id="templateButtonName">
+                                    <input maxlength="80" type="text" id="onlineEditorButtonNameInput" readonly=""
+                                           placeholder=""
+                                           class="slds-input" value="{!$Label.Generate+' '+templateName}"/>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-p-vertical_medium">
+                            <label class="slds-form-element__label onlineEditorSubContentHeader" for="datasource">
+                                <strong>{!$Label.ShowButtonInPrompt}</strong>
+                            </label>
+                            <div id="layoutCheckboxes" class="onlineEditorContentText"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ds-spinner">
+            <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+    <div id="userEventsContainer"/>
+    <div id="onlineEditor"></div>
+    </html>
+</apex:page>

@@ -113,6 +113,14 @@
                             <lightning-combobox label="Stage" options={stageOptions} value={p.stage} onchange={changeStage}></lightning-combobox>
                             <lightning-combobox label="Industry" options={industryOptions} value={p.industry} onchange={changeIndustry}></lightning-combobox>
                         </template>
+                        <template lwc:if={p.intakeUrl}>
+                            <div class="intake">
+                                <div class="lbl">Lead intake link</div>
+                                <div class="muted small">Active Partner: send this so their leads come back to them.</div>
+                                <input class="intake-url" type="text" readonly value={p.intakeUrl} aria-label="Lead intake link" onclick={selectAll}>
+                                <button class="btn btn-s" onclick={copyIntake}>Copy link</button>
+                            </div>
+                        </template>
                         <button class="linkish" onclick={openRecord}>Open full account</button>
                     </section>
                     <template lwc:if={nextEvent}>

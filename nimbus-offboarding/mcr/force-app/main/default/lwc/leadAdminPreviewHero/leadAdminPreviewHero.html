@@ -1,0 +1,78 @@
+<template>
+    <section class="lead-preview-shell">
+        <div class="lead-preview-hero">
+            <div class="lead-preview-copy">
+                <p class="lead-preview-kicker">Reach Home Loans</p>
+                <h1>{displayName}</h1>
+                <div class="lead-preview-badges">
+                    <span class="lead-preview-badge lead-preview-badge-accent">{statusLabel}</span>
+                    <template if:true={leadSource}>
+                        <span class="lead-preview-badge">{leadSource}</span>
+                    </template>
+                    <template if:true={rating}>
+                        <span class="lead-preview-badge">{rating}</span>
+                    </template>
+                    <template if:true={loanPurpose}>
+                        <span class="lead-preview-badge">{loanPurpose}</span>
+                    </template>
+                </div>
+            </div>
+
+            <div class="lead-preview-panel">
+                <div class="lead-preview-panel-grid">
+                    <div>
+                        <p class="lead-preview-panel-heading">Lead Owner</p>
+                        <p class="lead-preview-panel-value">{ownerName}</p>
+                    </div>
+                    <div>
+                        <p class="lead-preview-panel-heading">Loan Partner</p>
+                        <p class="lead-preview-panel-value">{loanPartnerName}</p>
+                    </div>
+                    <div>
+                        <p class="lead-preview-panel-heading">Biz Dev</p>
+                        <p class="lead-preview-panel-value">{bizDev}</p>
+                    </div>
+                    <div>
+                        <p class="lead-preview-panel-heading">Buyer's Agent</p>
+                        <p class="lead-preview-panel-value">{buyersAgent}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lead-preview-health">
+            <div class="lead-preview-health-header">
+                <div>
+                    <p class="lead-preview-section-kicker">Follow-Up Health</p>
+                    <h2>Top-line activity signals</h2>
+                </div>
+            </div>
+
+            <div class="lead-preview-health-grid">
+                <article class="lead-preview-stat">
+                    <p class="lead-preview-stat-label">Calls Logged</p>
+                    <strong>{callsText}</strong>
+                    <span>{lastCallSummary}</span>
+                </article>
+
+                <article class="lead-preview-stat">
+                    <p class="lead-preview-stat-label">Notes Logged</p>
+                    <strong>{notesText}</strong>
+                    <span>Internal notes currently attached to this lead.</span>
+                </article>
+
+                <article class="lead-preview-stat">
+                    <p class="lead-preview-stat-label">Recent Activity</p>
+                    <strong>{recentActivityText}</strong>
+                    <span>Activities recorded in the last 7 days.</span>
+                </article>
+
+                <article class="lead-preview-stat lead-preview-stat-accent">
+                    <p class="lead-preview-stat-label">Next Appointment</p>
+                    <strong>{appointmentStatText}</strong>
+                    <span>{appointmentSupportText}</span>
+                </article>
+            </div>
+        </div>
+    </section>
+</template>

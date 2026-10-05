@@ -1,0 +1,74 @@
+.THIS .summaryHeader {
+    padding: 16px 20px 4px;
+}
+
+.THIS .summaryTitle {
+    color: #001c54;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.THIS .summarySubtitle {
+    color: #5f6f86;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.THIS .loadingBox {
+    min-height: 120px;
+    position: relative;
+}
+
+.THIS .capturedBanner {
+    background: #eef4ff;
+    border-left: 4px solid #3267b7;
+    color: #24518f;
+    font-size: 12px;
+    margin: 8px 20px;
+    padding: 8px 12px;
+}
+
+.THIS .summaryBlock {
+    padding: 4px 0 12px;
+}
+
+.THIS .blockLabel {
+    color: #33415c;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.THIS .summaryText {
+    background: #f7f9fc;
+    border: 1px solid #e3e8ef;
+    border-radius: 4px;
+    color: #222222;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0;
+    padding: 10px 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.THIS .emptyState {
+    color: #5f6f86;
+    padding: 24px 20px;
+    text-align: center;
+}
+
+.THIS .emptyHint {
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.THIS .footerBar {
+    border-top: 1px solid #e3e8ef;
+    margin-top: 12px;
+    padding: 12px 20px;
+    text-align: right;
+}

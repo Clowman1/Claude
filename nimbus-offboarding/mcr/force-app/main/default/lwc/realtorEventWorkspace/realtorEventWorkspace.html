@@ -1,0 +1,104 @@
+<template>
+    <template if:true={isLoading}><lightning-spinner alternative-text="Loading event workspace" size="small"></lightning-spinner></template>
+    <template if:true={isEvent}>
+        <section class="workspace" aria-label="Realtor event invite workspace">
+            <header class="workspace-header"><p class="eyebrow">REALTOR ENGAGEMENT</p><h2>{workspace.campaignName}</h2><p>Manage the event details, invitees, and RSVP responses in one place.</p></header>
+            <section class="event-details" aria-label="Event details">
+                <div class="section-heading"><div><h3>Event Details</h3><p>Update the essentials for this event. Changes are saved directly to Salesforce.</p></div></div>
+                <lightning-record-edit-form object-api-name="Campaign" record-id={recordId} onsuccess={handleEventSaved} onerror={handleEventSaveError}>
+                    <div class="event-fields">
+                        <lightning-input-field field-name="Name"></lightning-input-field>
+                        <lightning-input-field field-name="Status"></lightning-input-field>
+                        <lightning-input-field field-name="StartDate"></lightning-input-field>
+                        <lightning-input-field field-name="Event_Time__c"></lightning-input-field>
+                        <lightning-input-field field-name="EndDate"></lightning-input-field>
+                    </div>
+                    <lightning-input-field class="description-field" field-name="Description"></lightning-input-field>
+                    <div class="event-actions"><lightning-button variant="destructive" label="Delete Event" disabled={isDeletingEvent} onclick={handleDeleteEvent}></lightning-button><lightning-button type="submit" variant="brand" label="Save Event Details"></lightning-button></div>
+                </lightning-record-edit-form>
+            </section>
+            <section class="rsvp-summary" aria-label="Invite response summary">
+                <button type="button" class="summary-card" data-group="invited" onclick={openSummaryModal}><span>INVITED</span><strong>{invitees.length}</strong><small>Total people on this event</small><em>View people</em></button>
+                <button type="button" class="summary-card confirmed" data-group="confirmed" onclick={openSummaryModal}><span>CONFIRMED</span><strong>{workspace.confirmedCount}</strong><small>Yes — attending</small><em>View people</em></button>
+                <button type="button" class="summary-card declined" data-group="declined" onclick={openSummaryModal}><span>DECLINED</span><strong>{workspace.declinedCount}</strong><small>Unable to attend</small><em>View people</em></button>
+                <button type="button" class="summary-card" data-group="awaiting" onclick={openSummaryModal}><span>AWAITING RESPONSE</span><strong>{workspace.awaitingResponseCount}</strong><small>Invite sent or still pending</small><em>View people</em></button>
+            </section>
+            <section class="event-hosts panel">
+                <div class="panel-heading"><div><h3>Event Hosts</h3><p>The primary host sends the invitation. Co-host signature cards are included in the email; co-hosts are not copied on it.</p></div></div>
+                <div class="host-list">
+                    <article class="host-chip primary-host"><span><strong>{workspace.hostName}</strong><small>Primary host</small></span></article>
+                    <template for:each={coHosts} for:item="coHost"><article key={coHost.coHostRecordId} class="host-chip"><span><strong>{coHost.name}</strong><small>{coHost.title} - {coHost.email}</small></span><lightning-button-icon data-id={coHost.coHostRecordId} icon-name="utility:close" alternative-text="Remove co-host" title="Remove co-host" onclick={handleRemoveCoHost}></lightning-button-icon></article></template>
+                </div>
+                <div class="cohost-search"><lightning-input type="search" label="Add a Reach co-host" placeholder="Search employee name or email" value={coHostSearchTerm} onchange={handleCoHostSearch}></lightning-input><template if:true={isSearchingCoHosts}><lightning-spinner alternative-text="Searching employees" size="small"></lightning-spinner></template><template if:true={showCoHostSearchResults}><div class="person-results"><template for:each={coHostSearchResults} for:item="person"><article key={person.userId} class="person-result"><span class="realtor-copy"><strong>{person.name}</strong><small>{person.title} - {person.email}</small></span><lightning-button data-id={person.userId} label="Add co-host" variant="neutral" onclick={handleAddCoHost}></lightning-button></article></template><template if:true={noCoHostSearchResults}><p class="empty-state">No active Reach employees match that search.</p></template></div></template></div>
+            </section>
+            <div class="workspace-body">
+                <section class="panel"><div class="panel-heading"><div><h3>Available Realtors</h3><p>{hostMessage}</p></div><span class="selection-count">{selectedCountLabel}</span></div>
+                    <lightning-input type="search" label="Search assigned realtors" variant="label-hidden" placeholder="Search name, phone, or email" onchange={handleSearch}></lightning-input>
+                    <label class="select-all"><input type="checkbox" checked={allAvailableSelected} disabled={disableSelectAll} onchange={handleSelectAll}/> Select all shown</label>
+                    <div class="realtor-list"><template for:each={availableRealtors} for:item="realtor"><label key={realtor.contactId} class="realtor-row"><input type="checkbox" data-id={realtor.contactId} checked={realtor.checked} onchange={handleSelect}/><span class="realtor-copy"><strong>{realtor.name}</strong><small>{realtor.phone} · {realtor.email}</small></span></label></template><template if:true={noAvailableRealtors}><p class="empty-state">No additional assigned Nickley Realtors match this search.</p></template></div>
+                    <lightning-button variant="brand" label="Add Selected to Invite List" disabled={disableAddInvitees} onclick={handleAddInvitees}></lightning-button>
+                    <lightning-button class="nickley-team-button" label={nickleyTeamButtonLabel} variant="neutral" onclick={handleInviteAllNickleyTeam} disabled={disableNickleyTeamButton}></lightning-button>
+                    <p class="nickley-team-note">Adds matching Nickley Group Person Accounts and Nickley email accounts. Send invitations from the invite list when ready.</p>
+                    <div class="person-search"><h4>Add another Person Account</h4><p>Search the full Salesforce org to invite someone who is not in this assigned Nickley list.</p><lightning-input type="search" label="Search Person Accounts" variant="label-hidden" placeholder="Enter at least 2 characters" value={personSearchTerm} onchange={handlePersonSearch}></lightning-input><template if:true={isSearchingPeople}><lightning-spinner alternative-text="Searching Person Accounts" size="small"></lightning-spinner></template><template if:true={showPersonSearchResults}><div class="person-results"><template for:each={personSearchResults} for:item="person"><article key={person.contactId} class="person-result"><span class="realtor-copy"><strong>{person.name}</strong><small>{person.phone} &middot; {person.email}</small></span><lightning-button data-id={person.contactId} label="Add" variant="neutral" onclick={handleAddPersonAccount}></lightning-button></article></template><template if:true={noPersonSearchResults}><p class="empty-state">No available Person Accounts match that search.</p></template></div></template></div>
+                </section>
+                <section class="panel"><div class="panel-heading"><div><h3>Invite List &amp; RSVPs</h3><p>{invitees.length} people invited &middot; {workspace.pendingInviteeCount} new</p></div><div class="invite-panel-actions"><span class="selection-count">{selectedInviteeCountLabel}</span><lightning-button label="Remove Selected" variant="destructive" disabled={disableRemoveSelectedInvitees} onclick={handleRemoveSelectedInvitees}></lightning-button><lightning-button label="Send New Invitations" variant="brand" disabled={noPendingInvitees} onclick={handleOpenInvitationModal}></lightning-button></div></div>
+                    <label class="select-all invite-select-all"><input type="checkbox" checked={allInviteesSelected} disabled={disableInviteeSelectAll} onchange={handleSelectAllInvitees}/> Select all invited</label>
+                    <div class="invite-list"><template for:each={invitees} for:item="realtor"><article key={realtor.campaignMemberId} class="invite-row"><label class="invite-select"><input type="checkbox" data-id={realtor.campaignMemberId} checked={realtor.checked} onchange={handleInviteeSelect}/><span class="realtor-copy"><strong>{realtor.name}</strong><small>{realtor.phone} · {realtor.email}</small><span class="delivery-badges"><span class={realtor.emailBadgeClass}>{realtor.emailDeliveredText}</span><span class={realtor.smsBadgeClass} title={realtor.smsBadgeTitle}>{realtor.smsDeliveredText}</span><template if:true={realtor.rsvpReminderSent}><span class="delivery-badge delivery-badge-info">{realtor.rsvpReminderText}</span></template><template if:true={realtor.eventReminderSent}><span class="delivery-badge delivery-badge-info">{realtor.eventReminderText}</span></template></span></span></label><div class="invite-actions"><lightning-combobox data-id={realtor.campaignMemberId} variant="label-hidden" value={realtor.memberStatus} options={statusOptions} onchange={handleStatus}></lightning-combobox><lightning-button data-id={realtor.campaignMemberId} label="Resend Email" title="Resend this person only their event email" variant="neutral" disabled={realtor.disableResend} onclick={handleResendInvitation}></lightning-button><lightning-button-icon data-id={realtor.campaignMemberId} icon-name="utility:close" alternative-text="Remove invitee" title="Remove invitee" onclick={handleRemove}></lightning-button-icon></div></article></template><template if:true={noInvitees}><p class="empty-state">Select assigned realtors on the left to create this event's invite list.</p></template></div>
+                </section>
+            </div>
+        </section>
+    </template>
+    <template if:true={isSummaryModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label={summaryModalTitle} class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container summary-modal">
+                <header class="modal-header summary-modal-header">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Close" title="Close" variant="bare-inverse" onclick={closeSummaryModal} class="modal-close"></lightning-button-icon>
+                    <p class="eyebrow">EVENT RESPONSES</p>
+                    <h2>{summaryModalTitle}</h2>
+                    <p>{summaryModalSubtitle}</p>
+                </header>
+                <div class="slds-modal__content summary-modal-content">
+                    <div class="summary-modal-count">{summaryModalCountLabel}</div>
+                    <template if:true={hasSummaryModalPeople}>
+                        <div class="summary-person-list">
+                            <template for:each={summaryModalPeople} for:item="person">
+                                <article key={person.campaignMemberId} class="summary-person">
+                                    <div class="summary-person-details">
+                                        <strong>{person.name}</strong>
+                                        <small>{person.displayEmail}</small>
+                                        <small>{person.displayPhone}</small>
+                                    </div>
+                                    <span class={person.statusClass}>{person.memberStatus}</span>
+                                </article>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={hasSummaryModalPeople}>
+                        <p class="empty-state">No people are currently in this group.</p>
+                    </template>
+                </div>
+                <footer class="modal-footer">
+                    <lightning-button label="Close" onclick={closeSummaryModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showInvitationModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Send event invitations" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container invitation-modal">
+                <div class="modal-header"><p class="eyebrow">REALTOR ENGAGEMENT</p><h2>Send New Event Invitations</h2><p>Only people newly added to the invite list receive this email. Each receives a personal Yes / No RSVP link.</p></div>
+                <div class="modal-content">
+                    <p class="delivery-summary">{invitationDraft.pendingInviteeCount} new invitees &middot; {invitationDraft.pendingEmailCount} new recipients with email &middot; {invitationDraft.smsEligibleCount} eligible for the initial Twilio text</p>
+                    <lightning-input name="emailSubject" label="Email subject" value={invitationDraft.emailSubject} onchange={handleInvitationFieldChange} required></lightning-input>
+                    <lightning-textarea name="emailBody" label="Invitation email" value={invitationDraft.emailBody} onchange={handleInvitationFieldChange} required></lightning-textarea>
+                    <lightning-textarea name="smsBody" label="Twilio SMS sent with the invitation" value={invitationDraft.smsBody} onchange={handleInvitationFieldChange} required></lightning-textarea>
+            <p class="modal-note">The email includes green Yes and red No RSVP buttons, event artwork, and the signature cards for you and any co-hosts. It is sent individually from you to each invitee only; co-hosts are not copied. SMS is queued only for people whose invitation email is sent in this batch; prior invitees are never texted again.</p>
+                </div>
+                <footer class="modal-footer"><lightning-button label="Cancel" onclick={handleCloseInvitationModal} disabled={isSendingInvitations}></lightning-button><lightning-button variant="brand" label="Send New Invitations" onclick={handleSendInvitations} disabled={sendDisabled}></lightning-button></footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

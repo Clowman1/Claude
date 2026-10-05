@@ -70,7 +70,7 @@ private class PipelineCommandCenterControllerTest {
         System.assertNotEquals(null, data.pipelineRows, 'Pipeline rows should be returned.');
         System.assert(data.pipelineTabs.size() >= 2, 'Expected pipeline tabs to be returned.');
         System.assertNotEquals(null, data.quickButtons, 'Quick buttons should be returned.');
-        System.assertEquals(3, data.quickButtons.size(), 'Expected three quick buttons.');
+        System.assertEquals(4, data.quickButtons.size(), 'Expected three quick buttons plus Approved Investors.');
         System.assertNotEquals(null, data.queueShortcuts, 'Queue shortcuts should be returned.');
     }
 
@@ -311,6 +311,25 @@ private class PipelineCommandCenterControllerTest {
     }
 
     @IsTest
+    static void logBenPreApprovalManualCallCreatesBenOutboundCall() {
+        List<Lead> preApprovalLeads = [SELECT Id FROM Lead WHERE Status = 'Pre-Approval' AND IsConverted = false LIMIT 1];
+        System.assertEquals(1, preApprovalLeads.size(), 'Expected an existing Pre-Approval lead.');
+        Id benUserId = [SELECT Id FROM User WHERE Username = 'benjamin@reachhomeloans.com' AND IsActive = true LIMIT 1].Id;
+
+        Test.startTest();
+        Id manualCallId = PipelineCommandCenterController.logBenPreApprovalManualCall(preApprovalLeads[0].Id);
+        Test.stopTest();
+
+        Task manualCall = [SELECT WhoId, OwnerId, Subject, Status, CallType FROM Task WHERE Id = :manualCallId];
+        System.assertEquals(preApprovalLeads[0].Id, manualCall.WhoId, 'Expected the call on the Lead.');
+        // The aged and follow-up rotations only reset on an outbound call Task owned by Ben.
+        System.assertEquals(benUserId, manualCall.OwnerId, 'Expected the call to be stamped as Ben\'s.');
+        System.assertEquals('Outbound', manualCall.CallType, 'Expected an outbound call.');
+        System.assert(manualCall.Subject.startsWith('Manual Ben Call'), 'Expected the manual Ben call subject.');
+        System.assertEquals('Completed', manualCall.Status, 'Expected a completed call.');
+    }
+
+    @IsTest
     static void logRealtorInPersonTouchCreatesViewerCallTask() {
         List<User> joeUsers = [
             SELECT Id
@@ -515,6 +534,21 @@ private class PipelineCommandCenterControllerTest {
             LIMIT 1
         ];
         System.assertEquals(true, updatedTransaction.Broker_Check_Recieved__c, 'Expected broker check checkbox to be marked received.');
+    }
+
+    @IsTest
+    static void allOwnedLeadsIgnoresStatus() {
+        User owner = createUser('allmine', 'Loan Officer');
+        User other = createUser('notmine', 'Loan Officer');
+        insert new List<Lead>{
+            new Lead(LastName = 'Follow', Company = 'Follow', Status = '30 Day + Follow Up', OwnerId = owner.Id),
+            new Lead(LastName = 'Nurture', Company = 'Nurture', Status = 'Nurturing', OwnerId = owner.Id),
+            new Lead(LastName = 'Other', Company = 'Other', Status = 'Nurturing', OwnerId = other.Id)
+        };
+
+        List<PipelineCommandCenterController.PipelineRow> rows = PipelineCommandCenterController.buildAllOwnedLeads(owner.Id);
+
+        System.assertEquals(2, rows.size(), 'Expected every owned lead regardless of status, and none owned by others.');
     }
 
     @IsTest
@@ -809,20 +843,22 @@ private class PipelineCommandCenterControllerTest {
             System.assert(!data.headerSubtitle.contains('Rhett Delaney'), 'Rhett Delaney has left; his name should no longer appear in the Joey subtitle.');
             System.assertEquals('Lead', data.pipelineObjectApiName, 'Joey should see Zach and Joe lead pipelines.');
             System.assertEquals('Active Leads', data.pipelineTitle, 'Expected lead-focused first tab.');
-            // 18 Joe/Zach tabs plus the Joe Olmsted Pre-Approval Follow Ups cadence tab.
-            System.assertEquals(19, data.pipelineTabs.size(), 'Expected Joey to see Joe and Zach lead and transaction tabs only, each group including Pre-Approved, plus Joe Olmsted Pre-Approval Follow Ups.');
+            // 18 Joe/Zach tabs, the Joe Olmsted Pre-Approval Follow Ups cadence tab, then Joey's own
+            // 11 My Leads tabs (the same set Megan gets).
+            System.assertEquals(30, data.pipelineTabs.size(), 'Expected Joey to see Joe and Zach tabs, Joe Olmsted Pre-Approval Follow Ups, and his own My Leads tabs.');
             System.assertEquals(
                 'joeOlmstedPreApprovalFollowUps',
-                data.pipelineTabs[data.pipelineTabs.size() - 1].key,
-                'Expected the Joe Olmsted Pre-Approval Follow Ups tab last on Joey\'s view.'
+                data.pipelineTabs[18].key,
+                'Expected the Joe Olmsted Pre-Approval Follow Ups tab right after the Joe and Zach groups.'
             );
+            System.assertEquals('assigned', data.pipelineTabs[19].key, 'Expected Joey\'s own Active Leads to open the My Leads set.');
+            System.assertEquals('loanOfficerClosedThisMonth', data.pipelineTabs[29].key, 'Expected Joey\'s own closed-this-month tab to finish the My Leads set.');
             // The column editor offers every catalog column on every tab, but each tab's own SOQL
             // selects only the fields it was designed around. hydratePipelineRowCatalogFields
             // backfills the rest; without it a user-added column (Biz Dev was the reported case)
             // silently renders blank. Compare against the record rather than a fixed value so the
             // assertion survives data changes and fails only if hydration regresses.
-            PipelineCommandCenterController.PipelineTab followUpTab =
-                data.pipelineTabs[data.pipelineTabs.size() - 1];
+            PipelineCommandCenterController.PipelineTab followUpTab = data.pipelineTabs[18];
             Map<Id, PipelineCommandCenterController.PipelineRow> followUpRowsById =
                 new Map<Id, PipelineCommandCenterController.PipelineRow>();
             for (PipelineCommandCenterController.PipelineRow row : followUpTab.rows) {
@@ -871,7 +907,7 @@ private class PipelineCommandCenterControllerTest {
             }
             System.assertEquals(true, data.canCreateLead, 'Joey should have the Create a New Lead banner action.');
             System.assertEquals(false, data.canAssignNewLeadOwner, 'Joey should use the standard new-lead flow rather than the owner-assignment form.');
-            System.assertEquals(3, data.quickButtons.size(), 'Expected three quick buttons, whether defaults or Joey-saved preferences.');
+            System.assertEquals(4, data.quickButtons.size(), 'Expected three quick buttons, whether defaults or Joey-saved preferences, plus Approved Investors.');
         }
     }
 
@@ -1123,7 +1159,7 @@ private class PipelineCommandCenterControllerTest {
             System.assertEquals('brokerChecksOutstanding', data.pipelineTabs[5].key, 'Expected broker checks outstanding tab.');
             System.assertEquals(10, data.pipelineTabs[4].customColumns.size(), 'Expected appraisals outstanding columns.');
             System.assertEquals(2, data.pipelineTabs[5].customColumns.size(), 'Expected simplified broker check columns.');
-            System.assertEquals(3, data.quickButtons.size(), 'Openers should still get three quick buttons.');
+            System.assertEquals(4, data.quickButtons.size(), 'Openers should still get three quick buttons plus Approved Investors.');
             System.assertEquals('X1_Application', data.quickButtons[0].filterName, 'Expected opener default Open / Disclosures Out list view.');
             System.assertEquals(1, data.queueShortcuts.size(), 'Openers should see only the opening queue shortcut.');
             System.assertEquals('Initial_Disclosures_Required', data.queueShortcuts[0].filterName, 'Expected opener queue shortcut.');
@@ -1373,8 +1409,16 @@ private class PipelineCommandCenterControllerTest {
             System.assertEquals('Executive Overview', data.pipelineTitle, 'Expected CEO overview title.');
             System.assertEquals(4, data.statusCards.size(), 'CEO view should show four high-level cards.');
             System.assertEquals('Funded MTD', data.statusCards[0].label, 'Expected funded MTD card first.');
-            System.assert(data.quickButtons.isEmpty(), 'CEO dashboard should not show transaction/list quick buttons.');
-            System.assertEquals(7, data.pipelineTabs.size(), 'Expected Adam seven-tab CEO view.');
+            System.assertEquals(1, data.quickButtons.size(), 'CEO dashboard should show only the Approved Investors quick button.');
+            System.assertEquals('Investor_Accounts', data.quickButtons[0].filterName, 'CEO dashboard should show only the Approved Investors quick button.');
+            // Seven CEO metric tabs plus the owners' Biz Dev Contact List, which is appended last
+            // so it never displaces the executive metrics Adam lands on.
+            System.assertEquals(8, data.pipelineTabs.size(), 'Expected Adam seven-tab CEO view plus Biz Dev Contact List.');
+            System.assertEquals(
+                'bizDevContacts',
+                data.pipelineTabs[7].key,
+                'Expected the Biz Dev Contact List appended after the CEO metric tabs.'
+            );
             System.assertEquals('ceoLeads', data.pipelineTabs[0].key, 'Expected lead metrics first.');
             System.assertEquals('ceoTransactions', data.pipelineTabs[1].key, 'Expected transaction metrics second.');
             System.assertEquals('ceoTrends', data.pipelineTabs[2].key, 'Expected trend metrics third.');
@@ -1467,5 +1511,39 @@ private class PipelineCommandCenterControllerTest {
         System.assertNotEquals(null, preApprovalRows, 'Pre-approval drill-through should return a collection.');
         System.assertNotEquals(null, transactionRows, 'Transaction drill-through should return a collection.');
         System.assertNotEquals(null, fundedRows, 'Funded drill-through should return a collection.');
+    }
+
+    @IsTest
+    static void webinarDashboardCountsNurturedLeadsThatShowedForAppt() {
+        insert new Lead(
+            FirstName = 'Nurtured',
+            LastName = 'Lead',
+            Company = 'Nurtured Lead',
+            LeadSource = 'Consumer Webinar',
+            Status = 'Nurturing',
+            RecordTypeId = leadRecordTypeId('Consumer_Lead_record_type')
+        );
+
+        Test.startTest();
+        PipelineCommandCenterController.WebinarMarketingDashboardData dashboard =
+            PipelineCommandCenterController.getWebinarMarketingDashboard();
+        List<PipelineCommandCenterController.MarketingRawDataRow> showedRows =
+            PipelineCommandCenterController.getMarketingRawData('webinar', 'ALL', 'showedThenNurtured');
+        Test.stopTest();
+
+        // This class sees org data, so assert consistency rather than exact counts.
+        System.assert(dashboard.nurturingCount >= 1, 'Expected the Nurturing webinar lead to be counted.');
+        System.assert(dashboard.showedThenNurturedCount <= dashboard.nurturingCount, 'Showed-for-appt is a subset of nurturing.');
+        System.assertEquals(dashboard.showedThenNurturedCount, showedRows.size(), 'Drill-through should match the tile count.');
+        for (PipelineCommandCenterController.MarketingRawDataRow row : showedRows) {
+            System.assert(row.status.startsWith('Nurturing (reached '), 'Each row should name the statuses it reached: ' + row.status);
+        }
+
+        System.assert(PipelineCommandCenterController.isShowedForApptStatus('Documents Requested'), 'Documents Requested is past the appointment.');
+        System.assert(PipelineCommandCenterController.isShowedForApptStatus('Working'), 'Working is past the contact statuses.');
+        System.assert(!PipelineCommandCenterController.isShowedForApptStatus('Contact Attempt 3'), 'Contact attempts are pre-appointment.');
+        System.assert(!PipelineCommandCenterController.isShowedForApptStatus('Contacted/Call Back'), 'Call Back is pre-appointment.');
+        System.assert(!PipelineCommandCenterController.isShowedForApptStatus('Nurturing'), 'Nurturing itself is not an appointment.');
+        System.assert(!PipelineCommandCenterController.isShowedForApptStatus(null), 'Blank status is not an appointment.');
     }
 }

@@ -1,0 +1,58 @@
+<!--
+ - Created by J9 on 8/20/2021.
+ -->
+
+<aura:component description="NoteRow" controller="EnhancedNotesController">
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <aura:registerEvent name="reInitEvent" type="c:ReInitEvent"/>
+
+    <aura:attribute name="filteredNotes" type="Object" access="global"/>
+    <aura:attribute name="isExpanded" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="canEdit" type="Boolean" access="global"/>
+
+    <div class="slds-border_top slds-border_bottom">
+        <div style="padding-bottom: 0px" class="slds-media slds-timeline__item_expandable">
+            <div class="slds-media__figure">
+                <lightning:icon class="slds-m-left_large slds-timeline__icon" size="x-small" variant="inverse" iconName="{!v.filteredNotes.RoleToIconMapping__c}"/>
+            </div>
+            <div class="slds-media__body">
+                <div class="slds-grid slds-p-top_xx-small">
+                    <span onclick="{!c.editNote}" class="{!if(equals(v.canEdit,false),'slds-hidden','')}"  style="padding-right:15px; cursor:pointer;">
+                        <lightning:icon class="slds-p-left_small" size="x-small" iconName="utility:edit" ></lightning:icon>
+                    </span>
+                    <a target="_blank" class="slds-text-title_bold slds-text-link" href="">{!v.filteredNotes.Subject__c}</a>
+                </div>
+                <div class="slds-grid">
+                    <div onclick="{!c.showNoteBody}">
+                        <lightning:buttonIcon alternativeText="" iconClass="" variant="bare" type="button" iconName="{!if(equals(v.isExpanded,false),'utility:chevronright','utility:chevrondown')}" size="medium"></lightning:buttonIcon>
+                    </div>
+                    <div class="slds-p-left_xx-small note-body" >
+                        <div class="{!if(v.isExpanded,'','ncs-child-truncation')}" style="font-size: 0.8125rem;"> 
+                            <aura:unescapedHtml value="{!v.filteredNotes.Body__c}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid_align-end slds-grid_vertical-align-center">
+                    <div class="slds-text-title slds-text-title_bold slds-p-right_small">
+                        {!v.filteredNotes.CreatedBy.Name}
+                    </div>
+                    <div>
+                        <lightning:avatar src="{!v.filteredNotes.CreatedBy.MediumPhotoUrl}"/>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid_align-end slds-p-top_xx-small">
+                    <aura:if isTrue="{!if(equals(v.filteredNotes.CreatedDate,v.filteredNotes.LastModifiedDate),false,true)}">
+                        <div class="slds-timeline__date" style="font-size: 0.8125rem;">
+                            <p><span style="text-align: right" class="slds-text-color_success"><i>(Last Edited) <lightning:formattedDateTime value="{!v.filteredNotes.LastModifiedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" hour12="true"/></i></span></p>
+                        </div>
+                        <div class="slds-text-title slds-text-color_weak">&nbsp;|&nbsp;</div>
+                    </aura:if>
+                    <div class="slds-timeline__date" style="font-size: 0.8125rem;">
+                        <p><span style="text-align: right"><lightning:formattedDateTime value="{!v.filteredNotes.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" hour12="true"/></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-media__figure slds-media__figure_reverse"></div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,15 @@
+<apex:page controller="ActiveCamp.inboundConnectorStep" action="{!completeAuth}" showHeader="false" sidebar="false">
+    <!-- The exchange runs server-side in completeAuth (invoked via the page action) so this callback
+         no longer depends on a cross-origin window.postMessage back to the wizard opener. The opener
+         detects completion by polling getInboundConnectorStatus once this popup closes. -->
+    <p style="font-family:Arial,Helvetica,sans-serif;padding:2rem;text-align:center;">
+        <apex:outputText value="{!authMessage}" escape="true"/>
+    </p>
+    <script>
+        // Give the user time to read the outcome message before auto-closing. Matches the 5s Strike
+        // toast duration used elsewhere for transient status messaging.
+        window.setTimeout(function() {
+            try { window.close(); } catch (e) {}
+        }, 5000);
+    </script>
+</apex:page>

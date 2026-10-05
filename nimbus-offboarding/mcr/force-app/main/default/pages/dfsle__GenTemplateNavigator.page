@@ -1,0 +1,65 @@
+<apex:page id="GenTemplateNavigator" sidebar="false" showHeader="true" standardController="dfsle__GenTemplate__c"
+           title="{!$Label.dfsle__DocuSign}" extensions="dfsle.GenController"
+           action="{!redirectOnEdit}">
+    <apex:includeLightning />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtilsVF}"/>
+    <apex:stylesheet value="{!$Resource.dfsle__dstooltip}"/>
+    <apex:slds />
+
+    <apex:form >
+        <apex:actionFunction name="redirectToNewTemplateUrl" action="{!redirectOnNewTemplate}" reRender="">
+            <apex:param name="templateId" assignTo="{!templateId}" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+
+    <!-- div for rendering the lightning component -->
+    <apex:outputPanel rendered="{!errorMessage==null}">
+        <div id="lightning"></div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!errorMessage!=null}">
+        <div id="error" class="slds-container slds-container_large slds-container_center slds-p-around_large">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme_error slds-size_1-of-1 slds-m-around_none slds-p-right_large slds-grid_align-center"
+                     role="status">
+          <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top"
+                title="{!$Label.Error}">
+              <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                  <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                       xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#error')}"></use>
+              </svg>
+          </span>
+                    <div class="slds-notify__content">
+                        <h2 id="errorMessage" class="slds-text-heading_small">{!errorMessage}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!errorMessage==null}">
+        <script type="text/javascript">
+          var navigateToNewTemplateUrl = function (templateId) {
+            if (templateId != null) {
+              redirectToNewTemplateUrl(templateId);
+            }
+          };
+          var onCancel = function () {
+            window.location.replace('{!JSENCODE(objectHomeUrl)}');
+          };
+          var ns = '{!JSENCODE(namespace)}';
+          $Lightning.use(ns + ':GenTemplateNavigatorApp', function () {
+            $Lightning.createComponent(ns + ':GenTemplateNavigator', {
+              namespace: ns,
+              templateId: '{!dfsle__GenTemplate__c.Id}',
+              isRedirectOnCancel: true,
+              navigateToNewTemplateUrl: navigateToNewTemplateUrl
+            }, 'lightning', function (component, status) {
+              if (status === 'SUCCESS') {
+                $A.eventService.addHandler({'event': 'force:navigateToObjectHome', 'handler': onCancel});
+              }
+            });
+          });
+        </script>
+    </apex:outputPanel>
+</apex:page>

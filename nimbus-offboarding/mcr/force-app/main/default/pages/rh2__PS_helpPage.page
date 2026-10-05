@@ -1,0 +1,57 @@
+<apex:page standardStylesheets="false" title="Rollup Helper Help Page"  sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<head> 
+			<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+			<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }"/>
+			<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/modernizr-1.7.min.js') }"/>
+			<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+			<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.js')}" />
+			<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />
+			<apex:stylesheet value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.css')}" />
+			<apex:stylesheet value="{!URLFOR($Resource.rh2__PT_Resources_v1, '/css/grayBackground.css')}" />
+
+			<style type="text/css">
+				#toastContainer {
+					position:fixed;
+					z-index: 999;
+				}
+			</style>
+		</head> 
+
+		<script>
+			document.addEventListener('lightning__showtoast', event => {
+				if (UITheme.getUITheme() !== 'Theme3') {
+					sforce.one.showToast(event.toastAttributes);
+				} else {
+					showToastInClassic(event.toastAttributes);
+					let svgType = "{!URLFOR($Asset.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#" + event.toastAttributes.type+"')}";
+					document.getElementById('toastIcon').innerHTML = '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="'+svgType+'"></use>';
+				}
+			});
+
+			$(document).ready(function(){
+				var rootPage = sessionStorage.getItem('rootPage') || 'home';
+				var isNavigatedFromAllSettingsPage = rootPage === 'settings';
+				var namespace = "{!JSENCODE(IF(CONTAINS($CurrentPage.Name, "__"), LEFT($CurrentPage.Name, FIND("__", $CurrentPage.Name)-1), "c"))}";
+
+				var urlParams = new URLSearchParams(window.location.search);
+				var fromRollupEdit = urlParams.has('sObjQ');
+
+				$Lightning.use(namespace + ":PS_Help_Page", function() {
+					$Lightning.createComponent(
+						namespace + ":ps_help", {
+							allRollupsBreadCrumb: isNavigatedFromAllSettingsPage,
+							openSourceObjQ: fromRollupEdit
+						},
+						"helpLwcContainer",
+						function(cmp){}
+					);
+				});
+			});
+		</script>
+
+		<apex:slds />
+		<apex:includeLightning />
+		<div id="helpLwcContainer"/>
+	</html>
+</apex:page>

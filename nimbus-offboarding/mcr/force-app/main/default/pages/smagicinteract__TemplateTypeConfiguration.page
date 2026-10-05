@@ -1,0 +1,87 @@
+<apex:page standardController="smagicinteract__SMS_Template_Type__c" extensions="smagicinteract.TemplateTypeConfigurationController" tabStyle="SMS_Magic_Settings__tab">
+<script>
+	function addTitle(obj){
+		obj.title = obj.value;
+	}
+</script>
+
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+
+<apex:outputPanel rendered="{!If(isVisible && NOT(isTemplateTypeConfigAllowed) ,true,false)}">
+ <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" >
+        <h1 style="font-size:30px;">{!$Label.PACKAGE_MSG1} </h1> <br/>
+        <h5 style="font-size:15px;">{!$Label.PACKAGE_MSG3}     </h5> <br/>
+  </div>
+</apex:outputPanel>
+
+
+<apex:form id="formid">
+<apex:pageMessages escape="false" id="pageMessagesSection"/>
+
+<apex:pageBlock id="mainBlock" title="{!$Label.smagicinteract__template_type_configuration_page_block_title}" rendered="{! isTemplateTypeConfigAllowed }">
+	<table>
+		<tr>
+			<td><apex:outputLabel styleClass="labelCol" value="{!$Label.smagicinteract__template_type_object_api_name_label}" for="objectList"/></td>
+			<td><apex:outputLabel styleClass="labelCol" value=" :" /></td>
+			<td>
+				<apex:selectList size="1" id="objectList" value="{!selectedObject}" style="width:170px;">
+					<apex:actionSupport event="onchange" rerender="relatedObjectList"/>
+					<apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_object_label}" />
+				    <apex:selectOptions value="{!objectList}"/>
+			    </apex:selectList>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<apex:inputCheckbox value="{!checkBoxVal}" style="vertical-align: middle">
+					<apex:actionSupport event="onchange" action="{!renderUI}" />
+				</apex:inputCheckbox>
+				<apex:outputLabel styleClass="labelCol" value="{!$Label.smagicinteract__template_type_related_object_label}"/>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><apex:outputLabel styleClass="labelCol" value="{!$Label.smagicinteract__template_type_related_object_api_name_label}" for="relatedObjectList" rendered="{!showSelectedRelatedObjects}"/></td>
+			<td><apex:outputLabel styleClass="labelCol" value=" :" rendered="{!showSelectedRelatedObjects}"/></td>
+			<td>
+				<apex:selectList size="1" id="relatedObjectList" value="{!selectedRelatedObjectToAdd}" style="width:170px;" rendered="{!showSelectedRelatedObjects}">
+				    <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_related_object_label}" />
+				    <apex:selectOptions value="{!relatedObjectList}"/>
+			    </apex:selectList>
+			</td>
+			<td>&nbsp;</td>
+			<td>
+				<apex:commandButton action="{!addToList}" value="{!$Label.smagicinteract__add_button_label}" title="{!$Label.smagicinteract__add_related_object_button_title}" style="left-padding:10px;" rendered="{!showSelectedRelatedObjects}"/>
+			</td>
+		</tr>
+		<tr>
+			<td><apex:outputLabel styleClass="labelCol" value="{!$Label.smagicinteract__selected_related_object_label}" for="objectList" rendered="{!showSelectedRelatedObjects}" /></td>
+			<td><apex:outputLabel styleClass="labelCol" value=":" rendered="{!showSelectedRelatedObjects}" /></td>
+			<td>
+			<!--	<apex:inputTextarea id="selectedRelatedObjects" value="{!selectedRelatedObjectStr}" readonly="true" style="height:50px; width:200px;" rendered="{!showSelectedRelatedObjects}"/>
+				-->
+			<apex:selectList multiselect="true" size="5" id="selectedObjectDisplayList" value="{!selectedRelatedObject}" style="width:170px;" onClick="addTitle(this)" rendered="{!showSelectedRelatedObjects}">
+
+
+				    <apex:selectOptions value="{!selectedObjectDisplayList}"/>
+			    </apex:selectList>
+			</td>
+			<td>&nbsp;</td>
+			<td>
+				<apex:commandButton action="{!removeFromList}" value="{!$Label.smagicinteract__remove_label}" title="{!$Label.smagicinteract__remove_related_object_button_title}" style="left-padding:10px;" rendered="{!showSelectedRelatedObjects}" rerender="selectedObjectDisplayList,pageMessagesSection"/>
+			</td>
+		</tr>
+	</table>
+
+	<apex:pageBlockButtons location="bottom">
+	  	<apex:commandButton action="{!save}" value="{!$Label.smagicinteract__save_button}" title="{!$Label.smagicinteract__save_button}" rendered="{!IF(showEditButton == false, true,false)}"/>
+	  	<apex:commandButton action="{!edit}" value="{!$Label.smagicinteract__save_button}" title="{!$Label.smagicinteract__save_button}" rendered="{!showEditButton}"/>
+		<apex:commandButton action="{!cancel}" value="{!$Label.smagicinteract__cancel_button_title}" title="{!$Label.smagicinteract__cancel_button_title}"/>
+	</apex:pageBlockButtons>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

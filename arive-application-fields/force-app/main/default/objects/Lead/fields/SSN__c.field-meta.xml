@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SSN__c</fullName>
+    <description>Borrower Social Security number. Encrypted, shown masked to the last four digits. Filled from ARIVE by Zapier; copied to the Person Account SSN on conversion.</description>
+    <label>Borrower SSN</label>
+    <length>11</length>
+    <maskChar>asterisk</maskChar>
+    <maskType>lastFour</maskType>
+    <required>false</required>
+    <type>EncryptedText</type>
+</CustomField>

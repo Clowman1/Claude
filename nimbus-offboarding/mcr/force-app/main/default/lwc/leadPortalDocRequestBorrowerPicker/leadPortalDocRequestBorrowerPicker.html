@@ -1,0 +1,39 @@
+<template>
+    <section class="choice-shell">
+        <div class="choice-header">
+            <p class="eyebrow">Pre-Approval Conditions</p>
+            <h2>Who are these conditions for?</h2>
+            <p>Pick the borrower these items belong to. You can change any of them afterwards.</p>
+        </div>
+
+        <template lwc:if={loadError}>
+            <div class="error">{loadError}</div>
+        </template>
+
+        <template lwc:else>
+            <div class="choice-grid">
+                <template for:each={cards} for:item="card">
+                    <button
+                        key={card.value}
+                        class={card.cssClass}
+                        type="button"
+                        data-value={card.value}
+                        onclick={handleSelect}
+                        onkeydown={handleKeyDown}
+                    >
+                        <span class="card-kicker">{card.kicker}</span>
+                        <span class="card-title">{card.title}</span>
+                        <span class="card-copy">{card.copy}</span>
+                    </button>
+                </template>
+            </div>
+
+            <template lwc:if={hasIneligible}>
+                <div class="ineligible">
+                    <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                    <span>{ineligibleMessage}</span>
+                </div>
+            </template>
+        </template>
+    </section>
+</template>

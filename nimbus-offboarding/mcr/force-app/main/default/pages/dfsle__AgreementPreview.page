@@ -1,0 +1,87 @@
+<apex:page controller="dfsle.AgreementsController" title="{!$Label.dfsle__DocumentPreviewPageTitle}" sidebar="false" showHeader="true">
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <style type="text/css">
+        #appContainer {
+            background-color: #f7f9fb;
+        }
+
+        .noSidebarCell #appContainer {
+            min-height: calc(100vh - 120px);
+            width: -webkit-fill-available;
+        }
+
+        .bodyDiv .outerNoSidebar,
+        .noSidebarCell,
+        .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        .noSidebarCell #ds-spinner {
+            height: calc(100vh - 165px);
+        }
+        .ds-blue-brand {
+            background: rgb(176, 196, 223);
+            background-image: url({!URLFOR($Resource.lightningBlueBackground)});
+            background-repeat: repeat-x;
+        }
+    </style>
+
+    <div id="ds-pageContent" class="ds-blue-brand">
+        <div id="appContainer"/>
+    </div>
+
+    <div id="ds-spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+      function showSetupComponent() {
+        document.getElementById('ds-spinner').style.display = 'none';
+        document.getElementById('ds-pageContent').style.display = 'block';
+      }
+
+      function showSetupSpinner() {
+        document.getElementById('ds-spinner').style.display = 'block';
+        document.getElementById('ds-pageContent').style.display = 'none';
+      }
+
+      var namespace = '{!JSENCODE(namespace)}';
+      var _navigateToURL = function (event) {
+        var url = event.getParam('url');
+        window.open(url, '_blank');
+      };
+      $Lightning.use(namespace + ':AgreementPreviewApp', function () {
+        $Lightning.createComponent(namespace + ':AgreementPreview',
+          {
+            sourceId: '{!JSENCODE($CurrentPage.parameters.sourceId)}',
+            agreementId: '{!JSENCODE($CurrentPage.parameters.agreementId)}',
+            currentUserEmail: '{!JSENCODE($User.email)}',
+            showSetupComponent: showSetupComponent,
+            showSetupSpinner: showSetupSpinner
+          },
+          'appContainer',
+          function (component, status, errorMessage) {
+            if (errorMessage) {
+              //FixMe:Need Design
+            }
+            $A.eventService.addHandler({
+              event: 'force:navigateToSObject',
+              handler: function (event) {
+                navUtils.navigateToSObject(event.getParams().recordId);
+              }
+            });
+            $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': _navigateToURL});
+          });
+      });
+    </script>
+</apex:page>

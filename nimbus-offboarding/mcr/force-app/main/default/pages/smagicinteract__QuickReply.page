@@ -1,0 +1,47 @@
+<apex:page >
+    <apex:includeScript value="/soap/ajax/30.0/connection.js" />
+    <apex:includeScript value="/soap/ajax/24.0/apex.js" />
+
+    <apex:pageMessage summary="{!$Label.smagicinteract__non_sf_object_err}" severity="error" id="pageMsg" rendered="{!$CurrentPage.parameters.Id == null}"/>
+    <!-- <apex:inputHidden value="{!$Label.smagicinteract__non_sf_object_err}" id="theHiddenInput"/> -->
+    <style>
+        .qiuckReplyBox .dragComposer {
+        	position : relative;
+        }
+    </style>
+    <apex:includeLightning />
+    
+    <div class="qiuckReplyBox" id="lightning" />
+
+    <script>
+    	var recordId = "{!$CurrentPage.parameters.Id}";
+    	var objectFieldName = "{!JSENCODE($CurrentPage.parameters.objectFieldName)}";
+    	var mobileNumber;
+    	var senderId;
+        try {
+            if(recordId && objectFieldName) {
+                sforce.connection.sessionId = "{!$Api.Session_ID}";
+                var qr = sforce.connection.query("SELECT id, smagicinteract__Mobile_Number__c, smagicinteract__Inbound_Number__c, " + objectFieldName +" FROM smagicinteract__Incoming_SMS__c where Id='"+ recordId +"'");
+                var records = qr.getArray("records");
+                recordId = records[0][objectFieldName] ? records[0][objectFieldName] : recordId;
+                mobileNumber = records[0].smagicinteract__Mobile_Number__c;
+                senderId = records[0].smagicinteract__Inbound_Number__c;
+            }
+            if(recordId) {
+                $Lightning.use("smagicinteract:conversationApp", function() {
+                    $Lightning.createComponent("smagicinteract:composerComponent",{
+                        recordId : recordId,
+                        defaultSelectedPhoneNumber : mobileNumber,
+                        defaultSelectedSenderId : senderId,
+                        positionDropDown : "down",
+                        embedContext: "action"
+                    },"lightning",function(cmp) {});
+                });
+            } else {
+                //document.getElementById("{!$Component.formId.main.pageMsg}").innerText = document.getElementById("{!$Component.formId.main.theHiddenInput}").value;
+            }
+        } catch(ex) {
+
+        }
+    </script>
+</apex:page>

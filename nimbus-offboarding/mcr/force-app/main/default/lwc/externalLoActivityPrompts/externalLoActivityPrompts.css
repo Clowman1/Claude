@@ -1,0 +1,92 @@
+@import 'c/portalSharedStyles';
+
+.panel {
+    background: var(--pw-navy-800, #1a2d4a);
+    color: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+}
+
+.panel-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.empty,
+.reason,
+.script {
+    font-size: 13px;
+    color: var(--pw-navy-200, #c0d1e6);
+}
+
+.prompt-list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.prompt-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.title {
+    margin: 4px 0 8px;
+    font-size: 15px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn {
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary {
+    border: none;
+    background: var(--pw-brand-500, #2f7ce0);
+    color: #fff;
+}
+
+.btn-secondary {
+    border: 1px solid var(--pw-navy-400, #5f83b3);
+    background: transparent;
+    color: #fff;
+}
+/* High alert: borrower uploads waiting for review. */
+.prompt-card-alert {
+    background: #fff4f2;
+    border: 2px solid #e5484d;
+    color: #7a1c1c;
+}
+.prompt-card-alert .reason {
+    color: #c62828;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.prompt-card-alert .title,
+.prompt-card-alert .script {
+    color: #3b1111;
+}
+.btn-alert {
+    background: #d32f2f;
+    border: 1px solid #b71c1c;
+    color: #fff;
+    font-weight: 700;
+}
+.btn-alert:hover {
+    background: #b71c1c;
+}

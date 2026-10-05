@@ -1,0 +1,8 @@
+<!--
+ - Created by Akram on 10/8/2020.
+ -->
+
+<design:component  label="Custom Related Checklist">
+    <design:attribute name="fields" label="Fields for Checklist" />
+    <design:attribute name="configuration" label="Fields for Checklist" />
+</design:component>

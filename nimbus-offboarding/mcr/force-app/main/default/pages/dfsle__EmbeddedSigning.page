@@ -1,0 +1,13 @@
+<apex:page id="EmbeddedSending" controller="dfsle.SendingController" showHeader="false" sidebar="false"
+           title="{!$Label.dfsle__SendWithDocuSign}" action="{!beginEmbeddedSigning}">
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:includeLightning />
+    <apex:slds />
+
+    <div id="ds-spinner" style="display:{!IF(hasError == true, 'none','block')}">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+</apex:page>

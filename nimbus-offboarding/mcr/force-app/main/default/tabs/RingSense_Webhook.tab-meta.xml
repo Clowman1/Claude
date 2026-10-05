@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>RingSense webhook subscription status and re-register.</description>
+    <flexiPage>RingSense_Webhook</flexiPage>
+    <label>RingSense Webhook</label>
+    <motif>Custom53: Bell</motif>
+</CustomTab>

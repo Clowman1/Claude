@@ -1,0 +1,24 @@
+<apex:page standardStylesheets="false"  sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head> 
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    </head> 
+    <apex:slds />
+	<div class="slds-scope" role="main">
+		<div class="slds-card slds-card_empty">
+		    <header class="slds-card__header slds-grid">
+		        <div class="slds-media slds-media_center slds-has-flexi-truncate">
+		             <div class="slds-media__body">
+		                <h4 class="slds-text-heading_small slds-truncate">Thank you!</h4>
+		             </div> 
+		        </div>
+		    </header>
+		    <section class="slds-card__body slds-card__body_inner">
+		       <h3 class="slds-text-heading_small slds-p-top_large slds-p-bottom_large">Thank you for your referral! Your email has been sent.</h3>
+		       <button type="button" onclick="window.open('{!URLFOR($Page.PS_AllSettings)}', '_self')"
+                    class="slds-button slds-button--neutral slds-button--small slds-m-bottom--x-large">Return to Rollup Helper</button> 
+		  	</section>
+		</div>
+	</div>  
+    </html>
+</apex:page>

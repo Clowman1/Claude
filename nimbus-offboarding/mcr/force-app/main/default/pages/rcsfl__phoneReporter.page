@@ -1,0 +1,29 @@
+<apex:page showChat="false" 
+  sidebar="false" 
+  showHeader="false" 
+  standardStylesheets="false" 
+  docType="html-5.0" 
+  applyHtmlTag="false" 
+  applyBodyTag="false"
+  contentType="text/html"
+  controller="rcsfl.ReporterController"
+  readOnly="true" >
+  <base></base>
+  <script type="application/javascript">
+      var element = document.getElementsByTagName('base')[0];
+      var attrValue = false ? "https://apps.ringcentral.com/integration/salesforce/prod/rc/v6.25.2/" : "{!$Resource.OpenCTIQAResource999}/";
+      element.setAttribute('href', attrValue);
+  </script>
+  <div id="root"></div>
+  <script>
+    if (typeof Visualforce !== 'undefined') {
+      if (Visualforce && Visualforce.remoting) {
+        Visualforce.remoting.timeout = 120000; // Set timeout at page level
+      }
+    }
+    window.visualRC = {
+      actionController: '{!namespace}ReporterController.',
+    }
+  </script>
+  <script src="reporter.js"></script>
+</apex:page>

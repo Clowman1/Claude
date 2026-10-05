@@ -1,0 +1,7 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-label="Loan origination submission">
+        <div class="modal-card-wide">
+            <c-loan-submission-wizard record-id={contextLoanKey} onsubmitted={handleSubmitted} onclose={handleClose}></c-loan-submission-wizard>
+        </div>
+    </section>
+</template>

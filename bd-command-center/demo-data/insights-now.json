@@ -1,0 +1,39 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "Call_Insight__c",
+          "url": "/services/data/v67.0/sobjects/Call_Insight__c/a2OQi00000ix4ZJMAY"
+        },
+        "Id": "a2OQi00000ix4ZJMAY"
+      },
+      {
+        "attributes": {
+          "type": "Call_Insight__c",
+          "url": "/services/data/v67.0/sobjects/Call_Insight__c/a2OQi00000ix4ZMMAY"
+        },
+        "Id": "a2OQi00000ix4ZMMAY"
+      },
+      {
+        "attributes": {
+          "type": "Call_Insight__c",
+          "url": "/services/data/v67.0/sobjects/Call_Insight__c/a2OQi00000ix4ZKMAY"
+        },
+        "Id": "a2OQi00000ix4ZKMAY"
+      },
+      {
+        "attributes": {
+          "type": "Call_Insight__c",
+          "url": "/services/data/v67.0/sobjects/Call_Insight__c/a2OQi00000ix4ZLMAY"
+        },
+        "Id": "a2OQi00000ix4ZLMAY"
+      }
+    ],
+    "totalSize": 4,
+    "done": true
+  },
+  "warnings": []
+}

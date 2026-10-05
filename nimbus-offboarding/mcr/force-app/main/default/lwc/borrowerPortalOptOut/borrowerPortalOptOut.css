@@ -1,0 +1,15 @@
+:host {
+    display: block;
+}
+
+.portal-opt-out {
+    padding: 16px;
+}
+
+.portal-alert {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+}

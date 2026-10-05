@@ -1,0 +1,7 @@
+<!--
+ - Created by Akram on 9/26/2019.
+ -->
+
+<design:component>
+    <design:attribute name="helpVideoId"/>
+</design:component>

@@ -1,0 +1,21 @@
+<apex:page sidebar="false" controller="rcsfl.LightningOutController">
+
+<apex:includeLightning />
+
+<div id="adminCenter"></div>
+
+<script>
+    $Lightning.use('{!namespace}:AdminCenterApp', function() {
+        $Lightning.createComponent(
+            '{!namespace}:adminCenter',
+            {
+                container: 'Classic'
+            },
+            'adminCenter',
+            function(component) {
+            }
+        );
+    });
+</script>
+
+</apex:page>

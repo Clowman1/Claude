@@ -141,22 +141,8 @@
                         </div>
 
                         <aside class="colside">
-                            <section class="card pad2">
-                                <div class="sechead flat"><h2 class="h2">Upcoming</h2><template lwc:if={canEdit}><button class="linkish" onclick={openCalendar}>Open calendar</button></template></div>
-                                <template lwc:if={hasUpcoming}>
-                                    <template for:each={upcoming} for:item="e">
-                                        <button key={e.campaignId} class={e.boxCls} data-id={e.campaignId} onclick={openTracker}>
-                                            <div class="date"><div class="lbl">{e.dow}</div><div class="dnum">{e.day}</div></div>
-                                            <div class="grow left">
-                                                <div class="strong">{e.name}</div>
-                                                <div class="muted sm">{e.when}</div>
-                                                <div class="sm rsvp">{e.rsvp}</div>
-                                            </div>
-                                        </button>
-                                    </template>
-                                </template>
-                                <template lwc:else><div class="muted sm">Nothing scheduled. Invite a partner for coffee.</div></template>
-                            </section>
+                            <c-bd-upcoming-card events={upcoming} can-edit={canEdit}
+                                onopentracker={openTracker} onopencalendar={openCalendar}></c-bd-upcoming-card>
                             <section class="card pad2">
                                 <h2 class="h2">Book by industry</h2>
                                 <template for:each={industryBars} for:item="b">
@@ -191,10 +177,11 @@
                     <template lwc:if={isBoard}>
                         <div class="board">
                             <template for:each={columns} for:item="col">
-                                <section key={col.stage} class={col.colCls} aria-label={col.stage}>
+                                <section key={col.stage} class={col.colCls} aria-label={col.stage} data-stage={col.stage}
+                                    ondragover={allowDrop} ondragleave={leaveDrop} ondrop={dropOnStage}>
                                     <div class="colhead"><span class="lbl">{col.stage}</span><span class="chip oth">{col.count}</span></div>
                                     <template for:each={col.cards} for:item="p">
-                                        <button key={p.id} class="kcard" data-id={p.id} onclick={openPartner}>
+                                        <button key={p.id} class="kcard" data-id={p.id} onclick={openPartner} draggable={dragAttr} ondragstart={dragStart}>
                                             <span class="strong">{p.name}</span>
                                             <span class="muted sm">{p.company}</span>
                                             <span class="kfoot"><span class={p.chipCls}>{p.industry}</span><span class={p.quietCls}>{p.quietLabel}</span></span>

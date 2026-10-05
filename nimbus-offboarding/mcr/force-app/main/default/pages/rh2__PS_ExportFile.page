@@ -1,0 +1,2 @@
+<apex:page controller="rh2.PS_ExportFileController" readonly="true" sidebar="false" contentType="text/plain/#rollups.csv" cache="false" showHeader="true">
+</apex:page>

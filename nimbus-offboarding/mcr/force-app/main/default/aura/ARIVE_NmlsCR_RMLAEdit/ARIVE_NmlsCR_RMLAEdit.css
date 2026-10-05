@@ -1,0 +1,170 @@
+/**
+ * Created by Zeyad Jabra on 8/17/2019.
+ */
+.THIS .arive-report-section{
+    padding:0;
+}
+
+.THIS .arive-report-subsection{
+    width:100%;
+}
+
+.THIS .arive-report-cell{
+    width:15%;
+    margin-left:1%;
+}
+.THIS .arive-report-cell-corr{
+    width: 10.5%;
+    margin-left:.5%;
+}
+
+
+.THIS .arive-report-row{
+    margin-bottom:5px;
+    align-items:center;
+    justify-content: flex-end;
+}
+
+.THIS .arive-report-row-revenue{
+    margin-bottom:5px;
+    align-items:center;
+}
+
+.THIS .arive-state-complete{
+    box-shadow: 1px 1px 6px 2px #398d31;
+}
+.THIS .arive-hover-show{
+    opacity:0;
+    visibility:hidden;
+}
+
+.THIS .arive-state-complete .arive-hover-show{
+    visibility:visible;
+    opacity:1;
+}
+
+.THIS .arive-clickable{
+    cursor:pointer !important;
+    font-weight:800;
+    color: #307af1;
+}
+.THIS .arive-clickable:hover:after{
+    content: 'View Datapoint Details';
+    position: absolute;
+    margin-top: -20px;
+    background: #e9eaec;
+    border: 1px solid #d9dbdd;
+    padding: 5px;
+    font-style: italic;
+    color: #0a2463;
+}
+
+.THIS .arive-state-complete .arive-hover-hide{
+    visibility:hidden;
+    opacity:0;
+}
+.THIS .arive-text-white{
+    color:white !important;
+}
+.THIS .slds-item:hover .arive-hover-hide{
+    opacity:0;
+    visibility:hidden;
+}
+.THIS .slds-item:hover .arive-hover-show{
+    opacity:1;
+    visibility:visible;
+}
+.THIS .slds-item .arive-hover-show, .THIS .slds-item .arive-hover-hide{
+    transition:.3s;
+}
+.THIS .arive-state-selector .slds-item{
+    text-align: center;
+    border:1px solid #d4d4d4;
+    margin: 5px;
+    padding: 10px;
+    height: 120px !important;
+}
+.THIS .arive-background-yellow{
+    box-shadow: 0px 0 4px 0px #ffbe0b;
+    background: rgba(255, 190, 11, 0.16);
+}
+.THIS .arive-background-yellow:active{
+    box-shadow: 0px 0 4px 0px #ffbe0b;
+    background: rgba(255, 190, 11, 0.16);
+}
+
+.THIS .arive-subtotal-row input, .THIS .arive-cell-average input{
+    box-shadow: 0px 0 4px 0px #0a2463;
+}
+.THIS .arive-report-cell input{
+    text-align:center;
+}
+.THIS .arive-subtotal-row{
+    font-weight:800 !important;
+}
+
+.THIS .slds-modal__header{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.THIS .slds-tabs_default__nav {
+    position: sticky;
+    background: white;
+    top: 0;
+    z-index: 100;
+}
+
+.THIS .slds-show{
+    height:50rem;
+    overflow:scroll;
+}
+
+.THIS .slds-modal__content{
+    padding:0 !important;
+    min-height: 25rem !important;
+}
+.THIS .arive-state-selector .slds-item:hover{
+    box-shadow: 1px 1px 6px 2px #314d8d;
+}
+.THIS .arive-state-selector .slds-item{
+    transition:300ms;
+}
+
+.THIS .arive-nmlscr-state-subheader {
+
+}
+
+.THIS .arive-report-table .arive-table-row {
+    padding: 2px 0;
+    justify-content:space-between;
+}
+
+.THIS .arive-reset-report{
+    color:white;
+    margin-right:15px;
+}
+
+.THIS .arive-reset-report:hover,.THIS .arive-reset-report:focus,.THIS .arive-reset-report:active{
+    text-decoration:none;
+}
+
+.THIS .arive-detial-table-page{
+    max-height: 600px;
+    width:auto;
+}
+
+.THIS .arive-modal-footer{
+    gap: 0.75rem;
+}
+
+.THIS .arive-modal-footer-actions{
+    align-items: center;
+}
+
+@media (max-width: 1280px) {
+    .THIS .arive-modal-footer{
+        flex-wrap: wrap;
+    }
+}

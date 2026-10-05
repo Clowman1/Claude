@@ -1,0 +1,27 @@
+<apex:page id="EnvelopeConfigurationDelete" sidebar="false" showHeader="true"
+           standardController="dfsle__EnvelopeConfiguration__c"
+           title="{!$Label.dfsle__DocuSign}" extensions="dfsle.EnvelopeConfigurationController">
+    <apex:includeLightning />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:slds />
+    <!-- div for rendering the lightning component -->
+    <div id="lightning"></div>
+
+    <script type="text/javascript">
+      var onComplete = function () {
+        window.location.replace('{!JSENCODE(objectHomeUrl)}');
+      };
+      var ns = '{!JSENCODE(namespace)}';
+      $Lightning.use(ns + ':EnvelopeConfigurationDeleteApp', function () {
+        $Lightning.createComponent(ns + ':EnvelopeConfigurationDelete', {
+          namespace: ns,
+          envelopeConfigurationId: '{!EnvelopeConfiguration__c.Id}'
+        }, 'lightning', function (component, status) {
+          if (status === 'SUCCESS') {
+            $A.eventService.addHandler({'event': 'force:navigateToObjectHome', 'handler': onComplete});
+          }
+        });
+      });
+    </script>
+</apex:page>

@@ -1,0 +1,28 @@
+<apex:page rendered="true" standardController="Contact" extensions="rcsfl.PhoneNumbersContactController" showHeader="false" standardStylesheets="false" applyHtmlTag="false" 
+  applyBodyTag="false" contentType="text/html">
+<apex:outputText escape="false" value="{!"<!DOCTYPE html>"}"/>
+<html>
+    <head>
+        <meta charset="utf-8"></meta>
+        <base href="{!$Resource.Salesforce1}/"></base>
+        <link rel="stylesheet" type="text/css" href="styles/sf1-numbers-table.css"/>
+    </head>
+    
+    <body>
+        <table class="rc-phones-table">
+            <apex:repeat value="{!nonEmptyPhoneFieldNameList}" var="phoneFieldName">
+                <tr>
+                    <td>
+                        <span class="rc-phone-field"> {!phoneFieldNameToLabel[phoneFieldName]} </span> 
+                        <span class="rc-phone-number" redirectTo="glip://r/sms?type=new&number={!phoneFieldNameToPhoneNumber[phoneFieldName]}"> 
+                            {!phoneFieldNameToPhoneNumber[phoneFieldName]} 
+                        </span>
+                    </td>
+                </tr>
+            </apex:repeat>
+        </table>
+        
+        <script src='scripts/sf1-sms.js'> </script>
+    </body>
+</html>
+</apex:page>

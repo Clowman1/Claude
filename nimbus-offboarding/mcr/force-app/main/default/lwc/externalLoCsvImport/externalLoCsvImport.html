@@ -1,0 +1,89 @@
+<template>
+    <section class="import-page">
+        <div class="import-intro">
+            <p class="intro-copy">
+                Upload a CSV export so your daily priorities start with real people. You can skip this
+                and import later from Import Data.
+            </p>
+        </div>
+        <div class="import-grid">
+            <article
+                class={consumerCardClass}
+                data-family="consumer"
+                ondragover={handleDragOver}
+                ondragleave={handleDragLeave}
+                ondrop={handleDrop}
+            >
+                <div class="card-head">
+                    <span class="card-icon" aria-hidden="true"><c-portal-icon name="users" size="18"></c-portal-icon></span>
+                    <p class="card-title">{labels.consumerTitle}</p>
+                </div>
+                <p class="card-copy">{labels.consumerHelp}</p>
+                <p class="card-columns-label">{labels.columnsHeading}</p>
+                <p class="card-columns">{labels.consumerColumns}</p>
+                <input lwc:ref="consumerFile" class="file-input" type="file" accept=".csv,text/csv" onchange={handleConsumerChange} />
+                <div class="card-actions">
+                    <button class="btn btn-navy" type="button" onclick={handlePickConsumer} disabled={isUploading}>
+                        <template lwc:if={consumerBusy}>Reading file…</template>
+                        <template lwc:else>{labels.upload}</template>
+                    </button>
+                    <span class="drop-hint">{labels.dropHint}</span>
+                </div>
+            </article>
+            <article
+                class={partnerCardClass}
+                data-family="partner"
+                ondragover={handleDragOver}
+                ondragleave={handleDragLeave}
+                ondrop={handleDrop}
+            >
+                <div class="card-head">
+                    <span class="card-icon" aria-hidden="true"><c-portal-icon name="building" size="18"></c-portal-icon></span>
+                    <p class="card-title">{labels.partnerTitle}</p>
+                </div>
+                <p class="card-copy">{labels.partnerHelp}</p>
+                <p class="card-columns-label">{labels.columnsHeading}</p>
+                <p class="card-columns">{labels.partnerColumns}</p>
+                <input lwc:ref="partnerFile" class="file-input" type="file" accept=".csv,text/csv" onchange={handlePartnerChange} />
+                <div class="card-actions">
+                    <button class="btn btn-navy" type="button" onclick={handlePickPartner} disabled={isUploading}>
+                        <template lwc:if={partnerBusy}>Reading file…</template>
+                        <template lwc:else>{labels.upload}</template>
+                    </button>
+                    <span class="drop-hint">{labels.dropHint}</span>
+                </div>
+            </article>
+        </div>
+        <p class="footnote">
+            We de-duplicate against records already in the shared database and never overwrite another
+            officer’s relationships.
+        </p>
+
+        <template lwc:if={errorMessage}>
+            <p class="form-error" role="alert">{errorMessage}</p>
+        </template>
+
+        <template lwc:if={hasResult}>
+            <section class="result-card" aria-live="polite">
+                <h2 class="card-title">{labels.resultTitle}</h2>
+                <p class="summary">{result.userMessage}</p>
+                <template lwc:if={hasSuccesses}>
+                    <h3 class="result-heading result-heading-ok"><c-portal-icon name="check-circle-2" size="16"></c-portal-icon>Added</h3>
+                    <ul>
+                        <template for:each={result.successes} for:item="row">
+                            <li key={row.rowKey}>{row.name} — {row.message}</li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:if={hasErrors}>
+                    <h3 class="result-heading result-heading-warn"><c-portal-icon name="alert-triangle" size="16"></c-portal-icon>Needs attention</h3>
+                    <ul>
+                        <template for:each={result.errors} for:item="row">
+                            <li key={row.rowKey}>{row.name} — {row.message}</li>
+                        </template>
+                    </ul>
+                </template>
+            </section>
+        </template>
+    </section>
+</template>

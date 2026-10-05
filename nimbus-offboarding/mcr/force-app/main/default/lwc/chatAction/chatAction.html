@@ -1,0 +1,14 @@
+<!--
+ - Created by taras on 19.03.2025.
+ -->
+
+<!-- Chat Action -->
+<template>
+
+    <div if:true={action}>
+        <template lwc:if={actionTypeIsToggle}>
+            <c-enhanced-switcher onchange={toggleChangeHandler} config={action.config}></c-enhanced-switcher>
+        </template>
+    </div>
+
+</template>

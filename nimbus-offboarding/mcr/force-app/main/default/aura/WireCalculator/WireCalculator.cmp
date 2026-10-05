@@ -1,0 +1,117 @@
+<!--
+ - Created by zeyad on 6/26/2020.
+ -->
+
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" controller="LoanController" access="global" >
+    <aura:html tag="style">
+        .slds-modal__container{
+        width: 90%;
+        max-width: 100rem;
+        }
+        .slds-modal__content{
+        height: auto !important;
+        max-height: unset !important;
+        }
+    </aura:html>
+    <aura:attribute name="isGenerateEnabled" type="Boolean" default="false"/>
+    <aura:attribute name="isPPDManual" type="Boolean" default="false"/>
+    <aura:attribute name="interestValue" type="Integer" />
+    <aura:attribute name="manualBankFunded" type="Boolean" default="false" />
+    <aura:attribute name="creditReportFee" type="Decimal" />
+    <aura:handler name="change" value="{!v.interestValue}" action="{!c.handleValueChange}" />
+    <lightning:recordEditForm onload="{!c.handleRecordLoad}" onerror="{!c.onError}"  onsuccess="{!c.onSuccess}" onsubmit="{!c.onRecordSubmit}" aura:id="recordLoader" recordId="{!v.recordId}" objectApiName="Transaction__c">
+        <lightning:messages />
+        <lightning:card class="slds-theme_default" title="Wire Calculator" iconName="action:update" variant="base">
+            <aura:set attribute="actions">
+                <lightning:button class="slds-theme_brand" variant="brand" type="submit" label="Calculate"></lightning:button>
+
+                <lightning:button class="slds-theme_brand" onclick="{!c.generateForm}" label="Generate Form" variant="brand" disabled="{!not(v.isGenerateEnabled)}"/>
+            </aura:set>
+            <div class="slds-card__body_inner">
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title">
+                        <lightning:button class="slds-theme_base slds-section__title-action" iconPosition="left" variant="base" label="Basic Information" iconName="action:new_opportunity"></lightning:button>
+                    </h3>
+                    <div class="slds-section__content">
+                        <div class="slds-form slds-form_stacked">
+                            <lightning:layout class="slds-m-bottom_x-small slds-wrap" multipleRows="true">
+                                <lightning:inputField class="slds-size_6-of-12" disabled="true" label="Account Name"  placeholder="John Doe" dropdownAlignment="left" variant="standard" fieldName="Borrower_Name__c"></lightning:inputField>
+                                <lightning:inputField required="true" class="slds-size_6-of-12" label="MERS Min #" placeholder="" type="text" variant="standard" fieldName="MERS_Min__c"></lightning:inputField>
+                                <lightning:inputField  label="Wire Notes" placeholder="" variant="standard" fieldName="Wire_Notes__c"/>
+                            </lightning:layout>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title">
+                        <lightning:button class="slds-theme_base slds-section__title-action" iconPosition="left" variant="base" label="Loan Information" iconName="utility:home"></lightning:button>
+                    </h3>
+                    <div class="slds-section__content">
+                        <div class="slds-form slds-form_stacked">
+                            <lightning:layout class="slds-m-bottom_x-small slds-wrap" multipleRows="true">
+                                <lightning:layoutItem size="6">
+                                    <lightning:inputField required="true"  placeholder=" " type="text" variant="standard" fieldName="Interest_Rate__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="PPD Interest Type" variant="standard" fieldName="PPD_Interest_Type__c"></lightning:inputField>
+                                    <lightning:inputField required="true" aura:Id="Amount"  placeholder="" type="text" variant="standard" fieldName="Loan_Amount__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  placeholder="" type="text" variant="standard" fieldName="Warehouse_Max_Funding__c"></lightning:inputField>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6">
+                                    <lightning:inputField disabled="true"  placeholder=" " type="text" variant="standard" fieldName="PPD_Interest_Days__c"></lightning:inputField>
+                                    <lightning:inputField disabled="true"  placeholder=" " type="text" variant="standard" fieldName="Per_Diem__c"></lightning:inputField>
+                                    <lightning:inputField disabled="false" onchange="{!c.handleBankFundedChange}"  placeholder=" " type="text" variant="standard" fieldName="Bank_Funded__c"></lightning:inputField>
+                                	<aura:if isTrue="{!v.manualBankFunded}">
+                                        Bank Funded adjusted manually
+                                    </aura:if>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title">
+                        <lightning:button class="slds-theme_base slds-section__title-action" iconPosition="left" variant="base" label="Date Tracking" iconName="utility:dayview"></lightning:button>
+                    </h3>
+                    <div class="slds-section__content">
+                        <div class="slds-form slds-form_stacked">
+                            <lightning:layout class="slds-m-bottom_x-small slds-wrap" multipleRows="true">
+                                <lightning:inputField required="true" class="slds-size_6-of-12" label="Disbursement Date" placeholder="" disabled="false" variant="standard" fieldName="Settlement_Time_for_Wire__c" ></lightning:inputField>
+                                <lightning:inputField required="true" class="slds-size_6-of-12" label="EO Month" placeholder="" disabled="true" variant="standard" fieldName="EOMONTH__c"></lightning:inputField>
+                            </lightning:layout>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-section slds-is-open">
+                    <h3 class="slds-section__title">
+                        <lightning:button class="slds-theme_base slds-section__title-action" iconPosition="left" variant="base" label="Fees and Payments" iconName="utility:money"></lightning:button>
+                    </h3>
+                    <div class="slds-section__content">
+                        <div class="slds-form slds-form_stacked">
+                            <lightning:layout class="slds-m-bottom_x-small slds-wrap" multipleRows="true">
+                                <lightning:layoutItem size="6">
+                                    <lightning:inputField required="true"  label="Origination Fee" placeholder="" type="text" variant="standard" fieldName="Origination_Charges__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="Warehouse Fee" placeholder="" type="text" value="0"  variant="standard"  fieldName="Warehouse_Fee__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="Credit Report Fee" placeholder="" type="text" variant="standard" value="{!v.creditReportFee}" fieldName="Credit_Report_Fee__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="MERS Fee" placeholder="" type="text" variant="standard" value="24.95"  fieldName="MERS_Fee__c"></lightning:inputField>
+
+                                    <lightning:inputField required="true"  label="Appraisal Cost" placeholder="" type="text" variant="standard" fieldName="Appraisal_Cost__c"></lightning:inputField>
+
+                                    <lightning:inputField required="true"  label="Flood Cert" placeholder="" type="text" value="8"  variant="standard" fieldName="Flood_Cert__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="Tax Service Fee" placeholder="" type="text" variant="standard" value="85"  fieldName="Tax_Service_Fee__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="Escrow Total" placeholder="" type="text" variant="standard" fieldName="Escrow_Total__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="Lender Credit" placeholder="" type="text" variant="standard" fieldName="Lender_Credit__c"></lightning:inputField>
+                                    <lightning:inputField required="true"  label="VA/FHA Funding Fee" placeholder="" type="text" variant="standard" fieldName="VA_FHA_Funding_Fee__c"></lightning:inputField>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6">
+                                    <lightning:inputField disabled="false" onchange="{!c.changePPDInterest}" label="PPD Interest" placeholder="" type="text" variant="standard" fieldName="PPD_Interest__c"></lightning:inputField>
+                                    <lightning:inputField disabled="true"  label="Amount To Be Funded" placeholder="" type="text" variant="standard" fieldName="Amount_To_Be_Funded__c"></lightning:inputField>
+                                    <lightning:inputField disabled="true"  label="Haircut" placeholder="" type="text" variant="standard" fieldName="Haircut__c"></lightning:inputField>
+                                    <lightning:inputField disabled="true"  label="Amount Bank Funded" placeholder="" type="text" variant="standard" fieldName="Amount_Bank_Funded__c"></lightning:inputField>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning:card>
+    </lightning:recordEditForm>
+</aura:component>

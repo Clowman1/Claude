@@ -1,0 +1,394 @@
+<apex:page controller="rh2.PS_Manage_Trigger_Controller" title="Rollup Helper Real Time Enablement" sidebar="false"  applyBodyTag="false" docType="html-5.0" showHeader="true">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<head> 
+    	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>   
+      <apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+      <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }"/>
+      <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />
+      <apex:stylesheet value="{!URLFOR($Resource.rh2__PT_Resources_v1, '/css/grayBackground.css')}" />
+     </head> 
+     
+     <script>
+        selectBreadcrumb_HS();
+
+     //Verify namespace is ready
+        var rh = rh || {};
+        var overwriteFlag;
+
+
+                
+        rh.j$ = jQuery.noConflict();
+        rh.j$(document).ready(function() {
+            if({!mdapiVars.MetadataConnectionWarning})
+            {
+              createRemoteSite('{!JSENCODE(sessionId)}', 'RH_mdapi', '{!JSENCODE(deployVars.host)}', '{!JSENCODE(deployVars.host)}');
+            }
+        });
+
+      function closeAllowRealtimeModal(){
+        CloseTheAllowRealtimeModal();
+      }
+
+      function closePreventRealtimeModal(){
+        CloseThePreventRealtimeModal();
+      }
+
+      function setShowTooltipFormatting(tooltip){
+          var tt = document.getElementById(tooltip);
+          
+          tt.style.display = 'block';
+          tt.style.overflow = 'visible';
+      }
+     </script>
+     
+     <style>
+        .checkmark2 {
+            background-image: url({!URLFOR($Resource.rh2__PT_Resources_v1, 'images/checkmark.png')});
+            margin-left: 6px;
+            width: 12px;
+            height: 12px;
+        }
+
+        .input {
+            width: 13px;
+            height: 13px;
+            padding: 0;
+            margin:0;
+            vertical-align: bottom;
+            position: relative;
+            top: -1px;
+            overflow: hidden;
+        }
+        @media screen and (max-width:1360px){
+            .hideFullColumn tr > .hidecol
+            {
+                display:none;
+            }
+        }
+
+        .popoverNubbinAlignment{
+          top: 16px;
+        }
+        
+        .popoverDefault{
+          display:none;
+          max-height:0px; 
+          overflow:visible;   
+          overflow-y:visible; 
+          position:absolute; 
+          white-space:normal;
+          z-index:999;
+          float: right;
+          width: 260px;
+        }
+
+        .headerPopover{
+          top: 24px;
+          font-size: initial;
+          font-weight: initial;
+          text-transform: initial;
+          letter-spacing: initial;
+        }
+     </style>
+     <script>
+      var prevValue;
+      var selectedObject;
+
+      function storeSelectedObj(obj) {
+        selectedObject = obj;
+      }
+
+      function navigateToSelectedObj(){
+        selectMasterObj(selectedObject);
+      }
+     </script>
+
+    <apex:form >
+      <apex:actionFunction action="{!doSelectMasterObject}" name="selectMasterObj" rerender="none" status="loading">
+          <apex:param name="selectedObj" value="" assignTo="{!deployVars.deployObjectName}"/>
+      </apex:actionFunction>
+    </apex:form>
+     
+     <body>
+     <apex:slds />
+	 <div class="slds-scope" role="main"> 
+	  	
+
+    	<div class="slds-card grayBackground">
+  			<header class="slds-card__header ">
+   		  		<nav role="navigation">
+        			<ol class="slds-breadcrumb slds-list_horizontal">
+                    <li class="slds-list__item slds-text-heading_label home-crumb"><a href="{!URLFOR($Page.rh2__PS_landingPage)}">{!$Label.rh2__Home}</a></li>
+                		<li class="slds-list__item slds-text-heading_label setting-crumb"><a href="{!URLFOR($Page.rh2__PS_AllSettings)}">{!$Label.rh2__AllRollupSetting}</a></li>
+             		</ol>
+        		</nav>
+  			</header>
+		</div>
+	   	<apex:form id="form" >
+      <apex:actionFunction action="{!closeRealtimeModal}" name="CloseThePreventRealtimeModal" status="loading" reRender="preventRealtimeModal, realtime_script_check, realtime_script_check2"/> 
+      <apex:actionFunction action="{!closeRealtimeModal}" name="CloseTheAllowRealtimeModal" status="loading" reRender="allowRealtimeModal, realtime_script_check, realtime_script_check2"/> 
+     	<div class="slds-card slds-m-vertical_medium grayBackground" style="min-width:1074px;">
+     		<header class="slds-card__header slds-grid">
+     			<div class="slds-media__body">
+                	<h3 class="slds-text-heading_medium slds-truncate">{!$Label.rh2__SelectSourceObjectTo}</h3>
+              	</div>
+     		</header>
+     		<body>
+     		<section class="slds-card__body ">
+          <apex:outputPanel id="realtimeScriptWarning">
+            <apex:outputPanel styleClass="slds-notify slds-notify_alert slds-theme_warning slds-align_absolute-center" style="margin-bottom:5px;" rendered="{!shouldRenderDisableRealtimeScriptWarning}">
+              {!$Label.rh2__RealtimeDisabledForOneOrMoreObjects} 
+            </apex:outputPanel>
+          </apex:outputPanel>
+          
+          <div class="slds-box slds-box_x-small slds-theme_alt-inverse" style="width:85%; margin-left:auto; margin-right:auto;">{!$Label.rh2__PleaseNoteIfYouDoNotSee}</div>
+
+          <apex:outputPanel rendered="{!!hasAPIAccess}">
+            <div class="slds-box slds-notify slds-notify_alert slds-theme_info slds-align_absolute-center" style="width:85%;margin-left:auto;margin-right:auto;padding-top:8px;padding-bottom:8px;padding-left:0.5rem;">
+              {!$Label.rh2__OrgDoesNotHaveAPIAccess}
+            </div>
+          </apex:outputPanel>
+
+           <div style="width:95%; margin-left:auto; margin-right:auto; padding-top:10px;" >
+            <apex:outputPanel style="float:right; padding-bottom:5px;">
+              <span class="slds-text-title_caps" style="padding-right:2px;">
+                {!$Label.rh2__AllowRealtimeDisablement}
+              </span>
+              <apex:outputPanel id="realtimeRollupCheckbox">
+              <apex:inputCheckbox styleclass="input" rendered="{!runRealtimeRollup}" id="realtime_script_check" value="{!runRealtimeRollup}" onchange="showModal(true, 'preventRealtimeModal');"/>
+              <apex:inputCheckbox styleclass="input" rendered="{!!runRealtimeRollup}" id="realtime_script_check2" value="{!runRealtimeRollup}" onchange="showModal(true, 'allowRealtimeModal');"/>
+              </apex:outputPanel>
+              <span>                  
+                <a  id = 'helpIcon' onmouseover="setShowTooltipFormatting('realtimehelp');" onmouseout="document.getElementById('realtimehelp').style.display = 'none';">
+                    <img  class="slds-icon slds-icon--x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"></img>                 
+                </a> 
+                <br/>
+                </span> 
+              </apex:outputPanel>
+              <div style="max-height:0px;overflow:visible;overflow-y:visible;position:relative; left:10%; float:right;">
+                <div class="slds-popover slds-theme--info" id='realtimehelp' style="display:none; ">                       
+                    <div class="slds-popover__body">
+                      {!$Label.InOrderToDisableRealtime}   
+                    </div>
+                </div>    
+              </div>    
+              <br/>
+              <div style="width:100%;">
+            		<table class="slds-table slds-table_bordered slds-max-medium-table_stacked slds-col slds-shrink hideFullColumn">
+              			<thead>
+              				<tr style="width:100%;">
+	                			<th class="slds-text-heading_label slds-cell-shrink" scope="col" style="width:2%;">{!$Label.Action}</th>
+	                			<th class="slds-text-heading_label slds-is-sortable slds-cell-shrink" scope="col" style="width:4%;">{!$Label.TriggerDeployed}?</th>
+                        <th class="slds-text-heading_label slds-is-sortable hidecol" scope="col" style="width:20%;">{!$Label.Label}</th>
+                        <th class="slds-text-heading_label slds-is-sortable" scope="col" style="width:30%;">{!$Label.APIName}</th> 
+                        <th class="slds-text-heading_label slds-is-sortable slds-cell-shrink" scope="col" style="width:13%;">
+                          <apex:inputCheckbox value="{!disableAllRealtime}">
+                            <apex:actionSupport event="onclick" action="{!setToggleDisableAllRealtime}" reRender="realtimeScriptWarning, realtime_check" status="loading" />
+                            </apex:inputCheckbox>
+                          <span>
+                            {!$Label.DisableRealtime}?
+                            <a onmouseover="rh.j$('#disable-realtime-info').toggle();" onmouseout="rh.j$('#disable-realtime-info').toggle();">
+                              <img class="slds-icon slds-icon_xx-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"/>
+                            </a>
+                          </span>
+                          <div class="slds-col popoverDefault headerPopover" id="disable-realtime-info" style="left:-3.7rem;">
+                            <div class="slds-popover slds-popover_tooltip slds-nubbin_top-right popoverNubbinAlignment" role="dialog">
+                              <div class="slds-popover__body">
+                                Checking this setting for an object will cause Rollup Helper to immediately exit without processing any rollups when the trigger for that object fires.<br/><br/>
+                                Please note that for this functionality to work as expected, "Allow Realtime Disablement" will need to be checked above.
+                              </div>
+                            </div>
+                          </div>
+                        </th> 
+                        <th class="slds-text-heading_label slds-is-sortable slds-cell-shrink" scope="col" style="width:14%;">
+                          {!$Label.ForceAsynchronous}?
+                          <a onmouseover="rh.j$('#force-async-info').toggle();" onmouseout="rh.j$('#force-async-info').toggle();">
+                            <img class="slds-icon slds-icon_xx-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"/>
+                          </a>
+                          <div class="slds-col popoverDefault headerPopover" id="force-async-info" style="left:-2.4rem;">
+                            <div class="slds-popover slds-popover_tooltip slds-nubbin_top-right popoverNubbinAlignment" role="dialog">
+                              <div class="slds-popover__body">
+                                Checking this setting for an object will cause Rollup Helper to shift all rollup updates for that object
+                                out of the immediate trigger context and into asynchronous (near real-time) processing.<br/><br/>
+                                If asynchronous processing is enabled, expect Rollup Helper to take a minute or two to update records with rollup results after the rollup has been triggered.
+                              </div>
+                            </div>
+                          </div>
+                        </th>
+                        <th class="slds-text-heading_label slds-is-sortable slds-cell-shrink" scope="col" style="width:5%;">{!$Label.AdditionalSettings}</th> 
+	                  		</tr>
+	                  	</thead>
+	                  	<tbody>
+                        <apex:actionFunction reRender="realtime_check, async_check, trigger_check, additional_settings, allow_child_save_check, realtimeScriptWarning" action="{!setObjectRealtimeSetting}" name="objRealtimeSet" status="loading">
+                          <apex:param name="itemObject" value="" assignTo="{!objRealtimeSetting.describeObject}" />
+                          <apex:param name="itemRealtime" value="" assignTo="{!objRealtimeSetting.describeDisableRealtime}" />
+                          <apex:param name="itemAsync" value="" assignTo="{!objRealtimeSetting.describeEnableAsync}" />
+                          <apex:param name="itemTrigger" value="" assignTo="{!objRealtimeSetting.describeDisableTrigger}" />
+                          <apex:param name="itemAllowChildSaveIfParentSaveFails" value="" assignTo="{!objRealtimeSetting.describeChildSaveIfParentSaveFails}" />
+                      </apex:actionFunction>
+
+                			<apex:repeat value="{! masterObjects }" var="item">
+                				<tr> 
+                					<td data-label="{!$Label.rh2__Action}">
+                            <apex:outputPanel rendered="{!AND(item.isOverwriteEnabled, !item.isTriggerDeployed)}">
+                              <apex:commandLink value="{!$Label.rh2__Select}" onclick="storeSelectedObj('{!JSENCODE(item.ObjectName)}');showModal(true, 'existingSettingModal');" reRender="existingSettingModal"/>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!OR(!item.isOverwriteEnabled, item.isTriggerDeployed)}">
+                              <apex:commandLink value="{!$Label.rh2__Select}" onclick="storeSelectedObj('{!JSENCODE(item.ObjectName)}');navigateToSelectedObj();" rerender="error, table" status="loading">
+                              </apex:commandLink>
+                            </apex:outputPanel>
+                     			</td>
+                     			<td>
+                     				<apex:image value="{!URLFOR($Resource.rh2__PT_Resources_v1, 'images/s.gif')}" styleClass="checkmark2" rendered="{!item.isTriggerDeployed}" id="checkmark2"/>	
+                     			</td>
+                     			<td class="hidecol">
+                     				{!item.label}
+                     			</td>
+                     			<td>
+                     				{!item.objectName}
+                     			</td>
+                          <td>
+                          <apex:inputCheckbox id="realtime_check" value="{!item.isRealtimeDisabled}" onchange="(function(e) { objRealtimeSet('{!JSENCODE(item.objectName)}', e.target.checked, {!item.isAsyncEnabled}, {!item.isPackagedTriggerDisabled}, {!item.isAllowChildSaveIfParentSaveFailsEnabled}); })(event)" />
+                          </td>
+                          <td>
+                            <apex:inputCheckbox id="async_check" value="{!item.isAsyncEnabled}" onchange="(function(e) { objRealtimeSet('{!JSENCODE(item.objectName)}', {!item.isRealtimeDisabled}, e.target.checked, {!item.isPackagedTriggerDisabled}, {!item.isAllowChildSaveIfParentSaveFailsEnabled}); })(event)" />
+                          </td>
+                          <td>
+                            <div class="slds-dropdown-trigger slds-dropdown-trigger_click hideDropdown" style="margin-left:60px;" id="{!item.objectName}">  
+                              <button class="slds-button slds-button_icon-border-filled hideDropdown" type="button" onClick="showOrHideDropdown('{!JSENCODE(item.objectName)}');">
+                                  <i class="fa fa-caret-down"></i>
+                              </button>
+                              <div class="slds-dropdown slds-dropdown_x-small slds-dropdown_right slds-dropdown_actions slds-dropdown_menu hideDropdown" style="padding:10px;width:280px;">
+                                <center><h3 class="slds-text-heading_small" style="white-space:normal;word-wrap:break-word;">{!item.objectName} <br/>{!$Label.AdditionalSettings} </h3> </center><br/>
+                                  <ul id="menu" class="slds-dropdown__list hideDropdown" role="menu">   
+                                      <li class="slds-dropdown__item">
+                                        <div class="slds-text-body_regular">{!$Label.DisableTrigger}?
+                                          <a onmouseover="rh.j$('#disable-trigger-info-{!JSENCODE(item.objectName)}').toggle();" onmouseout="rh.j$('#disable-trigger-info-{!JSENCODE(item.objectName)}').toggle();">
+                                            <img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"/>
+                                          </a>
+
+                                          <div class="slds-col popoverDefault" id="disable-trigger-info-{!item.objectName}" style="left:-7.2rem;">
+                                            <div class="slds-popover slds-popover_tooltip slds-nubbin_top-right popoverNubbinAlignment" role="dialog">
+                                              <div class="slds-popover__body">
+                                                Checking this setting for an object will cause Rollup Helper to disable the real-time trigger for the object. Any rollups using the specified object as the source must be run manually in order to process.
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <apex:inputCheckbox id="trigger_check" value="{!item.isPackagedTriggerDisabled}" onchange="(function(e) { objRealtimeSet('{!JSENCODE(item.objectName)}', {!item.isRealtimeDisabled}, {!item.isAsyncEnabled}, e.target.checked, {!item.isAllowChildSaveIfParentSaveFailsEnabled}); })(event)" />
+                                      </li>    
+                                      <li class="slds-dropdown__item">
+                                        <div class="slds-text-body_regular">
+                                          {!$Label.AllowChildSaveIfParentSaveFails}?
+                                          <a onmouseover="rh.j$('#allow-child-save-info-{!JSENCODE(item.objectName)}').toggle();" onmouseout="rh.j$('#allow-child-save-info-{!JSENCODE(item.objectName)}').toggle();">
+                                            <img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"/>
+                                          </a>
+
+                                          <div class="slds-col popoverDefault" id="allow-child-save-info-{!item.objectName}">
+                                            <div class="slds-popover slds-popover_tooltip slds-nubbin_top-right popoverNubbinAlignment" role="dialog">
+                                              <div class="slds-popover__body">
+                                                Checking this setting for an object will allow source records to be saved even if a save on a target record fails during a rollup run.<br/>
+                                                By default, Rollup Helper will not save source records if related target records fail to save.<br/><br/>
+                                                This setting may be used to ensure that records will not be rolled back or get lost. (Example: Case records in Web-to-Case)
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <apex:inputCheckbox id="allow_child_save_check" value="{!item.isAllowChildSaveIfParentSaveFailsEnabled}" onchange="(function(e) { objRealtimeSet('{!JSENCODE(item.objectName)}', {!item.isRealtimeDisabled}, {!item.isAsyncEnabled}, {!item.isPackagedTriggerDisabled}, e.target.checked); })(event)" />
+                                      </li>                                         
+                                  </ul>
+                              </div>
+                          </div>
+                          </td>
+                     		</tr>
+                			</apex:repeat>
+
+                		</tbody>
+	            	</table>
+              </div>
+	       		</div>
+	   		</section>
+         <div id="existingSettingModal" style="display:none;">
+            <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header slds-modal__header_empty">
+                        <button type="button" onclick='showModal(false, "existingSettingModal");' class="slds-button slds-button_icon-inverse slds-modal__close">
+                          <svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+                              <use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                          </svg>
+                      </button>     
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">	
+                        <center>
+                            <p>
+                              {!$Label.IfThisRealtimeTriggerIsDeployed}
+                            </p>                                     
+                        </center>
+                    </div>  
+                    <div class="slds-modal__footer">
+                        <apex:commandButton status="loading" styleClass="slds-button slds-button_brand" onclick="navigateToSelectedObj();" reRender="existingSettingModal" value="{!$Label.rh2__Proceed}"/>
+                        <apex:commandButton styleClass="slds-button slds-button_neutral" onclick="showModal(false, 'existingSettingModal');" rerender="existingSettingModal" value="{!$Label.Cancel }"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+  </div>
+    <div id="preventRealtimeModal" style="display:none;">
+            <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                  <div class="slds-modal__header slds-modal__header_empty">
+                    <button type="button" onclick='closePreventRealtimeModal(); showModal(false, "preventRealtimeModal");' class="slds-button slds-button_icon-inverse slds-modal__close">
+                        <svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+                            <use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                        </svg>
+                    </button>                                    
+                </div>
+                  <div class="slds-modal__content slds-p-around_medium">	
+                    <center>
+                      {!$Label.AreYouSureYouWantToPreventRealtime}
+                    </center>
+                  </div>
+                    <div class="slds-modal__footer">
+                        <apex:commandButton styleClass="slds-button slds-button_brand" action="{!setDisableRealtimeScript}" onclick="showModal(false, 'preventRealtimeModal');" value="{!$Label.rh2__Yes}" status="loading" reRender="preventRealtimeModal, realtimeScriptWarning, realtimeRollupCheckbox"/>
+                        <apex:commandButton styleClass="slds-button slds-button_neutral" action="{!closeRealtimeModal}" onclick="showModal(false, 'preventRealtimeModal');" value="{!$Label.rh2__No}" status="loading" reRender="preventRealtimeModal, realtime_script_check, realtime_script_check2, realtimeRollupCheckbox"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+  </div>
+  <apex:actionStatus id="loading" onstart="loading(true)" onstop="loading(false)" />
+  <c:Loading_Spinner opacity="1"/>
+    <div id="allowRealtimeModal" style="display:none;">
+              <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+                  <div class="slds-modal__container">
+                    <div class="slds-modal__header slds-modal__header_empty">
+                        <button type="button" onclick='closeAllowRealtimeModal(); showModal(false, "allowRealtimeModal");' class="slds-button slds-button_icon-inverse slds-modal__close">
+                            <svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+                                <use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                            </svg>
+                        </button>                                    
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">	
+                        <center>
+                          {!$Label.AreYouSureYouWantToAllowRealtime}
+                        </center>
+                    </div>
+                      <div class="slds-modal__footer">
+                          <apex:commandButton styleClass="slds-button slds-button_brand" action="{!setDisableRealtimeScript}" onclick="showModal(false, 'allowRealtimeModal');" value="{!$Label.rh2__Yes}" status="loading" reRender="allowRealtimeModal, realtimeScriptWarning, realtimeRollupCheckbox"/>
+                          <apex:commandButton styleClass="slds-button slds-button_neutral" action="{!closeRealtimeModal}" onclick="showModal(false, 'allowRealtimeModal');" value="{!$Label.rh2__No}" status="loading" reRender="allowRealtimeModal, realtime_script_check, realtime_script_check2"/>
+                      </div>
+                  </div>
+              </div>
+              <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+     		</body>
+     	</div>
+     </apex:form>
+     </div>     
+     </body>
+</html>
+<c:PS_additionalInformation ></c:PS_additionalInformation>    
+
+
+</apex:page>

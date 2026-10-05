@@ -1,0 +1,153 @@
+<apex:page title="Rollup Helper Common Use Case Deployment" controller="rh2.PS_Use_Case_Controller" sidebar="false"  applyBodyTag="false" docType="html-5.0" showHeader="true">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+	<head> 
+    	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>   
+		<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+		<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.js')}" />
+		<apex:stylesheet value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.css')}" />
+      	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />
+      	<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css')}" />
+     </head>
+     <style>
+        .checkmark2 {
+            background-image: url({!URLFOR($Resource.rh2__PT_Resources_v1, 'images/checkmark.png')});
+            margin-left: 6px;
+            width: 12px;
+            height: 12px;
+        }
+
+        .popoverNubbinAlignment{
+            left: -1.26em; 
+            top: 0.8em;
+        }
+ 
+        .popoverDefault{
+            display:none;
+			top: 26px;
+            max-height:0px; 
+            overflow:visible;   
+            overflow-y:visible; 
+            position:relative; 
+            white-space:normal;
+            z-index:99;  
+        }
+
+		.popoverDefaultAbsolute{
+            display:none;
+			top: 30px;
+			left:62px;
+            max-height:0px; 
+            overflow:visible;   
+            overflow-y:visible; 
+            position:absolute; 
+            white-space:normal;
+            z-index:99;  
+        }
+     </style>
+
+     <apex:slds />
+	 <apex:form >
+	 <div class="slds-scope" role="main">
+    	<div class="slds-card grayBackground">
+  			<header class="slds-card__header ">
+   		  		<nav role="navigation">
+        			<ol class="slds-breadcrumb slds-list_horizontal">
+                    <li class="slds-list__item slds-text-heading_label home-crumb"><a href="{!URLFOR($Page.PS_landingPage)}">{!$Label.Home}</a></li>
+                		<li class="slds-list__item slds-text-heading_label setting-crumb"><a href="{!URLFOR($Page.PS_AllSettings)}">{!$Label.AllRollupSetting}</a></li>
+             		</ol>
+        		</nav>
+  			</header>
+		</div>
+	   	
+     	<div class="slds-card slds-m-vertical_medium grayBackground">
+     		<header class="slds-card__header slds-grid">
+     			<div class="slds-media__body">
+                	<h3 class="slds-text-heading_medium slds-truncate">{!$Label.RollupHelperUCLibrary}</h3>
+					<hr style="margin: 1rem 0;"></hr>
+					<h5 class="slds-text-title slds-truncate">{!$Label.Click} <b>'{!$Label.rh2__Deploy}'</b> {!$Label.OnAnyUseCase}</h5>
+              	</div>
+     		</header>
+				<apex:selectList value="{!selectedObject}" size="1" styleClass="slds-m-left_large">
+                    <apex:selectOptions value="{!objectNamesWithUseCases}"/>
+					<apex:actionSupport event="onchange" action="{!populateUseCaseList}" rerender="useCaseContainer"/>
+                </apex:selectList>
+
+				<apex:outputPanel id="useCaseContainer">
+					<section class="slds-card__body ">
+						<div>
+							<c:Paginate pageController="{! useCasePaginateController }" renderedComponent="useCaseContainer" />
+						</div>
+						<div style="margin-left:auto; margin-right:auto;" >
+							<table class="slds-table slds-table_bordered slds-max-medium-table_stacked slds-col slds-shrink">
+								<thead>
+									<tr style="width:100%;">
+										<th style="width:5%;" class="slds-text-heading_label slds-cell-shrink" scope="col">{!$Label.Action}</th>
+										<th style="width:5%;" class="slds-text-heading_label slds-is-sortable slds-cell-shrink hidecol" scope="col">{!$Label.Deployed}?</th>
+										<th style="width:5%;" class="slds-text-heading_label slds-is-sortable slds-cell-shrink hidecol" scope="col">{!$Label.FieldDeployed}?</th>
+										<th style="width:35%;" class="slds-text-heading_label slds-is-sortable slds-cell-shrink hidecol" scope="col">{!$Label.Label}</th> 
+										<th style="width:50%;" class="slds-text-heading_label slds-is-sortable slds-cell-shrink" scope="col">{!$Label.Description}</th>  
+									</tr>
+								</thead>
+								<tbody>
+								<apex:repeat value="{!PaginatedListForUseCases}" var="record">
+										<tr>                                            
+											<td style="width:5%;" data-label="{!$Label.Action}">
+												<apex:commandLink rendered="{!!record.deployed}" action="{!selectUseCase}" value="{!$Label.rh2__Deploy}">
+													<apex:param name="masterAPI" value="{!record.metadataRecord.rh2__Label__c}" assignTo="{!ucData.useCaseName}"/>
+												</apex:commandLink>
+												<apex:commandLink rendered="{!record.deployed}" action="{!selectUseCase}" value="{!$Label.rh2__Remove}">
+													<apex:param name="masterAPI" value="{!record.metadataRecord.rh2__Label__c}" assignTo="{!ucData.useCaseName}"/>
+												</apex:commandLink>
+											</td>
+											<td style="width:5%; text-align: center;">
+												<apex:image value="{!URLFOR($Resource.rh2__PT_Resources_v1, 'images/s.gif')}" rendered="{!record.deployed}" styleClass="checkmark2" id="deployedCheck"/>
+											</td>
+											<td style="width:5%; text-align: center;">
+												<apex:image value="{!URLFOR($Resource.rh2__PT_Resources_v1, 'images/s.gif')}" rendered="{!AND(record.fieldDeployed, record.fieldAccessible)}" styleClass="checkmark2" id="fieldDeployedAndAccessible"/>
+												<apex:outputPanel rendered="{!AND(record.fieldDeployed, !record.fieldAccessible)}">
+													<div class="slds-col popoverDefaultAbsolute" id="{!record.metadataRecord.id}-fieldAccessibility">
+														<div class="slds-popover slds-popover_tooltip slds-nubbin_top-left popoverNubbinAlignment" role="dialog" >
+															<div class="slds-popover__body">
+																{!record.metadataRecord.Object__c}.{!record.metadataRecord.Components_Included__c} {!$Label.IsCurrentlyNotAccessible}
+															</div>
+														</div>
+													</div>
+													<a onmouseover="$('#{!JSINHTMLENCODE(record.metadataRecord.id)}-fieldAccessibility').toggle();" onmouseout="$('#{!JSINHTMLENCODE(record.metadataRecord.id)}-fieldAccessibility').toggle();" >
+														<img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"></img>
+													</a>
+												</apex:outputPanel>
+											</td>
+											<td style="width:35%;">
+												{!record.metadataRecord.rh2__Label__c}
+											</td>													 	
+											<td style="width:50%;">
+												<div class="slds-col popoverDefault" id="{!record.metadataRecord.id}">
+													<div class="slds-popover slds-popover_tooltip slds-nubbin_top-right popoverNubbinAlignment" role="dialog" >
+														<div class="slds-popover__body">
+															{!record.metadataRecord.Long_Description__c}
+														</div>
+													</div>
+												</div>
+												{!record.metadataRecord.Description__c}
+												<a onmouseover="$('#{!JSINHTMLENCODE(record.metadataRecord.id)}').toggle();" onmouseout="$('#{!JSINHTMLENCODE(record.metadataRecord.id)}').toggle();" >
+													<img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"></img>
+												</a>
+												
+											</td>
+										</tr>
+									</apex:repeat>
+								</tbody>
+							</table>
+						</div>
+					</section>
+				</apex:outputPanel>
+				<footer class="slds-card__footer slds-text-align_left"><h3 class="slds-text-heading_label">Don't see a use case you need?</h3>
+                    <p>Please visit our <a href="http://www.passagetechnology.com/use-cases">Use Case Library</a> for examples of rollups by object, type, solution, and more!</p>
+                </footer>
+     	</div>
+		 <c:PS_additionalInformation ></c:PS_additionalInformation>
+		 </div>
+     </apex:form>        
+</html>
+</apex:page>

@@ -1,0 +1,86 @@
+<apex:page controller="TwilioSF.LightningOutController" title="Twilio Inbox">
+    <apex:includeLightning />
+    <body>
+    <div id="inbox"/>
+    <script src="{!URLFOR($Resource.jQuery)}"></script>
+    <script>
+	$(function() {
+		var headerHeight = $('.bPageHeader').outerHeight();
+		var footerHeight = $('.bPageFooter').outerHeight();
+
+		var bodyBorderHeight = $('.bodyDiv').outerHeight() - $('.bodyDiv').innerHeight();
+		var bodyPaddingHeight = $('.bodyDiv').innerHeight() - $('.bodyDiv').height();
+		var bodyMarginHeight = $('.bodyDiv').outerHeight(true) - $('.bodyDiv').outerHeight();
+
+		var contentBorderHeight = $('.oRight').outerHeight() - $('.oRight').innerHeight();
+		var contentPaddingHeight = parseFloat($('.oRight').css('padding-top')) + parseFloat($('.oRight').css('padding-bottom'));
+		var contentMarginHeight = $('.oRight').outerHeight(true) - $('.oRight').outerHeight();
+
+		function setInboxHeight() {
+			var inboxHeight = $(window).height()
+				- headerHeight
+				- footerHeight
+				- bodyBorderHeight
+				- bodyPaddingHeight
+				- bodyMarginHeight
+				- contentBorderHeight
+				- contentPaddingHeight
+				- contentMarginHeight;
+            if(isNaN(inboxHeight)) {
+                //most likely in the classic console utility bar
+                $("#inbox").height("100vh");
+            }
+            else {
+                $('#inbox').height(inboxHeight);
+            }
+		}
+
+		setInboxHeight();
+
+    	$(window).on('resize', function(){
+        	setInboxHeight();
+    	});
+
+        var myUserContext = "{!$User.UITheme}";
+
+        $Lightning.use("{!namespace}:TwilioInboxApp", function() {
+        $Lightning.createComponent(
+            "{!namespace}:Inbox",
+            {   isLightningOut: true
+            },
+            "inbox",function(cmp){
+                $A.eventService.addHandler({
+                    event: 'force:navigateToSObject',
+                    handler: function(event) {
+                        if (myUserContext == 'Theme4t' || myUserContext == 'Theme4d' || myUserContext == 'Theme4u'){
+                            // The Visualforce page is in S1 or Lightning Experience
+                            sforce.one.navigateToSObject(event.getParams().recordId);
+                        }else if (myUserContext == 'Theme3'){
+                            // The Visualforce page is  running in Classic
+                            window.parent.location = '/' + event.getParams().recordId;
+                        }else{
+                            console.log('Unsupported theme');
+                        }
+                    }
+
+                }),
+                $A.eventService.addHandler({
+                        event: "force:navigateToURL",
+                        handler: function(event) {
+                            if (myUserContext == 'Theme4t' || myUserContext == 'Theme4d' || myUserContext == 'Theme4u'){
+                                // The Visualforce page is in S1 or Lightning Experience
+                                sforce.one.navigateToURL(event.getParams().url);
+                            } else if (myUserContext == 'Theme3') {
+                                // The Visualforce page is  running in Classic
+                                window.open(event.getParams().url, '_blank');
+                            } else {
+                                console.log("Unsupported theme");
+                            }
+                        }
+                    });
+            });
+        });
+	});
+    </script>
+    </body>
+</apex:page>

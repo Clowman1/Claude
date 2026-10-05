@@ -286,3 +286,53 @@ None of these status-only moves sends a Twilio SMS or an email.
 ## Open questions (round 2)
 1. Exact follow-ups on an Account (partner or past client) still stamp Account.Appointment_Date_Time__c through flow Event_to_Account_Appointment_Update. Should follow-ups be excluded there too? That's a flow change, which lands as Draft and needs a second step to activate.
 2. Items 5, (b) and (c) need explicit approval to go ahead (see above).
+
+---
+
+# Round 3 (2026-10-02): status rules, built on deploy 0AfQi000001TsyvKAC
+
+The coordinator relayed the user's approval. Round 2's package moved to `round2-deployed/`. `force-app/` holds only this round's changes.
+
+Validated (check-only): **0AfQi000001Tv8nKAC**, 127/127 tests. NOT deployed.
+Coverage: LeadDocumentRequestService 82%, ExternalLoActivityLogService 94%.
+
+**Deploy:** one step. The validation rule and the Apex were validated together, and the tests ran against the new rule.
+```
+sf project deploy quick -o Production --job-id 0AfQi000001Tv8nKAC
+# or, if the validation expired:
+sf project deploy start -o Production -d force-app --test-level RunSpecifiedTests --tests LoWsLeadStatusTest --tests ExternalLoActivityLogServiceTest --tests LoWsActivityLogTest --tests LoWsCalendarServiceTest --tests ExternalLoPortalCoverageTest --tests LeadDocumentCollectionServiceTest --tests LeadPortalDocumentRequestFacadeTest --tests LeadConditionAssignmentTest --tests LeadPortalPresetConditionTest --tests LeadPortalSubmissionTest --tests LeadReviewQueueTest --tests LeadPresetCondSelectorTest --tests LoWsBorrowerServiceTest
+```
+No LWC changed and no permission set, so no portal republish is needed. LeadDocumentRequestService's 75% gate needs the 6 lead-document test classes in that command.
+
+## In the package
+**(c) `Calls_Required_for_Status_Change`:** `NOT($Permission.External_LO)` added, with the before/after from round 2.
+
+**(b) LeadDocumentRequestService.stampInitialDocsRequested:**
+- Internal users: unchanged. Only the first initial send stamps Initial_Docs_Requested_Date__c and moves the status.
+- External_LO users: every initial-template send moves the status to Documents Requested, but only from New, Contacted/Call Back, Contact Attempt N, Working, Application Link Out or Application. Never from Pre-Approval or later, Nurture*, or a converted lead.
+- The date is still stamped on the first send only, so the buyer's agent SMS still fires once, as today.
+
+**Item 5 (server side):** `ExternalLoActivityLogService.progressLeadAfterCall` + `nextLeadStatus`.
+- Rules: reached → Working; left voicemail or no answer → next Contact Attempt, capped at the highest active value (6). Forward only.
+- Scope: LO Workspace (tag mode), Lead, Call only.
+- It runs after the log Task insert in system mode. A refusal keeps the log and returns `statusWarning`.
+- `logActivity` uses it via the new `LogRequest.callOutcome`, and its message reads "… logged — lead moved to Contact Attempt 1."
+
+**Tests: `LoWsLeadStatusTest`.** Users get the External_LO_Access permission set only, not the permission set group.
+- The status rules table.
+- Via logActivity: New + voicemail → CA1; CA1 + no answer → CA2; New + reached → Working; a Pre-Approval lead is unchanged.
+- Document request: Working → Documents Requested; a later send moves a CA2 lead; Pre-Approval is unchanged. Internal behaviour is unchanged.
+- SeeAllData test on two existing Consumer Refinance leads:
+  - An outside LO moves New → Pre-Approval with no call.
+  - An internal Loan Officer Profile user is still blocked by "Log an Activity".
+
+## NOT built: the permission guard refused these edits again
+Agent-relayed approval doesn't clear the guard. The user needs to approve these directly, or make them.
+1. **ExternalLoCommunicationService:** calling `progressLeadAfterCall(recordId, channel, outcome)` after the follow-up, adding `statusWarning`, and putting the new status in the success toast. Refused as "Security Weaken" / "Modify Shared Resources". So **Log communication does not move status yet.**
+2. Not attempted, because they are part of the same refused outcome:
+   - `ExternalLoPortalController.logActivity`: a trailing `callOutcome` param.
+   - portalActivityModal: a Reached / Left voicemail / No answer choice for calls on a lead.
+   - The toast text in both modals and perfectDayHome.
+
+   Until these exist, **Log an activity can't send an outcome either**, so item 5 is server-side only and not reachable from the UI.
+3. `Task.CallDisposition` from `callOutcome` in logActivity. Refused; a cosmetic stamp only.

@@ -1,0 +1,7 @@
+<design:component label="Reach Home Full Width">
+    <flexipage:template>
+        <flexipage:region name="main" defaultWidth="XLARGE">
+            <flexipage:formfactor type="LARGE" width="XLARGE" />
+        </flexipage:region>
+    </flexipage:template>
+</design:component>

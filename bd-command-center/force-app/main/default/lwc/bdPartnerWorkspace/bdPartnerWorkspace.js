@@ -5,7 +5,7 @@ import getPartner from '@salesforce/apex/BdCommandCenterController.getPartner';
 import setStage from '@salesforce/apex/BdCommandCenterController.setStage';
 import setIndustry from '@salesforce/apex/BdCommandCenterController.setIndustry';
 import createReferralLead from '@salesforce/apex/BdCommandCenterController.createReferralLead';
-import { industryClass, errorMessage, whenLabel, dayParts } from 'c/bdUtils';
+import { industryClass, errorMessage, whenLabel, dayParts, copyText } from 'c/bdUtils';
 
 const KIND_ICON = {
     call: 'utility:call', text: 'utility:sms', email: 'utility:email', meeting: 'utility:event',
@@ -159,6 +159,15 @@ export default class BdPartnerWorkspace extends NavigationMixin(LightningElement
         } finally {
             this.busy = false;
         }
+    }
+
+    selectAll(event) { event.target.select(); }
+    async copyIntake() {
+        const ok = await copyText(this.p.intakeUrl);
+        this.dispatchEvent(new ShowToastEvent({
+            title: ok ? 'Intake link copied' : 'Copy failed: select the link and copy it',
+            variant: ok ? 'success' : 'warning'
+        }));
     }
 
     invite() {

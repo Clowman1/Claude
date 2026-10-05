@@ -1,0 +1,81 @@
+<apex:page title="Rollup Helper Export" standardStylesheets="false" sidebar="false"  applyBodyTag="false" docType="html-5.0" showHeader="true">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">	 
+	 <head>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+		<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }" />
+		<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }" /> 
+		<apex:includeLightning />
+     </head>
+     <script type="text/javascript">
+		var namespace;
+
+        var rh = rh || {};
+        rh.j$ = jQuery.noConflict();
+
+        let additionalTopOffset;
+        let headerPosition;
+
+        if(UITheme.getUITheme() !== 'Theme3'){
+            additionalTopOffset = 65;
+            headerPosition = 'fixed';
+        } else{
+            additionalTopOffset = 193;
+            headerPosition = 'sticky';
+        }
+
+        rh.j$(window).scroll(function(){
+            fixHeader(document.getElementById("exportRollupsLWC"), additionalTopOffset, headerPosition);
+        });
+
+        rh.j$(window).resize(function(){
+            fixWidth(document.getElementById("exportRollupsLWC"), additionalTopOffset, headerPosition);
+        });
+
+        rh.j$(document).ready(function(){
+            
+			namespace = "{!JSENCODE(IF(CONTAINS($CurrentPage.Name, "__"),LEFT($CurrentPage.Name,FIND("__", $CurrentPage.Name)-1),"c"))}";
+			createExportRollupsComponent();
+        });
+
+		function createExportRollupsComponent(){
+            let rootPage = sessionStorage.getItem('rootPage') || 'home';
+            let isNavigatedFromAllSettingsPage = rootPage === 'settings';
+
+            $Lightning.use(namespace + ":PS_Export_Rollups", function() {
+                $Lightning.createComponent(
+                    namespace + ":ps_exportRollups",
+                    {
+                        allRollupsBreadCrumb: isNavigatedFromAllSettingsPage,
+                    },
+                    "exportRollupsLWC",
+                    function(cmp) {});
+            });
+        }
+
+        function sendColumnWidths(lwcElement){
+            try{
+                const columnList = [
+                    "label-cell", "relationship-field-cell", "source-field-cell",
+                    "logic-cell", "condition-cell", "target-field-cell" , "parent-condition-cell"
+                ];
+
+                const columnWidths = columnList.map(columnName => {
+                    const element = lwcElement.getElementsByClassName(columnName)[0];
+                    return element.offsetWidth;
+                });
+
+                var event = new CustomEvent('columns', {
+                    detail: {
+                        columnWidths
+                    }
+                });
+
+                window.dispatchEvent(event);
+            } catch (error){}
+        }
+    
+    </script>
+	<div id="exportRollupsLWC"></div>
+</html>
+</apex:page>

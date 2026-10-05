@@ -1,0 +1,113 @@
+/**
+ * Created by zeyad on 7/14/2024.
+ */
+
+/**
+ * Created by zeyad on 7/14/2024.
+ */
+.THIS .imbus-menu-logo {
+    height: 50px;
+    width: auto;
+    background-image: var(--dxp-s-site-logo-url);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.THIS.imbus-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.THIS .imbus-sidebar {
+    gap: 24px;
+    width: 80px;
+    height: 100vh;
+    z-index: 100;
+    background: var(--pulse-primary-gradient, linear-gradient(0deg, #53389E 0%, rgba(157, 91, 208, 0.94) 100%));
+    display: flex;
+    flex-direction: column;
+    transition: .3s;
+    box-sizing: border-box;
+    padding: 16px;
+    padding-top: 32px;
+}
+
+.THIS .imbus-sidebar .imbus-menu-label {
+    display: none;
+}
+
+.THIS .imbus-sidebar .imbus-menu-item {
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+}
+
+.THIS .imbus-contact-bar {
+    width: 225px;
+    background: var(--pulse-primary-gradient, linear-gradient(0deg, #53389E 0%, rgba(157, 91, 208, 0.94) 100%));
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 50px;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.THIS .imbus-main-content {
+    flex-grow: 1;
+    padding-top: 50px;
+    overflow: scroll;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.THIS .imbus-main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.THIS.imbus-mobile-header {
+    display: none;
+    width: 100%;
+    height: 70px;
+    background: var(--pulse-primary-gradient);
+    position: sticky;
+    padding: 5px;
+    color: white;
+    font-size: 16px;
+    line-height: 70px;
+    text-align: center;
+    top: 0;
+}
+.THIS .imbus-menu-logo-mobile{
+    max-width:200px;
+    height:50px;
+    min-width:50px;
+    background-image: var(--dxp-s-site-logo-url);
+    background-repeat: no-repeat;
+    background-size: contain;
+
+}
+
+@media only screen and (max-width: 768px) {
+    .THIS .imbus-sidebar {
+        display: none;
+    }
+
+    .THIS .imbus-contact-bar {
+        display: none;
+    }
+
+    .THIS.imbus-mobile-header {
+        display: block;
+    }
+    .THIS .imbus-main-content{
+        height:unset;
+    }
+}

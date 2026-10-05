@@ -4,7 +4,8 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getHome from '@salesforce/apex/BdCommandCenterController.getHome';
 import confirmMeeting from '@salesforce/apex/BdCommandCenterController.confirmMeeting';
 import linkCall from '@salesforce/apex/BdCommandCenterController.linkCall';
-import { industryClass, errorMessage, duration, formatPhone, whenLabel, dayParts } from 'c/bdUtils';
+import setStage from '@salesforce/apex/BdCommandCenterController.setStage';
+import { industryClass, errorMessage, duration, formatPhone, whenLabel, eventRow } from 'c/bdUtils';
 
 const BAR_COLOR = { Realtor: '#244d8f', CPA: '#0f766e', 'Title Agent': '#6d28d9', 'Insurance Agent': '#c2690f' };
 
@@ -161,6 +162,39 @@ export default class BdCommandCenter extends NavigationMixin(LightningElement) {
         });
     }
 
+    // ---- board drag and drop (rep only; the overview stays read-only)
+    get dragAttr() { return this.canEdit ? 'true' : 'false'; }
+    dragStart(event) {
+        event.dataTransfer.setData('text/plain', event.currentTarget.dataset.id);
+        event.dataTransfer.effectAllowed = 'move';
+    }
+    allowDrop(event) {
+        if (!this.canEdit) return;
+        event.preventDefault();
+        event.currentTarget.classList.add('col-over');
+    }
+    leaveDrop(event) { event.currentTarget.classList.remove('col-over'); }
+    async dropOnStage(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('col-over');
+        const stage = event.currentTarget.dataset.stage;
+        const id = event.dataTransfer.getData('text/plain');
+        const partner = ((this.home && this.home.partners) || []).find((p) => p.id === id);
+        if (!this.canEdit || !partner || partner.stage === stage) return;
+        const previous = partner.stage;
+        partner.stage = stage;                       // move the card right away
+        this.home = { ...this.home, partners: [...this.home.partners] };
+        try {
+            await setStage({ accountId: id, stage });
+            this.toast(partner.name + ' moved to ' + stage, 'success');
+            await this.reload();
+        } catch (e) {
+            partner.stage = previous;
+            this.home = { ...this.home, partners: [...this.home.partners] };
+            this.toast('Could not change the stage', 'error', errorMessage(e));
+        }
+    }
+
     openPartner(event) {
         this.selectedPartnerId = event.currentTarget.dataset.id;
         this.view = 'partners';
@@ -214,16 +248,7 @@ export default class BdCommandCenter extends NavigationMixin(LightningElement) {
 
     // ------------------------------------------------ events
 
-    eventRow(e) {
-        const d = dayParts(e.startDate);
-        return {
-            ...e, dow: d.dow, day: d.day,
-            when: (e.timeLabel || '') + (e.location ? ' · ' + e.location : ''),
-            who: e.partnerNames.join(', ') + (e.invited > e.partnerNames.length ? ' +' + (e.invited - e.partnerNames.length) : ''),
-            rsvp: e.attending + ' attending · ' + e.awaiting + ' awaiting' + (e.declined ? ' · ' + e.declined + ' declined' : ''),
-            boxCls: 'ev ' + (e.awaiting === 0 && e.attending > 0 ? 'ev-ok' : 'ev-wait')
-        };
-    }
+    eventRow(e) { return eventRow(e); }
     get upcoming() { return ((this.home && this.home.upcoming) || []).map((e) => this.eventRow(e)); }
     get hasUpcoming() { return this.upcoming.length > 0; }
     get toConfirm() { return ((this.home && this.home.toConfirm) || []).map((e) => this.eventRow(e)); }

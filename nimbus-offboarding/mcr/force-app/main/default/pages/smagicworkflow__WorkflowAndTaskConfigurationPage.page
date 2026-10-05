@@ -1,0 +1,114 @@
+<apex:page tabStyle="Workflow_Settings__tab">
+<apex:includeScript value="{!URLFOR($Resource.smagicworkflow__WorkflowJS)}"/>
+
+
+<style type="text/css">
+.classname {
+    
+    text-decoration:"none";
+    margin-left: 95%;
+    -moz-box-shadow:inset 0px 1px 0px 0px #cae3fc;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #cae3fc;
+    box-shadow:inset 0px 1px 0px 0px #cae3fc;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #4197ee) );
+    background:-moz-linear-gradient( center top, #79bbff 5%, #4197ee 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#4197ee');
+    background-color:#79bbff;
+    -webkit-border-top-left-radius:20px;
+    -moz-border-radius-topleft:20px;
+    border-top-left-radius:20px;
+    -webkit-border-top-right-radius:20px;
+    -moz-border-radius-topright:20px;
+    border-top-right-radius:20px;
+    -webkit-border-bottom-right-radius:20px;
+    -moz-border-radius-bottomright:20px;
+    border-bottom-right-radius:20px;
+    -webkit-border-bottom-left-radius:20px;
+    -moz-border-radius-bottomleft:20px;
+    border-bottom-left-radius:20px;
+    text-indent:0;
+    border:1px solid #469df5;
+    display:inline-block;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    font-style:normal;
+    height:65px;
+    line-height:65px;
+    width:200px;
+    text-decoration:none;
+    text-align:center;
+}
+.classname:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4197ee), color-stop(1, #79bbff) );
+    background:-moz-linear-gradient( center top, #4197ee 5%, #79bbff 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4197ee', endColorstr='#79bbff');
+    background-color:#4197ee;
+}.classname:active {
+    position:relative;
+    top:1px;
+}</style>
+
+
+
+
+
+
+<apex:pageBlock >
+<apex:pageBlockSection title="{!$Label.smagicworkflow__quick_start}">
+<div id="helpText" style="display:block;">
+<a href="/apex/WorkflowXMLConfigurationPage?retURL=/apex/WorkflowAndTaskConfigurationPage" class="classname"  style="text-decoration:none;">&nbsp;&nbsp;&nbsp;{!$Label.BTN_NEW_SMS_WF}&nbsp;&nbsp;&nbsp;</a>
+</div>
+</apex:pageBlockSection> 
+<apex:pageBlockSection title="{!$Label.smagicworkflow__helper_1}" onclick="collapseSection('secondSection');" />
+<div id="secondSection" style="display:block;">
+<b>{!$Label.smagicworkflow__helper_2}</b><br/><br/>
+<ol type="1">
+<li>{!$Label.smagicworkflow__helper_3}</li><br/>
+<li>{!$Label.smagicworkflow__helper_4}</li><br/>
+<li>{!$Label.smagicworkflow__helper_5}</li>
+</ol> 
+</div>
+<apex:pageBlockSection title="{!$Label.smagicworkflow__dependencies}">
+<b>{!$Label.HELPER_6}&nbsp;</b><br/><br/>
+<ol type="1">
+<li>{!$Label.HELPER_7}</li><br/>
+<li>{!$Label.HELPER_8}</li><br/>
+<li>{!$Label.HELPER_9}&nbsp;<a href="http://screen-magic.com/salesforce/shoppingCart.html">{!$Label.LINK_CLICK_HERE}</a>)</li>
+</ol>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="{!$Label.smagicworkflow__helper_10}" onclick="collapseSection('examplesSection');" />
+<div id="examplesSection" style="display:block;">
+<b>{!$Label.smagicworkflow__helper_11}</b><br/><br/>
+{!$Label.smagicworkflow__helper_12}
+<ol type="1">
+<li>{!$Label.smagicworkflow__helper_13}</li><br/>
+<li>{!$Label.smagicworkflow__helper_14}</li><br/>
+<li>{!$Label.smagicworkflow__helper_15}</li><br/>
+<li>{!$Label.smagicworkflow__helper_16}</li> <br/>
+<li>{!$Label.smagicworkflow__helper_17}</li><br/>
+<li>{!$Label.smagicworkflow__helper_18}</li><br/>
+<li>{!$Label.smagicworkflow__helper_19}</li><br/>
+</ol>
+
+<b>{!$Label.smagicworkflow__helper_20}</b><br/><br/>
+<ol type="1">
+<li>{!$Label.smagicworkflow__helper_21}</li><br/>
+<li>{!$Label.smagicworkflow__helper_22}</li><br/>
+<li>{!$Label.smagicworkflow__helper_23}</li><br/>
+<li>{!$Label.smagicworkflow__helper_24}</li><br/>
+<li>{!$Label.smagicworkflow__helper_25}</li><br/>
+<li>{!$Label.smagicworkflow__helper_26}</li><br/>
+<li>{!$Label.smagicworkflow__helper_27}</li><br/>
+</ol>
+</div>
+
+
+<apex:pageBlockSection title="{!$Label.smagicworkflow__helper_28}" onclick="collapseSection('limitationsBlock');" />
+<div id="limitationsBlock" style="display:block;">
+<br/>
+<b>{!$Label.HELPER_29}</b> &nbsp;&nbsp;<a href="http://www.screen-magic.com/configure-sms-automation-using-workflow-rules/" target="_blank">{!$Label.LINK_CLICK_HERE}</a>
+</div>
+</apex:pageBlock>
+</apex:page>

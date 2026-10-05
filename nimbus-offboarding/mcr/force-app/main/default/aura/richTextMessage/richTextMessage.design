@@ -1,0 +1,3 @@
+<design:component>
+    <design:attribute name="message" label="message" default="New Build/Bank Owned - Buyer Pays All Transfer Taxes" description="Your Description here" />
+</design:component>

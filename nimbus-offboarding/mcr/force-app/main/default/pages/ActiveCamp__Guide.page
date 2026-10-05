@@ -1,0 +1,125 @@
+<apex:page id="Guide" sidebar="false" showHeader="true">
+    <apex:slds />
+    <apex:includeLightning />
+    <style type="text/css">
+        #lightning {
+            position: relative;
+            height: 100%;
+            min-height: 100vh;
+            background-color: #f9f9fa;
+        }
+        .noSidebarCell #lightning {
+            height: auto;
+            min-height: 0;
+            background-color: white;
+        }
+        .slds-media ol {
+            list-style-type: decimal;
+            padding-left: 15px;
+        }
+        .slds-media p {
+            padding-bottom: 10px;
+        }
+        .slds-media ol p {
+            padding-left: 20px;
+        }
+        .slds-media ul.slds-list_bulleted {
+            list-style-type: disc;
+            padding-left: 1rem; /* Adjust as needed */
+        }
+    </style>
+    <div class="slds-scope strike-scope">
+
+        <!-- Setup Content -->
+        <div id="content" class="slds-grid slds-grid_vertical">
+            <div class="slds-scope slds-theme_shade">
+                <div class="slds-container_large slds-container_center slds-m-vertical_large slds-p-horizontal_xx-large">
+                    <!-- Hero -->
+                    <div class="slds-p-vertical_x-large slds-text-align_center">
+                        <!-- Logo -->
+                        <div class="strike-logo-container slds-m-bottom_x-large">
+                            <img src="{!$Resource.activeCampaignLogo}"/>
+                        </div>
+                    </div>
+                    <div class="slds-card slds-card_boundary">
+                        <div class="slds-p-vertical_medium slds-p-horizontal_small">
+                            <ol class="slds-setup-assistant">
+                                <li class="slds-setup-assistant__item">
+                                    <article class="slds-setup-assistant__step">
+                                        <div class="slds-setup-assistant__step-summary">
+                                            <div class="slds-media__body slds-m-top_x-small">
+                                                <div class="slds-media">
+                                                    <div class="slds-setup-assistant__step-summary-content slds-media__body">
+                                                        <p><strong>Thank you</strong> for choosing ActiveCampaign as your Marketing and customer experience automation partner!! Please take few minutes to read our&nbsp;<apex:outputLink value="https://help.activecampaign.com/hc/articles/360001106459" target="_blank">support documentation </apex:outputLink> to get started with the managed package.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </li>
+                                <li class="slds-setup-assistant__item">
+                                    <article class="slds-setup-assistant__step">
+                                        <div class="slds-setup-assistant__step-summary">
+                                            <div class="slds-media__body slds-m-top_x-small">
+                                                <div class="slds-media">
+                                                    <div class="slds-setup-assistant__step-summary-content slds-media__body">
+                                                        <p>You’ve inspired us! Here’s a list of your ideas turned into reality:</p>
+                                                        <b>Exciting Update to the ActiveCampaign Salesforce Integration!</b>
+                                                        <p>You now have the option to sync your Salesforce Person Accounts to your ActiveCampaign account. This integration can now:</p>
+                                                            <ul class="slds-list_bulleted">
+                                                                <li>Create an ActiveCampaign contact when a Person Account is created in Salesforce</li>
+                                                                <li>Keep ActiveCampaign contact fields updated based on the corresponding Salesforce Person Account</li>
+                                                                <li>Create a Salesforce Person Account by tagging the contact in ActiveCampaign (either manually or via an automation)</li>
+                                                            </ul>
+                                                        <br/>
+                                                        <p>Once you’ve updated your Salesforce integration to the latest version, head to your ActiveCampaign app set-up. Here, you’ll see the new Person Accounts option under Dynamic Field Mapping and Outbound Sync Settings. Both of these steps must be completed for the sync to properly work.</p>
+                                                        <br/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Help Section -->
+                    <div class="strike-help slds-box slds-m-vertical_large slds-theme_default">
+                        <!-- Header -->
+                        <div class="strike-help__header slds-theme_info">
+                            <div class="slds-grid slds-guttes_direct">
+                                <div class="slds-col">
+                                    <h3 class="slds-text-heading_medium">Need help?</h3>
+                                </div>
+                                <div class="slds-col slds-no-flex">
+                                    <ul class="slds-list_horizontal slds-has-dividers">
+                                        <li class="slds-list__item">
+                                            <a href="mailto:help@activecampaign.com">help@activecampaign.com</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Header -->
+
+                        <!-- Body -->
+                        <div class="strike-help__body slds-text-body_small">
+                            <div class="slds-grid slds-wrap slds-gutters_small">
+                                <div class="slds-col slds-size_1-of-1 slds-small-size_2-of-3 slds-large-size_3-of-4 slds-text-longform">
+                                    <p>ActiveCampaign helps over 100,000 businesses connect and engage with customers throughout their lifecycle.</p>
+                                    <p>If you’re curious how ActiveCampaign can help grow your business, sign up for a free trial. Already a customer? We’re here to help. <a href="mailto:help@activecampaign.com">Contact our support team</a> via chat, email, phone or set up a training.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Body -->
+                    </div>
+                    <!-- /Help Section -->
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /Setup Content -->
+    </div>
+</apex:page>

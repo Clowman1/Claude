@@ -1,0 +1,130 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-30T14:41:57.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalSubmissionModal/externalLoPortalSubmissionModal.html",
+        "fullName": "externalLoPortalSubmissionModal/externalLoPortalSubmissionModal.html",
+        "id": "0RdQi0000007cWvKAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-30T14:41:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-30T14:41:57.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalSubmissionModal/externalLoPortalSubmissionModal.js",
+        "fullName": "externalLoPortalSubmissionModal/externalLoPortalSubmissionModal.js",
+        "id": "0RdQi0000007cWxKAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-30T14:41:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-09-30T14:41:57.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalSubmissionModal/externalLoPortalSubmissionModal.css",
+        "fullName": "externalLoPortalSubmissionModal/externalLoPortalSubmissionModal.css",
+        "id": "0RdQi0000007cWyKAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2026-09-30T14:41:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T18:00:52.000Z",
+        "fileName": "unpackaged/flows/Loan_Origination_Submission_Form.flow",
+        "fullName": "Loan_Origination_Submission_Form",
+        "id": "301Qi00001OV073IAD",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-18T18:11:17.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-01-31T10:12:52.000Z",
+        "fileName": "unpackaged/flowDefinitions/Loan_Origination_Submission_Form.flowDefinition",
+        "fullName": "Loan_Origination_Submission_Form",
+        "id": "300Qi00000PgMp8IAF",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-18T18:11:17.000Z",
+        "manageableState": "unmanaged",
+        "type": "FlowDefinition"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-05T19:46:05.798Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-05T19:46:05.798Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OoBwvMAF",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "externalLoPortalSubmissionModal",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\externalLoPortalSubmissionModal\\externalLoPortalSubmissionModal.css"
+      },
+      {
+        "fullName": "externalLoPortalSubmissionModal",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\externalLoPortalSubmissionModal\\externalLoPortalSubmissionModal.html"
+      },
+      {
+        "fullName": "externalLoPortalSubmissionModal",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\externalLoPortalSubmissionModal\\externalLoPortalSubmissionModal.js"
+      },
+      {
+        "fullName": "externalLoPortalSubmissionModal",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\externalLoPortalSubmissionModal\\externalLoPortalSubmissionModal.js-meta.xml"
+      },
+      {
+        "fullName": "Loan_Origination_Submission_Form",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Loan_Origination_Submission_Form.flow-meta.xml"
+      },
+      {
+        "fullName": "Loan_Origination_Submission_Form",
+        "type": "FlowDefinition",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flowDefinitions\\Loan_Origination_Submission_Form.flowDefinition-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

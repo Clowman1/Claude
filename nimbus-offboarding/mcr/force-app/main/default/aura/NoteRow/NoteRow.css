@@ -1,0 +1,42 @@
+/**
+ * Created by toma on 9/14/2021.
+ */
+
+.THIS .slds-timeline__item_expandable.ncs-sales:before {
+    background: #7F8DE1 !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-processing:before {
+    background: #54698D !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-funding:before {
+    background: #83ace9 !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-closing:before {
+    background: #FBB439 !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-preUW:before {
+    background: #E6D478 !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-setUp:before {
+    background: #A094ED !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-post:before {
+    background: #50CC7A !important;
+}
+.THIS .slds-timeline__item_expandable.ncs-ops:before {
+    background: #83B6FF !important;
+}
+
+.THIS .note-body {
+    width: 100%;
+}
+.THIS .ncs-child-truncation p:first-child {
+    max-width: 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+   
+}
+.THIS .ncs-child-truncation *:not(:first-child) {
+    display:none;
+}

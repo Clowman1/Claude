@@ -1,0 +1,96 @@
+<!--
+ - Created by andrk on 11.11.2022.
+ -->
+
+<aura:component
+        description="Create New Record With Standard Record Edit Form Component"
+        implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,lightning:actionOverride,lightning:hasPageReference"
+        access="global">
+    <aura:attribute name="objectName" type="String" default="Transaction__c" />
+    <aura:attribute name="objectURLName" type="String" />
+    <aura:attribute name="selectedRecordTypeId" type="String" />
+    <aura:attribute name="fields" type="List"/>
+    <aura:attribute name="isEB" type="Boolean" default="false"/>
+    <aura:attribute name="showModal" type="Boolean" default="true"/>
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.isEB}">
+        <h2 class="slds-text-heading_medium slds-text-align_center">New Transaction</h2>
+        <lightning:recordEditForm
+                aura:id="recordEditForm"
+                objectApiName="{!v.objectName}"
+                recordTypeId="{!v.selectedRecordTypeId}"
+                density="comfy"
+                class="slds-is-relative"
+                onsuccess="{!c.successHandler}"
+                onerror="{!c.errorHandler}"
+                onsubmit="{!c.submitHandler}">
+            <lightning:messages aura:id="textMessage" />
+            <div class="slds-grid slds-wrap">
+                <aura:iteration items="{!v.fields}" var="field">
+                    <div class="slds-size_1-of-1 slds-x-large-size_1-of-2">
+                        <lightning:inputField fieldName="{!field.fieldName}" aura:id="inputField" required="{!field.isRequired}" />
+                    </div>
+                </aura:iteration>
+            </div>
+            <div class="form-button-wrapper slds-m-top_small slds-m-horizontal_xx-small">
+                <lightning:button class="slds-button_brand" type="submit" label="Save" />
+            </div>
+            <aura:if isTrue="{!v.loading}">
+                <lightning:spinner alternativeText="Loading" variant="brand" />
+            </aura:if>
+        </lightning:recordEditForm>
+        <aura:set attribute="else">
+            <aura:if isTrue="{!v.showModal}">
+                <div aura:id="editDialog" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick="{!c.closeModalHandler}">
+                            <lightning:icon size="small" iconName="utility:close" class="modal-close" />
+                        </button>
+                        <div class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">New Record</h2>
+                        </div>
+                        <div class="slds-modal__content slds-p-around_medium">
+                            <lightning:recordEditForm
+                                    aura:id="recordEditForm"
+                                    objectApiName="{!v.objectName}"
+                                    recordTypeId="{!v.selectedRecordTypeId}"
+                                    density="comfy"
+                                    class="slds-is-relative"
+                                    onsuccess="{!c.successHandler}"
+                                    onerror="{!c.errorHandler}"
+                                    onsubmit="{!c.submitHandler}">
+                                <lightning:messages aura:id="textMessage" />
+                                <div class="slds-grid slds-wrap">
+                                    <aura:iteration items="{!v.fields}" var="field">
+                                        <div class="slds-size_1-of-1 slds-x-large-size_1-of-2">
+                                            <aura:if isTrue="{! field.customLabel }">
+
+                                                <label class="slds-form-element__label" for="inputField"><abbr class="slds-required" title="required">* </abbr>{!field.label}</label>
+                                                <lightning:inputField variant="label-hidden" fieldName="{!field.fieldName}" aura:id="inputField" required="{!field.isRequired}" />
+                                                
+                                                <aura:set attribute="else">
+                                                    <lightning:inputField fieldName="{!field.fieldName}" aura:id="inputField" required="{!field.isRequired}" />
+                                                </aura:set>
+                                            </aura:if>
+                                            
+                                           
+                                        </div>
+                                    </aura:iteration>
+                                </div>
+                                <div class="form-button-wrapper slds-m-top_small slds-m-horizontal_xx-small">
+                                    <lightning:button class="slds-button_brand" type="submit" label="Save" />
+                                </div>
+                                <aura:if isTrue="{!v.loading}">
+                                    <lightning:spinner alternativeText="Loading" variant="brand" />
+                                </aura:if>
+                            </lightning:recordEditForm>
+                        </div>
+                    </div>
+                </div>
+                <div aura:id="overlay" class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+        </aura:set>
+    </aura:if>
+</aura:component>

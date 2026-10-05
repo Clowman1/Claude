@@ -90,10 +90,8 @@
                 <template if:true={showRealtorLeadButton}>
                     <button class="pcc-button pcc-button-primary" onclick={openNewRealtorLead} type="button">Create New Realtor Lead</button>
                 </template>
-                <template if:true={showQuickButtons}>
-                    <template for:each={quickButtons} for:item="button">
-                        <button key={button.key} class={button.className} data-object={button.objectApiName} data-filter={button.filterName} onclick={openListView}>{button.label}</button>
-                    </template>
+                <template for:each={quickButtons} for:item="button">
+                    <button key={button.key} class={button.className} data-object={button.objectApiName} data-filter={button.filterName} onclick={openListView}>{button.label}</button>
                 </template>
                 <template if:true={showEditButtons}>
                     <button class="pcc-button pcc-button-ghost" onclick={openEditor}>Edit Buttons</button>
@@ -545,6 +543,9 @@
                                 </tbody>
                             </table>
                         </template>
+                        <template if:true={isBizDevContactTab}>
+                            <c-biz-dev-contact-list></c-biz-dev-contact-list>
+                        </template>
                         <template if:true={isGenericCustomColumnTab}>
                             <table class={customTableClass}>
                                 <thead>
@@ -577,6 +578,9 @@
                                         <template if:false={isPastClientTab}>
                                             <template if:true={isNickleyRealtorTab}>
                                                 <th class="pcc-action-column">In Person Touch</th>
+                                                <th class="pcc-action-column">Manual Call Log</th>
+                                            </template>
+                                            <template if:true={isBenPreApprovalTab}>
                                                 <th class="pcc-action-column">Manual Call Log</th>
                                             </template>
                                             <template if:true={showRealtorEditColumn}>
@@ -651,6 +655,11 @@
                                                     </td>
                                                     <td class="pcc-action-column">
                                                         <button class="pcc-row-edit" data-record-id={row.id} onclick={handleRealtorManualCall} title="Log a call placed outside RingCentral, such as from your personal line" type="button">Manual Call Log</button>
+                                                    </td>
+                                                </template>
+                                                <template if:true={isBenPreApprovalTab}>
+                                                    <td class="pcc-action-column">
+                                                        <button class="pcc-row-edit pcc-row-success" data-record-id={row.id} onclick={handleBenPreApprovalManualCall} title="Log a call placed outside RingCentral as a manual Ben call" type="button">Manual Call Log</button>
                                                     </td>
                                                 </template>
                                                 <template if:true={showRealtorEditColumn}>

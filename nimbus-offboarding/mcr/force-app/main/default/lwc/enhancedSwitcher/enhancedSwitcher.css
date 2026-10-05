@@ -1,0 +1,55 @@
+/**
+ *********************************************************
+ * @name                 : enhancedSwitcher
+ * @date                   : 06.03.2025
+ * @description       : -
+ * @author               : Taras Babyn
+ * @change log        : Mar 06, 2025 Taras Babyn - Initial Version
+ *********************************************************
+ */
+
+.toggle-container {
+    display: flex;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    padding: 4px;
+    width: 100%;
+}
+
+.toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.53em 1.07em; /* converted from 8px 16px based on 15px font */
+    cursor: pointer;
+    gap: 10px;
+    color: #666;
+    font-size: var(--enhancedSwitcherFontSize, 15px);
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: inherit;
+}
+
+.toggle-item.selected {
+    background-color: white;
+    color: #000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.toggle-item:hover:not(.selected) {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.toggle-item:active {
+    transform: scale(0.98);
+}

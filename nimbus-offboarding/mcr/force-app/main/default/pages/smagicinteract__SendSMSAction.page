@@ -1,0 +1,633 @@
+<apex:page controller="smagicinteract.SendSMSActionController" showHeader="false" showQuickActionVfHeader="false" standardStylesheets="false" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" >
+
+<head>
+<apex:stylesheet value="{!URLFOR($Resource.smagicinteract__smJQuery, '/css/Salesforce1Style.css')}" />
+<script type='text/javascript' src='/canvas/sdk/js/publisher.js' />
+<apex:includeScript value="{!$Resource.smagicinteract__jquery}"/>
+<!-- Translation JS -->
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+<apex:includeScript value="{!$Resource.smagicinteract__sweetalertJS}" />
+<apex:stylesheet value="{!($Resource.smagicinteract__sweetalertCSS)}" />
+
+<style>
+.disable_button {
+    background-color:#dddddd;
+    color:#000;
+    text-decoration:none;
+    font-size:15px;
+    border:0px;
+    padding:8px 98px 8px 98px;
+    cursor:normal;
+    border-radius: 8px;
+}
+
+tr.spaceUnder > td
+{
+  padding-bottom: 1ex;
+}
+  .dropdownsi dd, .dropdownsi dt, .dropdownsi ul { margin:0px; padding:0px; }
+  .dropdownsi dd { position:relative; }
+  .dropdownsi a, .dropdownsi a:visited { color:#816c5b; text-decoration:none; outline:none;}
+  .dropdownsi a:hover { color:#5d4617;}
+  .dropdownsi dt a:hover { color:#5d4617; border: 1px solid #d0c9af;}
+  .dropdownsi dt a {background:#e4dfcb url({!URLFOR($Resource.smagicinteract__smJQuery, '/css/sm-theme/images/arrow.png')}) no-repeat scroll right center; display:block;
+                  border:1px solid #d4ca9a; width:100%;height:44px;line-height:11px!important
+                  padding-left:14px;padding-right:28px;padding-top:14px;padding-bottom:12px;
+                  background-color:#FFF;background-image:0;
+                  border-radius:5px;font-size:15px;border-style:solid;border-width:1px;
+                  box-shadow:inset 0 0 0 2px rgba(255,255,255,0.5), 0 1px 0 rgba(0,0,0,0.02);border-color:#bbc0c4;
+                  color:#3c3d3e;
+                  }
+  .dropdownsi dt a span {cursor:pointer; display:block; padding:5px;}
+  .dropdownsi dd ul { background:#e4dfcb none repeat scroll 0 0; border:1px solid #d4ca9a; color:#C5C0B0; display:none;
+                    left:0px; padding:5px 0px; position:absolute; top:2px; width:100%;   list-style:none;
+                    background-color:#FFF;background-image:0;
+                    color:#3c3d3e;max-height:14rem;overflow-y:scroll;
+                    }
+  .dropdownsi span.value { display:none;}
+  .dropdownsi dd ul li a { padding:5px; display:block;}
+  .dropdownsi dd ul li a:hover { background-color:#d0c9af;}
+
+
+  .dropdown dd, .dropdown dt, .dropdown ul { margin:0px; padding:0px; }
+  .dropdown dd { position:relative; }
+  .dropdown a, .dropdown a:visited { color:#816c5b; text-decoration:none; outline:none;}
+  .dropdown a:hover { color:#5d4617;}
+  .dropdown dt a:hover { color:#5d4617; border: 1px solid #d0c9af;}
+  .dropdown dt a {background:#e4dfcb url({!URLFOR($Resource.smagicinteract__smJQuery, '/css/sm-theme/images/arrow.png')}) no-repeat scroll right center; display:block;
+                  border:1px solid #d4ca9a; width:100%;height:44px;line-height:11px!important
+                  padding-left:14px;padding-right:28px;padding-top:14px;padding-bottom:12px;
+                  background-color:#FFF;background-image:0;
+                  border-radius:5px;font-size:15px;border-style:solid;border-width:1px;
+                  box-shadow:inset 0 0 0 2px rgba(255,255,255,0.5), 0 1px 0 rgba(0,0,0,0.02);border-color:#bbc0c4;
+                  color:#3c3d3e;
+                   }
+  .dropdown dt a span {cursor:pointer; display:block; padding:5px;}
+  .dropdown dd ul { background:#e4dfcb none repeat scroll 0 0; border:1px solid #d4ca9a; color:#C5C0B0; display:none;list-style:none;
+                    left:0px; padding:5px 0px; position:absolute; top:2px; width:100%;
+                    background-color:#FFF;background-image:0;
+                    color:#3c3d3e;max-height:10rem;overflow-y:scroll;
+                    }
+  .dropdown span.value { display:none;}
+  .dropdown dd ul li a { padding:5px; display:block;}
+  .dropdown dd ul li a:hover { background-color:#d0c9af;}
+
+
+  .dropdownpi dd, .dropdownpi dt, .dropdownpi ul { margin:0px; padding:0px; }
+  .dropdownpi dd { position:relative; }
+  .dropdownpi a, .dropdownpi a:visited { color:#816c5b; text-decoration:none; outline:none;}
+  .dropdownpi a:hover { color:#5d4617;}
+  .dropdownpi dt a:hover { color:#5d4617; border: 1px solid #d0c9af;}
+  .dropdownpi dt a {background:#e4dfcb url({!URLFOR($Resource.smagicinteract__smJQuery, '/css/sm-theme/images/arrow.png')}) no-repeat scroll right center; display:block;
+                  border:1px solid #d4ca9a; width:100%;height:44px;line-height:11px!important
+                  padding-left:14px;padding-right:28px;padding-top:14px;padding-bottom:12px;
+                  background-color:#FFF;background-image:0;
+                  border-radius:5px;font-size:15px;border-style:solid;border-width:1px;
+                  box-shadow:inset 0 0 0 2px rgba(255,255,255,0.5), 0 1px 0 rgba(0,0,0,0.02);border-color:#bbc0c4;
+                  color:#3c3d3e;
+                   }
+  .dropdownpi dt a span {cursor:pointer; display:block; padding:5px;}
+  .dropdownpi dd ul { background:#e4dfcb none repeat scroll 0 0; border:1px solid #d4ca9a; color:#C5C0B0; display:none;list-style:none;
+                    left:0px; padding:5px 0px; position:absolute; top:2px; width:100%;
+                    background-color:#FFF;background-image:0;
+                    color:#3c3d3e; max-height:20rem;overflow-y:scroll;
+                    }
+  .dropdownpi span.value { display:none;}
+  .dropdownpi dd ul li a { padding:5px; display:block;}
+  .dropdownpi dd ul li a:hover { background-color:#d0c9af;}
+
+</style>
+
+<script>
+    var templateMap = new Object();
+    var fieldMap = new Object();
+    var selectedSenderId = '' ;
+    var selectedPhoneField = '' ;
+    var hasTmpltChangePermission;
+    var selectedTemplateName='';
+
+    $(document).ready(function(){
+        // Load the record
+        try {
+            loadRecordData();
+        } catch (err) {  }
+    });
+
+    function loadRecordData(){
+
+        var objType = document.getElementById('{!$Component.sendSMSForm.objectType}').value;
+        var recordId = document.getElementById('{!$Component.sendSMSForm.recordId}').value;
+        var isBrowserRequestVal = document.getElementById('{!$Component.sendSMSForm.isBrowserRequest}').value;
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SendSMSActionController.getObjectData}',
+            objType,
+            recordId,
+            'mobilephone',
+            'name',
+            isBrowserRequestVal,
+            function(result, event){;
+                if(event.status){
+                   if(typeof result !== 'undefined' && result.length > 0 && result[0].renderComponents) {
+                       loadData(result);
+                       if(result[0].isBrowserReq){
+                           renderBrowserUI();
+                       }
+                    }
+                    else{
+                        hide(result[0].errMsg);
+                    }
+                } else if (event.type === 'exception'){
+                    console.log(result);
+                } else {
+                    // unexpected problem...
+                }
+            }
+        );
+    }
+
+    function renderBrowserUI(){
+
+        $('#phoneFieldLabel').show();
+        $('#senderIdLabel').show();
+        $('#numberFieldNameLabel').show();
+        $('#templateLabel').show();
+        $('#smsTextLabel').show();
+    }
+
+    function hide(errMsg) {
+
+        $('#errorMsgDiv').show();
+        var msg = decodeURIComponent(errMsg);
+        $('#errorMsgSpan').html(msg).text();
+        $('#sendSMSTable').hide();
+    }
+
+    function loadData(result) {
+        var selectedDefaultSenderId = result[0].defaultSenderId;
+        selectedSenderId = selectedDefaultSenderId;
+        $('.dropdownsi dt a span').html(selectedDefaultSenderId);
+
+        var msg = result[0].errMsg ;
+        credits = result[0].availableCredits ;
+        if ( msg != null && msg.length > 0 ) {
+            $('#errorMsgDiv').show();
+            $('#errorMsgSpan').text(result[0].errMsg);
+        }
+        hasTmpltChangePermission = result[0].hasPermissionForForceTmpltSlctn;
+        if(result[0].hasPermissionForForceTmpltSlctn == true){
+            $('#smsText1').show();
+            $('#smsText').hide();
+            document.getElementById("smsText1").innerHTML = "";
+        }
+        else {
+            $('#smsText').show();
+            $('#smsText1').hide();
+            document.getElementById("smsText").innerHTML = "";
+        }
+        var decoded = $("<div/>").html(result[0].phoneFieldValueMap[result[0].firstPhoneFieldName]).text();
+        $('#numberField').val(decoded);
+        var text=result[0].firstPhoneFieldLabel;
+        $('.dropdownpi dt a span').html(text);
+        $('.dropdownpi dd ul').hide();
+        selectedPhoneField = result[0].firstPhoneFieldName;
+
+        if(result[0].isBtnDisable) {
+            var button = document.getElementById('sendSMSButton') ;
+            button.disabled = true ;
+            button.className = 'disable_button' ;
+            var mobno = document.getElementById('numberField') ;
+            mobno.disabled = true ;
+        }
+        var silist = document.getElementById('senderIdUL');
+        for(var index=0; index < result[0].senderId.length; index++){
+            var decoded = $("<div/>").html(result[0].senderId[index]).text();
+            var senderIdText = decoded;
+            var item = document.createElement('li');
+            var a = document.createElement('a');
+            var linkText = document.createTextNode(senderIdText);
+            a.appendChild(linkText);
+            a.href = "#";
+            item.appendChild(a);
+            silist.appendChild(item);
+        }
+
+        try{
+            var fieldList = document.getElementById('phoneFieldUL');
+            for(var index in result[0].phoneFieldValueMap){
+
+                var item = document.createElement('li');
+                var a = document.createElement('a');
+                var linkText = document.createTextNode($("<div/>").html(result[0].phoneFieldLabelMap[index]).text());
+
+                fieldMap[index.trim()] = $("<div/>").html(result[0].phoneFieldValueMap[index]).text();
+                a.appendChild(linkText);
+                a.href = "#";
+                a.id = index;
+                item.appendChild(a);
+                fieldList.appendChild(item);
+             }
+        }catch(e){
+            swal("Exception :"+e);
+        }
+
+        try{
+            var list = document.getElementById('templateUL');
+             for(var index in result[0].template){
+                var item = document.createElement('li');
+                var a = document.createElement('a');
+                var linkText = document.createTextNode(index);
+
+                var decoded = $("<div/>").html(result[0].template[index]).text();
+
+                templateMap[index.trim()] = decoded;
+                a.appendChild(linkText);
+                a.href = "#";
+                item.appendChild(a);
+
+                list.appendChild(item);
+             }
+        }catch(e){
+            swal("Exception :"+e);
+        }
+
+
+
+     }
+
+    function refreshFeed() {
+        Sfdc.canvas.publisher.publish({name : 'publisher.refresh', payload : {feed:true}});
+    }
+
+    function redirectUser(){
+        try {
+            var isBrowserRequestVal = document.getElementById('{!$Component.sendSMSForm.isBrowserRequest}').value;
+            var recordId = document.getElementById('{!$Component.sendSMSForm.recordId}').value;
+            if(isBrowserRequestVal=='true'){
+                parent.window.location = '/'+recordId;
+            }
+            else{
+                sforce.one.navigateToURL("/"+recordId);
+            }
+        } catch(err) {}
+    }
+    function sendSMS(){
+        var smsText;
+        document.getElementById("sendSMSButton").disabled = true;
+        if(hasTmpltChangePermission){
+            smsText =  $('#smsText1').val();
+        }
+        else{
+            smsText =  $('#smsText').val();
+        }
+
+        function isEmpty(val){
+            return (val === undefined || val == null || val.trim().length <= 0) ? true : false;
+        }
+
+        if(isEmpty(selectedSenderId)) {
+            swal({
+            title: document.getElementById("{!$Component.sendSMSForm.BLANK_SENDERID_MSG_HIDDEN}").value,
+            confirmButtonText : document.getElementById("{!$Component.sendSMSForm.OK_BTN_HIDDEN}").value
+            });
+            document.getElementById("sendSMSButton").disabled = false;
+            return null;
+        }
+        if(isEmpty(smsText)){
+            swal({
+            title : document.getElementById("{!$Component.sendSMSForm.BLANK_TEXT_MSG_HIDDEN}").value,
+            confirmButtonText : document.getElementById("{!$Component.sendSMSForm.OK_BTN_HIDDEN}").value
+            });
+            document.getElementById("sendSMSButton").disabled = false;
+            return null;
+        }
+
+        if(credits == 0) {
+            swal({title : document.getElementById("{!$Component.sendSMSForm.INSFCNT_SMS_CREDITS_HIDDEN}").value,
+            showConfirmButton : true,
+            confirmButtonText : document.getElementById("{!$Component.sendSMSForm.OK_BTN_HIDDEN}").value
+            },
+            function(isConfirm){
+                redirectUser();
+            });
+        }
+        else if(credits < 4){
+            swal({   title: document.getElementById("{!$Component.sendSMSForm.WARNING_MSG_HIDDEN}").value,
+            text: document.getElementById("{!$Component.sendSMSForm.LESS_CREDITS_IN_ACNT_MSG_HIDDEN}").value,
+            confirmButtonColor: "#1e90d2",
+            showCancelButton: true,
+            confirmButtonText: document.getElementById("{!$Component.sendSMSForm.CANCEL_HIDDEN}").value,
+            cancelButtonText: document.getElementById("{!$Component.sendSMSForm.SEND_HIDDEN}").value,
+            closeOnConfirm: true,
+            closeOnCancel: true },
+            function(isConfirm){
+            if (isConfirm) {
+                redirectUser();
+            }
+            else {
+                send();
+            }
+            });
+        }
+        else {
+            send();
+        }
+
+    }
+    function send(){
+
+        var objType = document.getElementById('{!$Component.sendSMSForm.objectType}').value;
+        var recordId = document.getElementById('{!$Component.sendSMSForm.recordId}').value;
+        var smsNumber = $('#numberField').val();
+        var phoneField = selectedPhoneField;
+
+        if(hasTmpltChangePermission){
+            var smsText =  $('#smsText1').val();
+        }
+        else{
+            var smsText =  $('#smsText').val();
+        }
+        smsText = $.trim(smsText);
+        smsText = encodeURIComponent(smsText);
+        var SendSMSParameters={senderId : selectedSenderId , smsTextVar : smsText , ObjectType : objType , recordIdVar : recordId, phoneFieldName:phoneField ,nameField : "name",templateName : selectedTemplateName};
+        var SendSMSParametersList=JSON.stringify(SendSMSParameters);
+        // Call the remote action to send sms the record data
+            Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.SendSMSActionController.sendSMS}',
+                SendSMSParametersList,
+            function(result, event){;
+                if(event.status){
+                    if ( result != 'success' ) {
+                        $('#errorMsgDiv').show();
+                        $('#errorMsgSpan').text(result);
+                        document.getElementById("sendSMSButton").disabled = false;
+                    }else {
+                        refreshFeed();
+                        swal({title : document.getElementById("{!$Component.sendSMSForm.SMS_SENT_SCSFLY_HIDDEN}").value,
+                        text : "",
+                        type : "success",
+                        confirmButtonText : document.getElementById("{!$Component.sendSMSForm.OK_BTN_HIDDEN}").value,
+                        showConfirmButton : true
+                        },
+                        function(isConfirm){
+                            redirectUser();
+                        }
+                        );
+                    }
+                } else if (event.type === 'exception'){
+                    console.log(result);
+                } else {
+                    // unexpected problem...
+                }
+            });
+
+    }
+
+
+
+</script>
+</head>
+
+<body>
+
+<apex:outputPanel rendered="{!NOT(isVisible)}">
+    <h4> {!$Label.smagicinteract__starter_info_msg} </h4>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToUseSf1}"> 
+ <div style="width:100%;margin:20px auto; text-align:center;line-height:40px;" >
+  <h1 style="font-size:30px;">{!$Label.CAMP_MNG_CANNOT_SND_MSG} </h1> <br/>
+ <h5 style="font-size:15px;">{!$Label.CAMP_MNG_PLZ_CNTCT_ADMN}</h5> <br/>
+  </div>
+</apex:outputPanel>
+
+<section class="bg-7 border-bottom border--3">
+  <div class="flag">
+    <div class="flag--image phm">
+      <span class="text-error icon-utility-error"></span>
+    </div>
+    <div class="flag--body" style="display:none;" id="errorMsgDiv">
+      <h1 class="mvm fw-semibold text-color-1 f4" id="errorMsgSpan">  </h1>
+    </div>
+  </div>
+</section>
+
+    <apex:outputPanel id="sendSMSPanel" rendered="{!(IF (isVisible, true, false) && $Permission.smagicinteract__AllowToUseSf1) }">
+        <br />
+        <table id="sendSMSTable">
+            <tr>
+                <td></td>
+            </tr>
+
+            <tr></tr>
+            <tr></tr>
+            <tr class="spaceUnder">
+
+                <td>&nbsp;</td>
+                <td style="line-height:1em;">
+                    <label for="phoneFieldUL" class="label--icon-r icon-utility-right size-full lh-14 text-color-3" style="display:none" id="phoneFieldLabel">{!$Label.PHONE_FIELD_LABEL}</label>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+
+                <td>
+
+                 <dl class="dropdownpi" style="margin-top: 0px; margin-bottom: 0px;">
+                    <dt><a href="#"><span>{!$Label.PHONE_FIELD_LABEL} </span></a></dt>
+                    <dd>
+                        <ul id="phoneFieldUL">
+                        </ul>
+                    </dd>
+                </dl>
+                </td>
+
+            </tr>
+            <tr></tr>
+            <tr></tr>
+
+            <tr class="spaceUnder">
+                <td>&nbsp;</td>
+                <td >
+                    <label class="label--icon-r icon-utility-right size-full lh-14 text-color-3" for="numberField" style="display:none" id="numberFieldNameLabel">{!$Label.PHONE_FIELD_SECTION_TITLE}</label>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                    <input class="size-full phm pvm input input--default input--ph-1 input--focus-1" type="text" id="numberField" placeholder="{!$Label.PHONE_FIELD_PLACEHOLDER}"  readonly="true"/>
+                </td>
+            </tr>
+
+            <tr class="spaceUnder">
+                <td>&nbsp;</td>
+                <td style=" line-height:10px;">
+                    <label for="senderIdUL" class="label--icon-r icon-utility-right size-full lh-14 text-color-3" style="display:none"  id="senderIdLabel">{!$Label.SENDERID_SECTION_TITLE}</label>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+
+                 <dl class="dropdownsi" style="margin-top: 0px; margin-bottom: 0px;">
+                    <dt><a href="#"><span>{!$Label.SELECT_SENDERID_LABEL} </span></a></dt>
+                    <dd>
+                        <ul id="senderIdUL"  >
+                        </ul>
+                    </dd>
+                </dl>
+
+                </td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+
+            <tr class="spaceUnder">
+
+                <td>&nbsp;</td>
+                <td style=" line-height:1em;">
+                    <label for="templateUL" class="label--icon-r icon-utility-right size-full lh-14 text-color-3" style="display:none" id="templateLabel">{!$Label.SMS_TEMPLATE_LABEL}</label>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                 <dl class="dropdown" style="margin-top: 0px; margin-bottom: 0px;">
+                    <dt><a href="#"><span>{!$Label.SELECT_TEMPLATE_LABEL}</span></a></dt>
+                    <dd>
+                        <ul id="templateUL"    >
+                        </ul>
+                    </dd>
+                </dl>
+                </td>
+            </tr>
+            <tr></tr>
+
+            <tr class="spaceUnder">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                <span class="text-color-8 f3 fw-semibold" id="numberOfChars" ><strong>
+                 <apex:outputText value="{!$Label.smagicinteract__charater_count_msg}" >
+                     <apex:param value="0"/>
+                 </apex:outputText>
+                 </strong> </span>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+
+            <tr class="spaceUnder">
+                <td>&nbsp;</td>
+                <td style=" line-height:10px;">
+                    <label class="label--icon-r icon-utility-right size-full lh-14 text-color-3" for="smsText" style="display:none" id="smsTextLabel">{!$Label.SMS_TEXT_SECTION_TITLE}</label>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                    <textarea class="size-full phm pvm textarea textarea--default textarea--ph-1 textarea--focus-1" cols="30" rows="6" name="smsText" id="smsText" placeholder="{!$Label.SMS_TEXT_PLACEHOLDER}" oninput="characterCounter('controllerDiv','smsText','numberOfChars','{!$Label.smagicinteract__charater_count_msg}')" > </textarea>
+                    <textarea class="size-full phm pvm textarea textarea--default textarea--ph-1 textarea--focus-1" cols="30" rows="6" name="smsText1" id="smsText1" placeholder="{!$Label.SMS_TEXT_PLACEHOLDER}" onchange="characterCounter('controllerDiv','smsText','numberOfChars','{!$Label.smagicinteract__charater_count_msg}')" style="display:none;" readonly="true" > </textarea>
+                </td>
+
+            </tr>
+            <tr></tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                   <button id="sendSMSButton" class="btn bg-primary-btn btn--primary pvs size-half brm no-border" style = "width: 49% "  onClick=" sendSMS();" title="{!$Label.SEND_SMS_BUTTON_TITLE}">
+                      <span class="text-color-5 f3 fw-semibold">{!$Label.SEND_SMS_ACTION_BUTTON}</span>
+                   </button>
+
+                   <button id="cancelButton" class="btn bg-primary-btn btn--primary pvs brm size-half no-border"  style = "width : 49% " onClick="redirectUser();" title="{!$Label.CANCEL_BUTTON_TITLE}">
+                      <span class="text-color-5 f3 fw-semibold">{!$Label.CANCEL_BUTTON_TITLE}</span>
+                   </button>
+                </td>
+            </tr>
+        </table>
+    </apex:outputPanel>
+
+    <apex:form id="sendSMSForm" >
+        <apex:inputHidden id="objectType" value="{!objectType}"/>
+        <apex:inputHidden id="recordId" value="{!idOfRecord}"/>
+        <apex:inputHidden id="phoneField" value="{!phoneField}"/>
+        <apex:inputHidden id="isBrowserRequest" value="{!isBrowserRequest}"/>
+        <apex:inputHidden value="{!BLANK_TEXT_MSG}" id="BLANK_TEXT_MSG_HIDDEN"/>
+        <apex:inputHidden value="{!BLANK_SENDERID_MSG}" id="BLANK_SENDERID_MSG_HIDDEN"/>
+        <apex:inputHidden value="{!INSFCNT_SMS_CREDITS}" id="INSFCNT_SMS_CREDITS_HIDDEN"/>
+        <apex:inputHidden value="{!LESS_CREDITS_IN_ACNT_MSG}" id="LESS_CREDITS_IN_ACNT_MSG_HIDDEN"/>
+        <apex:inputHidden value="{!SMS_SENT_SCSFLY}" id="SMS_SENT_SCSFLY_HIDDEN"/>
+        <apex:inputHidden value="{!SEND_SMS_SUCCESS}" id="SEND_SMS_SUCCESS_HIDDEN"/>
+        <apex:inputHidden value="{!CANCEL}" id="CANCEL_HIDDEN"/>
+        <apex:inputHidden value="{!SEND}" id="SEND_HIDDEN"/>
+        <apex:inputHidden value="{!WARNING_MSG}" id="WARNING_MSG_HIDDEN"/>
+        <apex:inputHidden value="{!OK_BTN}" id="OK_BTN_HIDDEN"/>
+    </apex:form>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('.dropdownpi dt a').click(function() {
+            $('.dropdownpi dd ul').toggle();
+
+        });
+
+        $('.dropdownpi dd ul').on('click','li', function(e) {
+            var o = $(this).html();
+            var text= $(o).attr('id');
+            var text1=o.replace(/(<([^>]+)>)/ig,"");
+            $('.dropdownpi dt a span').html(text1);
+            $('.dropdownpi dd ul').hide();
+            var decoded = $("<div/>").html(fieldMap[text]).text();
+            var numberFieldName = decoded;
+            $('#numberField').val(numberFieldName.trim());
+            selectedPhoneField = text;
+        });
+
+        $('.dropdown dt a').click(function() {
+            $('.dropdown dd ul').toggle();
+        });
+
+        $('.dropdown dd ul').on('click', 'li', function(e) {
+            var o = $(this).html();
+            var text=o.replace(/(<([^>]+)>)/ig,"");
+            $('.dropdown dt a span').html(text);
+            $('.dropdown dd ul').hide();
+            selectedTemplateName=text;
+            var templateText = templateMap[text];
+            if(hasTmpltChangePermission){
+                $('#smsText1').val(templateText.trim());
+                characterCounter('controllerDiv','smsText1','numberOfChars','{!$Label.smagicinteract__charater_count_msg}');
+            }
+            else {
+                $('#smsText').val(templateText.trim());
+                characterCounter('controllerDiv','smsText','numberOfChars','{!$Label.smagicinteract__charater_count_msg}');
+            }
+        });
+
+        $(document).bind('click', function(e) {
+            var $clicked = $(e.target);
+            if (! $clicked.parents().hasClass('dropdown'))
+                $('.dropdown dd ul').hide();
+            if (! $clicked.parents().hasClass('dropdownsi'))
+                $('.dropdownsi dd ul').hide();
+            if (! $clicked.parents().hasClass('dropdownpi'))
+                $('.dropdownpi dd ul').hide();
+        });
+
+        $('.dropdownsi dt a').click(function() {
+            $('.dropdownsi dd ul').toggle();
+        });
+
+        $('.dropdownsi dd ul').on('click', 'li', function(e) {
+            var o = $(this).html();
+            var text=o.replace(/(<([^>]+)>)/ig,"");
+            $('.dropdownsi dt a span').html(text);
+            $('.dropdownsi dd ul').hide();
+
+            selectedSenderId = text ;
+        });
+    });
+</script>
+</body>
+</apex:page>

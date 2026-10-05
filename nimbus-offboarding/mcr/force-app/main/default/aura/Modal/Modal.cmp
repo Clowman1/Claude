@@ -1,0 +1,72 @@
+<aura:component>
+    <aura:attribute name="isModalOpen" type="boolean" default="false" />
+    <aura:attribute name="size"        type="String"  default="large" />
+    <!-- @depreciated isSmall -->
+    <aura:attribute name="isSmall"     type="boolean" default="false" />
+    <!-- @depreciated isMedium-->
+    <aura:attribute name="isMedium"    type="boolean" default="false" />
+    <aura:attribute name="canClose"    type="boolean" default="true" />
+    <aura:attribute name="hasHeader"   type="boolean" default="true"  />
+    <aura:attribute name="hasFooter"   type="boolean" default="true"  />
+    <aura:attribute name="isBackdrop"  type="boolean" default="true"  />
+    <aura:attribute name="directional" type="Boolean" default="false" />
+    <aura:attribute name="header"      type="String"  default=""      />
+    <aura:attribute name="tagline"     type="String"  default=""      />
+    <aura:attribute name="bodycss"     type="String"  default=""      />
+
+    <aura:attribute name="headerIcon"  type="Aura.Component[]"        />
+    <aura:attribute name="footer"      type="Aura.Component[]"        />
+
+    <aura:attribute name="animation"   type="String"  default="slds-fade-in-open" />
+    <!-- slds-slide-up-open, slds-slide-down-cancel, slds-fade-in-open -->
+
+    <aura:attribute name="close"       type="Aura.Action" default="{!c.closeModal}" />
+
+    <!--    <ltng:require styles="{!$Resource.modalStylesheet}" />-->
+
+    <aura:if isTrue="{!v.isModalOpen}">
+        <section role="dialog"
+                 tabindex="-1"
+                 aria-modal="true"
+                 class="{!'slds-modal modal-' + v.size
+                        + ' ' + v.animation +
+                        (v.isModalOpen ? '' : ' slds-hidden') +
+                        (v.hasHeader ? '' : ' no-header') +
+                        (v.hasFooter ? '' : ' no-footer')}">
+
+            <div class="slds-modal__container">
+                <div class="modal-shadow">
+                    <header class="slds-modal__header">
+                        <aura:if isTrue="{!v.canClose}">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! v.close }"
+                                                  alternativeText="close"
+                                                  variant="bare"
+                                                  class="slds-modal__close"/>
+                        </aura:if>
+
+                        <h2 class="slds-text-heading_medium slds-hyphenate">
+                            {!v.headerIcon}
+                            {!v.header}
+                        </h2>
+                        <p class="slds-m-top_x-small">{!v.tagline}</p>
+
+                    </header>
+                    <div class="{!'slds-modal__content slds-scrollable ' + v.bodycss}">
+                        <div class="scroll-content">
+                            {!v.body}
+                        </div>
+                    </div>
+                    <footer class="{!'slds-modal__footer' + (v.directional ? ' slds-modal__footer_directional' : '')}">
+                        {!v.footer}
+                    </footer>
+                </div>
+            </div>
+        </section>
+        <aura:if isTrue="{!v.isBackdrop}">
+            <div class="{!'slds-backdrop ' + (v.isModalOpen ? 'slds-backdrop_open' : '')}"
+                 onClick="{! v.close }">
+            </div>
+        </aura:if>
+    </aura:if>
+</aura:component>

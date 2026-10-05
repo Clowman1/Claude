@@ -1,0 +1,39 @@
+<apex:page controller="RingCentralAuthCallbackController" action="{!updateTokens}" lightningStylesheets="true">
+    <apex:slds />
+
+    <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-center slds-p-around_x-large">
+        <div class="slds-box slds-theme_default slds-text-align_center slds-size_1-of-2 slds-p-around_large slds-rounded_large slds-shadow_large">
+
+            <!-- Success -->
+            <apex:outputPanel rendered="{!NOT(ISBLANK(resultJson))}">
+                <lightning-icon 
+                    iconName="utility:success" 
+                    alternativeText="Success" 
+                    size="large" 
+                    class="slds-icon slds-icon_large slds-icon-text-success slds-m-bottom_medium">
+                </lightning-icon>
+
+                <h1 class="slds-text-heading_large slds-m-bottom_medium">You’re connected!</h1>
+                <p class="slds-text-body_regular slds-m-bottom_medium">
+                    RingCentral authentication was successful. You can now use RingCentral features in Salesforce.
+                </p>
+
+            </apex:outputPanel>
+
+            <!-- Failure -->
+            <apex:outputPanel rendered="{!ISBLANK(resultJson)}">
+                <lightning-icon 
+                    iconName="utility:error" 
+                    alternativeText="Error" 
+                    size="large" 
+                    class="slds-icon slds-icon_large slds-icon-text-error slds-m-bottom_medium">
+                </lightning-icon>
+
+                <h1 class="slds-text-heading_large slds-m-bottom_medium">Authentication Failed</h1>
+                <p class="slds-text-body_regular">
+                    No token response found. Please retry the RingCentral login.
+                </p>
+            </apex:outputPanel>
+        </div>
+    </div>
+</apex:page>

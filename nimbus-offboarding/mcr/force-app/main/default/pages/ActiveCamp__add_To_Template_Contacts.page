@@ -1,0 +1,51 @@
+<apex:page standardController="Contact" recordSetVar="contacts" tabStyle="Contact" extensions="ActiveCamp.campaignsAutomations">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        <apex:slds />
+        <apex:includeLightning />
+        <style>
+            html, body {
+               background-color: #f3f2f2
+            }
+        </style>
+        <div class="slds-page-header slds-border_bottom">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-contact">
+                                <svg aria-hidden="true" class="slds-icon slds-page-header__icon">
+                                    <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#contact')}"></use>
+                                </svg>
+                                 <span class="slds-assistive-text">Contacts</span>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                  <h1>
+                                    <span>Contacts</span>
+                                    <span class="slds-page-header__title slds-truncate" title="Recently Viewed"><strong>Add to ActiveCampaign</strong></span>
+                                  </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-grid_align-center">
+            <div id="lightning" class="slds-p-top_xx-large slds-small-size_1-of-1 slds-large-size_1-of-2" style="max-width: 40rem; min-width: 20rem;"/>
+        </div>
+        <script>
+            $Lightning.use("{!JSENCODE(namespace)}:lightningOutApp", function() {
+                $Lightning.createComponent("{!JSENCODE(namespace)}:addToActiveCampaign",
+                    { isVf : true, isVfContacts : true , selections: '{!JSENCODE(selections)}'},
+                    "lightning",
+                    function(cmp) {
+                    // do some stuff
+                    }
+                );
+            });
+        </script>
+    </html>
+</apex:page>

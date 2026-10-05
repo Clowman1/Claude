@@ -1,0 +1,109 @@
+<!--
+ - Created by BTB12 on 8/8/2022.
+ -->
+
+<apex:page id="Commitment_Letter" standardController="Transaction__c" renderAs="pdf" showHeader="false" applyHtmlTag="false" applyBodyTag="false">
+    <html>
+    <head>
+        <style type="text/css" media="print">
+            @page {
+                @top-center {
+                    content: element(header);
+                }
+                @bottom-center {
+                    content: element(footer);
+                }
+            }
+            div.header {
+                position: running(header);
+            }
+            div.footer {
+                position: running(footer);
+            }
+        </style>
+    </head>
+    <body>
+    <div class="header" style="margin-bottom: 50px; text-align: center; font-size: 14px;">
+        <hr style="background: #001c54; height: 15px; margin-bottom:20px;"/>
+        <div style="margin-top: 10px;"><apex:image url="{!$Resource.Reach_Logo}"/></div>
+    </div>
+    <div class="letterBody" style="margin-bottom: 50px; padding-top: 40px; font-size: 14px;">
+        <!-- The " & " separator is emitted as literal markup, not inside the {!...} expression.
+             renderAs="pdf" escapes merge-field output on the way to the PDF's XHTML parser, so an
+             entity placed in the expression got encoded a second time and printed as "&#38;". The
+             names stay inside outputText so they remain escaped. -->
+        <p style="margin-bottom:0px;">Borrower(s): <span><apex:outputText value="{!TRIM(BLANKVALUE(Transaction__c.Borrower_First_Name__c, '') + ' ' + BLANKVALUE(Transaction__c.Borrower_Last_Name__c, ''))}" rendered="{!NOT(ISBLANK(TRIM(BLANKVALUE(Transaction__c.Borrower_First_Name__c, '') + ' ' + BLANKVALUE(Transaction__c.Borrower_Last_Name__c, ''))))}"/><apex:outputPanel layout="none" rendered="{!AND(NOT(ISBLANK(TRIM(BLANKVALUE(Transaction__c.Borrower_First_Name__c, '') + ' ' + BLANKVALUE(Transaction__c.Borrower_Last_Name__c, '')))), NOT(ISBLANK(TRIM(BLANKVALUE(Transaction__c.Borrower_Name__r.First_Name_Co_Borrower__pc, '') + ' ' + BLANKVALUE(Transaction__c.Borrower_Name__r.Last_Name_Co_Borrower__pc, '')))))}"> &amp; </apex:outputPanel><apex:outputText value="{!TRIM(BLANKVALUE(Transaction__c.Borrower_Name__r.First_Name_Co_Borrower__pc, '') + ' ' + BLANKVALUE(Transaction__c.Borrower_Name__r.Last_Name_Co_Borrower__pc, ''))}" rendered="{!NOT(ISBLANK(TRIM(BLANKVALUE(Transaction__c.Borrower_Name__r.First_Name_Co_Borrower__pc, '') + ' ' + BLANKVALUE(Transaction__c.Borrower_Name__r.Last_Name_Co_Borrower__pc, ''))))}"/></span></p>
+        <p style="margin:0px;">Subject Property: <span>{!Transaction__c.Property_Address__c}</span></p>
+        <p style="margin:0px;">Loan Amount: <span><apex:outputText value="{0, Number, Currency}"><apex:param value="{!Transaction__c.Loan_Amount_1st__c}"/></apex:outputText></span></p>
+        <p style="margin:0px;">Loan Program: <span>{!Transaction__c.Loan_Program_1st__c}</span></p>
+        <p>
+            Congratulations! Reach Home Loans is pleased to provide you with this conditional approval letter.
+            This letter is based on the mortgage loan product and terms available as of the date issued. We
+            reserve the right to modify this letter if your financial status changes, your loan application changes,
+            or we learn material facts that were not previously known by us, or if you change the loan terms.
+        </p>
+        <p>
+            In order for us to issue a final approval for your loan, we will need the following information. Our
+            team will personally work with you and fully explain each of the items listed below and how we can
+            quickly obtain this information and get your loan to closing.
+        </p>
+        <apex:outputField value="{!Transaction__c.Conditions_Needed__c}"/>
+        <p>
+            This conditional approval expires in 45 days from the date of this letter. Final approval is subject to
+            the Underwriter’s review of the above referenced conditions, and any additional conditions that may
+            be requested based on their review of the above. Please keep in mind that changes in employment
+            status, new or increased debts, and movement of asset funds can affect loan approval and should
+            immediately be reported to your loan officer and/or loan processor.
+        </p>
+        <p>
+            Please feel free to call
+            <apex:outputPanel rendered="{!NOT(ISBLANK(Transaction__c.Processor__c))}" layout="none">
+                <span>{!Transaction__c.Processor__r.Phone}</span>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!ISBLANK(Transaction__c.Processor__c)}" layout="none">
+                <span>{!$User.Phone}</span>
+            </apex:outputPanel>
+            with any questions.
+        </p>
+    </div>
+    <div class="footer-main" style="font-size: 14px;">
+        <apex:outputPanel rendered="{!NOT(ISBLANK(Transaction__c.Processor__c))}" layout="block">
+            <div style="width:95%;margin-right:auto;margin-left:auto;margin-top:12px;padding:16px 20px;background:#f5f7fb;border-left:6px solid #001c54;">
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr>
+                        <apex:outputPanel rendered="{!NOT(ISBLANK(Transaction__c.Processor__r.Headshot_URL__c))}" layout="none">
+                            <td style="width:105px;vertical-align:top;padding-right:18px;">
+                                <apex:image url="{!Transaction__c.Processor__r.Headshot_URL__c}" style="width:88px;height:88px;border-radius:44px;"/>
+                            </td>
+                        </apex:outputPanel>
+                        <td style="vertical-align:top;">
+                            <div style="font-size:18px;font-weight:bold;color:#001c54;margin-bottom:3px;">{!Transaction__c.Processor__r.Name}</div>
+                            <div style="font-size:13px;color:#44546a;margin-bottom:6px;">{!Transaction__c.Processor__r.Title}</div>
+                            <div style="font-style:italic;line-height:18px;color:#334155;">
+                                &ldquo;At Reach Home Loans, our Processing Team and Operations staff work tirelessly around the clock to ensure all contract deadlines and loan conditions are met. Our availability and communication throughout the loan process are second to none. We are grateful for the opportunity to help navigate every client throughout the loan process and work to make this journey as seamless as possible. Please don&rsquo;t hesitate to reach out to me directly with any questions regarding this Commitment to Lend.&rdquo;
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <div style="background-color:#D3D3D3;padding-top:1px;padding-bottom:1px;width:95%;margin-right:auto;margin-left:auto; margin-top:20px; font-size: 14px;">
+            <apex:outputPanel rendered="{!NOT(ISBLANK(Transaction__c.Processor__c))}" layout="none">
+                <p style="text-align: center; font-size: 14px;;"> {!Transaction__c.Processor__r.Name + ' | ' + Transaction__c.Processor__r.Phone + ' | ' + Transaction__c.Processor__r.Email}</p>
+                <apex:outputPanel rendered="{!NOT(ISBLANK(Transaction__c.Processor__r.NMLS__c))}" layout="none">
+                    <p style="text-align: center; font-size: 14px;;">{!Transaction__c.Processor__r.Title + ' | NMLS # ' + Transaction__c.Processor__r.NMLS__c}</p>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!ISBLANK(Transaction__c.Processor__r.NMLS__c)}" layout="none">
+                    <p style="text-align: center; font-size: 14px;;">{!Transaction__c.Processor__r.Title}</p>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!ISBLANK(Transaction__c.Processor__c)}" layout="none">
+                <p style="text-align: center; font-size: 14px;;"> {!$User.FirstName + ' ' + $User.LastName + ' | ' + $User.Phone + ' | ' + $User.Email}</p>
+            </apex:outputPanel>
+            <p style="text-align: center; font-size: 14px;;">327 Plaza Real Blvd, Suite 215 | Boca Raton, Florida 33432 | reachhomeloans.com</p>
+        </div>
+    </div>
+    <div class="footer"><hr style="background: #001c54; height: 15px; padding-top:0px;"/></div>
+    </body>
+    </html>
+</apex:page>

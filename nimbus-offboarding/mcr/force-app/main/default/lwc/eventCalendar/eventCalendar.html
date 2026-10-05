@@ -1,0 +1,34 @@
+<template lwc:render-mode="light">
+
+    <lightning-card >
+        <h3 slot="title">
+            <lightning-icon icon-name="standard:metric" size="small" class="brand-color-utility-icon"></lightning-icon>
+            <span class="icon-text slds-m-left_small" >Activity Overview</span>
+        </h3>
+
+        <!-- <lightning-button label="New Activity" slot="actions"></lightning-button>  -->
+
+        <div class="content-outer slds-p-horizontal_medium">
+            <div class="slds-p-top_x-small" style="border-top: solid 1px #ededed">
+                <lightning-spinner lwc:if={isLoading} alternative-text="Loading" size="medium"></lightning-spinner>
+                <lightning-layout>
+                    <lightning-layout-item size="3" style="display:none;" class="slds-p-around_small">
+                        <div class="container">
+                            <template for:each={transactions} for:item="transaction">
+                                <div key={transaction.Id} data-transaction-id={transaction.Id} class="transaction-item">
+                                    <p>{transaction.Name}</p>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12">
+                        <div style="background:#fff; padding: 10px;">
+                            <div  class="calendar"></div>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+    </lightning-card>
+
+</template>

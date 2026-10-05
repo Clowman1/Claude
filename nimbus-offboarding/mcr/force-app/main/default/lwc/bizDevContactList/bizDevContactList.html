@@ -1,0 +1,219 @@
+<template>
+    <div class="bdc">
+        <div class="bdc-header">
+            <div class="bdc-header-text">
+                <span class="bdc-eyebrow">Business Development</span>
+                <h2 class="bdc-title">Biz Dev Contact List</h2>
+                <p class="bdc-subtitle">{countLabel} &middot; click a pencil to edit &middot; calls and texts update from RingCentral automatically</p>
+            </div>
+            <div class="bdc-header-actions">
+                <lightning-input
+                    class="bdc-search"
+                    type="search"
+                    variant="label-hidden"
+                    placeholder="Search name, type, phone, email"
+                    value={searchTerm}
+                    onchange={handleSearch}
+                ></lightning-input>
+                <button class="bdc-pill" onclick={handleOpenModal}>
+                    <span class="bdc-pill-plus">+</span> Add Contact
+                </button>
+            </div>
+        </div>
+
+        <template if:true={isLoading}>
+            <div class="bdc-state"><lightning-spinner alternative-text="Loading" size="small"></lightning-spinner></div>
+        </template>
+
+        <template if:true={error}>
+            <div class="bdc-state bdc-error">{error}</div>
+        </template>
+
+        <template if:false={isLoading}>
+            <template if:true={hasContacts}>
+                <div class="bdc-table-wrap">
+                    <table class="bdc-table">
+                        <thead>
+                            <tr>
+                                <th class="bdc-th">Name</th>
+                                <th class="bdc-th">Business Type</th>
+                                <th class="bdc-th">Phone</th>
+                                <th class="bdc-th">Email</th>
+                                <th class="bdc-th">Last Call</th>
+                                <th class="bdc-th">Last SMS</th>
+                                <th class="bdc-th">Next Event</th>
+                                <th class="bdc-th">Created By</th>
+                                <th class="bdc-th bdc-th-notes">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={filteredContacts} for:item="contact">
+                                <tr key={contact.id} class={contact.rowClass}>
+                                    <td class="bdc-td bdc-td-name">
+                                        <template if:false={contact.isEditingName}>
+                                            <div class="bdc-cell">
+                                                <a href={contact.recordUrl} target="_blank" rel="noopener">{contact.name}</a>
+                                                <button class="bdc-edit" title="Edit name" data-id={contact.id} data-field="name" onclick={handleStartEdit}>&#9998;</button>
+                                            </div>
+                                        </template>
+                                        <template if:true={contact.isEditingName}>
+                                            <div class="bdc-edit-box">
+                                                <input class="bdc-input bdc-input-half" type="text" placeholder="First" value={draftFirstName} onchange={handleDraftFirstNameChange} onkeydown={handleEditKey} />
+                                                <input class="bdc-input bdc-input-half" type="text" placeholder="Last" value={draftLastName} onchange={handleDraftLastNameChange} onkeydown={handleEditKey} />
+                                                <button class="bdc-edit-ok" title="Save" onclick={handleCommitEdit}>&#10003;</button>
+                                                <button class="bdc-edit-no" title="Cancel" onclick={handleCancelEdit}>&#10005;</button>
+                                            </div>
+                                        </template>
+                                    </td>
+
+                                    <td class="bdc-td">
+                                        <template if:false={contact.isEditingBusinessType}>
+                                            <div class="bdc-cell">
+                                                <span>{contact.businessType}</span>
+                                                <button class="bdc-edit" title="Edit business type" data-id={contact.id} data-field="businessType" onclick={handleStartEdit}>&#9998;</button>
+                                            </div>
+                                        </template>
+                                        <template if:true={contact.isEditingBusinessType}>
+                                            <div class="bdc-edit-box">
+                                                <input class="bdc-input" type="text" value={draftValue} onchange={handleDraftChange} onkeydown={handleEditKey} />
+                                                <button class="bdc-edit-ok" title="Save" onclick={handleCommitEdit}>&#10003;</button>
+                                                <button class="bdc-edit-no" title="Cancel" onclick={handleCancelEdit}>&#10005;</button>
+                                            </div>
+                                        </template>
+                                    </td>
+
+                                    <td class="bdc-td">
+                                        <template if:false={contact.isEditingPhone}>
+                                            <div class="bdc-cell">
+                                                <template if:true={contact.phone}>
+                                                    <a href={contact.phoneHref}>{contact.phone}</a>
+                                                </template>
+                                                <button class="bdc-edit" title="Edit phone" data-id={contact.id} data-field="phone" onclick={handleStartEdit}>&#9998;</button>
+                                            </div>
+                                        </template>
+                                        <template if:true={contact.isEditingPhone}>
+                                            <div class="bdc-edit-box">
+                                                <input class="bdc-input" type="tel" value={draftValue} onchange={handleDraftChange} onkeydown={handleEditKey} />
+                                                <button class="bdc-edit-ok" title="Save" onclick={handleCommitEdit}>&#10003;</button>
+                                                <button class="bdc-edit-no" title="Cancel" onclick={handleCancelEdit}>&#10005;</button>
+                                            </div>
+                                        </template>
+                                    </td>
+
+                                    <td class="bdc-td bdc-td-email">
+                                        <template if:false={contact.isEditingEmail}>
+                                            <div class="bdc-cell">
+                                                <template if:true={contact.email}>
+                                                    <a href={contact.emailHref}>{contact.email}</a>
+                                                </template>
+                                                <button class="bdc-edit" title="Edit email" data-id={contact.id} data-field="email" onclick={handleStartEdit}>&#9998;</button>
+                                            </div>
+                                        </template>
+                                        <template if:true={contact.isEditingEmail}>
+                                            <div class="bdc-edit-box">
+                                                <input class="bdc-input" type="email" value={draftValue} onchange={handleDraftChange} onkeydown={handleEditKey} />
+                                                <button class="bdc-edit-ok" title="Save" onclick={handleCommitEdit}>&#10003;</button>
+                                                <button class="bdc-edit-no" title="Cancel" onclick={handleCancelEdit}>&#10005;</button>
+                                            </div>
+                                        </template>
+                                    </td>
+
+                                    <td class="bdc-td"><span class={contact.lastCallClass}>{contact.lastCallText}</span></td>
+                                    <td class="bdc-td"><span class={contact.lastSmsClass}>{contact.lastSmsText}</span></td>
+                                    <td class="bdc-td">
+                                        <template if:true={contact.hasNextEvent}>
+                                            <span class="bdc-event">{contact.nextEventText}</span>
+                                        </template>
+                                    </td>
+                                    <td class="bdc-td bdc-td-created">
+                                        <span class="bdc-created-name">{contact.createdByName}</span>
+                                        <span class="bdc-created-date">{contact.createdOnText}</span>
+                                    </td>
+                                    <td class="bdc-td bdc-td-notes">
+                                        <button
+                                            class="bdc-note-toggle"
+                                            data-id={contact.id}
+                                            onclick={handleToggleNotes}
+                                        >{contact.notesButtonLabel}</button>
+                                    </td>
+                                </tr>
+                                <template if:true={contact.isExpanded}>
+                                    <tr key={contact.id} class="bdc-notes-row">
+                                        <td class="bdc-notes-cell" colspan="9">
+                                            <div class="bdc-notes-panel">
+                                                <div class="bdc-notes-compose">
+                                                    <lightning-textarea
+                                                        label="Add a note"
+                                                        variant="label-hidden"
+                                                        placeholder="What did you talk about?"
+                                                        value={noteDraft}
+                                                        onchange={handleNoteDraftChange}
+                                                    ></lightning-textarea>
+                                                    <button
+                                                        class="bdc-note-save"
+                                                        data-id={contact.id}
+                                                        disabled={isSaveDisabled}
+                                                        onclick={handleSaveNote}
+                                                    >Save note</button>
+                                                </div>
+                                                <template if:true={contact.noteCount}>
+                                                    <ul class="bdc-note-list">
+                                                        <template for:each={contact.decoratedNotes} for:item="note">
+                                                            <li key={note.id} class="bdc-note">
+                                                                <div class="bdc-note-meta">
+                                                                    <span class="bdc-note-author">{note.authorName}</span>
+                                                                    <span class="bdc-note-date">{note.createdText}</span>
+                                                                </div>
+                                                                <div class="bdc-note-body">{note.body}</div>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </template>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <template if:false={hasContacts}>
+                <div class="bdc-state bdc-empty">
+                    <p class="bdc-empty-title">No contacts yet</p>
+                    <p class="bdc-empty-body">Use Add Contact to capture someone in a few seconds. Nothing is required.</p>
+                </div>
+            </template>
+        </template>
+    </div>
+
+    <template if:true={isModalOpen}>
+        <section class="bdc-modal-backdrop" role="dialog" aria-modal="true" aria-label="Add Biz Dev Contact">
+            <div class="bdc-modal">
+                <header class="bdc-modal-header">
+                    <span class="bdc-eyebrow">Business Development</span>
+                    <h2>Add Contact</h2>
+                    <p>Fill in whatever you have. Nothing here is required.</p>
+                </header>
+                <div class="bdc-modal-body">
+                    <div class="bdc-field-grid">
+                        <lightning-input label="First Name" data-field="firstName" value={form.firstName} onchange={handleFormChange}></lightning-input>
+                        <lightning-input label="Last Name" data-field="lastName" value={form.lastName} onchange={handleFormChange}></lightning-input>
+                        <lightning-input label="Phone" type="tel" data-field="phone" value={form.phone} onchange={handleFormChange}></lightning-input>
+                        <lightning-input label="Email" type="email" data-field="email" value={form.email} onchange={handleFormChange}></lightning-input>
+                    </div>
+                    <lightning-input label="Business Type" placeholder="Loan officer, branch manager, broker owner, realtor..." data-field="businessType" value={form.businessType} onchange={handleFormChange}></lightning-input>
+                    <lightning-textarea label="Notes" placeholder="Where you met, what they're looking for, what to follow up on" data-field="notes" value={form.notes} onchange={handleFormChange}></lightning-textarea>
+                </div>
+                <footer class="bdc-modal-footer">
+                    <button class="bdc-btn-secondary" onclick={handleCloseModal}>Cancel</button>
+                    <button class="bdc-btn-primary" disabled={isSaveDisabled} onclick={handleCreate}>Save Contact</button>
+                </footer>
+                <template if:true={isSaving}>
+                    <lightning-spinner alternative-text="Saving" size="small"></lightning-spinner>
+                </template>
+            </div>
+        </section>
+    </template>
+</template>

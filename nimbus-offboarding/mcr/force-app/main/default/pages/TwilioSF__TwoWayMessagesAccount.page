@@ -1,0 +1,3 @@
+<apex:page id="TwoWayMessages" standardController="Account" extensions="TwilioSF.StandardControllerExt" lightningStylesheets="true" sidebar="false">
+    <c:TwoWay standardController="{!standardController}"/>
+</apex:page>

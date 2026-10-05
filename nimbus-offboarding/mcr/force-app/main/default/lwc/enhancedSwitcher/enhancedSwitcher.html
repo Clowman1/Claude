@@ -1,0 +1,11 @@
+<template>
+  <div class="toggle-container" style={containerStyle}>
+    <template for:each={options} for:item="option">
+      <button key={option.value} class={option.computedClass} data-value={option.value} onclick={handleToggle}>
+        <lightning-icon if:true={option.iconName} icon-name={option.iconName} size={iconSize} class="icon">
+        </lightning-icon>
+        <span if:true={option.label}>{option.label}</span>
+      </button>
+    </template>
+  </div>
+</template>

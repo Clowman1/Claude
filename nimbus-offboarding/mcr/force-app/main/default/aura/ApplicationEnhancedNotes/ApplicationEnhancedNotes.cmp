@@ -1,0 +1,17 @@
+<aura:component description="ApplicationEnhancedNotes" implements="force:lightningQuickAction,force:hasRecordId,flexipage:availableForRecordHome" controller="EnhancedNotesController">
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/> 
+    <aura:attribute name="applicationNotes" type="Object[]"/> 
+
+    <lightning:card title="Application Notes" variant="base">
+        <div class="slds-card__body_inner">
+            <div class="slds-p-around_large ncs-scroll" >
+                <aura:if isTrue="{!if(not(empty(v.applicationNotes)),true,false)}">
+                    <aura:iteration items="{!v.applicationNotes}" var="note">
+                        
+                        <c:NoteRow filteredNotes="{!note}" canEdit="{!note.IsSameUser__c}"/>
+                    </aura:iteration>
+                </aura:if>
+            </div>
+        </div>
+    </lightning:card>
+</aura:component>

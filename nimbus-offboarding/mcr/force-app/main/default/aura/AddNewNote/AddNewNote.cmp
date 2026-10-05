@@ -1,0 +1,108 @@
+<!--
+ - Created by J9 on 8/19/2021.
+ -->
+<aura:component description="AddNewNote" controller="EnhancedNotesController" implements="force:hasSObjectName">
+    <aura:attribute type="String" name="applicationId"/>
+    <aura:attribute type="String" name="noteId"/>
+    <aura:attribute type="String" name="applicationName" />
+    <aura:attribute type="String" name="lookupField" />
+    <aura:attribute name="isLeadNote" type="Boolean" default="false"/>
+    <aura:attribute name="defaultSubject" type="String" default="Lead Update"/>
+    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+    <aura:attribute name="date" type="Date"/>
+    <aura:attribute name="accountRecord" type="Object"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+    <force:recordData aura:id="FormTitle"
+                      recordId="{!v.applicationId}"
+                      fields="Name"
+                      targetFields="{!v.accountRecord}" />
+
+    <aura:if isTrue="{!v.showConfirmDialog}">
+        <!--Modal Box Start-->
+        <div role="dialog" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <!--Modal Box Header Start-->
+                <header class="slds-modal__header">
+                    <h1 class="slds-text-heading--medium">Confirmation</h1>
+                </header>
+                <!--Modal Box Header End-->
+
+                <!--Modal Box Content Start-->
+                <div class="slds-modal__content slds-p-around--medium">
+                    <center><b>Are you sure you want to delete this item?</b></center>
+                </div>
+                <!--Modal Box Content End-->
+
+                <!--Modal Box Button Start-->
+                <footer class="slds-modal__footer">
+                    <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                    <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                </footer>
+                <!--Modal Box Button End-->
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+
+    <lightning:recordEditForm aura:id="AddNewNoteForm" recordId="{!v.noteId}" objectApiName="Enhanced_Note__c"
+                              onerror="{!c.error}" onsuccess="{!c.onSuccess}">
+        <div class="noteShell">
+
+            <div class="noteHeader">
+                <p class="noteEyebrow">Reach Home Loans</p>
+                <h1 class="noteTitle">{!v.accountRecord.Name}</h1>
+                <p class="noteKicker">
+                    <aura:if isTrue="{!v.noteId}">Edit Note<aura:set attribute="else">New Note</aura:set></aura:if>
+                </p>
+            </div>
+
+            <div class="noteFields">
+                <lightning:inputField class="slds-hide" value="{!v.applicationId}" fieldName="{!v.lookupField}"/>
+                <!-- Notes typed here used to save with a blank Type__c, which hid them from the
+                     Notes sub-tab, from Last_Note__c, and from the Lead Team notification. -->
+                <aura:if isTrue="{!not(v.noteId)}">
+                    <lightning:inputField class="slds-hide" fieldName="Type__c" value="Note"/>
+                </aura:if>
+
+                <span class="fieldLabel">Subject</span>
+                <aura:if isTrue="{!and(v.isLeadNote, not(v.noteId))}">
+                    <lightning:inputField class="subjectField" fieldName="Subject__c" variant="label-hidden"
+                                          value="{!v.defaultSubject}"/>
+                    <aura:set attribute="else">
+                        <lightning:inputField class="subjectField" fieldName="Subject__c" variant="label-hidden"/>
+                    </aura:set>
+                </aura:if>
+
+                <span class="fieldLabel">Note</span>
+                <lightning:inputField class="height" fieldName="Body__c" variant="label-hidden"/>
+
+                <aura:if isTrue="{!v.isLeadNote}">
+                    <div class="mentionHint">
+                        <lightning:icon iconName="utility:info_alt" size="xx-small" class="mentionHintIcon"/>
+                        <span>
+                            The <b>Lead Owner</b> and <b>Loan Partner</b> are emailed this note automatically.
+                            Type <b>@Byron</b> anywhere in the note to also email the Scenario Manager.
+                        </span>
+                    </div>
+                </aura:if>
+
+                <aura:if isTrue="{!v.noteId}">
+                    <p class="noteTimestamp">{!v.date}</p>
+                </aura:if>
+            </div>
+
+            <div class="noteFooter">
+                <aura:if isTrue="{!not(v.noteId)}">
+                    <lightning:button class="btnGhost" label="Cancel" onclick="{!c.closeWindow}"/>
+                    <lightning:button class="btnPrimary" type="submit" label="Create Note"/>
+                    <aura:set attribute="else">
+                        <lightning:button class="btnDanger" label="Delete" onclick="{!c.deleteNote}"/>
+                        <lightning:button class="btnPrimary" label="Save And Close" onclick="{!c.submit}"/>
+                    </aura:set>
+                </aura:if>
+            </div>
+
+        </div>
+    </lightning:recordEditForm>
+</aura:component>

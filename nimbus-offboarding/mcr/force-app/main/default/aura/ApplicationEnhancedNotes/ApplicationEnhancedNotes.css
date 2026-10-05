@@ -1,0 +1,8 @@
+.THIS .ncs-scroll {
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

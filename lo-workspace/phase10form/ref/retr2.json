@@ -1,0 +1,1190 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:13:26.000Z",
+        "fileName": "unpackaged/lwc/transactionQuickActions/transactionQuickActions.js",
+        "fullName": "transactionQuickActions/transactionQuickActions.js",
+        "id": "0RdQi0000005k2DKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T17:18:02.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:13:26.000Z",
+        "fileName": "unpackaged/lwc/transactionQuickActions/transactionQuickActions.css",
+        "fullName": "transactionQuickActions/transactionQuickActions.css",
+        "id": "0RdQi0000005k2EKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T17:17:34.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:13:26.000Z",
+        "fileName": "unpackaged/lwc/transactionQuickActions/transactionQuickActions.html",
+        "fullName": "transactionQuickActions/transactionQuickActions.html",
+        "id": "0RdQi0000005k2FKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T17:17:34.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-17T20:30:46.000Z",
+        "fileName": "unpackaged/lwc/transactionSubmissionFormAction/transactionSubmissionFormAction.html",
+        "fullName": "transactionSubmissionFormAction/transactionSubmissionFormAction.html",
+        "id": "0RdQi0000005hyoKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-17T20:36:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-17T20:30:46.000Z",
+        "fileName": "unpackaged/lwc/transactionSubmissionFormAction/transactionSubmissionFormAction.css",
+        "fullName": "transactionSubmissionFormAction/transactionSubmissionFormAction.css",
+        "id": "0RdQi0000005hypKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-17T20:36:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-17T20:30:46.000Z",
+        "fileName": "unpackaged/lwc/transactionSubmissionFormAction/transactionSubmissionFormAction.js",
+        "fullName": "transactionSubmissionFormAction/transactionSubmissionFormAction.js",
+        "id": "0RdQi0000005hyqKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-17T20:36:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2021-06-12T20:24:53.000Z",
+        "fileName": "unpackaged/objects/Submission_Form__c.object",
+        "fullName": "Submission_Form__c",
+        "id": "01I5x000001WlOxEAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-12-29T14:12:00.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-01-31T10:29:29.000Z",
+        "fileName": "unpackaged/quickActions/Transaction__c.Submission_Form_2.quickAction",
+        "fullName": "Transaction__c.Submission_Form_2",
+        "id": "09DQi000000QIe1MAG",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-02-12T16:12:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "QuickAction"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2021-06-12T20:45:02.000Z",
+        "fileName": "unpackaged/quickActions/Lead.Submission_Form.quickAction",
+        "fullName": "Lead.Submission_Form",
+        "id": "09D5x000003aAOcEAM",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2021-06-12T20:45:07.000Z",
+        "manageableState": "unmanaged",
+        "type": "QuickAction"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-17T20:30:46.000Z",
+        "fileName": "unpackaged/quickActions/Transaction__c.Submission_Form_Modern.quickAction",
+        "fullName": "Transaction__c.Submission_Form_Modern",
+        "id": "09DQi000000wHQHMA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-17T20:30:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "QuickAction"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-10-05T19:49:48.000Z",
+        "fileName": "unpackaged/quickActions/Transaction__c.Submission_Form.quickAction",
+        "fullName": "Transaction__c.Submission_Form",
+        "id": "09DAJ0000000BNn2AM",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-02-12T16:11:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "QuickAction"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2022-10-06T15:57:35.000Z",
+        "fileName": "unpackaged/flows/Update_Transaction_on_Submission_Form_Creation.flow",
+        "fullName": "Update_Transaction_on_Submission_Form_Creation",
+        "id": "301AJ0000000EKQYA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2022-10-06T15:57:37.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2024-08-13T14:29:19.000Z",
+        "fileName": "unpackaged/flows/Stamp_Submitted_to_Underwriting_on_Submission.flow",
+        "fullName": "Stamp_Submitted_to_Underwriting_on_Submission",
+        "id": "301Qi00000G7DnMIAV",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2024-08-13T14:31:32.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-02-10T08:47:29.000Z",
+        "fileName": "unpackaged/flows/Submission_Form_Screen.flow",
+        "fullName": "Submission_Form_Screen",
+        "id": "301Qi00000R7WLPIA3",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-02-10T08:47:40.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-22T17:17:46.000Z",
+        "fileName": "unpackaged/flows/Loan_Origination_Submission_Form_Update_Transaction.flow",
+        "fullName": "Loan_Origination_Submission_Form_Update_Transaction",
+        "id": "301Qi00001aGuM1IAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-22T17:19:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "005f2000009BuuaAAC",
+        "createdByName": "Adam Stephens",
+        "createdDate": "2021-06-12T20:45:02.000Z",
+        "fileName": "unpackaged/flows/Submission_Form_Account_Update.flow",
+        "fullName": "Submission_Form_Account_Update",
+        "id": "3015x0000005rbEAAQ",
+        "lastModifiedById": "005f2000009BuuaAAC",
+        "lastModifiedByName": "Adam Stephens",
+        "lastModifiedDate": "2021-06-12T20:54:54.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2025-08-05T18:54:41.000Z",
+        "fileName": "unpackaged/flows/Submission_Form_Complete_Notification.flow",
+        "fullName": "Submission_Form_Complete_Notification",
+        "id": "301Qi00000dq3A2IAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2025-08-05T18:57:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2023-06-19T16:10:20.000Z",
+        "fileName": "unpackaged/flows/Update_Transaction_after_Submission_Form.flow",
+        "fullName": "Update_Transaction_after_Submission_Form",
+        "id": "301AJ0000000vV9YAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Nimbus Development",
+        "lastModifiedDate": "2023-06-19T16:11:16.000Z",
+        "manageableState": "unmanaged",
+        "type": "Flow"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-03-03T15:19:54.000Z",
+        "fileName": "unpackaged/classes/DpaSecondTransactionInvocable.cls",
+        "fullName": "DpaSecondTransactionInvocable",
+        "id": "01pQi000002eKDNIA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-07-30T20:27:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T16:29:49.000Z",
+        "fileName": "unpackaged/classes/BorrowerPersonAccountService.cls",
+        "fullName": "BorrowerPersonAccountService",
+        "id": "01pQi000003Egs5IAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-03T13:22:06.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-03T12:25:16.000Z",
+        "fileName": "unpackaged/triggers/PhoneFormatSubmissionForm.trigger",
+        "fullName": "PhoneFormatSubmissionForm",
+        "id": "01qQi00000H9UmkIAF",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-03T12:25:16.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexTrigger"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-05T19:49:14.501Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-05T19:49:14.501Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OoBotMAF",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "transactionQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionQuickActions\\transactionQuickActions.css"
+      },
+      {
+        "fullName": "transactionQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionQuickActions\\transactionQuickActions.html"
+      },
+      {
+        "fullName": "transactionQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionQuickActions\\transactionQuickActions.js"
+      },
+      {
+        "fullName": "transactionQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionQuickActions\\transactionQuickActions.js-meta.xml"
+      },
+      {
+        "fullName": "transactionSubmissionFormAction",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionSubmissionFormAction\\transactionSubmissionFormAction.css"
+      },
+      {
+        "fullName": "transactionSubmissionFormAction",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionSubmissionFormAction\\transactionSubmissionFormAction.html"
+      },
+      {
+        "fullName": "transactionSubmissionFormAction",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionSubmissionFormAction\\transactionSubmissionFormAction.js"
+      },
+      {
+        "fullName": "transactionSubmissionFormAction",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\lwc\\transactionSubmissionFormAction\\transactionSubmissionFormAction.js-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.AUS__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\AUS__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Account__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Account__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Anticipated_Closing_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Anticipated_Closing_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Anticipated_Commitment_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Anticipated_Commitment_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Appraisal_Contact_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Appraisal_Contact_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Appraisal_Contact_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Appraisal_Contact_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Appraisal_Contact_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Appraisal_Contact_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Appraisal__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Appraisal__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Assets_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Assets_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Assets__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Assets__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_First_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_First_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Has_Spouse__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Has_Spouse__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Last_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Last_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Spouse_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Spouse_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Spouse_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Spouse_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_Spouse_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_Spouse_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Borrower_and_Co_Borrower_Spouses__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Borrower_and_Co_Borrower_Spouses__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Brokered_Loan__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Brokered_Loan__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Buydown__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Buydown__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Buyers_Agent_Lookup__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Buyers_Agent_Lookup__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Buyers_Agent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Buyers_Agent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Buyers_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Buyers_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Buyers_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Buyers_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Buying_Agent_Assistant__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Buying_Agent_Assistant__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Channel__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Channel__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Closing__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Closing__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_First_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_First_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Has_Spouse__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Has_Spouse__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Last_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Last_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Spouse_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Spouse_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Spouse_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Spouse_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Co_Borrower_Spouse_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Co_Borrower_Spouse_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Commitment__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Commitment__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Condo_Review_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Condo_Review_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Contracted_Closing_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Contracted_Closing_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Contributor__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Contributor__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Credit_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Credit_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Credit__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Credit__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Grant_Household_Income__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DPA_Grant_Household_Income__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Grant_Number_of_Persons_in_Household__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DPA_Grant_Number_of_Persons_in_Household__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Grant_Program_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DPA_Grant_Program_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Grant__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DPA_Grant__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Other_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DPA_Other_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Other__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DPA_Other__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DU_LP_Manual__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\DU_LP_Manual__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Expected_Cash_Out__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Expected_Cash_Out__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Expected_Funds_to_Close__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Expected_Funds_to_Close__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.File_Story__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\File_Story__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.General_Notes_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\General_Notes_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.General_Notes__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\General_Notes__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.HOA_Company__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\HOA_Company__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.HOA_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\HOA_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.HOA_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\HOA_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Household_Income_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Household_Income_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Household_Income__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Household_Income__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Household_Info_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Household_Info_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Household_Info__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Household_Info__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Income_4506T_Multi__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Income_4506T_Multi__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Income_4506T__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Income_4506T__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Income_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Income_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Income__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Income__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Intentions_for_Current_Home__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Intentions_for_Current_Home__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Investor_Lookup__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Investor_Lookup__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Lead__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Lead__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Lien_Position__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Lien_Position__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Listing_Agent_TC__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Listing_Agent_TC__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Coordinator_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Coordinator_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Coordinator__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Coordinator__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Originator_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Originator_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Originator__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Originator__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Partner__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Partner__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Processor_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Processor_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Processor__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Processor__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Program__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Program__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Purpose__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Purpose__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Loan_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Lock_Exp_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Lock_Exp_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC_Household_Income__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC_Household_Income__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC_Loan__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC_Loan__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC_Number_of_Persons_in_Household__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC_Number_of_Persons_in_Household__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC_Other_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC_Other_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC_Other__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC_Other__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC_Program_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC_Program_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.MCC__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\MCC__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Multiple_Borrower_Pairs__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Multiple_Borrower_Pairs__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Needs_List_Description__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Needs_List_Description__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Needs_List__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Needs_List__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.New_Build_Bank_Owned__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\New_Build_Bank_Owned__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Occupancy__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Occupancy__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.PIW__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\PIW__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Property_Appraisal_Notes_To_Opener_Desc__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Property_Appraisal_Notes_To_Opener_Desc__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Property_Appraisal_Notes_To_Opener__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Property_Appraisal_Notes_To_Opener__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Property_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Property_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Rate_Buydown__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Rate_Buydown__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Rate_lock__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Rate_lock__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Refinance_Purpose__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Refinance_Purpose__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Sellers_Agent_Lookup__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Sellers_Agent_Lookup__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Sellers_Agent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Sellers_Agent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Sellers_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Sellers_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Sellers_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Sellers_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Source_of_Funds_to_Close_Multi__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Source_of_Funds_to_Close_Multi__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Source_of_Funds_to_Close_Other__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Source_of_Funds_to_Close_Other__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Source_of_Funds_to_Close__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Source_of_Funds_to_Close__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Speaks_Spanish_Only__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Speaks_Spanish_Only__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Term_Num__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Term_Num__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Term__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Term__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Title_Company_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Title_Company_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Title_Company_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Title_Company_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Title_Company_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Title_Company_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Title_Company__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Title_Company__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Transaction__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Transaction__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Waive_Escrows__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Waive_Escrows__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Waiving_Escrow__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\Waiving_Escrow__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.X2nd_Lien__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\fields\\X2nd_Lien__c.field-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Loan_Origination_Submission_Form",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\recordTypes\\Loan_Origination_Submission_Form.recordType-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.DPA_Required_Fields",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\validationRules\\DPA_Required_Fields.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c.Form_Not_Editable_If_Status_Inproper",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\validationRules\\Form_Not_Editable_If_Status_Inproper.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form__c",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\objects\\Submission_Form__c\\Submission_Form__c.object-meta.xml"
+      },
+      {
+        "fullName": "Transaction__c.Submission_Form_2",
+        "type": "QuickAction",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\quickActions\\Transaction__c.Submission_Form_2.quickAction-meta.xml"
+      },
+      {
+        "fullName": "Lead.Submission_Form",
+        "type": "QuickAction",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\quickActions\\Lead.Submission_Form.quickAction-meta.xml"
+      },
+      {
+        "fullName": "Transaction__c.Submission_Form_Modern",
+        "type": "QuickAction",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\quickActions\\Transaction__c.Submission_Form_Modern.quickAction-meta.xml"
+      },
+      {
+        "fullName": "Transaction__c.Submission_Form",
+        "type": "QuickAction",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\quickActions\\Transaction__c.Submission_Form.quickAction-meta.xml"
+      },
+      {
+        "fullName": "Update_Transaction_on_Submission_Form_Creation",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Update_Transaction_on_Submission_Form_Creation.flow-meta.xml"
+      },
+      {
+        "fullName": "Stamp_Submitted_to_Underwriting_on_Submission",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Stamp_Submitted_to_Underwriting_on_Submission.flow-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form_Screen",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Submission_Form_Screen.flow-meta.xml"
+      },
+      {
+        "fullName": "Loan_Origination_Submission_Form_Update_Transaction",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Loan_Origination_Submission_Form_Update_Transaction.flow-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form_Account_Update",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Submission_Form_Account_Update.flow-meta.xml"
+      },
+      {
+        "fullName": "Submission_Form_Complete_Notification",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Submission_Form_Complete_Notification.flow-meta.xml"
+      },
+      {
+        "fullName": "Update_Transaction_after_Submission_Form",
+        "type": "Flow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\flows\\Update_Transaction_after_Submission_Form.flow-meta.xml"
+      },
+      {
+        "fullName": "DpaSecondTransactionInvocable",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\DpaSecondTransactionInvocable.cls"
+      },
+      {
+        "fullName": "DpaSecondTransactionInvocable",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\DpaSecondTransactionInvocable.cls-meta.xml"
+      },
+      {
+        "fullName": "BorrowerPersonAccountService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\BorrowerPersonAccountService.cls"
+      },
+      {
+        "fullName": "BorrowerPersonAccountService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\BorrowerPersonAccountService.cls-meta.xml"
+      },
+      {
+        "fullName": "PhoneFormatSubmissionForm",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\triggers\\PhoneFormatSubmissionForm.trigger"
+      },
+      {
+        "fullName": "PhoneFormatSubmissionForm",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\triggers\\PhoneFormatSubmissionForm.trigger-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

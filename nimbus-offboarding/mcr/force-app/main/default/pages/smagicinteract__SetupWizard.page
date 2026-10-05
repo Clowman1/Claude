@@ -1,0 +1,833 @@
+<apex:page title="SMS-Magic : Setup Wizard"
+    controller="smagicinteract.SetupWizardController" sideBar="false"
+    tabStyle="SM_Home__tab" action="{!resetStep2Flag}">
+
+    <apex:includeScript value="{!$Resource.smagicinteract__jquery}" />
+
+    <script>
+        $(document).ready(function(){
+        prepareInbound();
+        });
+
+        function toggleDiv(divId) {
+
+            if (!chkStepDisplay(divId)) {
+                return;
+            }
+
+            updatemeter();
+            var localDivId = 'section';
+            var localTdDiv = 'step';
+            var divCellId = 'divCell';
+            var noteId = 'note';
+
+            for (var i = 1; i < 7; i++) {
+
+                localDivId = 'section';
+                localDivId = localDivId + i;
+                localTdDiv = 'step';
+                localTdDiv = localTdDiv + i;
+                divCellId = 'divCell';
+                divCellId = divCellId + i;
+                noteId = 'note';
+                noteId = noteId + i;
+
+                if (divId == localDivId) {
+
+                    document.getElementById(localDivId).style.display = 'block';
+                    document.getElementById(noteId).style.display = 'block';
+                    //document.getElementById(localTdDiv).style.backgroundColor ='#E1F5A9';
+                    if (i == 1) {
+                        document.getElementById(divCellId).style.borderTop = '';
+                    }
+                    if (i == 6) {
+                        document.getElementById(divCellId).style.borderBottom = '';
+                    }
+                    document.getElementById(divCellId).style.borderLeft = '';
+                    document.getElementById(divCellId).style.cursor = 'auto';
+                    document.getElementById(localTdDiv).style.backgroundColor = '';
+                } else {
+
+                    document.getElementById(localDivId).style.display = 'none';
+                    document.getElementById(noteId).style.display = 'none';
+                    document.getElementById(localTdDiv).style.backgroundColor = '#f6f6f6';
+
+                    if (isPointer(i)) {
+                        document.getElementById(divCellId).style.cursor = 'pointer';
+                    } else {
+                        document.getElementById(divCellId).style.cursor = 'auto';
+                    }
+
+                    if (i == 1) {
+                        document.getElementById(divCellId).style.borderTop = '1pt solid #b4d8dc';
+                    }
+                    if (i == 6) {
+                        document.getElementById(divCellId).style.borderBottom = '1pt solid #b4d8dc';
+                    }
+                    document.getElementById(divCellId).style.borderLeft = '1pt solid #7d7d7d';
+                }
+            }
+            if (divId == 'section6')
+                getOauthStatus();
+        }
+
+        function isPointer(step) {
+
+            var visstep = document.getElementById('{!$Component.steptracker}').innerHTML;
+            if (visstep == 'section1' || visstep == 'section2'
+                    || visstep == 'section3') {
+                return false;
+            }
+
+            if (visstep == 'section4') {
+                if (step == 1 || step == 2) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        function getOauthStatus() {
+
+            Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.SetupWizardController.fetchOauthStatus}',
+                    function(result, event) {
+                    }, {});
+        }
+
+        function chkStepDisplay(reqstep) {
+
+            var visstep = document.getElementById('{!$Component.steptracker}').innerHTML;
+            if (visstep == 'section4') {
+                if (reqstep == 'section1' || reqstep == 'section2') {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            if (visstep == 'section3') {
+                if (reqstep == 'section3') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            if (visstep == 'section2') {
+                if (reqstep == 'section2')
+                    return true;
+                else
+                    return false;
+            }
+
+            if (visstep == 'section1') {
+                if (reqstep == 'section1')
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        function istncchkd() {
+        	var terms_condtns_label ='{!terms_condtns_label}';
+            var chkbox = document.getElementById('tcchkbox');
+            if (chkbox.checked) {
+                document.getElementById('T&Ctext').innerHTML = '';
+                toggleButtonState('regbtn');
+                register();
+            } else {
+                document.getElementById('T&Ctext').innerHTML = terms_condtns_label;
+            }
+        }
+
+        function validateAPIKey() {
+
+            var api = document.getElementById('{!$Component.formid.apiKey}').value;
+			enter_api_key_label = '{!enter_api_key_label}';
+            if (api.length > 0) {
+                toggleButtonState('apibutton');
+                saveApiKey();
+            } else
+                alert(enter_api_key_label);
+        }
+
+        function validateSenderId() {
+            var sid = document.getElementById('{!$Component.formid.senderid}').value;
+            var select_senderid_label='{!select_senderid_label}'
+            if (sid.length > 0) {
+                toggleButtonState('savesenderidbtn');
+                saveSenderId();
+            } else {
+                alert(select_senderid_label);
+            }
+        }
+
+        function setEmailText() {
+        	var email_sent_label = '{!EMAIL_SENT_LABEL}';
+            document.getElementById('emailText').innerHTML = email_sent_label;
+        }
+
+        function updatemeter() {
+
+            var stepComplete = document
+                    .getElementById('{!$Component.stepcomplete}').innerHTML;
+            if (stepComplete == 6) {
+                document.getElementById('progressbar-container').style.visibility = "hidden";
+            } else {
+                document.getElementById('stepinfotext').innerHTML = stepComplete;
+                var complete = (stepComplete / 6) * 150;
+                document.getElementById('iprogressbar').style.width = complete
+                        + 'px';
+            }
+
+        }
+
+        function displayRequiredStep() {
+            var step = document.getElementById('{!$Component.stepToBeShown}').innerHTML;
+            toggleDiv(step);
+        }
+
+        function checkErrmsg(step, errmsgId) {
+            var errmsg = document.getElementById(errmsgId).innerHTML;
+
+            if (errmsg.length <= 0) {
+                if (step == 'section6')
+                    setStep5Flag();
+                else
+                    toggleDiv(step);
+            } else {
+                if (step == 'section6')
+                    toggleButtonState('savesenderidbtn');
+            }
+        }
+
+        function validateIncoming() {
+            var selectedno = document.getElementById('{!$Component.formid.IncomingNoDropDown}');
+			var select_incoming_number_label = '{!select_incoming_number_label}';
+            if (selectedno == null)
+                toggleDiv('section5');
+
+            selectedno = selectedno.value;
+
+            if (selectedno.length <= 0)
+                alert(select_incoming_number_label);
+
+            else {
+                toggleButtonState('saveincomingbtn');
+                saveIncoming();
+
+            }
+
+        }
+
+        function toggleButtonState(toggleButton) {
+            var button = document.getElementById(toggleButton);
+            if (button.disabled) {
+                button.disabled = false;
+                button.className = 'blue_button';
+            } else {
+                button.disabled = true;
+                button.className = 'disable_button';
+            }
+        }
+    </script>
+    <style>
+.verticalLine {
+    border-left: thick solid #ff0000;
+}
+
+.firstLabel {
+    margin-right: 500px;
+    font-size: 20px
+}
+
+.secondLabel {
+    right: 100px;
+}
+
+.step-sidebar {
+    padding-left: 10px;
+    height: 30pt;
+    line-height: 35px;
+    overflow: auto;
+    font-weight: bold;
+}
+
+.note-bottom {
+    background-color: #ebebeb;
+    height: 150px;
+    display: block;
+    padding-left: 10px;
+}
+
+.disable_button {
+    background-color: #dddddd;
+    color: #000;
+    text-decoration: none;
+    font-size: 15px;
+    border: 0px;
+    padding: 5px 12px 5px 12px;
+    cursor: normal;
+}
+
+.green_button {
+    background-color: #3c9965;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    border: 0px;
+    padding: 5px 12px 5px 12px;
+    cursor: pointer;
+}
+
+.blue_button1 {
+    background-color: #01a5f8;
+    color: #ffffff;
+    width: 84px;
+    text-decoration: none;
+    font-size: 15px;
+    border: 0px;
+    border-radius: 2px;
+    position: fixed;
+}
+
+.pointerClass {
+    cursor: pointer;
+}
+
+.blue_button {
+    border: 1px solid #15aeec;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: arial, helvetica, sans-serif;
+    padding: 10px 10px 10px 10px;
+    text-decoration: none;
+    display: inline-block;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #49c0f0;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#0090d7),
+        to(#01a5f8));
+    background-image: -webkit-linear-gradient(top, #0090d7, #01a5f8);
+    background-image: -moz-linear-gradient(top, #0090d7, #01a5f8);
+    background-image: -ms-linear-gradient(top, #0090d7, #01a5f8);
+    background-image: -o-linear-gradient(top, #0090d7, #01a5f8);
+    background-image: linear-gradient(to bottom, #01a5f8, #0090d7);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,
+        startColorstr=#01a5f8, endColorstr=#0090d7);
+    padding: 5px 20px 5px 20px;
+    cursor: pointer;
+}
+
+.step_class {
+    font-size: 15px;
+    color: #019ab5;
+    font-weight: bold;
+}
+
+#left {
+    width: 600px;
+    float: left;
+}
+
+#right {
+    margin-left: 50px;
+    /* Change this to whatever the width of your left column is*/
+}
+
+.clear {
+    clear: both;
+}
+
+#progressbar {
+    background-color: #fff;
+    border: solid 1px grey;
+    padding: 0px;
+    width: 150px;
+}
+
+#iprogressbar {
+    background-color: #2AABAB;
+    width: 00px; /* Adjust with JavaScript */
+    height: 15px;
+}
+</style>
+
+        <apex:outputtext value="{!stepVisible}" id="steptracker"
+            style="display:none" />
+        <apex:outputtext value="{!stepComplete}" id="stepcomplete"
+            style="display:none" />
+        <apex:outputtext value="{!stepToBeShown}" id="stepToBeShown"
+            style="display:none" />
+
+
+        <div id="titlediv">
+
+            <div class="firstLabel" style="float: left;">{!$Label.SETUP_WIZARD_PAGE_TITLE}</div>
+            <div id="progressbar-container">
+                <div id="progressbar" style="float: right; width: 150px">
+                    <div id="iprogressbar"></div>
+                </div>
+                <span
+                    style="float: right; margin-right: 20px; vertical-align: middle;">
+                    {!$Label.SETP_WIZRD_STEPS_COMPLTN_MSG} <span id="stepinfotext">0</span> {!$Label.SETP_WIZRD_STEPS_COMPLTN_MSG1}
+
+
+                </span>&nbsp;&nbsp;
+                <div style="clear: both;"></div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="2" />
+
+
+        <!-- start of main table -->
+        <table width="100%" cellspacing="0px">
+            <tr>
+                <td>
+                    <!-- Start of Steps Table -->
+                    <table width="100%">
+                        <tr>
+                            <td width="65%" height="100%"><apex:form id="formid">
+                                    <div id="section1" style="display: none;">
+                                        <div id="left">
+                                            <div class="step_class">{!$Label.SETUP_STEP_1_TITLE}</div>
+                                            <div style="font-size: 13px;">{!$Label.SETUP_STEP_1_HEADER} ({!$Label.SMS_MAGIC_INTERACT_LABEL} {!packageVersion})</div>
+                                            <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+                                            <br /> <br />
+
+                                            <div>
+                                                {!$Label.SETUP_STEP_1_BODY_1} <span
+                                                    style="color: #089ab5"> <b> {!$User.email} </b>
+                                                </span>.
+                                            </div>
+                                            <br />
+                                            <div>{!$Label.SETUP_STEP_1_BODY_2}</div>
+                                            <br /> <input type="button" id="regbtn" class="green_button"
+                                                value="{!$Label.SETUP_STEP_1_REGISTER_BUTTON}"
+                                                onclick="istncchkd();" /> &nbsp; &nbsp; <input
+                                                type="checkbox" id="tcchkbox" name="terms" value="Terms">
+                                                {!$Label.SETUP_STEP_1_CHECKBOX_1} <a href="http://screen-magic.com/terms-and-conditions/" target="_blank">
+                                                {!$Label.SETUP_STEP_1_CHECKBOX_2} </a> </input>
+                                            <apex:actionFunction name="register" action="{!registerUser}"
+                                                oncomplete="executeWS()" status="loadRegText" />
+                                            <apex:actionFunction name="executeWS" action="{!executeWS}"
+                                                status="loadRegText"
+                                                oncomplete="toggleButtonState('regbtn');checkErrmsg('section2','{!$Component.formid.errmsgStep1}');"
+                                                rerender="errmsgStep1,steptracker,stepcomplete,progressBarPanel" />
+                                            <br />
+                                            <apex:actionStatus id="loadRegText"
+                                                starttext=" {!$Label.smagicinteract__setup_step_1_action_status}"
+                                                stoptext=" " />
+                                            <span id="T&Ctext"
+                                                style="color: red; font-size: 12px; display: block">
+                                            </span> <br /> <br />
+                                            <apex:outputText id="errmsgStep1" value="{!errmsgForStep}" />
+                                        </div>
+                                    </div>
+
+                                    <div id="section2"
+                                        style="background-color: #04B45F; display: none;">
+                                        <div id="left">
+                                            <div class="step_class">{!$Label.SETUP_STEP_2_TITLE}</div>
+                                            <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+                                            <div style="line-height: 20px">
+                                                {!$Label.SETUP_STEP_2_BODY_1}<BR /> {!$Label.SETUP_STEP_2_BODY_2}
+                                                <span style="color: #089ab5"> {!$User.email } </span>
+                                                {!$Label.SETUP_STEP_2_BODY_3}
+                                            </div>
+                                            <br /> <span style="color: #3c9965; font-size: 15px">
+                                                {!$Label.SETUP_STEP_2_API_KEY_LABEL} </span>
+                                            <apex:inputSecret value="{!apiKey}" id="apiKey"
+                                                maxlength="32" />
+                                            <apex:outputText value="{!errmsgForStep }" id="errmsgStep2"
+                                                style="color:red;font-size:11px" />
+                                            <br /> <br />
+                                            <div style="font-size: 11px">
+                                                {!$Label.SETUP_STEP_2_BODY_4} <a href="#"
+                                                    onclick="sendEmail() " > {!$Label.SETUP_NOTE_1_PART_2} </a>
+                                            </div>
+                                            <br /> <br /> <input type="button" id="apibutton"
+                                                value="{!$Label.SETUP_SAVE_AND_NEXT_BUTTON}"
+                                                class="blue_button" onclick="validateAPIKey();" />
+                                            <apex:actionStatus id="loadSaveAPIText"
+                                                starttext="{!$Label.smagicinteract__setup_step_2_action_status_1}"
+                                                stoptext=" " />
+                                            <apex:actionStatus id="loadEmailText"
+                                                starttext="{!$Label.smagicinteract__setup_step_2_action_status_2}"
+                                                stoptext=" " />
+                                            <apex:actionFunction action="{!sendEmail}" name="sendEmail"
+                                                oncomplete="toggleDiv('section2');" rerender="msgForEmail"
+                                                status="loadEmailText" />
+                                            <apex:actionFunction action="{!saveApiKey}" name="saveApiKey"
+                                                oncomplete="prepareStep3()" status="loadSaveAPIText" />
+                                            <apex:actionFunction action="{!voidFunc}" name="prepareStep3"
+                                                oncomplete="chkapikey();"
+                                                rerender="countryDropDown,steptracker,stepcomplete"
+                                                status="loadSaveAPIText" />
+
+                                            <apex:actionFunction action="{!voidFunc }" name="chkapikey"
+                                                rerender="errmsgStep2"
+                                                oncomplete="toggleButtonState('apibutton');checkErrmsg('section3','{!$Component.formid.errmsgStep2}');"
+                                                status="loadSaveAPIText" />
+                                            <br /> <br />
+                                            <div>
+                                                <span style="weight: bold;"> {!$Label.SETUP_STEP_2_INFO_MSG_1}</span>
+                                                {!$Label.SETUP_STEP_2_INFO_MSG_2}
+                                                <a href="#" onclick="sendEmail()"> {!$Label.SETUP_STEP_2_BODY_5} </a>
+                                                {!$Label.SETUP_STEP_2_INFO_MSG_3}
+                                            </div>
+
+                                            <apex:outputText value="{!msgForEmail}" id="msgForEmail"
+                                                style="color:red;font-size:11px" />
+
+                                        </div>
+                                    </div>
+
+                                    <div id="section3"
+                                        style="background-color: #04B45F; display: none;">
+                                        <div id="left">
+                                            <div class="step_class">{!$Label.SETUP_STEP_3_TITLE}</div>
+                                            <div style="font-size: 13px;">{!$Label.SETUP_STEP_3_HEADER}</div>
+                                            <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+                                            <br />
+
+                                            <apex:selectList id="countryDropDown" size="1"
+                                                value="{!countryCode}" style="width:130px;">
+                                                <apex:selectOptions value="{!items}" />
+                                            </apex:selectList>
+
+                                            <br /> <br />
+                                            <div style="line-height: 20px">{!$Label.SETUP_STEP_3_BODY}</div>
+
+                                            <br /> <br /> <input type="button" id="saveCtryBtn"
+                                                value="{!$Label.SETUP_SAVE_AND_NEXT_BUTTON}"
+                                                class="blue_button"
+                                                onclick="toggleButtonState('saveCtryBtn');saveCountry()" />
+                                            <apex:actionStatus id="loadSaveCtryText"
+                                                starttext="{!$Label.smagicinteract__setup_step_3_action_status_1}"
+                                                stoptext=" " />
+
+                                            <apex:actionFunction action="{!saveCountry}"
+                                                name="saveCountry"
+                                                oncomplete="prepareStep4();"
+                                                rerender="errmsgStep3" status="loadSaveCtryText" />
+                                            <apex:actionFunction action="{!getIncomingNumbers }"
+                                                name="prepareStep4" status="loadSaveCtryText"
+                                                rerender="progressBarPanel,steptracker,stepcomplete,countryPanel,errmsgStep4,configuredNosPanel,msgForCountry,availableNosPanel"
+                                                oncomplete="toggleButtonState('saveCtryBtn');checkErrmsg('section4','{!$Component.formid.errmsgStep3}');" />
+                                            <apex:actionFunction action="{!getIncomingNumbers }"
+                                                name="prepareInbound" status="loadSaveCtryText"
+                                                rerender="countryPanel,errmsgStep4,configuredNosPanel,msgForCountry,availableNosPanel"
+                                                oncomplete="displayRequiredStep();" />
+                                            <apex:outputText value="{!errmsgForStep }" id="errmsgStep3" />
+                                        </div>
+                                    </div>
+
+                                    <div id="section4"
+                                        style="background-color: #04B45F; display: none;">
+                                        <div id="left">
+                                            <div class="step_class">{!$Label.SETUP_STEP_4_TITLE}</div>
+                                            <br />
+                                            <div style="font-size: 13px;">{!$Label.SETUP_STEP_4_HEADER}</div>
+                                            <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+
+                                            <apex:outputPanel id="countryPanel">
+                                                <div>
+                                                    <apex:selectList id="ctrydd" size="1"
+                                                        value="{!selectedCountry}" style="width:130px;"
+                                                        rendered="{!isCountryVisible}">
+
+                                            <span style="color: #3c9965; font-size: 15px">
+                                            {!$Label.SETUP_STEP_4_COUNTRY_LIST}
+                                            </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <apex:actionSupport action="{!getIncomingNumbers}"
+                                                            rerender="errmsgStep4,configuredNosPanel,availableNosPanel,msgForCountry"
+                                                            event="onchange" status="loadText"/>
+                                                        <apex:selectOptions value="{!countryList}" />
+                                                    </apex:selectList>
+                                                </div>
+                                            </apex:outputPanel>
+
+                                            <apex:outputPanel id="availableNosPanel">
+                                                <div>
+                                                    <br />
+                                                    <apex:selectList id="IncomingNoDropDown" size="1"
+                                                        value="{!selectedNo}" style="width:130px;"
+                                                        rendered="{!showAvailableNos}">
+
+                                                        <span style="color: #3c9965; font-size: 15px">{!$Label.SETUP_STEP_4_AVAILABLE_NUMBERS}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           <apex:selectOptions value="{!availableIncomingNumbers}" />
+                                                    </apex:selectList>
+                                                </div>
+                                            </apex:outputPanel>
+
+                                            <apex:actionStatus id="loadText"
+                                                starttext="{!$Label.smagicinteract__setup_step_4_action_status_1}"
+                                                stoptext=" " />
+
+                                            <apex:outputText value="{!errmsgForCountry }"
+                                                id="msgForCountry" style="color:red;margin:10px 0px;" />
+
+                                            <apex:outputPanel id="configuredNosPanel">
+
+                                                <apex:outputPanel rendered="{!showConfiguredNos}"
+                                                    style="margin-top:20px">
+
+                                                    <div style="width: 220px; height: 120px; margin-top: 25px">
+                                                        <span style="color: #3c9965; font-size: 15px;">{!$Label.SETUP_STEP_4_CONFIGURED_NUMBERS}</span>
+
+                                                        <div
+                                                            style="overflow-y: auto; width: 200px; height: 100px; max-height: 70px;">
+                                                            <br />
+                                                            <ul>
+                                                                <apex:repeat value="{!selectedIncomingNumbers}"
+                                                                    var="rec">
+                                                                    <li><apex:outputText value="{!rec}" /></li>
+                                                                </apex:repeat>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </apex:outputPanel>
+
+                                            </apex:outputPanel>
+
+                                            <br /> <br /> <input type="button"
+                                                value="{!$Label.SETUP_SKIP_BUTTON}"
+                                                class="blue_button" onclick="setStep4Flag()" />
+                                            <apex:actionFunction name="setStep4Flag"
+                                                action="{!setSkipStep}" oncomplete="toggleDiv('section5')"
+                                                status="Step5Status">
+                                                <apex:param name="stepParam4" assignTo="{!stepToBeSet}"
+                                                    value="4" />
+                                            </apex:actionFunction>
+
+                                            <input type="button" id="saveincomingbtn"
+                                                value="{!$Label.SETUP_SAVE_AND_NEXT_BUTTON}"
+                                                class="blue_button" onclick="validateIncoming();" />
+                                            <apex:actionStatus id="Step5Status"
+                                                starttext="{!$Label.smagicinteract__setup_step_4_action_status_2}"
+                                                stoptext=" " />
+                                            <apex:actionStatus id="loadsaveincomingText"
+                                                starttext="{!$Label.smagicinteract__setup_step_4_action_status_3}"
+                                                stoptext=" " />
+
+                                            <apex:actionFunction name="saveIncoming"
+                                                action="{!saveIncoming}" status="loadsaveincomingText"
+                                                reRender="progressBarPanel,errmsgStep4,steptracker,stepcomplete"
+                                                oncomplete="toggleButtonState('saveincomingbtn');checkErrmsg('section5','{!$Component.formid.errmsgStep4}');"/>
+                                            <br /> <br />
+                                            <apex:outputText value="{!errmsgForStep }" id="errmsgStep4" />
+                                        </div>
+                                    </div>
+
+                                    <div id="section5"
+                                        style="background-color: #04B45F; display: none;">
+                                        <div id="left">
+                                            <div class="step_class">{!$Label.SETUP_STEP_5_TITLE}</div>
+                                            <div style="font-size: 13px;">{!$Label.SETUP_STEP_5_HEADER}</div>
+                                            <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+                                            <br /> <span style="color: #3c9965; font-size: 15px">{!$Label.SETUP_STEP_5_SENDER_ID_LABEL}</span>
+
+                                            <apex:inputText id="senderid" value="{!senderidvalue}"
+                                                maxlength="15" />
+                                            <br /> <br /> <br /> <input type="button"
+                                                value="{!$Label.SETUP_SKIP_BUTTON}"
+                                                class="blue_button" onclick="setStepVFlag()" />
+                                            <apex:actionFunction name="setStepVFlag"
+                                                action="{!setSkipStep}" oncomplete="toggleDiv('section6')"
+                                                status="Step6Status">
+                                                <apex:param name="stepParam5" assignTo="{!stepToBeSet}"
+                                                    value="5" />
+                                            </apex:actionFunction>
+
+                                            <input type="button"
+                                                value="{!$Label.SETUP_SAVE_AND_NEXT_BUTTON}"
+                                                id="savesenderidbtn" class="blue_button"
+                                                onclick="validateSenderId(); " />
+                                            <apex:actionStatus id="Step6Status"
+                                                starttext="{!$Label.smagicinteract__setup_step_5_action_status_1}"
+                                                stoptext=" " />
+                                            <apex:actionStatus id="loadsavesenderidText"
+                                                starttext="{!$Label.smagicinteract__setup_step_5_action_status_2}"
+                                                stoptext=" " />
+
+                                            <apex:outputPanel id="senderIdPanel"
+                                                rendered="{!showsenderIdPanel}" style="margin-top:20px">
+
+                                                <div style="width: 220px; height: 120px; margin-top: 25px">
+                                                    <span style="color: #3c9965; font-size: 15px;">{!$Label.SETUP_STEP_5_CONFIGURED_SENDER_ID}</span>
+
+                                                    <div
+                                                        style="overflow-y: auto; width: 200px; height: 100px; max-height: 70px;">
+                                                        <ul>
+                                                            <apex:repeat value="{!SenderIdList}" var="rec">
+                                                                <li><apex:outputText value="{!rec.smagicinteract__senderId__c}" />
+                                                                </li>
+                                                            </apex:repeat>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                            </apex:outputPanel>
+
+                                            <apex:actionFunction action="{!saveSenderId}"
+                                                name="saveSenderId" status="loadsavesenderidText"
+                                                reRender="errmsgStep5"
+                                                oncomplete="checkErrmsg('section6','{!$Component.formid.errmsgStep5}');" />
+                                            <apex:actionFunction action="{!setStep5Flag}"
+                                                name="setStep5Flag" status="loadsavesenderidText"
+                                                reRender="progressBarPanel,steptracker,stepcomplete"
+                                                oncomplete="toggleButtonState('savesenderidbtn');toggleDiv('section6');" />
+                                            <apex:outputText value="{!errmsgForStep }" id="errmsgStep5" />
+                                        </div>
+                                    </div>
+
+                                    <div id="section6"
+                                        style="background-color: #04B45F; display: none;">
+                                        <div id="left">
+                                            <div class="step_class">{!$Label.SETUP_STEP_6_TITLE}</div>
+                                            <br />
+                                            <div style="font-size: 13px;">{!$Label.SETUP_STEP_6_HEADER}</div>
+                                            <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+                                            <br /> <a target="_blank"
+                                                href="{!$Label.Production_OAuth_Url}">{!$Label.SETUP_STEP_6_PRODUCTION_LINK}</a><br /> <br />
+                                            <a target="_blank"
+                                                href="{!$Label.Sanbox_OAuth_Url}">{!$Label.SETUP_STEP_6_SANDBOX_LINK}</a><br /> <br /> <br />
+                                            <br /> <input type="button"
+                                                value="{!$Label.SETUP_SKIP_BUTTON}"
+                                                class="blue_button" onclick="setStep6Flag()" />
+                                            <apex:actionFunction name="setStep6Flag"
+                                                action="{!setSkipStep}" oncomplete="openSMHome()"
+                                                status="homeStatus">
+                                                <apex:param name="step6Parama" assignTo="{!stepToBeSet}"
+                                                    value="6" />
+                                            </apex:actionFunction>
+
+                                            <input type="button"
+                                                value="{!$Label.SETUP_FINISH_BUTTON}"
+                                                class="blue_button" onclick="setStep6Flag()" />
+                                            <apex:actionFunction name="setStep6Flag"
+                                                action="{!setSkipStep}" oncomplete="openSMHome()"
+                                                status="homeStatus">
+                                                <apex:param name="step6Paramb" assignTo="{!stepToBeSet}"
+                                                    value="6" />
+                                            </apex:actionFunction>
+
+                                            <apex:actionStatus id="homeStatus"
+                                                starttext="{!$Label.smagicinteract__setup_step_6_action_status_1}"
+                                                stoptext=" " />
+
+                                            <apex:actionFunction name="openSMHome" action="{!openSMHome}" />
+                                        </div>
+                                    </div>
+                                </apex:form></td>
+                            <td height="100%">
+                                <!-- start of menu table -->
+                                <div width="100%" class="pointerClass" height="100%">
+                                    <div style="border-left:; border-top:; height: 100%;"
+                                        id="divCell1" height="100%">
+                                            <div id="step1" class="step-sidebar"
+                                            onclick="toggleDiv('section1')">
+                                            {!$Label.SETUP_STEP_1} : <span
+                                                style="color: #019ab5"><b>{!$Label.SETUP_REGISTRATION}</b></span>
+                                            </div>
+                                    </div>
+                                    <div
+                                        style="border-left: 1pt solid #9d9d9d; border-top: 1pt solid #b4d8dc; height: 100%;"
+                                        id="divCell2">
+                                        <div class="step-sidebar" id="step2"
+                                            onclick="toggleDiv('section2')">
+                                            {!$Label.SETUP_STEP_2} : <b> <span
+                                                style="color: #019ab5"> {!$Label.SETUP_SECURITY_SETUP} </span></b>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="border-left: 1pt solid #9d9d9d; border-top: 1pt solid #b4d8dc; height: 100%;"
+                                        id="divCell3">
+                                        <div class="step-sidebar" id="step3"
+                                            onclick="toggleDiv('section3')">
+                                            {!$Label.SETUP_STEP_3} :<b> <span
+                                                style="color: #019ab5"> {!$Label.SETUP_COUNTRY_SETUP} </span></b>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="border-left: 1pt solid #9d9d9d; border-top: 1pt solid #b4d8dc; height: 100%;"
+                                        id="divCell4">
+                                        <div class="step-sidebar" id="step4"
+                                            onclick="toggleDiv('section4')">
+                                            {!$Label.SETUP_STEP_4} : <b> <span
+                                                style="color: #019ab5">{!$Label.SETUP_INBOUND_NUMBER_SETUP}</span></b>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="border-left: 1pt solid #9d9d9d; border-top: 1pt solid #b4d8dc; height: 100%;"
+                                        id="divCell5">
+                                        <div class="step-sidebar" id="step5"
+                                            onclick="toggleDiv('section5')">
+                                            {!$Label.SETUP_STEP_5} : <b> <span
+                                                style="color: #019ab5">{!$Label.SETUP_SENDERID_SETUP}</span></b>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="border-left: 1pt solid #9d9d9d; border-top: 1pt solid #b4d8dc; border-bottom: 1pt solid #b4d8dc; height: 100%;"
+                                        id="divCell6">
+                                        <div class="step-sidebar" id="step6"
+                                            onclick="toggleDiv('section6')">
+                                            {!$Label.SETUP_STEP_6} : <b> <span
+                                                style="color: #019ab5">{!$Label.SETUP_OAUTH_SETUP}</span></b>
+                                        </div>
+                                    </div>
+                                </div> <!-- end of menu table -->
+                            </td>
+                        </tr>
+                    </table> <!-- end of Steps Table -->
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <HR WIDTH="100%" COLOR="#a1c8cd" SIZE="1" />
+                    <div id="note1" class="note-bottom" style="display: none">
+                        <br /> <b>{!$Label.SETUP_NOTE_LABEL}</b> <br /> <br />
+                        {!$Label.SETUP_NOTE_1_PART_1}
+                        <a  href="https://sms-magic.in/pricing/" target="_blank">
+                        {!$Label.SETUP_NOTE_1_PART_2}
+                         </a> {!$Label.SETUP_NOTE_1_PART_3}
+                    </div>
+                    <div id="note2" class="note-bottom" style="display: none">
+                        <br /> <b>{!$Label.SETUP_NOTE_LABEL}</b> <br /> <br />
+                        {!$Label.SETUP_NOTE_2}
+                    </div>
+                    <div id="note3" class="note-bottom" style="display: none">
+                        <br /> <b>{!$Label.SETUP_NOTE_LABEL}</b> <br /> <br />
+                        {!$Label.SETUP_NOTE_3_PART_1}
+                        <br /> <br />
+                        {!$Label.SETUP_NOTE_3_PART_2}
+                    </div>
+                    <div id="note4" class="note-bottom" style="display: none">
+                        <br /> <b>{!$Label.SETUP_NOTE_LABEL}</b> <br /> <br />
+                        {!$Label.SETUP_NOTE_4}
+                    </div>
+                    <div id="note5" class="note-bottom" style="display: none">
+                        <br /> <b>{!$Label.SETUP_NOTE_LABEL}</b> <br /> <br />
+                        {!$Label.SETUP_NOTE_5}
+                    </div>
+                    <div id="note6" class="note-bottom" style="display: none">
+                        <br /> <b>{!$Label.SETUP_NOTE_LABEL}</b> <br /> <br />
+                        {!$Label.SETUP_NOTE_6}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <!-- end of main table -->
+
+</apex:page>

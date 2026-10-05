@@ -1,0 +1,11 @@
+<apex:page standardController="smagicinteract__Message_Object_Config__c" title="{!$Label.smagicinteract__sms_magic_configuration_label}">
+    <apex:includeLightning rendered="true"/>
+    <div id="lightning" />
+    
+    <script>
+    $Lightning.use("smagicinteract:messageConfigApp", function() {
+        $Lightning.createComponent("smagicinteract:messageConfigComponent",{},"lightning",function(cmp) {});
+    });
+    </script>
+    
+</apex:page>

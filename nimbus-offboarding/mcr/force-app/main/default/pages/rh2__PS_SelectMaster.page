@@ -1,0 +1,166 @@
+<apex:page controller="rh2.PS_selectRollupTarget_Controller" title="Rollup Helper Setting Creation" standardStylesheets="false" sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <head> 
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>    
+        <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />
+        <apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+        <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }" />
+        <apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }" />
+     </head>
+      <style>
+    
+        [id$=heading] { padding-top:20px; padding-bottom:5px;}
+        .h_scroll {overflow-x:auto;}
+        .caption {font-size:smallest; padding-left:10px; padding-bottom:5px; padding-top:5px;}
+        .breadcrumb {font-size:small;}
+        
+        @media screen and (max-width: 1024px){
+          .hideFullColumn tr > .hidecol
+          {
+          display:none;
+      }
+        }
+        #progressbar { height: 10px; margin-left:50px; margin-top: 10px; }
+        
+        .popoverNubbinAlignment{
+            left: 15.6em; 
+            top: 0.8em;
+        }
+        
+        .popoverDefault{
+            display:none;
+            max-height:0px; 
+            overflow:visible;   
+            overflow-y:visible; 
+            position:relative; 
+            white-space:normal;
+            z-index:99; 
+            top: 6px;
+            left: 0.2rem; 
+        }
+    </style>
+    
+    <script>
+    
+        selectBreadcrumb_HS();
+
+        //Verify namespace is ready
+        var rh = rh || {};
+        rh.j$ = jQuery.noConflict();
+
+    </script> 
+     <apex:form >
+     <apex:slds />
+     <apex:actionStatus id="loading" onstart="loading(true)" onstop="loading(false)" />
+     <apex:actionFunction action="{!doObjectSearch}" name="searchAllObjects" rerender="tablecontainer" status="loading">
+        <apex:param name="objectSearch" value=""/>
+     </apex:actionFunction>
+     <div class="slds-scope" role="main">
+            <div class="slds-card grayBackground">
+                <header class="slds-card__header ">
+                    <h3 class="slds-text-heading_medium ">{!$Label.rh2__Step1Destination}</h3><br/>
+                    <nav role="navigation">
+                        <ol class="slds-breadcrumb slds-list_horizontal">
+                            <li class="slds-list__item slds-text-heading_label home-crumb"><a href="{!URLFOR($Page.rh2__PS_landingPage)}">{!$Label.rh2__Home}</a></li>
+                            <li class="slds-list__item slds-text-heading_label setting-crumb"><a href="{!URLFOR($Page.rh2__PS_AllSettings)}">{!$Label.rh2__AllRollupSetting}</a></li>
+                        </ol>
+                    </nav>
+                </header>
+            </div>
+            <c:Loading_Spinner opacity="1"/>
+            <br />
+            <apex:outputPanel >
+            <div class="slds-card grayBackground">
+                <header class="slds-card__header">                  
+                    <h3 class="slds-text-heading_small slds-truncate">{!$Label.SelectWhereRollupsReside}</h3> 
+                </header>
+                <div>
+                    <div class="slds-form-element" style="float:left;width:25%;margin-left:10px;">    
+                        &nbsp;&nbsp;
+                        <input class="slds-input" placeHolder="{!$Label.TypeForObject}" onkeypress="captureEnterAndBuildList(event, 'objectSearch', searchAllObjects);" type="text" id="objectSearch" />		
+                        <script>
+                            searchFromInput("objectSearch", searchAllObjects);
+                        </script>
+                    </div>
+                    <div style="float:left;margin-left:10px;margin-top:9px;">
+                        <br/>
+                        <apex:outputPanel id="enableGrandchild" styleClass="slds-col" style="width:100px;padding-left:30px;">
+                            <apex:outputPanel >
+                                {!$Label.CreateGrandchildRollup} &nbsp;&nbsp;
+                                <apex:inputCheckbox disabled="{!notUnlimitedRollups}" value="{!isGrandchildRollup}"></apex:inputCheckbox>
+                                &nbsp;
+                                    <apex:outputPanel >
+                                        <a onmouseover="rh.j$('#grandchildInfo').toggle();" onmouseout="rh.j$('#grandchildInfo').toggle();" >
+                                            <img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"></img>
+                                        </a>
+                                    <div class="slds-col popoverDefault" id="grandchildInfo">
+                                        <div class="slds-popover slds-popover_tooltip slds-nubbin_top-left popoverNubbinAlignment" role="dialog">
+                                            <div class="slds-popover__body">
+                                                {!$Label.GrandchildRollupsAllows}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+                <br/> <br/>  <br/>     
+                <section class="slds-card__body ">                    
+                    <apex:outputPanel id="tablecontainer" style=" height:600px;">
+                        <apex:pageMessages /> 
+                        <table class="slds-table slds-table_bordered"  >
+                        <c:Paginate pageController="{! targetObjectController }" renderedComponent="selectTarget, tablecontainer" /> 
+                            <thead>
+                                <tr style="width:100%;">
+                                    <th style="width:33%;" class="slds-text-heading_label" scope="col">{!$Label.Action}</th>
+                                    <th style="width:28%;" class="slds-text-heading_label slds-is-sortable hidecol" scope="col">
+                                         <apex:commandLink value="{!$Label.rh2__Label}" action="{! doMasterObjectSort }" rerender="tablecontainer">
+                                            <apex:param name="sortField" value="Label__c" assignTo="{!sortVars.sortField}"/>
+                                            <apex:outputText value="{!IF(sortVars.sortField=='Label__c', IF(sortVars.sortDirection=='asc', ' ▲', ' ▼'),'')}"/>
+                                        </apex:commandLink>
+                                    </th>
+                                    <th style="width:39%;" class="slds-text-heading_label slds-is-sortable" scope="col">
+                                        <apex:commandLink value="{!$Label.rh2__APIName}" action="{!doMasterObjectSort}" rerender="tablecontainer">
+                                            <apex:param name="sortField" value="Object__c" assignTo="{!sortVars.sortField}"/>
+                                            <apex:outputText value="{!IF(sortVars.sortField=='Object__c', IF(sortVars.sortDirection=='asc', ' ▲', ' ▼'),'')}"/>
+                                        </apex:commandLink>
+                                    </th> 
+                                </tr>
+                            </thead>
+                        </table>
+                        <div style="height:500px; overflow-y:scroll; margin-left:auto; margin-right:auto;">
+                            <table class="slds-table slds-table_bordered " >
+                                <tbody>
+                                <apex:repeat value="{!PaginatedListForTargetObjects}" var="item" id="repeat">
+                                    <tr>
+                                        <td style="width:33%;" data-label="{!$Label.Action}"> 
+                                            <apex:commandLink value="{!$Label.rh2__Select}" action="{! doSelectMasterObject }" rerender="error, tablecontainer">
+                                                <apex:param name="masterAPI" value="{!item.rh2__Object__c}" assignTo="{!masterAPI}"/>
+                                            </apex:commandLink>
+                                        </td>                   
+                                        <td style="width:28%;">
+                                           {! item.Label__c }
+                                        </td>
+                                        <td style="width:39%;">
+                                           {! item.Object__c }
+                                        </td>
+                                    </tr>                        
+                                </apex:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </apex:outputPanel>
+                </section>
+                <footer class="slds-card__footer"/>
+            </div>
+            </apex:outputpanel>
+        </div>  
+        
+        
+     </apex:form>       
+     <br/><br/>
+     <c:PS_additionalInformation />
+</html>
+</apex:page>

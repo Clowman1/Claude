@@ -1,0 +1,90 @@
+<apex:page id="agreement" controller="dfsle.AgreementsController" showHeader="true" sidebar="false"
+           title="{!$Label.dfsle__DocuSignAgreements}">
+
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+
+    <style type="text/css">
+        #content {
+            background-color: white;
+            position: relative;
+            height: calc(100vh - 165px);
+            overflow: auto;
+        }
+
+        .ds-agreementsFooter {
+            background: #f3f2f2;
+            margin-top: 0px;
+        }
+
+        .ds-agreementsHeader {
+            background: #f3f2f2 !important;
+        }
+
+        .ds-agreementsContainer {
+            border: 1px solid #dcdbda;
+        }
+
+        .ds-agreementsBody {
+            border: 0px !important;
+        }
+    </style>
+    <div class="slds-scope" id="content">
+        <div class="slds-container_medium slds-container_center">
+            <div class="ds-agreementsHeader slds-page-header slds-m-bottom_medium slds-m-top_medium">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                        <span class="{!'slds-icon_container slds-icon-standard-'+LOWER(sourceEntity.typeName)}"
+                              title="{!sourceEntity.typeName}"> 
+                          <svg aria-hidden="true" class="slds-icon"> 
+                            <use xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/standard-sprite/svg/symbols.svg#'+LOWER(sourceEntity.typeName))}"></use>
+                          </svg> 
+                        </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                    <span class="slds-page-header__title slds-truncate"
+                                          title="{!sourceEntity.Name}">{!sourceEntity.Name}</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ds-agreementsContainer">
+                <div id="ds-agreementspage"></div>
+                <footer class="slds-card__footer ds-agreementsFooter">
+                    <button type="button" class="slds-button slds-button_neutral slds-align_absolute-center"
+                            onclick="navigateToSourceRecord('{!JSENCODE($CurrentPage.parameters.sId)}')">{!$Label.Back}
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      var _namespace = '{!JSENCODE(namespace)}';
+      var _navigateToURL = function (event) {
+        window.location.replace(event.getParam('url'));
+      };
+      $Lightning.use(_namespace + ':AgreementsApp', function () {
+        $Lightning.createComponent(_namespace + ':Agreements', {
+          visualforce: true, recordId: '{!JSENCODE($CurrentPage.parameters.sId)}'
+        }, 'ds-agreementspage', function () {
+          $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': _navigateToURL});
+        });
+      });
+
+      function navigateToSourceRecord(sourceId) {
+        navUtils.navigateToSObject(sourceId);
+      }
+    </script>
+</apex:page>

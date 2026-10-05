@@ -1,0 +1,14 @@
+{
+  "status": 0,
+  "result": {
+    "processedRecords": 926,
+    "successfulRecords": 925,
+    "failedRecords": 1,
+    "status": "JobComplete",
+    "operation": "update",
+    "object": "Submission_Form__c",
+    "successFilePath": "750Qi000017rITmIAM-success-records.csv",
+    "failedFilePath": "750Qi000017rITmIAM-failed-records.csv"
+  },
+  "warnings": []
+}

@@ -1,0 +1,144 @@
+<template>
+    <template lwc:if={open}>
+        <section class="modal-backdrop" role="dialog" aria-modal="true" aria-label={labels.title}>
+            <div class="modal-card" aria-busy={saving}>
+                <div class="modal-header">
+                    <div>
+                        <h2>{labels.title}</h2>
+                        <template lwc:if={subjectName}>
+                            <p class="modal-subtitle">{subjectName}</p>
+                        </template>
+                    </div>
+                    <button type="button" class="modal-close" onclick={handleClose} aria-label="Close">
+                        <c-portal-icon name="x" size="18"></c-portal-icon>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <fieldset class="field-block">
+                        <legend>{labels.category}</legend>
+                        <div class="channel-row">
+                            <template for:each={categoryOptions} for:item="item">
+                                <button
+                                    key={item.activityKey}
+                                    type="button"
+                                    class={item.className}
+                                    data-key={item.activityKey}
+                                    disabled={item.disabled}
+                                    title={item.disabledReason}
+                                    onclick={handleCategory}
+                                >
+                                    {item.shortLabel}
+                                </button>
+                            </template>
+                        </div>
+                    </fieldset>
+
+                    <template lwc:if={isSocial}>
+                        <fieldset class="field-block">
+                            <legend>Platform</legend>
+                            <div class="channel-row">
+                                <template for:each={platformOptions} for:item="item">
+                                    <button
+                                        key={item.id}
+                                        type="button"
+                                        class={item.className}
+                                        data-platform={item.id}
+                                        aria-pressed={item.pressed}
+                                        onclick={handlePlatform}
+                                    >
+                                        {item.label}
+                                    </button>
+                                </template>
+                            </div>
+                            <template lwc:if={isOtherPlatform}>
+                                <input
+                                    class="platform-other"
+                                    type="text"
+                                    maxlength="40"
+                                    value={otherPlatform}
+                                    placeholder="Which platform?"
+                                    aria-label="Other platform"
+                                    onchange={handleOtherPlatform}
+                                />
+                            </template>
+                        </fieldset>
+                    </template>
+                    <template lwc:else>
+                    <fieldset class="field-block">
+                        <legend>{labels.channel}</legend>
+                        <div class="channel-row">
+                            <template for:each={channels} for:item="item">
+                                <button
+                                    key={item.id}
+                                    type="button"
+                                    class={item.className}
+                                    data-channel={item.id}
+                                    onclick={handleChannel}
+                                >
+                                    {item.label}
+                                </button>
+                            </template>
+                        </div>
+                    </fieldset>
+                    </template>
+
+                    <div class="field-block">
+                        <p class="field-label">{labels.count}</p>
+                        <div class="count-row">
+                            <button type="button" class="stepper-btn" data-delta="-1" onclick={handleCountStep} aria-label="Decrease count">
+                                <c-portal-icon name="minus" size="16"></c-portal-icon>
+                            </button>
+                            <input class="count-input" type="number" min="1" max="50" value={activityCount} onchange={handleCountChange} aria-label={labels.count} />
+                            <button type="button" class="stepper-btn" data-delta="1" onclick={handleCountStep} aria-label="Increase count">
+                                <c-portal-icon name="plus" size="16"></c-portal-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <template lwc:if={showContactPicker}>
+                        <c-portal-contact-picker
+                            selected-id={recordId}
+                            selected-name={contactName}
+                            required={requiresContact}
+                            onselect={handleContactSelect}
+                        ></c-portal-contact-picker>
+                    </template>
+
+                    <template lwc:if={showCallOutcome}>
+                        <fieldset class="field-block">
+                            <legend>How did the call go?</legend>
+                            <div class="channel-row">
+                                <template for:each={callOutcomeOptions} for:item="item">
+                                    <button
+                                        key={item.id}
+                                        type="button"
+                                        class={item.className}
+                                        data-outcome={item.id}
+                                        onclick={handleCallOutcome}
+                                    >
+                                        {item.label}
+                                    </button>
+                                </template>
+                            </div>
+                        </fieldset>
+                    </template>
+
+                    <label class="field-block">
+                        <span class="field-label">Notes</span>
+                        <textarea class="field-textarea" rows="3" value={notes} onchange={handleNotes}></textarea>
+                    </label>
+                    <template lwc:if={showFollowUp}>
+                        <c-lo-ws-follow-up-picker onchange={handleFollowUpChange}></c-lo-ws-follow-up-picker>
+                    </template>
+                    <template lwc:if={errorMessage}>
+                        <p class="field-error" role="alert">{errorMessage}</p>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick={handleClose} disabled={saving}>Cancel</button>
+                    <button class="btn btn-primary" type="button" onclick={handleSave} disabled={saving}>{saveButtonLabel}</button>
+                </div>
+            </div>
+        </section>
+    </template>
+</template>

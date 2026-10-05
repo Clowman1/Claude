@@ -1,0 +1,37 @@
+<apex:page sidebar="false" showHeader="false" title="{!$Label.dfsle__DocuSign}" controller="dfsle.EnvelopeActionSummaryController" action="{!handleEnvelopeAction}">
+  <apex:includeLightning />
+  <div id="postEnvelopeActionId" />
+  <script>
+    var _sourceId = '{!JSENCODE($CurrentPage.parameters.sId)}';
+    var _event = '{!JSENCODE($CurrentPage.parameters.event)}';
+    var _namespace = '{!JSENCODE(namespace)}';
+    var _isMobileApp = '{!JSENCODE($CurrentPage.parameters.isMobileApp)}';
+    var _isConsoleView = '{!JSENCODE($CurrentPage.parameters.isConsoleView)}';
+
+    $Lightning.use(_namespace + ':EnvelopeActionSummary', function () {
+      $Lightning.createComponent(_namespace + ':postEnvelopeAction',
+        {
+          recordId: _sourceId,
+          eventResult: _event ? _event : 'Send', 
+          isMobileApp: _isMobileApp === '1',
+          isSendingExperience: true,
+          isConsoleView: _isConsoleView === 'true'
+        },
+        "postEnvelopeActionId",
+        function (cmp) {
+        });
+    });
+  </script>
+
+  <!-- Pull the Wootric Snippet -->
+  <apex:includeScript value="{!$Resource.dfsle__wootricSdk}"/>
+  <script type="text/javascript">
+    var uIdHash = '{!JSENCODE($CurrentPage.parameters.userIdHash)}';
+  </script>
+  <apex:includeScript value="{!$Resource.dfsle__wootricUtils}"/>
+  <script>
+    if (_isMobileApp !== '1') {
+      wootricUtils.displaySurvey('SalesforceIntegrationLive', uIdHash)
+    }
+  </script>
+</apex:page>

@@ -1,0 +1,114 @@
+<apex:page sidebar="false" showHeader="true" controller="dfsle.GenController" title="Generate Documents">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:includeLightning />
+    <apex:slds />
+    <style type="text/css">
+        .noSidebarCell #content {
+            background-color: white;
+            position: relative;
+            height: calc(100vh - 165px);
+            overflow: auto;
+        }
+
+        .noSidebarCell #spinner {
+            height: calc(100vh - 165px);
+        }
+
+        .bodyDiv .outerNoSidebar,
+        .noSidebarCell,
+        .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        #auraErrorMessage {
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+        }
+    </style>
+
+
+<apex:outputPanel rendered="{!launchAutomatically}"> 
+    <div class="slds-scope">
+        <div class="{!IF($User.UITheme == 'Theme4t', '', 'slds-p-around_x-large')}">
+            <div class="{!IF($User.UITheme == 'Theme4t', '', 'slds-container slds-container_medium slds-container_center')}">
+                <div id="lightning"></div>
+            </div>
+        </div>
+    </div>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!!launchAutomatically}">
+    <div id="content" class="slds-scope">
+        <!-- Page Header Add Container if not Mobile app -->
+        <div class="{!IF($User.UITheme == 'Theme4t', '', 'slds-container_medium slds-container_center')}">
+            <div class="slds-page-header slds-m-top_medium">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media slds-media_center">
+                            <div class="slds-media__figure">
+                                <span class="{!'slds-icon_container slds-icon-standard-'+LOWER(objectType)}">
+                                    <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                             xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#'+ LOWER(objectType))}"/>
+                                    </svg>
+                                    <span class="slds-assistive-text">{!$Label.Drafts}</span>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                        <span class="slds-page-header__title slds-truncate"
+                                              title="{!$CurrentPage.parameters.title}"><strong><apex:outputText escape="False"
+                                                        value="{!HTMLENCODE(recordName)}"/></strong></span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="{!IF($User.UITheme == 'Theme4t', '', 'slds-p-around_x-large')}">
+            <div class="{!IF($User.UITheme == 'Theme4t', '', 'slds-container slds-container_medium slds-container_center')}">
+                <div id="lightning"></div>
+            </div>
+        </div>
+    </div>
+</apex:outputPanel>
+
+
+    <script type="text/javascript">
+      var navigateToURL = function (event) {
+        window.location.replace(event.getParam('url'));
+      };
+      var navigateToSObject = function (event) {
+        var recordId = event.getParam('recordId');
+        if (typeof sforce != 'undefined') {
+          sforce.one.navigateToSObject(recordId);
+        } else {
+          window.location.replace('/' + recordId);
+        }
+      };
+
+      $Lightning.use('{!JSENCODE(namespace)}:GenDocumentGeneratorApp', function () {
+        $Lightning.createComponent('{!JSENCODE(namespace)}:Generator', {
+          templateId: '{!JSENCODE($CurrentPage.parameters.templateId)}',
+          recordId: '{!JSENCODE($CurrentPage.parameters.recordId)}',
+          isClassic: true,
+          showGenerateButton: true
+        }, 'lightning', function (component, status, errorMessage) {
+          if (null == errorMessage) {
+            var content = document.getElementById('content');
+            if (content) content.style.display = 'block';
+            $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': navigateToURL});
+            $A.eventService.addHandler({'event': 'force:navigateToSObject', 'handler': navigateToSObject});
+          }
+        });
+      });
+    </script>
+    </html>
+</apex:page>

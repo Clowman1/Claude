@@ -1,0 +1,429 @@
+<!-- 
+/**********************************************************
+* Page Name: ListViewConfigPage
+* Date: 02-Nov-2015 
+* Description:This is a custom page which is used to send SMS from list view config tab new/edit button. 
+***********************************************************/
+-->       
+<apex:page standardController="smagicinteract__List_View_Configuration__c" extensions="smagicinteract.ListViewConfigExtension">
+    <apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+    <apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+    <apex:includeScript value="{!$Resource.smagicinteract__jquery}"/>
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/js/jquery-1.10.2.js')}"/>
+    
+    <script>
+    $(document).ready(function(){
+    
+     var selectedDefaultSenderId = '{!JSINHTMLENCODE(defaultSenderId)}';
+     document.getElementById("j_id0:form:senderList").value = selectedDefaultSenderId;
+     
+        // Load the record
+        try {
+            characterCounter('controllerDiv','{!$Component.form.templateBodyId}','{!$Component.form.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}')
+            //  characterCounter('j_id0:form:templateBodyId','j_id0:form:numberOfChars','{!$Label.smagicinteract__charater_count_msg}');
+            
+        } catch (err) {}
+    });
+    
+    function toggle(btn) {
+        
+        var isProcessable = {!disableMe} ;        
+        if(isProcessable) return;        
+        btn.disabled = !btn.disabled;       
+    }
+    
+    function verify(){       
+    
+        var filtercriteria = document.getElementById('j_id0:form:membAdd:filterCriteriaId').value;
+        var selectedobj = document.getElementById('{!$Component.form.selectedObjName}').value;
+        var setoptout=document.getElementById('{!$Component.form.optoutValue}').checked;
+        var optoutfield= document.getElementById('{!$Component.form.optOutList}').value;
+        var templatebody=document.getElementById('{!$Component.form.templateBodyId}').value;
+        var selectedmobilecol=[];
+        var limit = document.getElementById('{!$Component.form.mobileNumbers}').length;
+        var selectOptionList = document.getElementById('{!$Component.form.mobileNumbers}');
+        var isMMSUsedForListView = document.getElementById('{!$Component.form.isMMSSelected}').value;
+        for(var i=0; i < limit; i++){
+            if(selectOptionList.options[i].selected) {  
+                selectedmobilecol.push(selectOptionList.options[i].value);    
+            }
+        }
+        var senderIdvar = document.getElementById('j_id0:form:senderList').value;
+        var configNamevar = document.getElementById('j_id0:form:configName').value;
+        var SendMsgErrorVar = document.getElementById('{!$Component.form.SendMsgErrorId}').value;
+        if(selectedobj == ''  || selectedmobilecol.length == 0 || senderIdvar == '' || configNamevar == '') {
+        }
+        else if(SendMsgErrorVar == 'true') {
+            document.getElementById('{!$Component.form.totalRecordMsg}').innerHTML='';
+            document.getElementById('{!$Component.form.totalCreditMsg}').innerHTML='';  
+        }
+            else{
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ListViewConfigExtension.verifyCredit}',
+                    filtercriteria,
+                    selectedobj,
+                    setoptout,
+                    optoutfield,
+                    templatebody,
+                    selectedmobilecol,
+                    isMMSUsedForListView,
+                    function(result, event){;
+                                            if (event.status) {    
+                                                document.getElementById('{!$Component.form.totalRecordMsg}').innerHTML=result[3];
+                                                document.getElementById('{!$Component.form.totalCreditMsg}').innerHTML=result[4];                                                                                                                    
+                                                document.getElementById('{!$Component.form.hiddentotalRecords}').value=result[1];
+                                                document.getElementById('{!$Component.form.hiddentotalExpectedMessages}').value=result[2];
+                                                document.getElementById('{!$Component.form.hiddentotalOptOutRecords}').value=result[0];
+                                                if(isSendSMS) {
+                                                    sendSMSFunc();
+                                                } 
+                                            }
+                                           }
+                );
+            }
+    }
+    </script>
+    
+    <style type="text/css">
+        
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+        background-color: #FFFFFF;
+        border-bottom: 1px solid #FFFFFF;
+        border-left: 1px solid #FFFFFF;
+        border-right: 1px solid #FFFFFF;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        }
+        .homeTab .listViewport .subNav .linkBar, .homeTab .mComponent .cHeader, .homeTab .genericTable, .homeTab .bSubBlock, .homeTab .bPageBlock {
+        border-top: 3px solid #FFFFFF;
+        }
+        .infoDiv {
+        padding-left: 10%;
+        float: left;
+        width: 300px;
+        }
+        select {
+        color: #000;
+        width: 250px;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+        margin: 0px 12px 7px;
+        }
+        .Custom20Tab .secondaryPalette, .individualPalette .Custom20Block .secondaryPalette {
+        border-color: #FFFFFF;
+        }
+        .helpIcon {
+        background: transparent url(/img/alohaSkin/help_orange.png) no-repeat;
+        vertical-align: middle;
+        }
+        #detailDivLeft{
+        line-height:25px;       
+        width:100%;         
+        float:left;
+        padding:5px;
+        }
+        #detailDivRight{
+        line-height:30px;        
+        float:left;
+        padding:10px;
+        }
+        .labelDiv{
+        width:auto;
+        font-weight:bold;
+        float:left;
+        }
+        .asterisk_input :after {
+        color: #e32;
+        content: ' *';
+        display:inline;
+        font-size: 16px;
+        }
+        
+        body .bPageBlock .pbBody .dataCol {
+            border-right-color: white;
+        }
+    </style>
+      <!--  
+     <apex:outputPanel rendered="{!IF((!isSenderIdFieldsAccessible || isSMSfromListViewAllowed),true,false)}" id="test">     
+     Mandatory fields required.       
+     </apex:outputPanel>
+     -->
+    <apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToSendListViewMessage}"> 
+        <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" >
+            <h1 style="font-size:30px;">{!$Label.CAMP_MNG_CANNOT_SND_MSG} </h1> <br/> 
+            <h5 style="font-size:15px;">{!$Label.CAMP_MNG_PLZ_CNTCT_ADMN}</h5> <br/>             
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel id="veryOutermostPanel" rendered="{!$Permission.smagicinteract__AllowToSendListViewMessage}" > 
+        <apex:outputPanel rendered="{!IF((!isSenderIdFieldsAccessible || isSMSfromListViewAllowed),true,false)}" id="pageMsgOutputPanelId">     
+            <apex:pageMessages escape="false" id="pagemessage" />
+        </apex:outputPanel> 
+        <apex:outputPanel rendered="{!IF((isSenderIdFieldsAccessible && isSMSfromListViewAllowed),true,false)}"> 
+            <div style="width:auto;margin:20px auto;" > 
+                <h5 style="font-size:20px;float:left;">{!$Label.SMS_FRM_LIST_VIEW}</h5>              
+                <h6 style="font-size:15px;float:left;padding-left:2%">{!$Label.SMS_FRM_LIST_VIEW_AVAILABLE_CRDT} &nbsp;</h6> 
+                <apex:outputLabel id="availableCredits" value="{!availableCredits}" style="font-family: Times New Roman;float:left;font-size:15px; " /> 
+                <br/>         
+            </div>
+            <hr/>  
+        </apex:outputPanel>    
+        <apex:outputPanel rendered="{!If(isVisible && NOT(isSMSfromListViewAllowed) ,true,false)}"> 
+            <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" > 
+                <h1 style="font-size:30px;">                         
+                    <apex:outputText value="{!$Label.smagicinteract__package_subscription_msg}" >
+                        <apex:param value="{!pkgType}"/>
+                    </apex:outputText>
+                </h1> <br/> 
+                <h5 style="font-size:15px;">{!$Label.smagicinteract__config_allow_access}     </h5> <br/>            
+            </div>
+        </apex:outputPanel>
+        <apex:form id="form">   
+            <apex:outputPanel rendered="{!IF((isSenderIdFieldsAccessible && isSMSfromListViewAllowed),true,false)}" id="outputPanelId">     
+                <div id="detailDivLeft">    
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    <span class="asterisk_input">
+                                        <apex:outputLabel value="{!$Label.smagicinteract__config_name} :"/> 
+                                    </span>                       
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv">
+                                    <apex:inputText value="{!configName}" size="31" id="configName" />
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    <span class="asterisk_input">
+                                        <apex:outputLabel value="{!$Label.smagicinteract__config_slct_obj} :"/>   
+                                    </span>                         
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv">
+                                    <apex:selectList value="{!selectedObject}" size="1" id="selectedObjName">
+                                       <apex:actionSupport event="onclick" action="{!refreshObjectColumns}" rerender="conditionId,mobileNumbers,section3,membAdd,templateId,templateBodyId,optOutList,pageMessage,optoutValue" oncomplete="characterCounter('controllerDiv','{!$Component.form.templateBodyId}','{!$Component.form.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');"/>
+                                       <apex:actionSupport event="onkeyup" action="{!refreshObjectColumns}" rerender="conditionId,mobileNumbers,section3,membAdd,templateId,templateBodyId,optOutList,pageMessage,optoutValue" oncomplete="characterCounter('controllerDiv','{!$Component.form.templateBodyId}','{!$Component.form.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');"/>
+                                        <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__confg_plz_slct_obj}" />
+                                        <apex:selectOptions value="{!objectList}" />
+                                    </apex:selectList>
+                                </div>                           
+                            </td>
+                        </tr>               
+                        <tr>                
+                            <td>
+                                <div class="labelDiv">      
+                                    <span class="asterisk_input">                                                           
+                                        <apex:outputLabel value="{!$Label.smagicinteract__config_slct_mobile_clmn} :"/>
+                                    </span>   
+                                </div>                                                        
+                            </td> 
+                            <td>
+                                <div class="infoDiv">               
+                                    <apex:selectList value="{!selectedMobileNoColumns}" multiselect="true" size="6" id="mobileNumbers">
+                                        <apex:actionSupport event="onclick" action="{!refreshMobileColumns}" rerender="section3"/>
+                                        <apex:actionSupport event="onchange" action="{!refreshMobileColumns}" rerender="section3"/>                                        
+                                        <apex:selectOptions value="{!mobileNumberColumnsOptions}" />
+                                    </apex:selectList>
+                                </div>
+                            </td>   
+                            <td>   
+                                <apex:pageBlock id="selectedColumn">
+                                    <apex:pageBlockTable value="{!selectedMobileNoColumnsLabels}" var="item" id="section3" >
+                                        <apex:column headerValue="{!$Label.smagicinteract__config_slctd_mbl_colmn}" id="columnId">
+                                            <apex:outputText value="{!item}" id="itemId"/>
+                                        </apex:column>
+                                    </apex:pageBlockTable>
+                                </apex:pageBlock>
+                            </td>                   
+                        </tr>
+                    </table>
+                    
+                    <hr/>
+                    
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    <apex:outputLabel value="{!$Label.smagicinteract__confg_fltr_crtra} :"/>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv">
+                                    <apex:pageBlock id="membAdd">
+                                        <apex:variable var="rowNumber" value="{!0}"/>
+                                        <apex:pageBlockTable title="Rule Criteria" var="wrap" value="{!addWrapRowList}">
+                                            <apex:column headerValue="{!$Label.smagicinteract__number}" style="width:20px; text-align:center;" headerClass="centertext">
+                                                <apex:outputText value="{!rowNumber+1}" style="text-align:center;"> 
+                                                    <apex:variable var="rowNumber" value="{!rowNumber+1}"/>
+                                                </apex:outputText>
+                                            </apex:column> 
+                                            <apex:column headerValue="{!$Label.smagicinteract__field}" >
+                                                <apex:selectList size="1" style="width:140px;" value="{!wrap.inputField}">
+                                                    <apex:actionSupport action="{!setFieldTypeInWrap}" event="onchange" rerender="membAdd"/>
+                                                    <apex:selectOptions id="fieldSelectOptionList" value="{!FieldItems}"/>
+                                                </apex:selectList>
+                                            </apex:column> 
+                                            <apex:column headerValue="{!$Label.smagicinteract__operator}" id="opId">
+                                                <apex:selectList size="1" id="operatorSelectList" style="width:140px;" value="{!wrap.filterOperator}" >
+                                                    <apex:selectOptions id="operatorSelectOptionList" value="{!typeToOperatorsMap[wrap.type]}"/>
+                                                </apex:selectList>
+                                            </apex:column> 
+                                            <apex:column headerValue="{!$Label.smagicinteract__value}" >
+                                                <apex:inputText value="{!wrap.inputValue}"/>
+                                            </apex:column>                                        
+                                            <apex:column headerValue="{!$Label.smagicinteract__action}" >
+                                                <apex:commandLink value="{!$Label.smagicinteract__delete_btn}" action="{!deleteRow}" reRender="membAdd">
+                                                    <apex:param name="rowIndex" value="{!rowNumber}"/>
+                                                </apex:commandLink>
+                                                <apex:variable var="rowNumber" value="{!rowNumber}"/>
+                                            </apex:column> 
+                                        </apex:pageBlockTable>            
+                                        <apex:commandButton value="{!$Label.smagicinteract__add_row_btn}" id="submitBtn" action="{!addRow}" reRender="membAdd" />  
+                                        <br/>
+                                        <br/>    
+                                        <b>{!$Label.smagicinteract__conditions}:</b>
+                                        <br/>
+                                        <apex:selectRadio value="{!selectConditions}" layout="pageDirection">
+                                            <apex:actionSupport action="{!outputOfWhereLogic}" reRender="membAdd" event="onclick" />
+                                            <apex:selectOptions value="{!OptionForConditions}"/>
+                                        </apex:selectRadio>                                    
+                                        <!--  <apex:inputField id="startDate" value="{!startDateObj.Date__c}" /> -->
+                                        <apex:actionFunction name="sendSMSFunc" action="{!sendSMS}" reRender="form,pagemessage"/>
+                                        <apex:outputPanel id="out" rendered="{!IF(selectConditions == 'CustomLogic', TRUE, FALSE)}">
+                                            <span class="asterisk_input"> 
+                                            <b>{!$Label.smagicinteract__usr_logic_lbl}</b>
+                                            </span>
+                                            <br/>
+                                            <apex:inputText label="{!$Label.smagicinteract__condition}" id="conditionId" value="{!userLogic}" />&nbsp;&nbsp;
+                                        <!--      <apex:actionFunction name="LoadOutput" action="{!outputOfWhereLogic}" reRender="membAdd"/>-->
+                                            <a href="https://help.salesforce.com/articleView?id=filter_logic.htm&type=0" target="_blank" class="tipsLink" title="Tips (New Window)"><span class="helpLink brandTertiaryFgr">{!$Label.TIPS}</span><img src="/s.gif" alt="Help" class="helpIcon" title="Help"/></a>
+                                        </apex:outputPanel> 
+                                        <apex:inputHidden value="{!filterCriteria}" id="filterCriteriaId" />
+                                    </apex:pageBlock>                             
+                                </div>
+                            </td> 
+                        </tr>
+                    </table>
+                    
+                    <hr/>
+                    
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    <apex:outputLabel value="{!$Label.smagicinteract__confg_msg_tmplt} :"/>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv"  style="margin-left:15%;">
+                                    <apex:selectList value="{!templateId}" multiselect="false" size="1" id="templateId">
+                                        <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__confg_plz_slct_tmplt}" />
+                                        <apex:selectOptions value="{!templates}"/>
+                                        <apex:actionSupport event="onchange" action="{!displayTemplate}" rerender="templateBodyId, pagemessage,membAdd" status="addColumnStatus" oncomplete="characterCounter('controllerDiv','{!$Component.form.templateBodyId}','{!$Component.form.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');"/>
+                                        <apex:actionSupport event="onclick" action="{!displayTemplate}" rerender="templateBodyId, pagemessage,membAdd" status="addColumnStatus" oncomplete="characterCounter('controllerDiv','{!$Component.form.templateBodyId}','{!$Component.form.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');"/>
+                                    </apex:selectList>
+                                </div>
+                            </td>
+                        </tr>                       
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="infoDiv" style="margin-left:15%;">                              
+                                    <apex:outputText style="color:green;font-size:14px;" id="numberOfChars" value="{!$Label.smagicinteract__charater_count_msg}">
+                                        <apex:param value="0"/>
+                                    </apex:outputText> 
+                                </div>
+                            </td>
+                        </tr>                   
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    <apex:outputLabel value="{!$Label.smagicinteract__confg_msg} :"/>   
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv">
+                                    <apex:inputTextArea value="{!templateBody}" id="templateBodyId" readonly="{!!hasPermissionForTemplateSelection}" style=" vertical-align: text-top; width:255px;height:100px;margin-left:15%" onkeyup="characterCounter('controllerDiv','{!$Component.form.templateBodyId}','{!$Component.form.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');"/>                       
+                                </div>
+                            </td>                        
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td class="infoDiv" style="margin-left:15%;">
+                                <apex:outputText id="totalCreditMsg" style="color:red;"/>                     
+                            </td>
+                        </tr>                    
+                        <tr>
+                            <td>
+                                <div class="labelDiv">                         
+                                    <apex:outputLabel value="{!$Label.smagicinteract__confg_lv_optout_usrs} :"/>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv" style="margin-left:9%;">
+                                    <apex:inputCheckbox value="{!setOptOut}" id="optoutValue"/>
+                                    <apex:selectList value="{!optOutField}" id="optOutList" size="1">
+                                        <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__confg_plz_slct_field}" />
+                                        <apex:selectOptions value="{!booleanFields}" />
+                                        <apex:actionSupport event="onclick" action="{!changeSetOptOut}" rerender="optoutValue"/>
+                                    </apex:selectList>
+                                </div>
+                            </td>       
+                        </tr>                   
+                        <tr>
+                            <td>
+                                <div class="labelDiv">     
+                                    <span class="asterisk_input">      
+                                        <apex:outputLabel value="{!$Label.smagicinteract__confg_sndr_id} :"/>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="infoDiv" style="margin-left:15%;">
+                                    <apex:selectList value="{!senderId}" size="1" id="senderList">
+                                        <apex:selectOptions value="{!SenderIdDropDown}" />
+                                    </apex:selectList>
+                                </div>
+                            </td>       
+                        </tr>           
+                    </table>        
+                    <hr/> 
+                    <apex:pageBlock id="pageBlockMMSId">
+	                    <c:MMSComponent mmsComponentWrapper="{!lvMMSData}"/>
+                    </apex:pageBlock>  
+                    <apex:pageBlock id="pageBlockId">
+                        <c:SendSMSScheduler scComponentWrap="{!lvScData}"/> 
+                    </apex:pageBlock>  
+                   <hr/>
+                    <table>                    
+                        <tr>
+                            <td>
+                                <apex:commandButton value="{!$Label.smagicinteract__confg_snd_sms}" disabled="{!IF (disableMe,true, false)}" id="sendSMSButton" oncomplete="isSendSMS=true;verify();" action="{!outputOfWhereLogic}" reRender="isMMSSelected,membAdd,saveConfigButton,pagemessage,SendMsgErrorId"/>&nbsp;&nbsp;
+                                <apex:commandButton id="scheduleValidateSms" rendered="{!If(!isReScheduleAllowed && (!disableScheduleComponent) && ($Permission.smagicinteract__AllowToScheduleMessage) ,true,false)}" value="{!$Label.smagicinteract__sc_schedule}" title="{!$Label.smagicinteract__sc_schedule}" action="{!scheduleValidate}" disabled="{!IF (disableMe,true, false)}" rerender="membAdd,saveConfigButton,pagemessage,SendMsgErrorId" />
+                                <apex:commandButton id="rescheduleValidateSms" rendered="{!If(isReScheduleAllowed && (!disableScheduleComponent) && ($Permission.smagicinteract__AllowToScheduleMessage) ,true,false)}" value="{!$Label.smagicinteract__sc_reschedule}" title="{!$Label.smagicinteract__sc_reschedule}" action="{!reScheduleValidate}" disabled="{!IF (disableMe,true, false)}" rerender="membAdd,saveConfigButton,pagemessage,SendMsgErrorId" />&nbsp;&nbsp;
+                                <apex:commandButton value="{!$Label.smagicinteract__confg_save_confg}" id="saveConfigButton" disabled="{!IF (disableMe,true, false)}" action="{!saveConfig}" reRender="pagemessage,SendMsgErrorId" />&nbsp;&nbsp;
+                                <apex:commandButton value="{!$Label.smagicinteract__confg_vrfy_crdt}"  id="verifyCreditBtn" disabled="{!IF (disableMe,true, false)}" oncomplete="isSendSMS=false;verify();" action="{!outputOfWhereLogic}" reRender="isMMSSelected,membAdd,saveConfigButton,pagemessage,SendMsgErrorId,hiddentotalExpectedMessages,hiddentotalRecords"/>&nbsp;&nbsp;
+                                <apex:outputText id="totalRecordMsg" style="color:red;"/>
+                                <apex:inputHidden value="{!totalRecords}" id="hiddentotalRecords"/>
+                                <apex:inputHidden value="{!totalExpectedMessages}" id="hiddentotalExpectedMessages"/>
+                                <apex:inputHidden value="{!totalOptOutRecords}" id="hiddentotalOptOutRecords"/> 
+                                <apex:inputHidden value="{!SendMsgError}" id="SendMsgErrorId"/> 
+                                <apex:inputHidden value="{!isMMSSelected}" id="isMMSSelected"/> 
+                            </td>
+                        </tr>
+                    </table>
+                </div>  
+            </apex:outputPanel>
+        </apex:form>
+    </apex:outputPanel>
+</apex:page>

@@ -1,0 +1,634 @@
+<apex:page standardcontroller="rh2__RH_Job__c" title="Rollup Helper Schedule Definition" extensions="rh2.PS_DefineJob_Controller" sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	   	<head> 
+	    	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+	    
+        	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/RollupRun.js') }"/>                
+	    	<apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }"/>	       	
+	    	<apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+			<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }" /> 
+			<apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/font-awesome/css/font-awesome.min.css') }" />
+	     </head>
+	
+		 <style>     			
+			.popoverDefault{
+				display:none;
+				max-height:0px; 
+				overflow:visible;   
+				overflow-y:visible; 
+				position:relative; 
+				white-space:normal;
+				z-index:99; 
+				text-align:left; 
+			}
+		</style>
+
+	     <script type="text/javascript">
+    	//Verify namespace is ready
+        var rh = rh || {};
+		var batchSize;
+        
+        rh.j$ = jQuery.noConflict();
+        rh.j$(document).ready(function() {
+			if (!{!rollupIssue}) {
+				batchSize = {!maxBatchSize};
+
+				pFilter = '{! JSENCODE(selectedFilter)}';
+
+				calcMaxRecords();
+				displayValidationError();
+			}
+        });
+    
+        var maxRecords, totalRecords;
+        var valueChecked = Boolean('{!JSENCODE(IF(RH_Job__c.RunForAllRecords__c, "non_emptystring", ""))}');
+         
+        
+      var objName = '{!JSENCODE(parentObjectName)}';
+
+	  function calcMaxRecords() {
+		callMaxRecCount();
+	  }
+	  
+	  function ensureMaxRecsAndRunAllUpdated(result, event){
+		  populateRecordCount(result, event);
+		  setRunAll();
+	  }
+
+	  function rerenderScheduleWarning() {
+		if ({!showScheduleWarning}) {
+			document.getElementById('scheduleWarning').style.display = 'block';
+		}
+	  }
+
+      function displayValidationError(){
+      	var showMessage = false;
+      	if({!numRecsIssue}){
+      		document.getElementById('numRecs').class = 'slds-col slds-size_1-of-24 slds-align-middle slds-p-left_xxx-small slds-has-error';
+      		showMessage = true;
+      	}
+      	if({!runTimeIssue}){
+      		document.getElementById('runTime').class = 'slds-col_padded slds-align-middle slds-m-left_small slds-size_1-of-24 slds-has-error';   
+      		showMessage = true;     		
+      	}
+		if({!emailIssue}){
+			document.getElementById('notificationEmail').class = 'slds-col_padded slds-align_middle slds-m-left_small slds-size_1-of-24 slds-has-error';
+			showMessage = true;
+		}
+      	
+      	showModal(showMessage, 'validateSchedule');
+      }   
+ 		
+	  function setShowTooltipFormatting(tooltip) {
+		var tt = document.getElementById(tooltip);
+
+		tt.style.display = 'block';
+		tt.style.overflow = 'visible';
+		tt.style.wordWrap = 'break-word';
+	  }
+
+	  function setPositionOfTooltip(tooltip, label){
+            var xPos = 0;
+            var yPos = 0;
+            var height = 0;
+            
+            var item = document.getElementById(label);
+            
+            while(item){
+            
+                xPos += (item.offsetLeft - item.scrollLeft + item.clientLeft);
+                yPos += (item.offsetTop - item.scrollTop + item.clientTop);
+                
+                item = item.offsetParent;
+            }
+            var tt = document.getElementById(tooltip);
+            var height = rh.j$('#' + tooltip).outerHeight(true);
+            
+            tt.style.top = yPos - height - 13 + 'px';
+          
+            tt.style.left = xPos - 20 + 'px';
+        }
+
+ 		</script>
+        
+    <script>
+  function changeValue(selectedFilter) {
+    if (valueChecked == true) {
+      valueChecked = false;
+    } else if (valueChecked == false) {
+      valueChecked = true;
+      rfaCheck();
+    } 
+	calcMaxRecords();
+  }
+
+    	</script>
+
+
+		<script> 
+      window.onload = function() {
+       rerenderScheduleWarning();
+     }
+    </script>
+
+        
+	     <body>
+	     <apex:form > 
+			<apex:slds />
+          <apex:actionFunction action="{!ensureRFAJobExists}" name="rfaCheck" rerender=""/>
+		  <apex:actionFunction action="{!revertActiveCheckbox}" name="revertActiveCheckbox" reRender="activeCheckbox" status="loading" />
+          <apex:actionFunction action="{!setMaxRecordsForRunAll}" name="setRunAll" rerender="amount, recordCountInput" status="loading"/>
+		  <apex:actionFunction name="callMaxRecCount" action="{!calculateMaxRecords}" reRender="runEstimate" status="loading"/>
+		  <apex:actionStatus id="loading" onstart="loading(true)" onstop="loading(false)" />
+		     <div class="slds-scope" role="main"> 
+				<div id="deactivateScheduleWarningModal" style="display:none;">
+				 <apex:outputPanel >					
+					<apex:outputPanel rendered="{!AND(!showScheduleWarning, rh2__RH_Job__c.rh2__Active__c)}" >
+						<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+							<div class="slds-modal__container">
+								<div class="slds-modal__header slds-modal__header_empty">
+									<button type="button" onclick="showModal(false, 'deactivateScheduleWarningModal'); revertActiveCheckbox();" class="slds-button slds-button_icon-inverse slds-modal__close">									
+										<svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+											<use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+										</svg>
+									</button>											
+								</div>
+								<div class="slds-modal__content slds-p-around_medium">	
+									<center>
+										{!$Label.ThisScheduleAppears}
+									</center>
+								</div>
+								<div class="slds-modal__footer">
+									<apex:commandButton styleClass="slds-button slds-button_brand" onclick="showModal(false, 'deactivateScheduleWarningModal');" value="{!$Label.rh2__Yes}" rerender="none"/>
+									<apex:commandButton styleClass="slds-button slds-button_neutral" onclick="showModal(false, 'deactivateScheduleWarningModal'); revertActiveCheckbox();" value="{!$Label.rh2__No}" rerender="none"/>
+								</div>
+							</div>
+						</div>
+						<div class="slds-backdrop slds-backdrop_open"></div>
+					</apex:outputPanel>
+				</apex:outputPanel>	
+			</div>
+			<div id="clonePopupModal" style="display:none;">
+			 	<apex:outputPanel id="ClonePopup">
+            		<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+			    		<div class="slds-modal__container">
+			      			<div class="slds-modal__header"> 
+								<span>
+									<h2 class="slds-text-heading_medium">{!$Label.CloneFromExistingSchedule}</h2>
+									<button type="button" onclick="showModal(false, 'clonePopupModal');" class="slds-button slds-button_icon-inverse slds-modal__close">									
+										<svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+											<use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+										</svg>
+									</button>
+								</span>
+			        		</div>
+			      			<div class="slds-modal__content">	
+			      			<center>			      			
+			      				<apex:selectList value="{!selectedSchedule}" styleClass="slds-select" style="width:80%;margin-top:10px;margin-bottom:10px;" size="1">
+									<apex:selectOptions value="{!JobSchedules}"/>
+								</apex:selectList>
+			      			</center>
+			      			</div>  			
+			      			<div class="slds-modal__footer">
+								<div id="parentFilterWarning" style="max-width:70%;float:left;text-align:left;">
+									<apex:outputText value="{!$Label.rh2__PleaseNoteParentFiltersWillNotCopy}"/>&nbsp;&nbsp;
+								</div>
+								<div id="cloneModalButtons" style="max-width:30%;float:right;">
+									<apex:commandButton styleClass="slds-button slds-button_brand" action="{!cloneSchedule}" oncomplete="calcMaxRecords();rerenderScheduleWarning();showModal(false, 'clonePopupModal');" rerender="ClonePopup, jobForm, scheduleWarning, pastFireTimeWarning" value="{!$Label.rh2__Clone}"/>
+									<apex:commandButton styleClass="slds-button slds-button_neutral" onclick="showModal(false, 'clonePopupModal');" rerender="none" value="{!$Label.rh2__Cancel}"/>					        					       
+								</div>
+			      			</div>
+			    		</div>
+			  		</div>
+			  		<div class="slds-backdrop slds-backdrop_open"></div>
+				</apex:outputPanel>
+			</div>
+			<div id="saveConfirmModal" style="display:none;">
+				<apex:outputPanel >
+					<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+						<div class="slds-modal__container">
+							<div class="slds-modal__header">
+								<button type="button" onclick="showModal(false, 'saveConfirmModal');" class="slds-button slds-button_icon-inverse slds-modal__close" rerender="saveConfirmModal">
+									<svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+										<use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+									</svg>
+								</button>
+							</div>
+							<div class="slds-modal__content slds-p-around_large">
+								<center>{!$Label.PleaseNote} {!$Label.ChangesMadeToCurrentScheduleWithInactiveRollup}</center>
+							</div>
+							<div class="slds-modal__footer">
+								<apex:commandButton styleClass="slds-button slds-button_neutral" reRender="saveConfirmModal" onclick="showModal(false, 'saveConfirmModal');" value="{!$Label.rh2__Cancel}" style="border:1px solid rgb(201, 201, 201);"/>
+							</div>
+						</div>
+					</div>
+					<div class="slds-backdrop slds-backdrop_open"></div>
+				</apex:outputPanel>
+			</div>
+			<div id="cloneParentFilterModal" style="display:none;">
+				<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+					<div class="slds-modal__container">
+						<div class="slds-modal__header">
+							<button type="button" onclick="showModal(false, 'cloneParentFilterModal')" class="slds-button slds-button_icon-inverse slds-modal__close">
+								<svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+									<use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+								</svg>
+							</button>
+							<h2 class="slds-text-heading_medium">{!$Label.CloneFromExistingFilters}</h2>
+						</div>
+						<div class="slds-modal__content slds-p-around_medium">
+							<center>
+								<apex:selectList value="{!selectedCloneFilter}" styleClass="slds-select" style="width:80%" size="1" multiselect="false">
+									<apex:selectOptions value="{!validFiltersForObject}"/>
+									<apex:actionSupport event="onchange" reRender="cloneModalButtons" status="loading"/>
+								</apex:selectList>
+							</center>
+						</div>
+						<div class="slds-modal__footer">
+							<apex:outputPanel id="cloneModalButtons">
+								<apex:commandButton styleClass="slds-button slds-button_brand" action="{!goToCloneFilter}" oncomplete="showModal(false, 'cloneParentFilterModal')" reRender="cloneParentFilterModal, filterLinks, runEstimate" value="{!$Label.rh2__Clone}" disabled="{!ISBLANK(selectedCloneFilter)}"/>
+								<apex:commandButton styleClass="slds-button slds-button_neutral" onclick="showModal(false, 'cloneParentFilterModal')" reRender="none" value="{!$Label.rh2__Cancel}"/>
+							</apex:outputPanel>
+						</div>
+					</div>
+				</div>
+				<div class="slds-backdrop slds-backdrop_open"></div>
+			</div>
+				
+       				<div class="slds-card slds-card_empty grayBackground">
+  					<header class="slds-card__header slds-grid grid_flex-spread">
+                		<nav role="navigation">
+        					<ol class="slds-breadcrumb slds-list_horizontal">
+                				<li class="slds-list__item slds-text-heading_label"><a href="{!URLFOR($Page.PS_Allsettings)}">{!$Label.AllRollupSetting}</a></li>
+             				</ol>
+        				</nav>
+  					</header>
+					</div>
+			    		
+    			<div class="slds-card grayBackground">
+					<header class="slds-card__header slds-grid">
+           				<div class="slds-col">
+               				<h3 class="slds-text-heading_medium slds-truncate">{!$Label.DefineRollupSchedle} {!$Label.For} '{!rollupLabel}'</h3>
+             			</div>
+             			
+           				<div class="slds-col" align="right">
+							<apex:outputPanel id="topBtns">
+								<!-- Note: Any changes to these buttons should also be applied to the buttons on the top/bottom of the page -->    
+								<apex:commandLink styleClass="slds-button slds-button_neutral" onclick="showModal(true, 'scheduleDefinitionInfoModal')" rerender="scheduleDefinitionInfoModal" style="margin-right: 15px;">{!$Label.rh2__About}</apex:commandLink>
+								<apex:commandButton rendered="{!!info.rollupIsActive}" disabled="{!OR(rollupIssue, parentFilterIssue)}" styleClass="slds-button slds-button_brand" onclick="showModal(true, 'saveConfirmModal');" value="{!$Label.rh2__Save}" reRender="saveConfirmModal"/>
+								<apex:commandButton rendered="{!info.rollupIsActive}" disabled="{!OR(rollupIssue, parentFilterIssue)}" styleClass="slds-button slds-button_brand" action="{! save }" value="{!$Label.rh2__Save}"/>
+								<apex:commandButton styleClass="slds-button slds-button_neutral" disabled="{!rollupIssue}" onclick="showModal(true, 'clonePopupModal');" rerender="none" value="{!$Label.rh2__CloneFromExisting}"/>					        					       
+								<apex:commandButton styleClass="slds-button slds-button_neutral" rendered="{!not(isBlank(rh2__RH_Job__c.Id))}" action="{!oDelete}" value="{!$Label.rh2__Delete}" />                   
+								<apex:commandButton styleClass="slds-button slds-button_neutral" action="{!URLFOR($Page.PS_AllSettings)}" value="{!$Label.rh2__Cancel}" />       
+							</apex:outputPanel>
+         				</div>
+         			</header>
+         			<section class="slds-card__body">
+						<apex:outputPanel id="rollupError" rendered="{!rollupIssue}">
+							<center>
+								<apex:outputPanel styleClass="slds-box slds-box_xsmall slds-theme_error" style="display:block;width:98%;">
+									{!invalidScheduleMessage}
+								</apex:outputPanel>
+							</center>
+						</apex:outputPanel>
+					<br/>
+
+         			<div class="slds-grid slds-grid_align-center" style="display:none;">
+	         			<table class="slds-table slds-col slds-size_1-of-1 grayBackground">
+	                		<tr style="width:100%">
+	                  			<th class="slds-text-heading_label" scope="col">
+	                   			 	<apex:inputHidden value="{!rh2__RH_Job__c.rh2__Rollup_Name__c}" />
+									<apex:inputHidden value="{!rh2__RH_Job__c.rh2__ParentFilter__c}" />	
+	                  			</th>                  
+	                    	</tr> 
+	                    </table>  
+                    </div>
+                    <apex:outputPanel id="jobForm">
+                    <div class="slds-grid">                    
+	        			<div class="slds-col_padded slds-text-align_right slds-size_1-of-12" >      				
+	        				{!$Label.Active}
+	                    </div>
+	                    <div class="slds-col slds-size_1-of-12" >
+                            <apex:inputcheckbox id="activeCheckbox" value="{!rh2__RH_Job__c.rh2__Active__c}" onclick="showModal(true, 'deactivateScheduleWarningModal');" />
+	                    </div>	
+                        <div class="slds-col slds-size_10-of-12"></div>
+          			</div>
+                        <br/>
+                        
+          			<div class="slds-grid">
+          				<div class="slds-col_padded slds-text-align_right slds-size_1-of-12">
+							{!$Label.ScheduleName}
+          				</div>
+          				<div class="slds-col  slds-size_2-of-12">
+	          				<apex:inputField value="{!rh2__RH_Job__c.rh2__Schedule_Name__c}"/>                    			                  
+          				</div>
+          				<div class="slds-col slds-size_9-of-12"> </div>
+          			</div>
+					  <br/>
+					  <div class="slds-grid">
+						<div class="slds-col_padded slds-text-align_right slds-size_1-of-12">
+							{!$Label.Repeat}?
+						</div>
+						<div class="slds-col slds-size_2-of-12" >
+							<apex:inputcheckbox value="{! repeatSchedule}" >
+								<apex:actionSupport event="onchange" action="{!resetScheduleTiming}" rerender="frequencyConfiguration" status="loading"/>
+							</apex:inputcheckbox>
+						</div>
+						<div class="slds-col slds-size_9-of-12"></div>
+																							
+					</div>
+					<br/>
+					<apex:outputPanel id="frequencyConfiguration">
+						<apex:outputPanel rendered="{! repeatSchedule}">
+							<div class="slds-grid">
+								<div class="slds-col_padded slds-text-align_right slds-size_1-of-12">
+									{!$Label.rh2__RunEvery}
+								</div>
+								<div class="slds-col slds-size_1-of-12 " id="runTime">
+									<apex:inputField value="{!rh2__RH_Job__c.rh2__Increment__c}" style="width:95%;">
+										<apex:actionSupport event="onchange" rerender="dailyConfiguration"/>
+									</apex:inputField>                    			                  
+								</div>
+								<div class="slds-col slds-size_1-of-12">
+									<apex:inputField value="{!rh2__RH_Job__c.rh2__Unit__c}">
+										<apex:actionSupport event="onchange" rerender="dailyConfiguration"/>
+									</apex:inputField> 
+								</div>    
+								<div class="slds-col slds-size_9-of-12"></div>
+							</div>     
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{! !repeatSchedule}">
+							<div class="slds-grid">
+								<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right">
+									{!$Label.RunOnce}
+								</div>  
+								<div class="slds-col slds-size_11-of-12"></div>
+							</div>
+						</apex:outputPanel>
+					</apex:outputPanel>
+					<br/>
+                    <div class="slds-grid">
+                        <div class="slds-col_padded slds-size_1-of-12   slds-text-align_right ">
+							{!$Label.rh2__For}      			
+						</div>
+						<div class="slds-col slds-size_11-of-12" id="numRecs">
+							<apex:outputPanel styleClass="slds-col slds-size_11-of-12">
+								<apex:outputPanel id="recordCountInput">
+									<apex:outputPanel rendered="{!!rh2__RH_Job__c.rh2__RunForAllRecords__c}">
+										<apex:inputText id="amount" value="{!rh2__RH_Job__c.rh2__BatchSize__c}" /> 
+										&nbsp; 
+									</apex:outputPanel>
+									<apex:outputPanel rendered="{!rh2__RH_Job__c.rh2__RunForAllRecords__c}">
+										<apex:outputText value="{!$Label.rh2__All}"/>
+									</apex:outputPanel>
+								</apex:outputPanel>
+								{!parentObjectName} {!$Label.Records}. &nbsp;
+								<apex:outputPanel id="runEstimate">
+									<apex:outputPanel rendered="{!ISNULL(maxRecords)}">
+										(<apex:outputText value="{!$Label.rh2__CalculatingNumber}."/>&nbsp;
+										<apex:outputText value="{!$Label.rh2__CalculatingRun}."/>)
+									</apex:outputPanel>
+									<apex:outputPanel rendered="{!NOT(ISNULL(maxRecords))}">
+										(<apex:outputText value="{!$Label.rh2__YouCurrentlyHave} {!totalRecords} {!parentObjectName} {!LOWER($Label.rh2__Records)}."/>&nbsp;
+										<apex:outputText value="{!$Label.rh2__ThisRollupWillTake} {!info.rollupRunTime} {!$Label.rh2__ToProcess}."/>)
+									</apex:outputPanel>
+								</apex:outputPanel>
+							</apex:outputPanel>
+						</div>
+                    </div>  
+                    
+                        <br/>
+                    <apex:outputPanel styleClass="slds-grid" id="parentFilterPopover"> 
+						<apex:outputPanel rendered="{!existingFilterSelected}" styleClass="slds-col_padded slds-text-align_right slds-size_1-of-12">            
+							<p>
+								<a onmouseover="rh.j$('#help-runForAllRecords').toggle();" onmouseout="rh.j$('#help-runForAllRecords').toggle();">
+									<img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"></img>
+								</a>{!$Label.RunForAllRecords}</p>
+
+							<div class="slds-col popoverDefault" id="help-runForAllRecords">
+								<div class="slds-popover slds-popover_tooltip slds-nubbin_top-left" role="dialog" >
+									<div class="slds-popover__body">
+										{!$Label.RunForAllMatchingRecs} "{!selectedFilterCondition}"
+									</div>
+								</div>
+							</div>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!NOT(existingFilterSelected)}" styleClass="slds-col_padded slds-text-align_right slds-size_1-of-12">
+							{!$Label.rh2__RunForAllRecords}
+						</apex:outputPanel>
+						<div class="slds-col slds-size_1-of-12" >
+							<apex:inputcheckbox value="{!rh2__RH_Job__c.rh2__RunForAllRecords__c}" onchange="changeValue('{!JSINHTMLENCODE(selectedFilter)}'); return false;"  /> 
+						</div>
+                        <div class="slds-col slds-size_10-of-12"></div>
+          			</apex:outputPanel>
+          			<br/>
+					<div class="slds-grid">
+						<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right" >
+							{!$Label.ParentFilter}
+						</div>
+						<div class="slds-col slds-size_1-of-12 ">
+							<apex:selectList value="{!selectedFilter}" size="1" style="width:100% !important;">
+								<apex:selectOptions value="{!ValidFiltersForObject}"/>
+								<apex:actionSupport event="onchange" action="{!calculateMaxRecords}" reRender="runEstimate, filterLinks, parentFilterPopover, parentFilterPreview, topBtns, bottomBtns" status="loading"/>
+							</apex:selectList>
+						</div>
+						<div class="slds-col slds-size_2-of-12">							
+							<apex:outputPanel id="filterLinks">
+								<apex:outputPanel rendered="{!existingFilterSelected}">
+									<apex:commandLink style="padding-left:10px; padding-right:10px;" action="{!goToEditFilter}" value="{!$Label.rh2__Edit}"/>|
+								</apex:outputPanel> 
+								<apex:commandLink style="padding-left:10px; padding-right:10px;" action="{!goToNewFilter}" value="{!$Label.rh2__New}"/>|
+								<apex:commandLink style="padding-left:10px;" onclick="showModal(true, 'cloneParentFilterModal')" value="{!$Label.rh2__CloneFromExisting}" reRender="cloneParentFilterModal"/>
+							</apex:outputPanel>
+						</div>
+						
+						<div class="slds-col slds-size_9-of-12"></div>
+					</div>	
+					<br/>
+					<apex:outputPanel id="parentFilterPreview">
+						<apex:outputPanel rendered="{!AND(parentFilterSelected, NOT(ISBLANK(parentFilterString)), NOT(parentFilterIssue))}">
+							<div class="slds-grid">
+								<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right">
+									<span>{!$Label.rh2__QueryPreview}</span>
+								</div>
+								<div class="slds-col slds-grow slds-size_11-of-12">
+									{!parentFilterString}
+								</div>
+							</div>
+							<br/>
+						</apex:outputPanel>
+						<apex:outputPanel rendered="{!AND(parentFilterSelected, parentFilterIssue)}">
+							<div class="slds-grid">
+								<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right"><span></span></div>
+								<div class="slds-col slds-grow slds-size_11-of-12" style="color:red;">
+									{!$Label.InvalidParentFilterPleaseSelectAnother}
+								</div>
+							</div>
+							<br/>
+						</apex:outputPanel>
+					</apex:outputPanel>
+          			<div class="slds-grid">          		
+          				<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right" >
+          					<span>{!$Label.LastRun}</span>
+          				</div>
+          				<div class="slds-col slds-grow slds-size_3-of-12"> 
+          					<apex:outputField value="{!rh2__RH_Job__c.rh2__PreviousFireTime__c}"/>
+						</div>
+                        <div class="slds-col slds-size_8-of-12"></div> 
+                    </div>
+                    <br/>
+          			<div class="slds-grid">
+          				
+          				<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right" >
+							{!$Label.NextRun}
+          				</div>
+          				<div class="slds-col slds-size_2-of-12 " >
+          					<apex:inputField value="{!rh2__RH_Job__c.rh2__NextFireTime__c}">
+								  <apex:actionSupport event="onchange" rerender="pastFireTimeWarning" status="loading"/>
+							</apex:inputField>
+						</div>
+						<div class="slds-col slds-size_9-of-12"></div>
+          				
+          			</div>
+					  <apex:outputPanel id="dailyConfiguration">
+							<br/>
+							<div class="slds-grid">
+								<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right">{!$Label.rh2__FixedTime}</div>
+							  <div class="slds-col slds-size_2-of-12">
+								  <apex:inputCheckbox value="{!rh2__RH_Job__c.rh2__FixedFireTime__c}" disabled="{!OR(rh2__RH_Job__c.rh2__Increment__c != 1, rh2__RH_Job__c.rh2__Unit__c == 'Hours')}"></apex:inputCheckbox>
+								  <a onmouseover="rh.j$('#fixed-time-information').toggle();" onmouseout="rh.j$('#fixed-time-information').toggle();" >
+									  <img class="slds-icon slds-icon_x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"></img>
+								  </a>
+								<div class="popoverDefault" id="fixed-time-information">
+									<div class="slds-popover slds-theme--info" role="dialog">
+										<div class="slds-popover__body">
+											{!$Label.DailyTimeWarning}
+										</div>
+									</div>
+								</div>
+								</div>
+							  <div class="slds-col slds-size_9-of-12"></div>
+							</div>
+					  </apex:outputPanel>
+					<br/>
+					<div class="slds-grid">
+						<div class="slds-col_padded slds-size_1-of-12"></div>
+						<div class="slds-col slds-size_3-of-12">
+							<apex:outputPanel id="granularJobsSetting">
+								<apex:inputCheckbox id="granularCheck" value="{!enableGranularScheduledJobs}">
+									<apex:actionSupport event="onchange" action="{!updateGranularJobsSetting}" status="loading" rerender="granularJobsSetting"/>
+								</apex:inputCheckbox>
+								<span class="slds-text-title_caps">
+									{!$Label.EnableGranularScheduledJobs}
+								</span>
+								<span>
+									<a id="granularHelpIcon" onmouseover="setShowTooltipFormatting('granularHelp');" onmouseout="document.getElementById('granularHelp').style.display = 'none';">
+										<img class="slds-icon slds-icon--x-small" src="/apexpages/slds/latest/assets/icons/utility/info_60.png"/>
+									</a>
+								</span>
+								<div style="max-height:0px;overflow:visible;overflow-y:visible;position:relative;">
+									<div class="slds-popover slds-theme--info" id="granularHelp" style="display:none;">
+										<div class="slds-popover__body">
+											{!$Label.IfGranularScheduledJobsIsEnabled}
+										</div>
+									</div>
+								</div>
+							</apex:outputPanel>
+						</div>
+						<div class="slds-col slds-size_8-of-12"></div>
+					</div>
+                    <br/>
+					<div class="slds-grid">
+						<div class="slds-col_padded slds-size_1-of-12 slds-text-align_right" >
+						  {!$Label.NotificationEmailOptional}
+						</div>
+						<div class="slds-col slds-size_2-of-12" id="notificationEmail">
+							<apex:inputField value="{!rh2__RH_Job__c.rh2__Notification_Email__c}"/>
+							<apex:outputPanel rendered="{! IsEmailDeliverabilityDisabled}">&nbsp;
+								<a onmouseover="setShowTooltipFormatting('email-deliverability'); " onmouseout="document.getElementById('email-deliverability').style.display = 'none';"  id="tooltipRollover">
+									<i class="fa fa-exclamation-triangle slds-button__icon slds-button__icon_medium" style="color:rgb(248,144,56);"></i>
+								</a>
+								<div class="slds-popover slds-popover_tooltip slds-nubbin_top-left" id="email-deliverability" style="position: absolute; z-index:99; display:none !important; margin-top: 16px; margin-left: 143px;">
+									<div class="slds-popover__body">
+										{!$Label.EmailDevlierability}
+									</div>
+								</div>
+								<br/>
+							</apex:outputPanel>
+					  	</div>
+						<div class="slds-col slds-size_9-of-12"></div>
+					</div>
+				  	<br/>
+                    <div class="slds-grid">
+                    	
+                    	<div class="slds-col slds-size-1-of-1 slds-text-align_center"> {!$Label.PleaseNoteRollupsWillRestarted}
+											<br/>{!runAsUserString}
+          					
+                    	</div>
+                    </div>    
+                    	<br/>
+ 	    			<div id='validateSchedule' style="display:none; margin-left:auto; margin-right:auto;" class="slds-box slds-box_xsmall slds-theme_error slds-size_6-of-12">
+ 	    				{!invalidScheduleMessage}
+ 	    			</div>
+			<apex:outputPanel id="pastFireTimeWarning">
+				<apex:outputPanel styleClass="slds-box slds-box_xsmall slds-theme_warning slds-size_6-of-12" style="display:block; margin-left:auto; margin-right:auto;" rendered="{!showPastFireTimeWarning}">
+					<center>
+						<p>{!$Label.rh2__NextRunTimeIsSetInPast}</p>
+					</center>
+				</apex:outputPanel>
+				<br/>
+			</apex:outputPanel>
+            <div id="scheduleWarning" style="display:none; margin-left:auto; margin-right:auto;" class="slds-box slds-box_xsmall slds-theme_warning slds-size_6-of-12">
+              <center>
+                      <p>{!$Label.SchedulingARollupWithRealtime}</p>
+                      <br></br>
+                      <apex:outputText value="{!$Label.rh2__IfYouHaveAnyQuestionsRegardingRealtime}" escape="false" />
+              </center>        
+            </div>
+          			</apex:outputPanel>	
+					  <div id="scheduleDefinitionInfoModal" style="display: none;">
+						 <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+							<div class="slds-modal__container">
+							   <div class="slds-modal__header">
+								  <button type="button" onclick="showModal(false, 'scheduleDefinitionInfoModal')" class="slds-button slds-button_icon-inverse slds-modal__close">
+									 <svg aria-hidden="true" class="slds-button__icon slds-button__icon_large">
+										<use href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+									 </svg>
+								  </button>
+								  <h2 class="slds-text-heading_medium">About Defining Scheduled Rollups</h2>
+							   </div>
+							   <div class="slds-modal__content slds-p-around_medium">
+								Scheduling a rollup will allow it to run on a regular basis. A schedule can be run at a certain increment every hour, day, week, month, and year. A parent filter may be used to filter which target records get updated. The running user is set to the user running the 'Rollup Batch Agent - Hourly' job.<br/><br/>
+								By default, schedules will run at the top of the hour for a selected increment. To allow schedules to run at 5 minute intervals (HH:00, HH:05, HH:10, etc.), please activate the 'Enable Granular Scheduled Jobs' org-wide setting.
+								<br/><br/>For additional information, please view our knowledge article on&nbsp;<apex:outputLink target="_blank" value="https://passagetech.my.site.com/KnowledgeBase/s/article/Creating-Rollup-Helper-Schedule-and-Best-Practices">scheduling rollups and best practices</apex:outputLink>.
+							   </div>
+							   <div class="slds-modal__footer">
+								  <apex:commandButton styleClass="slds-button slds-button_neutral" onclick="showModal(false, 'scheduleDefinitionInfoModal');" rerender="scheduleDefinitionInfoModal" value="{!$Label.rh2__Close}" />
+							   </div>
+							</div>
+						 </div>
+						 <div class="slds-backdrop slds-backdrop_open"></div>
+					  </div>    
+           			</section>
+           			<footer class="slds-card__footer slds-grid" >
+           				<div class="slds-col" align="right"> 
+							<apex:outputPanel id="bottomBtns">
+								<!-- Note: Any changes to these button should also be applied to the buttons on the top/bottom of the page -->  			
+								<apex:commandLink styleClass="slds-button slds-button_neutral" onclick="showModal(true, 'scheduleDefinitionInfoModal')" rerender="scheduleDefinitionInfoModal" style="margin-right: 15px;">{!$Label.rh2__About}</apex:commandLink>    
+								<apex:commandButton rendered="{!!info.rollupIsActive}" disabled="{!OR(rollupIssue, parentFilterIssue)}" styleClass="slds-button slds-button_brand" onclick="showModal(true, 'saveConfirmModal');" value="{!$Label.rh2__Save}" reRender="saveConfirmModal"/>
+								<apex:commandButton rendered="{!info.rollupIsActive}" disabled="{!OR(rollupIssue, parentFilterIssue)}" styleClass="slds-button slds-button_brand" action="{! save }" value="{!$Label.rh2__Save}"/>
+								<apex:commandButton styleClass="slds-button slds-button_neutral" disabled="{!rollupIssue}" onclick="showModal(true, 'clonePopupModal');" rerender="none" value="{!$Label.rh2__CloneFromExisting}"/>					        					                  					
+								<apex:commandButton styleClass="slds-button slds-button_neutral" rendered="{!not(isBlank(rh2__RH_Job__c.Id))}" action="{!oDelete}" value="{!$Label.rh2__Delete}" />                   
+								<apex:commandButton styleClass="slds-button slds-button_neutral" action="{!URLFOR($Page.PS_AllSettings)}" value="{!$Label.rh2__Cancel}" />   
+							</apex:outputPanel>
+         				</div>
+           			</footer>
+			<c:Loading_Spinner opacity="1"/>
+           		</div>     			     	
+       	</div>      	
+       		
+		
+       	</apex:form>
+     	</body>
+	</html>
+</apex:page>

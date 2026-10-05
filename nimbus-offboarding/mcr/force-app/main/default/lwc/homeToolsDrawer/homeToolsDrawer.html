@@ -1,0 +1,21 @@
+<template>
+    <aside id="home-tools-drawer" class={drawerClass} aria-label={drawerAriaLabel}>
+        <div class="htd-header">
+            <div>
+                <span class="htd-eyebrow">Home tools</span>
+                <h2>{drawerTitle}</h2>
+            </div>
+            <button class="htd-close" onclick={toggleDrawer} type="button" title="Hide">&times;</button>
+        </div>
+        <div class="htd-body">
+            <!-- Rendered only while open so the wired data is not fetched on every record page load. -->
+            <template if:true={isOpen}>
+                <c-home-tools-sidebar></c-home-tools-sidebar>
+            </template>
+        </div>
+    </aside>
+    <button class={toggleClass} onclick={toggleDrawer} aria-expanded={isOpen} aria-controls="home-tools-drawer" type="button">
+        <span class="htd-toggle-icon" aria-hidden="true">&rsaquo;</span>
+        <span>{toggleLabel}</span>
+    </button>
+</template>

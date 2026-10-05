@@ -1,0 +1,154 @@
+<template>
+    <lightning-card title="Call Insights">
+        <div class="wrapper">
+            <template if:true={logs}>
+                <template for:each={logs} for:item="row">
+                    <div key={row.Id} class="ci-card">
+
+                        <!-- HEADER -->
+                        <div class="ci-header" data-id={row.Id} onclick={toggleExpand}>
+                            <div class="ci-grid">
+                                <div class="col score">
+                                    <span class={row.scoreClass}>{row.AI_Score__c}</span>
+                                </div>
+                                <div class="col host">
+                                    <span>{row.userName}</span>
+                                </div>
+                                <div class="col title">
+                                    <span class="title-text">{row.Title__c}</span>
+                                </div>
+                                <div class="col datetime">
+                                    <lightning-formatted-date-time
+                                        value={row.Recording_Start_DateTime__c}
+                                        year="numeric"
+                                        month="short"
+                                        day="2-digit"
+                                        hour="2-digit"
+                                        minute="2-digit">
+                                    </lightning-formatted-date-time>
+                                </div>
+                                <div class="col duration">
+                                    <span>{row.Duration__c}</span>
+                                </div>
+                                <div class="col expand-icon">
+                                    <lightning-icon lwc:if={row.expanded}
+                                        icon-name="utility:chevrondown"
+                                        size="x-small">
+                                    </lightning-icon>
+                                    <lightning-icon lwc:else
+                                        icon-name="utility:chevronright"
+                                        size="x-small">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BODY -->
+                        <template if:true={row.expanded}>
+                            <div class="ci-body">
+                                <template if:true={row.isZoom}>
+                                    <lightning-tabset>
+                                        <lightning-tab label="Recording Highlights">
+                                            <template if:true={row.hasHighlights}>
+                                                <lightning-formatted-rich-text value={row.formattedHighlights}></lightning-formatted-rich-text>
+                                            </template>
+                                            <template if:false={row.hasHighlights}>
+                                                <p class="ci-empty-tab">No highlights for this call.</p>
+                                            </template>
+                                        </lightning-tab>
+
+                                        <lightning-tab label="Summary &amp; Smart Chapters">
+                                            <template if:true={row.hasSummary}>
+                                                <div class="ci-summary-overall">
+                                                    <lightning-formatted-rich-text value={row.formattedSummary}></lightning-formatted-rich-text>
+                                                </div>
+                                            </template>
+                                            <template if:true={row.hasChapters}>
+                                                <p class="ci-subheading">Smart chapters</p>
+                                                <lightning-formatted-rich-text value={row.formattedChapters}></lightning-formatted-rich-text>
+                                            </template>
+                                            <template if:false={row.hasSummaryOrChapters}>
+                                                <p class="ci-empty-tab">No summary for this call.</p>
+                                            </template>
+                                        </lightning-tab>
+
+                                        <lightning-tab label="Transcript">
+                                            <template if:true={row.hasTurns}>
+                                                <div class="ci-transcript">
+                                                    <template for:each={row.turns} for:item="turn">
+                                                        <div key={turn.key} class={turn.turnClass}>
+                                                            <template if:true={turn.speaker}>
+                                                                <span class="ci-turn-speaker">{turn.speaker}</span>
+                                                            </template>
+                                                            <p class="ci-turn-text">{turn.text}</p>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template if:false={row.hasTurns}>
+                                                <p class="ci-empty-tab">No transcript available for this call.</p>
+                                            </template>
+                                        </lightning-tab>
+
+                                        <lightning-tab label="Next Steps">
+                                            <template if:true={row.hasNextSteps}>
+                                                <lightning-formatted-rich-text value={row.formattedNextSteps}></lightning-formatted-rich-text>
+                                            </template>
+                                            <template if:false={row.hasNextSteps}>
+                                                <p class="ci-empty-tab">No next steps for this call.</p>
+                                            </template>
+                                        </lightning-tab>
+
+                                        <lightning-tab label="Recordings">
+                                            <template if:true={row.hasRecordings}>
+                                                <div class="ci-recordings">
+                                                    <template for:each={row.recordings} for:item="file">
+                                                        <div key={file.id} class="ci-recording">
+                                                            <div class="ci-recording-main">
+                                                                <span class="ci-recording-type">{file.fileType}</span>
+                                                                <a href={file.url} target="_blank" rel="noopener noreferrer">Open in Zoom</a>
+                                                                <template if:true={file.durationLabel}>
+                                                                    <span class="ci-recording-meta">{file.durationLabel}</span>
+                                                                </template>
+                                                            </div>
+                                                            <template if:true={file.hasPasscode}>
+                                                                <p class="ci-recording-passcode">
+                                                                    Passcode required: <span class="ci-recording-code">{file.passcode}</span>
+                                                                </p>
+                                                            </template>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                            <template if:false={row.hasRecordings}>
+                                                <p class="ci-empty-tab">No recordings linked to this call.</p>
+                                            </template>
+                                        </lightning-tab>
+                                    </lightning-tabset>
+                                </template>
+
+                                <template if:false={row.isZoom}>
+                                    <lightning-tabset>
+                                        <lightning-tab label="Overview">
+                                            <lightning-formatted-rich-text value={row.formattedSummary}></lightning-formatted-rich-text>
+                                        </lightning-tab>
+                                        <lightning-tab label="Transcript">
+                                            <lightning-formatted-rich-text value={row.transcript}></lightning-formatted-rich-text>
+                                        </lightning-tab>
+                                        <lightning-tab label="Highlights">
+                                            <lightning-formatted-rich-text value={row.highlights}></lightning-formatted-rich-text>
+                                        </lightning-tab>
+                                        <lightning-tab label="Next Steps">
+                                            <lightning-formatted-rich-text value={row.formattedNextSteps}></lightning-formatted-rich-text>
+                                        </lightning-tab>
+                                    </lightning-tabset>
+                                </template>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

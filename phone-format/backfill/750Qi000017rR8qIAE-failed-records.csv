@@ -1,0 +1,7 @@
+"sf__Id","sf__Error",Id,Phone,PersonMobilePhone,Company_Phone_Number__c,Phone_2__c,Mobile_Co_Borrower__pc,PersonHomePhone,PersonOtherPhone,PersonAssistantPhone,Fax,Work_Phone_Co_Borrower__pc,Other_Phone_Co_Borrower__pc,Borrower_Spouse_Phone__pc
+"0015x00002GSe1lAAD","INVALID_FIELD_FOR_INSERT_UPDATE:Business Account may not use Person Account field PersonMobilePhone:PersonMobilePhone --","0015x00002GSe1lAAD","800-741-6277","","","","","","","","","","",""
+"0015x00002GTXoYAAX","INVALID_FIELD_FOR_INSERT_UPDATE:Business Account may not use Person Account field PersonMobilePhone:PersonMobilePhone --","0015x00002GTXoYAAX","248-312-6036","","","","","","","","","","",""
+"001AJ000002a8uEYAQ","INVALID_FIELD_FOR_INSERT_UPDATE:Business Account may not use Person Account field PersonMobilePhone:PersonMobilePhone --","001AJ000002a8uEYAQ","866-246-2400","","","","","","","","","","",""
+"001f200001cQQ98AAG","INVALID_FIELD_FOR_INSERT_UPDATE:Business Account may not use Person Account field PersonMobilePhone:PersonMobilePhone --","001f200001cQQ98AAG","800-667-6389","","","","","","","","","","",""
+"001f200001cQQ99AAG","INVALID_FIELD_FOR_INSERT_UPDATE:Business Account may not use Person Account field PersonMobilePhone:PersonMobilePhone --","001f200001cQQ99AAG","800-667-6389","","","","","","","","","","",""
+"001f200001cQQ9AAAW","INVALID_FIELD_FOR_INSERT_UPDATE:Business Account may not use Person Account field PersonMobilePhone:PersonMobilePhone --","001f200001cQQ9AAAW","800-667-6389","","","","","","","","","","",""

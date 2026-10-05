@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+<aura:handler name="init" value="{!this}" action="{!c.init}" />
+<aura:html tag="style"> .slds-modal__container { min-width: 50vw; max-height:100vh;} </aura:html>
+    <div style="height: 75vh; width: auto;" class="ncs-flow">
+    	<lightning:flow aura:id="flowData" onstatuschange="{!c.statusChange}"/>
+    </div>
+</aura:component>

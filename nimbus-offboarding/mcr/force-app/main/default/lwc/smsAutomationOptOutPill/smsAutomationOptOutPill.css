@@ -1,0 +1,79 @@
+.optout-bar {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #d9e1ec;
+    border-radius: 8px;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+}
+
+.optout-eyebrow {
+    color: #d17c10;
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.optout-copy p {
+    color: #5f6f86;
+    font-size: 12px;
+    margin: 2px 0 0;
+}
+
+.optout-pill {
+    align-items: center;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    gap: 8px;
+    padding: 8px 16px;
+}
+
+.optout-pill:disabled { cursor: default; opacity: .6; }
+
+.optout-pill-on {
+    background: #e9f7f2;
+    border: 1px solid #7fc9ae;
+    color: #14714f;
+}
+
+.optout-pill-on:hover:not(:disabled) { background: #d8f0e6; }
+
+.optout-pill-off {
+    background: #fde0e0;
+    border: 1px solid #e08585;
+    color: #9f1e1e;
+}
+
+.optout-pill-off:hover:not(:disabled) { background: #fbcccc; }
+
+.optout-dot {
+    border-radius: 50%;
+    height: 9px;
+    width: 9px;
+}
+
+.optout-pill-on .optout-dot { background: #1c8c74; }
+.optout-pill-off .optout-dot { background: #c23934; }
+
+.optout-modal { max-width: 480px; }
+
+.optout-points {
+    color: #1a2541;
+    font-size: 13px;
+    list-style: disc;
+    margin: 10px 0 10px 18px;
+}
+
+.optout-points li { margin-bottom: 4px; }
+
+.optout-note { color: #5f6f86; font-size: 12px; margin: 0; }

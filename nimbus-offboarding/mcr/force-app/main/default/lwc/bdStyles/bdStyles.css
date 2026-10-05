@@ -1,0 +1,42 @@
+/* Shared look for the BD command center components (imported with @import 'c/bdStyles'). */
+.card { background: #fff; border: 1px solid #e3e9f2; border-radius: 14px; }
+.chip { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.re { background: #e6eefb; color: #1d4687; }
+.cpa { background: #dff3ef; color: #0b5e57; }
+.ti { background: #eee8fb; color: #5b21b6; }
+.ins { background: #fdefdc; color: #8a4508; }
+.oth { background: #eef1f5; color: #44516a; }
+.yes { background: #e3f4e9; color: #166534; }
+.no { background: #fde7e7; color: #9f1d1d; }
+.wait { background: #fdefdc; color: #8a4508; }
+.navy { background: #1a2541; color: #fff; }
+.btn { height: 38px; padding: 0 15px; border-radius: 10px; border: 1px solid #d9e1ec; background: #fff; font-weight: 600; font-size: 14px; color: #17233f; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; white-space: nowrap; }
+.btn:hover { background: #f3f6fb; }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn-p { background: #1a2541; color: #fff; border-color: #1a2541; }
+.btn-p:hover { background: #26345a; }
+.btn-o { background: #f6b15d; border-color: #f6b15d; color: #1a2541; }
+.btn-o:hover { background: #f3a445; }
+.btn-s { height: 32px; padding: 0 11px; font-size: 13px; }
+.muted { color: #5f6f86; }
+.lbl { font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #5f6f86; }
+.warn { color: #a4400a; font-weight: 700; }
+.av { width: 36px; height: 36px; border-radius: 50%; background: #e8eef7; color: #1a2541; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.h2 { margin: 0; font-size: 16px; font-weight: 800; color: #17233f; }
+.seg { display: flex; background: #eef2f7; border-radius: 12px; padding: 4px; gap: 4px; }
+.sg { flex: 1 1 0; height: 36px; border: 0; border-radius: 9px; background: transparent; font-weight: 700; font-size: 13.5px; color: #5f6f86; cursor: pointer; }
+.sg-on { background: #fff; color: #17233f; box-shadow: 0 1px 3px rgba(15, 25, 50, .12); }
+.pill { height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #d9e1ec; background: #fff; font-weight: 700; font-size: 12.5px; color: #17233f; cursor: pointer; }
+.pill-on { background: #1a2541; border-color: #1a2541; color: #fff; }
+.backdrop { position: fixed; inset: 0; background: rgba(20, 28, 48, .55); z-index: 9000; display: flex; align-items: flex-start; justify-content: center; padding: 6vh 16px; overflow-y: auto; }
+.modal { width: 100%; max-width: 560px; background: #fff; border-radius: 18px; box-shadow: 0 24px 60px rgba(15, 25, 50, .35); display: flex; flex-direction: column; }
+.mh { padding: 22px 24px 0; display: flex; flex-direction: column; gap: 14px; }
+.mb { padding: 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.mf { padding: 14px 24px; border-top: 1px solid #eef2f7; display: flex; justify-content: flex-end; gap: 10px; background: #fafbfd; border-radius: 0 0 18px 18px; }
+.alert { border: 1px solid #f0c27a; background: #fff8ec; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; color: #6b3606; }
+.tok { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 8px; background: #eef2f7; font-size: 13px; font-weight: 700; }
+.tok button { border: 0; background: transparent; cursor: pointer; color: #5f6f86; font-size: 15px; line-height: 1; padding: 0; }
+.row { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-top: 1px solid #eef2f7; }
+.clickable { cursor: pointer; }
+.clickable:hover { background: #f6f9fd; }
+.linkish { border: 0; background: transparent; color: #244d8f; font-weight: 700; font-size: 13px; cursor: pointer; padding: 0; }

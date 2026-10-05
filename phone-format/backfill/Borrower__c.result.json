@@ -1,0 +1,10 @@
+{
+  "status": 0,
+  "result": {
+    "jobId": "750Qi000017rVAnIAM",
+    "processedRecords": 9,
+    "successfulRecords": 9,
+    "failedRecords": 0
+  },
+  "warnings": []
+}

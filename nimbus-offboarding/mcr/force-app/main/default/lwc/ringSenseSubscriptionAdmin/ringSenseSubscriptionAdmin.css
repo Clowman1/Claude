@@ -1,0 +1,27 @@
+.admin-body {
+    position: relative;
+    padding: 12px 16px 16px;
+}
+
+.health {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status {
+    margin: 0 0 12px;
+    font-size: 12px;
+    color: #3e3e3c;
+}
+
+.actions {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.empty {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: #706e6b;
+}

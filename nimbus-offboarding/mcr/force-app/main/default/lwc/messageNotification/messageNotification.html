@@ -1,0 +1,77 @@
+<!--
+ - Created by andrk on 6/26/2024.
+ -->
+
+<template>
+  <div class="mn__wrapper">
+    <template lwc:if={isRelativeModal}>
+      <div class="mn__relative-modal">
+        <button
+          class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close mn__close-button"
+          title="Close Notification"
+          onclick={handleCloseNotification}
+        >
+          <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close notification" class="icon-close">
+          </lightning-icon>
+        </button>
+        <div class="mn__header">
+          <span>{label}</span>
+        </div>
+        <div class="mn__body">
+          <slot>{message}</slot>
+        </div>
+      </div>
+    </template>
+    <template lwc:elseif={isInlineModal}>
+      <div class="mn__inline-modal">
+        <button
+          class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close mn__close-button"
+          title="Close Notification"
+          onclick={handleCloseNotification}
+        >
+          <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close notification" class="icon-close">
+          </lightning-icon>
+        </button>
+        <div class="mn__header">
+          <span>{label}</span>
+        </div>
+        <div class="mn__body">
+          <slot>{message}</slot>
+        </div>
+      </div>
+    </template>
+    <template lwc:elseif={isSlidingPanel}>
+      <div class="mn__sliding-panel">
+        <button
+          class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close mn__close-button"
+          title="Close Notification"
+          onclick={handleCloseNotification}
+        >
+          <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close notification" class="icon-close">
+          </lightning-icon>
+        </button>
+        <div class="mn__body">
+          <slot>{message}</slot>
+        </div>
+      </div>
+    </template>
+    <template lwc:else>
+      <dialog class="mn__dialog" onclick={handleDialogClick} onkeydown={handleKeyDown}>
+        <button
+          class="slds-button slds-button_icon slds-button_icon-small slds-float_right slds-popover__close mn__close-button"
+          title="Close Notification"
+          onclick={handleCloseNotification}
+        >
+          <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close notification" class="icon-close">
+          </lightning-icon>
+        </button>
+        <div class="mn__header">
+          <span>{label}</span>
+        </div>
+        <div class="mn__body">
+          <slot>{message}</slot>
+        </div>
+      </dialog>
+    </template>
+  </div>
+</template>

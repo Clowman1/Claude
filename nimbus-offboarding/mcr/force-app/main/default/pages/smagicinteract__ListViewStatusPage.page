@@ -1,0 +1,211 @@
+<!-- 
+/**********************************************************
+* Page Name: ListViewStatusPage
+* Date: 02-Nov-2015 
+* Description:This is a status page of configured list view configuration object, which is used to send SMS from list view config tab new button. 
+***********************************************************/
+-->  
+<apex:page standardController="smagicinteract__List_View_Configuration__c" extensions="smagicinteract.ListViewStatusExtension">
+    <apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+    <apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+    <apex:includeScript value="{!$Resource.smagicinteract__jquery}"/>
+    
+    <style type="text/css">
+        #detailDivOne{
+        line-height:30px;
+        
+        width:auto;
+        float:left;
+        padding:5px;
+        }
+        #detailDivSecond{
+        line-height:30px;
+        width:600px;
+        float:left;
+        padding:10px;
+        
+        }
+        .labelDiv{
+        font-weight:bold;
+        width:150px;
+        float:left;
+        }
+        .infoDiv{
+        width:200px;
+        float:left;
+        }
+        #main{
+        background-color:white;
+        }
+        
+    </style>
+    <apex:pageMessages escape="false" />
+    <apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToSendListViewMessage}"> 
+        <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" >
+            <h1 style="font-size:30px;">{!$Label.CAMP_MNG_CANNOT_SND_MSG} </h1> <br/> 
+            <h5 style="font-size:15px;">{!$Label.CAMP_MNG_PLZ_CNTCT_ADMN}</h5> <br/>             
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel id="veryOutermostPanel" rendered="{!$Permission.smagicinteract__AllowToSendListViewMessage}" > 
+        <apex:outputPanel > 
+            <div style="width:auto;margin:20px auto;" > 
+                <h5 style="font-size:15px;float:left;">{!$Label.smagicinteract__lst_view_status}    :   </h5>              
+                <apex:outputLabel id="status" value="{!Status}"  style="font-size:15px;float:left;"></apex:outputLabel>
+                <apex:outputLink style="margin-left:50px;font-size:15px;" value="{!RrefreshLink}" id="RefreshLink">{!$Label.smagicinteract__lst_view_refresh}</apex:outputLink>
+                <br/>         
+            </div>
+            <hr/>  
+        </apex:outputPanel>   
+        <apex:outputPanel > 
+            <div style="width:auto;margin:20px auto;" > 
+                <h5 style="font-size:15px;float:left;">{!$Label.LST_VIEW_MSGS_PROCESSED}    :   </h5>              
+                <apex:outputLabel id="messagesProcessed" value="{!MessagesProcessed}" style="font-family: Times New Roman;float:left;font-size:15px; " />
+            </div>
+            <br/>
+        </apex:outputPanel> 
+        <apex:outputPanel > 
+            <div style="width:auto;margin:20px auto;" > 
+                <h5 style="font-size:15px;float:left;">{!$Label.LST_VIEW_TIME_TAKEN}    :   </h5>  
+                <apex:outputLabel id="timeTakenId" value="{!timeTaken}" style="font-family: Times New Roman;float:left;font-size:15px; " />            
+                <div style="font-family: Times New Roman;float:left;font-size:15px;">&nbsp;{!$Label.TIME_TAKEN_UNIT}</div> <br/>         
+            </div>        
+        </apex:outputPanel>
+        <div>
+            <apex:form >           
+                <apex:commandButton id="stopSmsButton" value="{!$Label.smagicinteract__config_stop_batch}" action="{!abortJob}" disabled="{!stopDisable}"/>
+                <apex:commandButton id="reRunJobId" value="{!$Label.smagicinteract__rerun_btn}" action="{!reRunJob}" disabled="{!!stopDisable}"/>
+                <hr/>      
+                
+                <div id="detailDivOne">
+                    <table bgcolor="#F8F8F8" width="1100px">
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__config_name}   :
+                                </div>
+                                <div class="infoDiv">
+                                    <apex:outputLabel id="ConfigName" value="{!configName}" style="font-family: Times New Roman; font-size:15px; " /> 
+                                </div>
+                            </td>
+                            <td>
+                                <div class="labelDiv" >
+                                    {!$Label.LST_VIEW_MSG_TXT}  :
+                                </div>
+                                <div class="infoDiv" style="overflow-y:10px; overflow-x:hidden; height:50px; width:400px;">
+                                    <apex:outputLabel id="messageText" value="{!templateBody}" style="font-family: Times New Roman; font-size:15px; " /> 
+                                </div>                         
+                            </td>                       
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__lst_total_records} :
+                                </div>
+                                <div class="infoDiv">
+                                    <apex:outputLabel id="totalRecords" value="{!totalRecords}" style="font-family: Times New Roman; font-size:15px; " /> 
+                                </div>
+                            </td>
+                            <td>
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__lst_view_opt_rcrds}    :
+                                </div>
+                                <div class="infoDiv">
+                                    <apex:outputLabel id="optOutRecords" value="{!totalOptOutRecords}" style="font-family: Times New Roman; font-size:15px; " /> 
+                                </div>                              
+                            </td>
+                        </tr>                  
+                        <tr>
+                            <td>                
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__lst_view_mbl_flds} :
+                                </div>
+                                <div class="infoDiv">
+                                    <div class="font-family: Times New Roman;font-size:15px;">
+                                        <script>
+                                        var phone = '{!JSINHTMLENCODE(phoneFields)}';  
+                                        if(!isEmpty(phone)) {
+                                            phone = phone.split(',');
+                                        }
+                                        if(!isEmpty(phone[0])) {
+                                            document.write(phone[0]);
+                                            for(var i=1 ; i<phone.length; i++) {
+                                                document.write(', '+phone[i]);
+                                            }
+                                        }
+                                        function isEmpty(val){
+                                            return (val === undefined || val == null || val.trim().length <= 0) ? true : false;
+                                        } 
+                                        </script>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__lst_view_opt_out_fld}  :
+                                </div>
+                                <div class="infoDiv">
+                                    <apex:outputLabel id="optOutField" value="{!optOutField}" style="font-family: Times New Roman; font-size:15px; " /> 
+                                </div>                         
+                            </td>
+                        </tr>                   
+                        <tr>
+                            <td>
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__lst_view_expctd_sms}   :
+                                </div>
+                                <div class="infoDiv">
+                                    <apex:outputLabel id="totalNumberOfSms" value="{!totalExpectedMessages}" style="font-family: Times New Roman; font-size:15px; " /> 
+                                </div>
+                            </td>
+                            <td>
+                                <div class="labelDiv">
+                                    {!$Label.smagicinteract__lst_view_start_date}   :
+                                </div>
+                                <div class="infoDiv">
+                                    <apex:outputLabel value="{!StartDate}" style="font-family: Times New Roman; font-size:15px; ">                                      
+                                    </apex:outputLabel>
+                                </div>                           
+                            </td>
+                        </tr>
+                    </table>
+                </div>   
+                
+                <apex:pageBlock title="{!$Label.smagicinteract__lst_view_exctn_hstry}">
+                    <apex:pageBlockSection columns="1">
+                        <apex:pageBlockTable value="{!execHistory}" var="item" id="execHistoryList">
+                            <apex:column value="{!item.name}"> 
+                                <apex:facet name="header" ><apex:outputText value="{!$Label.smagicinteract__lst_view_name}" /></apex:facet>
+                            </apex:column>                       
+                            <apex:column value="{!item.CreatedDate}"> 
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__lst_view_exctn_date}" /></apex:facet>
+                            </apex:column>                        
+                            <apex:column value="{!item.smagicinteract__Messages_Processed__c}">                          
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__lst_no_of_rcrds}" /></apex:facet>
+                            </apex:column>                      
+                            <apex:column value="{!item.smagicinteract__status__c}">                            
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__lst_view_status}" /></apex:facet>
+                            </apex:column>                       
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+                
+                <apex:pageBlock title="{!$Label.smagicinteract__title_templates}">
+                    <apex:pageBlockSection columns="1">
+                        <apex:pageBlockTable value="{!execHistory}" var="item" id="execHistoryList">
+                            <apex:column value="{!item.smagicinteract__Template_Name__c}"> 
+                                <apex:facet name="header" ><apex:outputText value="{!$Label.smagicinteract__lst_view_name}" /></apex:facet>
+                            </apex:column>                       
+                            <apex:column value="{!item.CreatedDate}"> 
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__lst_view_exctn_date}" /></apex:facet>
+                            </apex:column>                       
+                            <apex:column value="{!item.smagicinteract__SMS_Text__c}">                             
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__lst_view_text}" /></apex:facet>
+                            </apex:column>                  
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>           
+            </apex:form>
+        </div>
+    </apex:outputPanel>   
+</apex:page>

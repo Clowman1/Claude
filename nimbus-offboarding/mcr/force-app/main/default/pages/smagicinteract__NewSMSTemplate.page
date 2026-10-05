@@ -1,0 +1,157 @@
+<apex:page standardController="smagicinteract__SMS_Template__c" extensions="smagicinteract.smsTemplateExtension" tabStyle="smagicinteract__SMS_Template__c">
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+<apex:includeScript value="{!$Resource.smagicinteract__jquery}"/>
+<script>
+ $(document).ready(function(){
+	    // Load the record
+	    try {
+	    	var INITIAL_CHAR_REV_COUNT_MSG_VAR = document.getElementById('{!$Component.formId.main.INITIAL_CHAR_REV_COUNT_MSG_HIDDEN}').value;
+    		characterCounter('controllerDiv','{!$Component.formId.main.templateParams.templateTextSectionItem.templateText}','{!$Component.formId.main.templateParams.numberOfChars}',INITIAL_CHAR_REV_COUNT_MSG_VAR,'decrement');
+    	} catch (err) { }
+    });
+    function addHistory(){
+		var stateObj = { };
+    	var currentUrl = window.location.href;
+		history.pushState(stateObj, null, currentUrl);
+	}
+    function redirectTo(url,retURL){	
+    	if(typeof sforce !='undefined' && sforce.one) {
+                addHistory();
+                sforce.one.navigateToURL(url,true);
+            }
+            else {
+                window.location.href = url+'?retURL='+retURL;
+            }
+    }
+    function returnBack(url){
+    	if(sforce && sforce.one) {
+    			addHistory();
+                sforce.one.navigateToURL('/apex/smagicinteract__SMHome',true);
+            }
+            else {
+                window.location.href = url;
+            }
+    }
+    function openTab(url){
+    	if(typeof sforce !='undefined' && sforce.one) {
+    			addHistory();
+                sforce.one.navigateToURL(url,true);
+            }
+            else {   
+                window.open(url);
+            }
+    }
+</script>
+    <style>
+        body .bPageTitle .ptBody .links {
+    	display:none;
+	}
+    </style>
+
+<c:Expired_Message_Component isPanelVisible="{! NOT(isVisible) }"/> 
+
+<apex:outputPanel id="outerMostPanel" rendered="{!isVisible}">
+
+<apex:sectionHeader title="{!$Label.smagicinteract__co_name} - {!$User.FirstName} {!$User.LastName}" subtitle="{!$Label.smagicinteract__new_sms_tmpl}"/>
+<apex:form id="formId">
+
+
+<apex:pageBlock id="main" title="{!$Label.smagicinteract__create_new_template}">
+  <apex:inputHidden value="{!INITIAL_CHAR_REV_COUNT_MSG}" id="INITIAL_CHAR_REV_COUNT_MSG_HIDDEN"/>
+  <apex:outputPanel >
+    	<apex:commandLink style="float:right" value="{!$Label.smagicinteract__help_msg}" id="theCommandLink" title="{!$Label.smagicinteract__help_msg}" onclick="openTab('/apex/smagicinteract__SMSMagicHelp?from=NewSMSTemplate');return false;" />    
+    </apex:outputPanel><br/><br/>
+  <apex:pageMessages escape="false" id="pageMessageSection"/>
+
+<apex:pageBlockButtons location="top">
+    <apex:commandButton value="{!$Label.smagicinteract__dashboard}" title="{!$Label.smagicinteract__dashboard}" onclick="redirectTo('/apex/smagicinteract__SMHome','');return false;"/>
+    <apex:commandButton value="{!$Label.smagicinteract__new_sms}" title="{!$Label.smagicinteract__new_sms}" onclick="redirectTo('/apex/smagicinteract__NewSMS','/apex/smagicinteract__SMHome');return false;"/>
+    <apex:commandLink value="{!$Label.smagicinteract__back}" id="theCommandLink" title="{!$Label.smagicinteract__back}" onclick="returnBack('{!returnURL}');return false;" />
+</apex:pageBlockButtons>
+
+<apex:pageBlockSection title="{!$Label.smagicinteract__name}" >
+<apex:facet name="header">
+	<h3>{!$Label.smagicinteract__name}</h3>
+</apex:facet>
+	<apex:pageBlockSectionItem labelStyle="text-align:left;" >
+    	<apex:inputField value="{!smagicinteract__SMS_Template__c.smagicinteract__Name__c}" style="margin-left:15px;" required="true"/>
+    </apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="{!$Label.smagicinteract__short_description}">
+	<apex:pageBlockSectionItem labelStyle="text-align:left;" >
+    	<apex:inputField value="{!smagicinteract__SMS_Template__c.smagicinteract__Description__c}" style="margin-left:15px;" />
+    </apex:pageBlockSectionItem>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="{!$Label.smagicinteract__slct_tmpl_typ}" columns="4" >
+<apex:facet name="header">
+	<h3>{!$Label.smagicinteract__slct_tmpl_typ}</h3>
+</apex:facet>
+    <apex:selectList value="{!templateType}" size="1" style="margin-left:15px;">
+        <apex:actionSupport event="onchange"  action="{!resetFieldOnTemplateTypeChange}" rerender="templateParams, pageMessageSection,insertButton,templateText" status="objectStatus"/>
+        <apex:selectOptions value="{!mainTemplateObjects}"/>
+    </apex:selectList>
+    <apex:actionStatus startText="{!$Label.smagicinteract__load_object_status}" stopText="" id="objectStatus" />
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="{!$Label.smagicinteract__tmpl_txt}" id="templateParams" columns="10" >
+<apex:facet name="header">
+	<h3>{!$Label.smagicinteract__tmpl_txt}</h3>
+</apex:facet>
+    <table>
+   <tr>
+        <td>
+            <apex:outputText style="color:green;font-size:14px;" id="numberOfChars" value="{!$Label.smagicinteract__charater_rev_count_msg}">
+			 <apex:param value="700"/>
+			</apex:outputText>
+        </td>
+    </tr>
+    <tr><td>
+        <apex:pageBlockSectionItem id="templateParamsSectionItem">
+            <apex:selectList value="{!objectType}" size="1" style="width:140px;" id="objectSelectList" >
+                <apex:actionSupport event="onchange" action="{!resetFieldOnObjectChange}" rerender="fieldSelectList, fieldSelectList1, fieldSelectList2, pageMessageSection" status="fieldStatus" />
+                <apex:selectOptions value="{!templateObjects}"/>
+            </apex:selectList>
+            <apex:selectList value="{!fieldName}" size="1" style="width:140px;" id="fieldSelectList" >
+                <apex:actionSupport event="onchange" action="{!resetField2Value}" rerender="fieldSelectList1, fieldSelectList2, pageMessageSection" status="fieldStatus" />
+                 <apex:selectOptions id="fieldSelectOptionList" value="{!fieldItems}"/>
+            </apex:selectList>
+      </apex:pageBlockSectionItem>
+    </td>
+    <td><apex:pageBlockSectionItem id="templateParamsSectionItem1">  
+
+            <apex:selectList value="{!fieldName1}" size="1" style="width:140px;" id="fieldSelectList1" >
+                <apex:actionSupport event="onchange"  rerender="fieldSelectList2, pageMessageSection" status="fieldStatus" />
+                <apex:selectOptions id="fieldSelectOptionList1" value="{!fieldItems1}"/>
+            </apex:selectList>
+            <apex:selectList value="{!fieldName2}" size="1" style="width:140px;" id="fieldSelectList2" >
+                <apex:selectOptions id="fieldSelectOptionList2" value="{!fieldItems2}"/>
+            </apex:selectList>
+        </apex:pageBlockSectionItem></td>
+    <td>
+        <apex:commandButton id="insertButton" action="{!dummyAction}" onclick="changeTemplateText(this,'{!$Component.templateTextSectionItem.templateText}', '{!$Component.templateParams.templateParamsSectionItem.objectSelectList}', '{!$Component.templateParams.templateParamsSectionItem.fieldSelectList}', '{!$Component.templateParams.templateParamsSectionItem1.fieldSelectList1}', '{!$Component.templateParams.templateParamsSectionItem1.fieldSelectList2}');characterCounter('controllerDiv','{!$Component.formId.main.templateParams.templateTextSectionItem.templateText}','{!$Component.formId.main.templateParams.numberOfChars}','{!$Label.smagicinteract__initial_char_rev_count_msg}','decrement');return false; " value="{!$Label.smagicinteract__insert_btn}" style="margin-left:0px;margin-top:0px;"  />
+    </td><td>
+        <apex:actionStatus startText="{!$Label.smagicinteract__load_field_status}" stopText="" id="fieldStatus"/>
+    </td></tr>
+    <tr><td>
+        <apex:pageBlockSectionItem labelStyle="text-align:left;"  id="templateTextSectionItem">
+            <apex:inputField value="{!smagicinteract__SMS_Template__c.smagicinteract__Text__c}" id="templateText" style="width:400px; height:80px; text-align:left;" onkeyup="characterCounter('controllerDiv','{!$Component.formId.main.templateParams.templateTextSectionItem.templateText}','{!$Component.formId.main.templateParams.numberOfChars}','{!$Label.smagicinteract__initial_char_rev_count_msg}','decrement');" />
+        </apex:pageBlockSectionItem>
+    </td></tr>
+    </table>
+</apex:pageBlockSection>
+
+<apex:pageBlockButtons location="bottom" >
+    <apex:commandButton action="{!saveOver}" value="{!$Label.smagicinteract__save}" title="{!$Label.smagicinteract__save}" onclick="document.getElementById('{!$Component.templateParams.templateParamsSectionItem.fieldSelectList}').value='None';"/>
+    <apex:commandButton action="{!cancel}" value="{!$Label.smagicinteract__cancel}" title="{!$Label.smagicinteract__cancel}" />
+    <apex:commandButton action="{!deleteOver}" title="{!$Label.smagicinteract__delete}" rendered="{!IF((smsTemplate.id == null), false, true)}" value="{!$Label.smagicinteract__delete_btn}" />
+</apex:pageBlockButtons>
+</apex:pageBlock>
+
+</apex:form>
+
+</apex:outputPanel>
+</apex:page>

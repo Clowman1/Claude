@@ -1,0 +1,25 @@
+<apex:page title="{!$Label.dfsle__DocuSign}" controller="dfsle.EnvelopeActionSummaryController">
+  <apex:includeLightning />
+  <div id="postTemplateActionId" />
+  <script>
+    var _sourceId = '{!JSENCODE($CurrentPage.parameters.sId)}';
+    var _namespace = '{!JSENCODE(namespace)}';
+    $Lightning.use(_namespace + ':TemplateActionSummary', function () {
+      $Lightning.createComponent(_namespace + ':postTemplateAction',
+        {
+          recordId: _sourceId
+        },
+        "postTemplateActionId",
+        function (cmp) {
+        });
+    });
+  </script>
+
+  <!-- Pull the Wootric Snippet -->
+  <apex:includeScript value="{!$Resource.dfsle__wootricSdk}"/>
+  <script type="text/javascript">
+    var uIdHash = '{!JSENCODE($CurrentPage.parameters.userIdHash)}';
+  </script>
+  <apex:includeScript value="{!$Resource.dfsle__wootricUtils}"/>
+  <script>wootricUtils.displaySurvey('SalesforceEnvelope', uIdHash)</script>
+</apex:page>

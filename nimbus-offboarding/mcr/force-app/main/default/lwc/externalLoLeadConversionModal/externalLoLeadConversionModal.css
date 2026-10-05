@@ -1,0 +1,149 @@
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 31, 54, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9000;
+}
+
+.modal-card {
+    width: min(640px, 100%);
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #dfe8f3;
+    box-shadow: 0 24px 48px rgba(15, 31, 54, 0.18);
+}
+
+.modal-header {
+    padding: 20px 20px 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.modal-header p {
+    margin: 8px 0 0;
+    color: #3d6296;
+    font-size: 14px;
+}
+
+.modal-body {
+    padding: 16px 20px;
+}
+
+.modal-body.loading {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checklist-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px solid #f1f5fa;
+    font-size: 14px;
+}
+
+.checklist-row:first-child {
+    border-top: none;
+}
+
+.checklist-row dt {
+    color: #3d6296;
+}
+
+.checklist-row dd {
+    margin: 0;
+    font-weight: 600;
+    white-space: pre-wrap;
+}
+
+.warning {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff8e6;
+    border: 1px solid #f1d38a;
+    font-size: 13px;
+}
+
+.ack {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 20px 20px;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-outline {
+    border: 1px solid #c7d6ea;
+    background: #fff;
+    color: #243c60;
+}
+
+.btn-brand {
+    border: none;
+    background: #1b4d8c;
+    color: #fff;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.checklist-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+}
+.received-btn {
+    margin-left: auto;
+    padding: 3px 10px;
+    border: 1px solid #c9d6ea;
+    border-radius: 999px;
+    background: #eef3fb;
+    color: #24386a;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.received-btn:focus-visible {
+    outline: 2px solid #24386a;
+    outline-offset: 2px;
+}

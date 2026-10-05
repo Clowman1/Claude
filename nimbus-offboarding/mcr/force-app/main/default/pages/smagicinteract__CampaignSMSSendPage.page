@@ -1,0 +1,398 @@
+<apex:page controller="smagicinteract.CampaignManageController" readonly="true" tabStyle="SM_Home__tab">
+    <apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/js/jquery-1.10.2.js')}"/>
+    
+    <script>
+    
+    $( document ).ready(function() { 
+        var selectedDefaultSenderId = '{!JSINHTMLENCODE(defaultSenderId)}';
+        document.getElementById("j_id0:formId:main:senderIdList").value = selectedDefaultSenderId;
+    }); 
+    
+    $(document).on("keypress", ":input:not(textarea)", function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
+
+    </script>
+    
+    <style type="text/css">
+        .custPopup{
+        background-color: white;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #000000;
+        z-index: 9999;
+        padding:10px;
+        position: absolute;
+        width: 350px;
+        left:40%;
+        top:250px;
+        }
+        .popupBackground{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        }
+        .apexp .bPageBlock .detailList {
+        width: inherit;
+        }
+        
+                body .bPageBlock .pbBody .labelCol, body .bPageBlock .pbBody .dataCol, body .bPageBlock .pbBody .data2Col, body .print .topics-label, body .print .topics-list {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 0px;
+            padding-right: 0px;
+            word-wrap: break-word;
+           /* white-space: pre-line; */
+            
+        }
+        
+        .apexp .detailList .list .headerRow th {
+            border-bottom: 2px solid #ccc;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+                
+        .apexp .bPageBlock .detailList table.unrelatedTableStyleClass {
+            table-layout: fixed; 
+            width: 40%;
+        }
+        
+        .inputSearch {
+            max-width: 99%;
+        }
+        
+        body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th {
+            padding: 2px 2px 2px 2px;
+        }
+        
+        .apexp .detailList .list .headerRow .rowNoHeaderClass {
+            width:6%;
+        }
+        .apexp .detailList .list .headerRow .unrelObjectHeaderClass {
+            width: 20%;
+        }
+        .apexp .detailList .list .headerRow .inputSearchHeaderClass {
+            width: 20%;
+        }
+        .apexp .detailList .list .headerRow .SearchImgHeaderClass {
+            width: 13%;
+        }
+        .apexp .detailList .list .headerRow .recordNameHeaderClass {
+            width: 27%;
+        }
+        .apexp .detailList .list .headerRow .removeHeaderClass {
+            width: 15%;
+        }
+        body .pbBody table.list tr.dataRow td.SearchImgClass {
+            vertical-align:middle;
+            text-align:center;
+        } 
+        body .pbBody table.list tr.dataRow td.removeClass{
+            vertical-align:middle;
+            text-align:center;
+        }
+        
+        
+    </style>
+    
+    <apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToSendCampaignMessage}"> 
+        <div style="width:700px;margin:20px auto; text-align:center;line-height:40px;" >
+            <h1 style="font-size:30px;">{!$Label.CAMP_MNG_CANNOT_SND_MSG} </h1> <br/> 
+            <h5 style="font-size:15px;">{!$Label.CAMP_MNG_PLZ_CNTCT_ADMN}</h5> <br/>                   
+        </div>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="veryOutermostPanel" rendered="{!$Permission.smagicinteract__AllowToSendCampaignMessage}" > 
+        
+        <apex:form id="formId">
+            
+            <apex:pageMessages escape="false" id="pageMessage"/>
+            
+            <apex:pageBlock id="main" title="{!$Label.smagicinteract__run_sms_campaign}" rendered="{!isRegistered}" helpTitle="{!$Label.smagicinteract__help_msg}" helpUrl="/apex/SMSMagicHelp?from=CampaignSMSSend" >
+                
+                <apex:outputPanel styleClass="popupBackground" rendered="{!isConfigurationDone}" />
+                <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isConfigurationDone}"  >
+                    <div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+                        <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;"> Configure SMS Magic  </div> 
+                    </div> 
+                    <br /><br />
+                    <apex:outputPanel style="font-size:15px;">
+                        {!$Label.smagicinteract__setup_wizard_msg}  <br/><br/><br/><br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel style="margin-left:40%">
+                        <apex:commandButton title="{!$Label.smagicinteract__ok}" value="  {!$Label.smagicinteract__ok}  " action="{!openSetUpWizard}"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                
+                
+                <table>
+                    <tr><td>
+                        <table> 
+                            <tr>
+                                <td class="labelCol">
+                                    {!$Label.smagicinteract__campaign_name} : 
+                                </td>
+                                <td> 
+                                    <apex:outputLabel id="campaginName" value="{!campaignName}" style="width: 165px; font-family: Times New Roman; font-size:15px; " /> <br /><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="labelCol">
+                                    {!$Label.SENDER_ID} : 
+                                </td>
+                                <td>
+                                    <apex:selectList id="senderIdList" value="{!senderId}" size="1" style="max-width:150px;width:150px;">
+                                        <apex:selectOptions value="{!senderIdDropDown}" />
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr> 
+                            <apex:outputPanel rendered="{! isContactAccessible}">
+                            <tr>
+                                <td class="labelCol"> 
+                                    {!$Label.smagicinteract__slct_tmpl_con} :   
+                                </td>
+                                <td>
+                                    <apex:selectList id="contactTemplateList" value="{!contactTemplateName}" size="1" onchange="changeContactTpl();">
+                                        <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__chs_tmpl}" />
+                                        <apex:selectOptions value="{!contactTemplateDropDown}" />
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td ><apex:actionFunction name="changeContactTpl" action="{!changeTemplateText}" status="contactTemplateLoadingStatus" rerender="contactTextContent,statusWiseDetails,sendSms, scheduleValidateSms,pageMessage" oncomplete="characterCounter('controllerDiv','{!$Component.formId.main.contactTextContent}','{!$Component.formId.main.numberOfCharsForContact}','{!$Label.smagicinteract__charater_count_msg}');"/></td>
+                                <td>
+                                    <apex:actionStatus id="contactTemplateLoadingStatus" startText="{!$Label.smagicinteract__load_con_tmpl_status}" stopText="" layout="inline" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <apex:outputText style="color:green;font-size:12px;" id="numberOfCharsForContact" value="{!$Label.smagicinteract__initial_charater_count_msg}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="labelCol">
+                                    {!$Label.smagicinteract__con_sms_txt} :
+                                </td>
+                                <td>
+                                    <apex:inputTextarea id="contactTextContent" value="{!contactTextContent}" style="width:300px;height:80px;text-align:left;" onblur="refreshStats()" onkeyup="characterCounter('controllerDiv','{!$Component.formId.main.contactTextContent}','{!$Component.formId.main.numberOfCharsForContact}','{!$Label.smagicinteract__charater_count_msg}');" readonly="{!hasPermissionForTemplateSelection}"/><br /><br />
+                                </td>   
+                            </tr>
+                            
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! isLeadAccessible}">
+                            <tr>
+                                <td class="labelCol">    
+                                    {!$Label.smagicinteract__slct_tmpl_lead} : 
+                                </td>
+                                <td>
+                                    <apex:selectList id="leadTempleteList" value="{!leadTemplateName}" size="1" onchange="changeLeadTpl();">
+                                        <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__chs_tmpl}" />
+                                        <apex:selectOptions value="{!leadTemplateDropDown}" />
+                                    </apex:selectList>
+                                </td></tr>
+                            <tr>
+                                <td><apex:actionFunction name="changeLeadTpl" action="{!changeTemplateText}" status="leadTemplateLoadingStatus" rerender="leadTextContent,statusWiseDetails,sendSms, scheduleValidateSms,pageMessage" oncomplete="characterCounter('controllerDiv','{!$Component.formId.main.leadTextContent}','{!$Component.formId.main.numberOfCharsForLead}','{!$Label.smagicinteract__charater_count_msg}');"/></td>
+                                <td>
+                                    <apex:actionStatus id="leadTemplateLoadingStatus" startText="{!$Label.smagicinteract__load_lead_tmpl_status}" stopText="" layout="inline" />
+                                </td>
+                                
+                            </tr> 
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <apex:outputText style="color:green;font-size:12px;" id="numberOfCharsForLead" value="{!$Label.smagicinteract__charater_count_msg}" >
+                                        <apex:param value="0"/>
+                                    </apex:outputText>
+                                </td>
+                            </tr> 
+                            <tr><td class="labelCol"> {!$Label.smagicinteract__lead_sms_txt}: </td><td>
+                                <apex:inputTextarea id="leadTextContent" value="{!leadTextContent}" style="width:300px;height:80px;text-align:left;" onblur="refreshStats()" onkeyup="characterCounter('controllerDiv','{!$Component.formId.main.leadTextContent}','{!$Component.formId.main.numberOfCharsForLead}','{!$Label.smagicinteract__charater_count_msg}');" readonly="{!hasPermissionForTemplateSelection}"/><br /><br />
+                                </td></tr>
+                            
+                            </apex:outputPanel>
+                            <apex:actionFunction name="refreshStats" action="{!getTotalCount}" rerender="statusWiseDetails, sendSms, scheduleValidateSms" /> 
+                            
+                            <tr>
+                                <td class="labelCol">
+                                    {!$Label.smagicinteract__fltr_member_by_status}: 
+                                </td>
+                                
+                                <td>
+                                    
+                                    <table>
+                                        <tr>
+                                            <td style="width:115px;">
+                                                
+                                                <apex:selectList id="availableRecipient" value="{!availableRecipientList}" multiselect="true" size="6" style="width:100%;">                                                          
+                                                    <apex:selectOptions value="{!availableRecipient}" />                           
+                                                </apex:selectList>                    
+                                                
+                                            </td>
+                                            <td>
+                                                <br />  
+                                                <apex:commandButton action="{!leftToRightMove}" value=">>" id="lefttoright" rerender="availableRecipient, selectedRecipient, statusWiseDetails, sendSms, scheduleValidateSms" />
+                                                <br/>
+                                                <apex:commandButton action="{!rightToLeftMove}" value="<<" id="righttoleft"  rerender="availableRecipient, selectedRecipient, statusWiseDetails, sendSms, scheduleValidateSms" />
+                                            </td>
+                                            
+                                            <td style="width:115px;">
+                                                <apex:selectList id="selectedRecipient" value="{!selectedRecipientList}" multiselect="true" size="6" style="width:100%;">                             
+                                                    <apex:selectOptions value="{!selectedRecipient}" />  
+                                                </apex:selectList>
+                                            </td >
+                                            
+                                        </tr>
+                                    </table>
+                                    
+                                </td></tr>
+                            
+                            <tr><td class="labelCol">
+                                {!$Label.SEND_TO_OPTOUT_MEMBERS} : 
+                                </td>
+                                
+                                <td> 
+                                    <apex:selectList id="optOutList" value="{!optOutFieldValue}" size="1" disabled="{!hasPermissionToChangeOptOut}">
+                                        <apex:actionSupport event="onchange" action="{!getTotalCount}" rerender="statusWiseDetails, sendSms, scheduleValidateSms" />
+                                        <apex:selectOptions value="{!optOutList}"/>
+                                    </apex:selectList><br /><br />
+                                </td>
+                            </tr>
+                            
+                        </table>
+                        </td>
+                        <td style="width: 200px;">&nbsp;</td>
+                        
+                        <td>
+                            
+                        </td>
+                    </tr>
+                </table>
+                
+                                 <!-- section for unrelated functionality.-->
+                <apex:outputPanel id="unrelated" rendered="{!showUnrelatedPanel}"  styleClass="unrelatedPanelStyleClass"> 
+                    <apex:pageBlockSection id="blockSectionId1" columns="1" title="{!$Label.smagicinteract__custom_lookup}">
+                        <apex:variable var="rowNumber" value="{!0}"/>
+                        <apex:pageBlockTable title="{!$Label.smagicinteract__unrelated_panel}" var="wrap" value="{!unrelatedObjectStoreList}" styleClass="unrelatedTableStyleClass">
+                            
+                            <apex:column headerValue="{!$Label.smagicinteract__number}" headerClass="rowNoHeaderClass" styleClass="rowNoClass">
+                                <apex:outputText value="{!rowNumber+1}" style="text-align:center;"> 
+                                    <apex:variable var="rowNumber" value="{!rowNumber+1}"/>
+                                </apex:outputText> 
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.smagicinteract__unrelated_object_name}" headerClass="unrelObjectHeaderClass" styleClass="unrelObjectClass">
+                                <apex:outputText title="{!$Label.smagicinteract__unrelated_object_name}" value="{!wrap.objectLabel}"/>
+                            </apex:column>
+                            <apex:column title="{!$Label.smagicinteract__unrelated_search_helper_text}" headerValue="{!$Label.smagicinteract__search_string}" headerClass="inputSearchHeaderClass" styleClass="inputSearch">
+                                <apex:inputText id="searchStringText" value="{!wrap.searchString}" styleclass="inputSearch" />
+                            </apex:column>                         
+                            <apex:column id="searchButtonCol" headerClass="SearchImgHeaderClass" styleClass="SearchImgClass">
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__search}" /></apex:facet>
+                                <apex:image value="{!searchImageUrl}" title="{!$Label.smagicinteract__search_all_fields}">
+                                    <apex:actionSupport rerender="pageMessage,unrelated" action="{!populateRecordList}" event="onclick">
+                                        <apex:param name="rowIndexRemove" value="{!rowNumber}" assignTo="{!rowCount}" />
+                                    </apex:actionSupport>
+                                </apex:image>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.smagicinteract__selected_record}" id="selRecId" headerClass="recordNameHeaderClass" styleClass="recordNameClass">  
+                                <apex:outputLink title="{!$Label.smagicinteract__unrelated_selected_record_helper}" value="{!'/'+ wrap.recordId}" target="_blank">{!wrap.recordName}</apex:outputLink>
+                            </apex:column>
+                            <apex:column id="removeUnrelatedId" headerClass="removeHeaderClass" styleClass="removeClass">
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__label_remove}" /></apex:facet>
+                                <apex:image value="{!imageUrl}" title="{!$Label.smagicinteract__remove}">
+                                    <apex:actionSupport rerender="pageMessage,unrelated" action="{!removeSelectedRecord}" event="onclick" immediate="true">
+                                        <apex:param name="rowIndexRemove" value="{!rowNumber}" assignTo="{!rowCount}" />
+                                    </apex:actionSupport>
+                                </apex:image>
+                            </apex:column>
+                            
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                    <apex:outputPanel id="radioPanel"  layout="block" style="overflow:auto;width:400px;height:100px" rendered="{!onSearch}">
+                        <span id="thePanel"><b>{!$Label.smagicinteract__search_result}</b></span>
+                         
+                        <apex:selectRadio value="{!selectedRecordId}" layout="pageDirection">
+                            <apex:selectOptions value="{!UnrelatedRecordList}"/>
+                            <apex:actionSupport event="onclick" action="{!recordSelection}" rerender="unrelated"/>
+                        </apex:selectRadio>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <c:SendSMSScheduler scComponentWrap="{!campScData}"/>
+                <br/>                
+                <apex:outputPanel id="confirmpopup" style="display:block;">
+                    
+                    <script type="text/javascript">
+                    window.scrollTo(0,0);
+                    setFocus();
+                    </script>
+                    <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayConfirmationPopUp}"/>
+                    <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayConfirmationPopUp}"  >
+                        <div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+                            <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">{!$Label.MSG_LABEL}</div> 
+                        </div> 
+                        <br />
+                        <apex:outputPanel style="font-size:15px;" >
+                            <apex:outputText value="{!confirmationPopupTextLine1}">
+                                <apex:param value="{!totalRecords}"/>
+                            </apex:outputText><br/><br />
+                            {!confirmationPopupTextLine2} <br/><br/><br/>
+                        </apex:outputPanel>
+                        <div align= "center">
+                            <apex:outputPanel style="font-size:15px">
+                                <apex:commandButton title="{!$Label.smagicinteract__ok}" value="  {!$Label.smagicinteract__ok}  " action="{!callBatch}" rendered="{!showConfirmSend}" /> &nbsp;&nbsp;
+                                <apex:commandButton title="{!$Label.smagicinteract__cancel}" value="  {!$Label.smagicinteract__cancel}  " action="{!redirectUser}" rendered="{!showConfirmCancel}" />
+                            </apex:outputPanel>
+                        </div>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+
+                <apex:outputPanel rendered="{! isLeadAccessible}">
+<apex:pageblockSection title="Lead MMS Section" columns="1">
+                <c:MMSComponent mmsComponentWrapper="{!mmsLeadDetails}" id="a1" idx="1"/>
+                </apex:pageblockSection>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{! isContactAccessible}">
+                <apex:pageblockSection title="Contact MMS Section" columns="1">
+                <c:MMSComponent mmsComponentWrapper="{!mmsContactDetails}" id="a2" idx="2"/>
+                                </apex:pageblockSection>
+
+                </apex:outputPanel>
+<br/><br/>                                
+               <apex:outputPanel id="statusWiseDetails" styleClass="labelCol" >
+                    <apex:outputText value="{!$Label.smagicinteract__campaign_stats_txt_dxr}">
+                        <apex:param value="{!totalLeads}"/>
+                        <apex:param value="{!totalContacts}"/>
+                    </apex:outputText>
+                </apex:outputPanel>
+
+                <apex:pageBlockButtons location="bottom" id="pageButtons" rendered="{!isRegistered}" >
+                    <apex:commandButton id="sendSms" value="{!$Label.smagicinteract__run_campaign}" title="{!$Label.smagicinteract__send_sms}" action="{!sendSMS}" disabled="{!IF (disableMe,true, false)}" rerender="confirmpopup,pageMessage" />
+                    <apex:commandButton id="scheduleValidateSms" rendered="{!If(isPackageAutomation && ($Permission.smagicinteract__AllowToScheduleMessage) ,true,false)}" value="{!$Label.smagicinteract__sc_schedule}" title="{!$Label.smagicinteract__sc_schedule}" action="{!scheduleValidate}" disabled="{!IF (disableMe,true, false)}" rerender="confirmpopup,pageMessage" />
+                    <apex:commandButton id="Cancel" value="{!$Label.smagicinteract__cancel}" title="{!$Label.smagicinteract__cancel}" action="{!cancelSMS}"/>
+                </apex:pageBlockButtons>
+                
+            </apex:pageBlock>
+        </apex:form>
+    </apex:outputPanel>
+    
+</apex:page>

@@ -1,0 +1,82 @@
+<apex:page id="CustomEnvelopeCreation" showHeader="true" sidebar="false" title="{!$Label.dfsle__DocuSign}" controller="dfsle.CustomEnvelopeCreationController"
+    action="{!createDraftEnvelope}">
+    <apex:includeLightning />
+    <apex:includeScript value="/support/console/60.0/integration.js" />
+    <apex:slds />
+    <style type="text/css">
+        /* CSS to override default padding applied in Lightning Experience */
+
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        /* CSS to override default padding applied in Classic Experience */
+
+        .bodyDiv .outerNoSidebar,
+        .noSidebarCell,
+        .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        .noSidebarCell #ds-spinner,
+        .noSidebarCell #ds-sending {
+            height: calc(100vh - 165px);
+        }
+    </style>
+    <div id="ds-sending" style="display: none;">
+    </div>
+    <div id="ds-spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+    <script>
+        function showSendingComponent() {
+            document.getElementById('ds-spinner').style.display = 'none';
+            document.getElementById('ds-sending').style.display = 'block';
+        }
+        const _navigateToURL = (event) => {
+            var url = event.getParam('url');
+            window.open(url, '_self');
+        };
+        window.onload = () => {
+
+            const _sourceId = '{!JSENCODE(sourceId)}';
+            const _namespace = '{!JSENCODE(namespace)}';
+            const _envelopeId = '{!JSENCODE(envelopeId)}';
+            const _recordName = '{!JSENCODE(recordName)}';
+            const _urlforParams = '{!JSENCODE(urlforParams)}';
+            const _errorMessage = '{!JSENCODE(errorMessage)}';
+            const _isConsoleView = sforce.console.isInConsole();
+            const _showEmailSubject = '{!IF(showEmailSubject, "true", "false")}';
+            const _showEmailMessage = '{!IF(showEmailMessage, "true", "false")}';
+            const _showRemindExpire = '{!IF(showRemindExpire, "true", "false")}';
+            const _sendingExperience = '{!JSENCODE(sendingExperience)}';
+            const _sendingComponent = _sendingExperience === 'send' ? _namespace + ':sendNow' : _namespace + ':sendingConfig';
+            $Lightning.use(_namespace + ':SendingApp', function () {
+                $Lightning.createComponent(_sendingComponent, {
+                    visualforce: true,
+                    recordId: _sourceId,
+                    recordName: _recordName,
+                    errorMessage: _errorMessage,
+                    settings: {
+                        sObjectName: '{!JSENCODE(sObjectName)}',
+                        sourceId: _sourceId,
+                        isCustomSending: true,
+                        urlforParams: _urlforParams,
+                        envelopeId: _envelopeId,
+                        sendingExperience: _sendingExperience,
+                        showEmailSubject: _showEmailSubject,
+                        showEmailMessage: _showEmailMessage,
+                        showRemindExpire: _showRemindExpire,
+                        isConsoleView: _isConsoleView
+                    }
+                }, 'ds-sending', function () {
+                    showSendingComponent();
+                    $A.eventService.addHandler({ 'event': 'force:navigateToURL', 'handler': _navigateToURL });
+                });
+            });
+        } 
+    </script>
+</apex:page>

@@ -1,0 +1,360 @@
+/*
+ * Light DOM stylesheet: unscoped, loaded only where this component renders.
+ * Page-level rules are gated on :has(.rhl-hero) so they never leak into another
+ * route after a client-side navigation (e.g. Login -> Forgot Password).
+ */
+
+/* ---------- Page layout around the Builder sections ---------- */
+body:has(.rhl-hero) {
+    --rhl-navy: #1b2a4a;
+    --rhl-navy-deep: #111c35;
+    --rhl-navy-mid: #24386a;
+    --rhl-amber: #f2b84b;
+    --rhl-ink: #1f2937;
+    --rhl-muted: #64748b;
+    --rhl-line: #e2e6ee;
+    --rhl-bg: #f5f7fb;
+    --rhl-font: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--rhl-bg);
+    font-family: var(--rhl-font);
+}
+body:has(.rhl-hero) .community_byo-scoped-header-and-footer__header-content {
+    display: none;
+}
+/* The hidden SEO/analytics region after the layout adds a 24px line box (page scroll) */
+:has(> .content-container .rhl-hero) ~ * {
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+.content-container:has(.rhl-hero) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.comm-section-container:has(.rhl-hero) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.comm-section-container:has(.rhl-hero) > .columns-content {
+    flex: 1;
+    align-items: stretch !important;
+    margin: 0 !important;
+    max-width: none !important;
+    gap: 0 !important;
+}
+.columns-content > :has(.rhl-hero),
+.columns-content > :has(.rhl-welcome) {
+    display: flex;
+    flex-direction: column;
+}
+.columns-content > :has(.rhl-hero) > .column-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+}
+.columns-content > :has(.rhl-hero) > .column-content > :has(> .rhl-hero) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sign-in column: centred stack, max 400px wide */
+.columns-content > :has(.rhl-welcome) > .column-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 32px !important;
+    background: linear-gradient(180deg, #fff 0%, var(--rhl-bg) 100%);
+}
+.columns-content > :has(.rhl-welcome) > .column-content > * {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 !important;
+}
+
+/* Standard login form: restyled through its styling hooks only */
+.columns-content > :has(.rhl-welcome) .comm-login-form {
+    --dxp-g-brand: var(--rhl-navy);
+    --dxp-g-brand-contrast: #fff;
+    --dxp-g-brand-1: var(--rhl-navy-mid);
+    --dxp-s-button-color: var(--rhl-navy);
+    --dxp-s-button-color-1: var(--rhl-navy-mid);
+    --dxp-s-button-color-hover: var(--rhl-navy-mid);
+    --dxp-s-button-color-focus: var(--rhl-navy-mid);
+    --dxp-s-button-color-contrast-1: #fff;
+    --dxp-s-button-radius: 8px;
+    --dxp-s-button-line-height: 2.75;
+    --dxp-s-form-element-text-line-height: 2.5;
+    --dxp-s-form-element-radius: 8px;
+    --dxp-s-link-text-color: var(--rhl-navy-mid);
+    --slds-c-button-brand-color-background: var(--rhl-navy);
+    --slds-c-button-brand-color-border: var(--rhl-navy);
+    --slds-c-button-brand-color-background-hover: var(--rhl-navy-mid);
+    --slds-c-button-brand-color-border-hover: var(--rhl-navy-mid);
+    --slds-c-button-radius-border: 8px;
+    --slds-c-button-line-height: 2.75rem;
+    --slds-c-input-radius-border: 8px;
+    --slds-c-input-sizing-height: 2.75rem;
+    --slds-c-card-radius-border: 14px;
+    --slds-c-card-color-border: var(--rhl-line);
+    --slds-c-card-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 12px 32px -12px rgba(27, 42, 74, 0.18);
+    --slds-c-card-spacing-block: 1.75rem;
+    --slds-c-card-spacing-inline: 1.75rem;
+    --slds-c-card-sizing-border: 1px;
+    font-family: var(--rhl-font);
+}
+
+/* Compliance footer section: full bleed */
+.comm-section-container:has(.rhl-foot) > .columns-content {
+    margin: 0 !important;
+    max-width: none !important;
+}
+.columns-content > :has(.rhl-foot) > .column-content {
+    padding: 0 !important;
+}
+
+/* ---------- Hero ---------- */
+.rhl-hero {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    font-family: var(--rhl-font);
+    background:
+        radial-gradient(1200px 600px at 110% -10%, rgba(92, 125, 200, 0.35), transparent 60%),
+        radial-gradient(800px 500px at -20% 110%, rgba(242, 184, 75, 0.1), transparent 60%),
+        linear-gradient(160deg, var(--rhl-navy-mid) 0%, var(--rhl-navy) 45%, var(--rhl-navy-deep) 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 40px 56px 0;
+}
+.rhl-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 75%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 75%);
+    pointer-events: none;
+}
+.rhl-hero > * {
+    position: relative;
+}
+.rhl-hero-logo {
+    width: 190px;
+    height: auto;
+    display: block;
+}
+.rhl-hero-copy {
+    margin-top: auto;
+    padding-top: 32px;
+    max-width: 540px;
+}
+.rhl-hero h1 {
+    font-family: var(--rhl-font);
+    font-size: 40px;
+    line-height: 1.12;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: 0 0 14px;
+}
+.rhl-hero h1 span {
+    color: #9fb6ea;
+}
+.rhl-lede {
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0 0 22px;
+}
+.rhl-benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+}
+.rhl-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+}
+.rhl-ico {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.rhl-ico svg {
+    width: 18px;
+    height: 18px;
+    stroke: #cfdaf5;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.rhl-scene {
+    display: block;
+    width: calc(100% + 112px);
+    max-width: none;
+    height: auto;
+    margin: 24px -56px 0;
+    font-family: var(--rhl-font);
+}
+.rhl-lift {
+    filter: drop-shadow(0 8px 10px rgba(10, 18, 38, 0.45));
+}
+
+/* ---------- Welcome + help ---------- */
+.rhl-welcome {
+    font-family: var(--rhl-font);
+    margin-bottom: 22px;
+}
+.rhl-welcome-logo {
+    width: 170px;
+    height: auto;
+    display: block;
+    margin-bottom: 36px;
+}
+.rhl-welcome h2 {
+    font-family: var(--rhl-font);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    color: var(--rhl-navy);
+}
+.rhl-welcome p {
+    color: var(--rhl-muted);
+    font-size: 15px;
+    margin: 0;
+}
+.rhl-help {
+    font-family: var(--rhl-font);
+    margin: 28px 0 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--rhl-muted);
+}
+
+/* ---------- Compliance footer ---------- */
+.rhl-foot {
+    background: var(--rhl-navy-deep);
+    color: rgba(255, 255, 255, 0.72);
+    font-family: var(--rhl-font);
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 14px 56px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.rhl-eho {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+    color: #fff;
+}
+.rhl-eho svg {
+    width: 30px;
+    height: 30px;
+}
+.rhl-eho span {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+.rhl-foot-info {
+    flex: 1;
+    min-width: 260px;
+}
+.rhl-foot-info strong {
+    color: #fff;
+    font-weight: 600;
+}
+.rhl-foot .rhl-foot-info a {
+    color: #cfdaf5 !important;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.rhl-foot-info a:focus-visible {
+    outline: 2px solid var(--rhl-amber);
+    outline-offset: 2px;
+}
+.rhl-sep {
+    opacity: 0.4;
+    margin: 0 6px;
+}
+.rhl-foot-copy {
+    flex: none;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 1025px) and (max-height: 840px) {
+    .rhl-benefits {
+        display: none;
+    }
+}
+@media (max-width: 1024px) {
+    .rhl-hero {
+        padding: 28px 24px 0;
+        flex: none;
+    }
+    .rhl-hero-logo {
+        width: 150px;
+    }
+    .rhl-hero-copy {
+        padding-top: 28px;
+    }
+    .rhl-hero h1 {
+        font-size: 30px;
+    }
+    .rhl-lede {
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+    .rhl-benefits {
+        display: none;
+    }
+    .rhl-scene {
+        margin: 20px -24px 0;
+        width: calc(100% + 48px);
+    }
+    .columns-content > :has(.rhl-welcome) > .column-content {
+        padding: 32px 16px 48px !important;
+    }
+    .rhl-welcome-logo {
+        display: none;
+    }
+    .rhl-foot {
+        padding: 18px 16px;
+        gap: 12px;
+    }
+    .rhl-foot-info span {
+        display: block;
+    }
+    .rhl-foot-info .rhl-sep,
+    .rhl-foot-info br {
+        display: none;
+    }
+}

@@ -1,0 +1,995 @@
+<!--
+  @description       :
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             :
+  @last modified on  : 02-25-2021
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  Modifications Log
+  Ver   Date         Author                               Modification
+  1.0   02-22-2021   ChangeMeIn@UserSettingsUnder.SFDoc   Initial Version
+-->
+<apex:page controller="rcsfl.AdminUIController" sidebar="false">
+    <base></base>
+    <script type="application/javascript">
+        var element = document.getElementsByTagName('base')[0];
+        var attrValue = "{!$Resource.Salesforce1}/";
+        element.setAttribute('href', attrValue);
+    </script>
+    <link rel="stylesheet" href="adminui/jquery-ui.css"></link>
+    <script src="adminui/jquery-min.js"></script>
+    <script src="adminui/jquery-ui-min.js"></script>
+
+    <style>
+        .saveBtn {
+            margin-top: 10px;
+        }
+
+        .saveBtn button {
+            padding: 5px 10px;
+        }
+
+        h1 {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        option {
+            font-size: 12px !important;
+        }
+
+        option[value*="rc_required"]:after {
+           content: ' *';
+           color: red;
+        }
+
+        table.custom-log {
+            border-collapse: seperate;
+            border-spacing: 22px;
+        }
+
+        td.btn-group {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .btn-label {
+            margin:7px 0;
+        }
+
+        .custom-log select {
+            min-width: 83px;
+            min-height: 112px;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            word-spacing: 2px;
+            font-size: 14px;
+            font-family: arial;
+        }
+
+        .auto-fill-info {
+            margin-left: 22px;
+            margin-top: -5px;
+            color: #757373;
+        }
+
+        .auto-fill-info li {
+            margin: 5px;
+        }
+
+        select {
+          width: 150px;
+        }
+
+        .hvs-warn-info {
+          margin-top: -5px;
+          margin-left: 15px;
+        }
+
+        .hvs-warn-list {
+          margin-top: 5px;
+        }
+
+        .hvs-warn-list:first-child {
+          margin-top: 10px;
+        }
+
+        .grey-font {
+          color: #757373;
+        }
+
+        .hvs_disposition_field select {
+            width: 250px;
+        }
+
+        .hvs-settings-section {
+           margin: 10px 25px;
+           display: none;
+        }
+
+        .hvs-settings-section input {
+          margin-left: 0px;
+        }
+
+        .infoIcon {
+          cursor: pointer;
+        }
+
+        .mouse-over-info {
+          border-color: #333;
+          padding: 8px 10px;
+          -moz-border-radius: 3px;
+          -webkit-border-radius: 3px;
+          border-radius: 3px;
+          font-size: 1em;
+          position: absolute;
+          width: 20em;
+          background-color: #fefdb9;
+          border: 1px solid black;
+          z-index: 11;
+          white-space: normal;
+          font-weight: normal;
+          color: #000;
+          transform: translate3d(47%, calc(-100% + -26px), 0px);
+          visibility: hidden;
+          transition: visibility .3s ease-out;
+        }
+
+        .mouse-over-info-active {
+          visibility: visible;
+        }
+
+        .info-object-manager {
+           transform: translate3d(107%, calc(-100% + -26px), 0px);
+        }
+
+        .info-dnc-tooltip {
+          transform: translate3d(calc(50% + -20px), -5px, 0px);
+        }
+
+        .dnc-toggle {
+          margin-top: 20px;
+          margin-bottom: 20px !important;
+        }
+
+        .dnc-toggle > * {
+          vertical-align: middle;
+        }
+
+        .radio-options-box {
+            margin-left: 22px;
+        }
+
+        .radio-options-group {
+          display: inline-block;
+        }
+
+        .radio-options-group + .radio-options-group {
+          margin-left: 100px;
+        }
+
+        .radio-options-group p {
+          margin-top: 0;
+          font-weight: bold;
+        }
+
+        .radio-option {
+            margin: 10px 0px;
+        }
+
+        .radio-option > * {
+          vertical-align: middle;
+        }
+
+        .radio-option input[type="radio"] {
+          margin: 0 5px;
+          width: 12px;
+          height: 12px;
+        }
+
+        .disabled {
+            color: #b5b9c5;
+        }
+
+        .custom-pbHeader {
+          border-bottom: 1px solid #dbdbdb;
+          padding: 10px 12px;
+        }
+
+        body .bPageBlock .pbTitle h2,
+        .custom-pbHeader .mainTitle {
+          color: #000;
+          font-size: 14px;
+        }
+
+        .custom-pbHeader .subTitle {
+          margin-top: 6px;
+        }
+
+        .tooltip-inner-ul {
+          margin: 0;
+          padding: 0;
+        }
+    </style>
+
+    <apex:sectionHeader title="Cloud Phone Settings"/>
+    <apex:form id="adminForm">
+        <apex:pageBlock title="Auto Save Setting" id="autoLogBlock">
+            <div>
+                Pop matching Salesforce entity record on call &nbsp;
+                <apex:selectList value="{!popOnRinging}" id="popOnRinging" multiselect="false" size="1">
+                    <apex:selectOption itemValue="{true}" itemLabel="ringing" />
+                    <apex:selectOption itemValue="{false}" itemLabel="answered" />
+                </apex:selectList>
+            </div>
+            <br />
+            <div>
+                <span id="autoLogCheckBoxWrapper" ><apex:inputCheckBox value="{!isAutoSave}" id="autoLogCheckbox"/></span> Auto create call log on &nbsp;
+                <span id="saveOnRingingWrapper" >
+                <apex:selectList value="{!saveOnRinging}" id="saveOnRinging" multiselect="false" size="1" disabled="{!isAutoSave!=true || popOnRinging!=true}" >
+                    <apex:selectOption itemValue="{true}" itemLabel="ringing" />
+                    <apex:selectOption itemValue="{false}" itemLabel="answered" />
+                </apex:selectList>
+                </span>
+            </div>
+
+            <div class="saveBtn">
+                <button id="autoLogSaveBtn"> Save </button>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock >
+            <apex:facet name="header">
+              <div class="custom-pbHeader">
+                <h2 class="mainTitle">Settings for Matching Caller Details</h2>
+                <p class="subTitle">These settings configures the objects that will be populated in the Name &amp; RelatedTo field in the Call Log.</p>
+              </div>
+            </apex:facet>
+            <div id="MatchingSettingBlock">
+                <div class="radio-options-box">
+                    <div class="radio-options-group">
+                        <div class="radio-option">
+                            <input type="radio" id="defaultEntityMatchRule" name="entityMatchRule" value="1" />
+                            <label for="defaultEntityMatchRule">Standard Match</label>
+                            <img src="/s.gif" class="infoIcon" alt="infoIcon" />
+                        </div>
+                                               <div class="mouse-over-info info-dnc-tooltip">
+                          The Standard Match will lookup for the phone number match for the following Salesforce Objects and populate them in the Name or RelatedTo field in the Call Log
+                          <ul class="tooltip-inner-ul">
+                            <li>Lead</li>
+                            <li>Contact</li>
+                            <li>Account</li>
+                            <li>Case</li>
+                            <li>Opportunity</li>
+                          </ul>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="softphoneEntityMatchRule" name="entityMatchRule" value="2" />
+                            <label for="softphoneEntityMatchRule">Custom Object Support</label>
+                            <img src="/s.gif" class="infoIcon" alt="infoIcon" />
+                        </div>
+                        <div class="mouse-over-info info-dnc-tooltip">
+                            In addition to matching the standard objects listed in the above option the Custom Object Support will rely on Softphone layout setting to match the phone number. All Salesforce standard and custom objects are supported. Refer to admin guide for more details.
+                        </div>
+                    </div>
+                </div>
+                <div class="saveBtn">
+                    <button type="button" id="entityMatchRuleSaveBtn">Save</button>
+                </div>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Associate Call/SMS Log with Person Account" id="accountRelatedTo">
+            <div>
+                Associate call/SMS log with Person Accounts using &nbsp;
+                <apex:selectList value="{!accountRelatedTo}" id="accountRelatedToOption" multiselect="false" size="1" >
+                    <apex:selectOption itemValue="{true}" itemLabel="Related to " />
+                    <apex:selectOption itemValue="{false}" itemLabel="Name" />
+                </apex:selectList> field.
+            </div>
+
+            <div class="saveBtn">
+                <button id="accountRelatedToBtn"> Save </button>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Associate Call/SMS Log with Person Account" id="accountRelatedToDisabled">
+            <apex:pageMessage id="msg" escape="0" summary="
+                Associate Call/SMS log with Person Account feature is not enabled. Please contact Salesforce support team to enable Person Account." severity="warning" strength="1"/>
+        </apex:pageBlock>
+
+
+        <apex:pageBlock >
+            <apex:facet name="header">
+              <div class="custom-pbHeader">
+                <h2 class="mainTitle">Do Not Call (DNC) Settings</h2>
+                <p class="subTitle">Turning On the DNC settings below will fully or partially restrict the users to call or message the records flagged with DNC within Salesforce.</p>
+              </div>
+            </apex:facet>
+            <div id="DNCSettingBlock">
+                <p class="dnc-toggle">
+                  <input type="checkbox" id="dncVerifyEnable"/>
+                  <span>Turn On DNC settings while calling or messaging</span>
+                </p>
+                <div class="radio-options-box">
+                    <div class="radio-options-group">
+                        <p>Call Settings</p>
+                        <div class="dnc-option radio-option">
+                            <input type="radio" id="notAllowDNCForceCall" name="dncCallMode" value="false" />
+                            <label for="notAllowDNCForceCall">Restrict calls for DNC records</label>
+                            <img src="/s.gif" class="infoIcon" id="notAllowDNCForceCallInfoIcon" alt="infoIcon" />
+                        </div>
+                        <div class="mouse-over-info info-dnc-tooltip">
+                          Users will be not be able to call if record is flagged as DNC
+                        </div>
+                        <div class="dnc-option radio-option">
+                            <input type="radio" id="allowDNCForceCall" name="dncCallMode" value="true" />
+                            <label for="allowDNCForceCall">Allow override on DNC records</label>
+                            <img src="/s.gif" class="infoIcon" id="allowDNCForceCallInfoIcon" alt="infoIcon" />
+                        </div>
+                        <div class="mouse-over-info info-dnc-tooltip">
+                          Users will be able to override and call a DNC record
+                        </div>
+                    </div>
+                    <div class="radio-options-group">
+                        <p>SMS Settings</p>
+                        <div class="dnc-option radio-option">
+                            <input type="radio" id="notAllowDNCForceSMS" name="dncSMSMode" value="false" />
+                            <label for="notAllowDNCForceSMS">Restrict SMS for DNC records</label>
+                            <img src="/s.gif" class="infoIcon" id="notAllowDNCForceSMSInfoIcon" alt="infoIcon" />
+                        </div>
+                        <div class="mouse-over-info info-dnc-tooltip">
+                          Users will be not be able to SMS if record is flagged as DNC
+                        </div>
+                        <div class="dnc-option radio-option">
+                            <input type="radio" id="allowDNCForceSMS" name="dncSMSMode" value="true" />
+                            <label for="allowDNCForceSMS">Allow override on DNC records</label>
+                            <img src="/s.gif" class="infoIcon" id="allowDNCForceSMSInfoIcon" alt="infoIcon" />
+                        </div>
+                        <div class="mouse-over-info info-dnc-tooltip">
+                          Users will be able to override and SMS a DNC record
+                        </div>
+                    </div>
+                </div>
+                <div class="saveBtn">
+                    <button type="button" id="dncModeSaveBtn">Save</button>
+                </div>
+            </div>
+        </apex:pageBlock>
+
+
+         <apex:pageBlock >
+            <apex:facet name="header">
+              <div class="custom-pbHeader">
+                <h2 class="mainTitle">Click to Dial/SMS</h2>
+              </div>
+              </apex:facet>
+              <div id="ClickToSettingsBlock">
+                <p class="subTitle">Click a phone number in Salesforce to:</p>
+                <div class="radio-options-box">
+                    <div class="radio-options-group">
+                        <div class="radio-option">
+                            <input type="radio" id="defaultClickToSettings" name="clickToSettings" value="0" />
+                            <label for="defaultClickToSettings">Call</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="sendSMSetting" name="clickToSettings" value="1" />
+                            <label for="sendSMSetting">Send SMS</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="userDecideSetting" name="clickToSettings" value="2" />
+                            <label for="userDecideSetting">Let the user decide</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="saveBtn">
+                    <button type="button" id="clickToSettingsSaveBtn">Save</button>
+                </div>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Autofill Related-To in Call Log for Click To Dial" id="autoFillEnhancementBlock">
+            <span id="autoFillBox" ><apex:inputCheckBox value="{!isAutoFill}" id="autoFillCheckbox"/></span> Enhanced autofill "Contact Relationship" when using Click-to-dial.
+            <div class="auto-fill-info">
+                <p>* With this toggle ON, app will:</p>
+                <list>
+                    <li>Autofill the name field with "contact" or "lead" when using Click-to-dial.</li>
+                    <li>Autofill the entity (account, case, opportunity...etc) through which the contact was called using Click-to-dial.</li>
+                </list>
+            </div>
+            <div class="saveBtn">
+                <button id="autoFillSaveBtn"> Save </button>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Log Customization" id="customLogBlock">
+            <apex:outputText style="font-size:12px" value="* The field types supported in call log are Date, Picklist, Text and Text Area.">
+            </apex:outputText>
+            <table class="custom-log">
+                <tr>
+                    <td>
+                        <h1> Available Fields </h1>
+                        <apex:selectList multiselect="true" id="availableList" size="7">
+                            <apex:selectOptions value="{!availableLogFields}" />
+                        </apex:selectList>
+                    </td>
+
+                    <td class="btn-group">
+                        <div class="btn-label"> Add </div>
+                        <span id="onClickRightArrowIcon">
+                            <img src="/s.gif" class="rightArrowIcon" alt="Add"/>
+                        </span>
+                        <div class="btn-label"> Remove </div>
+                        <span id="onClickLeftArrowIcon">
+                            <img src="/s.gif" class="leftArrowIcon" alt="Remove"/>
+                        </span>
+                    </td>
+
+                    <td>
+                        <h1> Selected Fields </h1>
+                        <apex:selectList multiselect="true" id="selectedList" size="7">
+                            <apex:selectOptions value="{!selectedLogFields}" />
+                        </apex:selectList>
+                    </td>
+
+                    <td class="btn-group">
+                        <div class="btn-label"> Up </div>
+                        <span id="onClickupArrowIcon">
+                            <img src="/s.gif" class="upArrowIcon" alt="Up"/>
+                        </span>
+                        <div class="btn-label"> Down </div>
+                        <span id="onClickDownArrowIcon">
+                            <img src="/s.gif" class="downArrowIcon" alt="Down"/>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <div class="saveBtn">
+                <button id="customLogSaveBtn"> Save </button>
+            </div>
+        </apex:pageBlock>
+
+          <apex:pageBlock title="High Velocity Sales (HVS) Settings" id="hvsModeEnhancementBlock">
+             <apex:outputPanel rendered="{!hasHvsPermission}">
+               <div>
+                <span id="hvsModeCheckBoxWrapper">
+                    <apex:inputCheckBox value="{!isHvsMode}" id="hvsModeCheckbox" disabled="{!!hasHvsPermission}"/>
+                </span>Enable HVS Mode<span class="grey-font"> (Supported only in Lightning Experience)</span> &nbsp;
+               </div>
+             </apex:outputPanel>
+             <apex:outputPanel rendered="{!!hasHvsPermission}">
+               <apex:pageMessage id="msg" escape="0" summary="Your Salesforce do not have high velocity sales permission." severity="warning" strength="1"/>
+             </apex:outputPanel>
+              <apex:outputPanel id="hvsSettingsSection" layout="block" styleClass="hvs-settings-section">
+              <div class="hvs_disposition_field">
+                Select a custom field for HVS Disposition
+                <br/>
+                <br/>
+                <apex:selectList value="{!hvsDispositionField}" id="hvsDispositionFieldOption" multiselect="false" size="1">
+                    <apex:selectOptions value="{!availableHvsDispositionFields}" />
+                </apex:selectList>
+              </div>
+              <p>
+                <apex:inputCheckBox value="{!isMandatory}" id="isMandatoryCheckbox" disabled="{!!hasHvsPermission}" />
+                Mark HVS Disposition as a required field
+                <img src="/s.gif" alt="mandatory checkbox" class="infoIcon" />
+              </p>
+              <div class="mouse-over-info info-mandatory-checkbox">
+              When checked, users are required to fill the HVS Disposition field to complete the call log and move the sales cadence forward
+              </div>
+              <p>
+                <apex:inputCheckBox value="{!toVoiceMail}" id="toVoiceMailCheckbox" disabled="{!!hasHvsPermission}" />
+                Redirect incoming calls to Voicemail
+                <img src="/s.gif" class="infoIcon" alt="infoIcon" />
+              </p>
+              <div class="mouse-over-info">
+                If there is an active High Velocity Sales call, new incoming calls will be directed to voicemail
+              </div>
+              <p> Modify your HVS Disposition value in the <a href="javascript:void(0)" id="objectManager" >Object Manager</a>
+                <img src="/s.gif" alt="object manager" class="infoIcon" />
+              </p>
+              <div class="mouse-over-info info-object-manager">
+                High Velocity Sales Disposition value can be found under “Activity” or “Task” objects in the Object Manager
+              </div>
+              <p> Configure your HVS call result matching in <a href="javascript:void(0)" id="hvsSetting" >High Velocity Sales Settings</a> </p>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!hasHvsPermission}">
+            <div class="saveBtn">
+              <button id="hvsModeSaveBtn">Save</button>
+            </div>
+            </apex:outputPanel>
+        </apex:pageBlock>
+
+    </apex:form>
+
+
+    <script>
+        $.extend({
+            alert: function (message, title) {
+                $("<div></div>").dialog({
+                    closeText: "",
+                    buttons: { "OK": function () { $(this).dialog("close"); } },
+                    close: function (event, ui) { $(this).remove(); },
+                    resizable: false,
+                    title: title,
+                    modal: true
+                }).text(message);
+            }
+        });
+
+        var MESSAGE = {
+            AUTOSAVE: 'Auto Save Call Log Setting',
+            DNCSAVE: 'Do Not Call Settings',
+            AUTOFILL: 'Autofill Related-To in Call Log for Click To Dial',
+            CUSTOMLOG: 'Custom Call Log Setting',
+            POP_SCREEN: 'Pop Screen Setting',
+            ACCOUNT_RELATED_TO: 'Person Account Setting',
+            CLICKTO: 'Click to Dial/SMS Setting',
+            SAVE: 'Save',
+            SAVING: 'Saving...',
+            INVALID_OPERATION: 'Invalid operation, required fields have to be selected.',
+            UPDATE_SUCCESSFUL_AUTOSAVE: "Update is successful. \n\n Please refresh any page containing RingCentral for Salesforce for these settings to take effect.",
+            UPDATE_SUCCESSFUL_CUSTOM_FIELDS: "Update is successful. \n\n Please refresh any page containing RingCentral for Salesforce for it to take effect. \n\n All the mandatory fields need to have value for a call log to be successfully saved.",
+            UPDATE_SUCCESSFUL_ACCOUNT_RELATED_TO: "Update is successful. \n\n Please refresh any page containing RingCentral for Salesforce for it to take effect.",
+            UPDATE_FAILURE: "Update fails. Please try again later.",
+            HVS: "High Velocity Sales Setting",
+            PHONE_NUMBER_MATCHING: "Settings for Matching Caller Details",
+        };
+        var orgDomain = window.UserContext && window.UserContext.salesforceURL;
+
+         $("#autoLogSaveBtn").click(function(event){
+             var autoLogEl = document.getElementById('{!$Component.adminForm.autoLogBlock.autoLogCheckbox}');
+             var isAutoSave = autoLogEl && autoLogEl.checked ? true : false;
+
+             var saveOnRingingEl = document.getElementById('{!$Component.adminForm.autoLogBlock.saveOnRinging}');
+             var saveOnRinging = saveOnRingingEl && saveOnRingingEl.value === "{true}" ? true : false;
+
+             var popOnRingingEl = document.getElementById('{!$Component.adminForm.autoLogBlock.popOnRinging}');
+             var popOnRinging = popOnRingingEl && popOnRingingEl.value === "{true}" ? true : false;
+
+             var btnElem = $("#autoLogSaveBtn")[0];
+
+             btnElem.innerHTML = MESSAGE.SAVING;
+             btnElem.disabled = true;
+
+             Visualforce.remoting.Manager.invokeAction(
+                 '{!$RemoteAction.AdminUIController.saveAutoSaveSettings}',
+                isAutoSave,
+                saveOnRinging,
+                popOnRinging,
+                function(result, event) {
+                    if (event.statusCode === 200) {
+                        $.alert(MESSAGE.UPDATE_SUCCESSFUL_AUTOSAVE, MESSAGE.AUTOSAVE);
+                    } else {
+                        $.alert(event.message || MESSAGE.UPDATE_FAILURE, MESSAGE.AUTOSAVE);
+                    }
+                    btnElem.innerHTML = MESSAGE.SAVE;
+                    btnElem.disabled = false;
+                },
+                {escape: false}
+            );
+            event.preventDefault();
+        });
+
+
+        $('#clickToSettingsSaveBtn').on('click', function(){
+            const btnEle = $('#clickToSettingsSaveBtn');
+            const clickToSettingsValue = $('#ClickToSettingsBlock input:radio[name=clickToSettings]:checked').val()
+            const settings = {
+                ...jsonSettings,
+                clickToSettings: clickToSettingsValue,
+            };
+            setJsonSettings({
+                settings,
+                targetSaveBtn: btnEle,
+                saveMessage: MESSAGE.CLICKTO,
+            });
+        })
+
+
+
+         $("#autoFillSaveBtn").click(function(event){
+             var autoFillEl = document.getElementById('{!$Component.adminForm.autoFillEnhancementBlock.autoFillCheckbox}');
+             var isAutoFill = autoFillEl && autoFillEl.checked ? true : false;
+
+             var btnElem = $("#autoFillSaveBtn")[0];
+
+             btnElem.innerHTML = MESSAGE.SAVING;
+             btnElem.disabled = true;
+
+             Visualforce.remoting.Manager.invokeAction(
+                 '{!$RemoteAction.AdminUIController.saveAutoFillSettings}',
+                isAutoFill,
+                function(result, event) {
+                    if (event.statusCode === 200) {
+                        $.alert(MESSAGE.UPDATE_SUCCESSFUL_AUTOSAVE, MESSAGE.AUTOFILL);
+                    } else {
+                        $.alert(event.message || MESSAGE.UPDATE_FAILURE, MESSAGE.AUTOFILL);
+                    }
+                    btnElem.innerHTML = MESSAGE.SAVE;
+                    btnElem.disabled = false;
+                },
+                {escape: false}
+            );
+            event.preventDefault();
+        });
+
+        function updateSaveOnRinging() {
+            var autoLogEl = document.getElementById('{!$Component.adminForm.autoLogBlock.autoLogCheckbox}');
+            var isAutoSave = autoLogEl && autoLogEl.checked ? true : false;
+
+            var saveOnRingingEl = document.getElementById('{!$Component.adminForm.autoLogBlock.saveOnRinging}');
+
+            var popOnRingingEl = document.getElementById('{!$Component.adminForm.autoLogBlock.popOnRinging}');
+            var popOnRinging = popOnRingingEl && popOnRingingEl.value === "{true}" ? true : false;
+
+            saveOnRingingEl.disabled = !isAutoSave || !popOnRinging;
+            if(!popOnRinging) {
+                saveOnRingingEl.value = "{false}";
+            } else if(!isAutoSave) {
+              saveOnRingingEl.value = "{true}";
+            }
+        }
+        $("#autoLogCheckBoxWrapper input").on("change", updateSaveOnRinging);
+        $(document.getElementById("{!$Component.adminForm.autoLogBlock.popOnRinging}")).on("change", updateSaveOnRinging);
+
+
+        $("#customLogSaveBtn").click(function(event){
+            event.preventDefault();
+            var selectedListElem = $(document.getElementById('{!$Component.adminForm.customLogBlock.selectedList}')),
+                buttonElem = $("#customLogSaveBtn")[0];
+            var selectedFieldsArr = [];
+            selectedListElem.find("option").each(function(index, option) {
+                if (option.value && option.text) {
+                    var optionVal = option.value.replace(/-rc_non_required|-rc_required$/,'');
+                    selectedFieldsArr.push(optionVal);
+                }
+            });
+            buttonElem.innerHTML = MESSAGE.SAVING;
+            buttonElem.disabled = true;
+
+
+
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AdminUIController.setCustomLogFields}',
+                selectedFieldsArr,
+                function(result, event){
+                    if (event.statusCode === 200) {
+                        buttonElem.innerHTML = MESSAGE.SAVE;
+                        $.alert(MESSAGE.UPDATE_SUCCESSFUL_CUSTOM_FIELDS, MESSAGE.CUSTOMLOG);
+                    } else {
+                        $.alert(MESSAGE.UPDATE_FAILURE, MESSAGE.CUSTOMLOG);
+                    }
+                    buttonElem.disabled = false;
+                },
+                {escape: false}
+            );
+
+        });
+        function moveFields(moveFromElemId, moveToElemId) {
+             var moveFromList = $(document.getElementById(moveFromElemId)),
+                 moveToList = $(document.getElementById(moveToElemId)),
+                 selectedFields = moveFromList.find("option:selected");
+
+            var selectedList = moveFromElemId.indexOf('selectedList') !== -1 ? moveFromList : moveToList;
+            var operation = moveFromElemId.indexOf('selectedList') !== -1 ? 'remove' : 'add';
+            var selectedListOption = selectedList.children('option');
+            var selectedFieldsTextArr = [];
+            for(var j = 0; j < selectedFields.length; j++) {
+                selectedFieldsTextArr.push(selectedFields[j].text);
+            }
+            var afterChangeSelectTextArr = [];
+            if(operation === 'remove') {
+                // selectedList - selectedFields
+                for(var i = 0; i < selectedListOption.length; i++){
+                    if(selectedFieldsTextArr.indexOf(selectedListOption[i].text) === -1) {
+                        afterChangeSelectTextArr.push(selectedListOption[i].text);
+                    }
+                }
+            }
+            if(operation === 'add') {
+                // selectedList + selectedFields
+                for(var i = 0; i < selectedListOption.length; i++){
+                    afterChangeSelectTextArr.push(selectedListOption[i].text);
+                }
+                afterChangeSelectTextArr = afterChangeSelectTextArr.concat(selectedFieldsTextArr);
+            }
+            if (afterChangeSelectTextArr.indexOf('Name ID') !== -1 ||
+            afterChangeSelectTextArr.indexOf('Related To ID') !== -1) {
+                globalAutoSelectEnable = true;
+            } else {
+                globalAutoSelectEnable = false;
+            }
+            if (selectedFields && selectedFields.length > 0) {
+                selectedFields.remove();
+                moveToList.append(selectedFields);
+            }
+        }
+
+        var isIE = /Trident/.test(navigator.userAgent);
+
+        $('option[value*="rc_required"]').each(function (idx, el) {
+            if(isIE || getComputedStyle(el, ':after').color == "") {
+                var $el = $(el);
+                $el.text($el.text() + ' *');
+            }
+        });
+
+        function orderFields(selectedListId, direction) {
+             var selectedList = $(document.getElementById(selectedListId)),
+                 selectedFields = selectedList.find("option:selected");
+
+             if (selectedFields && selectedFields.length > 0) {
+                 if (direction === 'up') {
+                     var before = selectedFields.first().prev();
+                     selectedFields.insertBefore(before);
+                 } else if (direction === 'down') {
+                     var after = selectedFields.last().next();
+                     selectedFields.insertAfter(after);
+                 }
+             }
+        }
+
+        $(document).ready(function(){
+            var initializeEnable = ("{!initializeEnable}" === "true" ? true: false);
+            if(!initializeEnable) {
+              Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AdminUIController.redirectInitialize}',
+                function(res) {
+                  console.log('[redirectInitialize]');
+                  window.location = res;
+                }
+              );
+            }
+
+            var selectedPersonAccountsEle = $(document.getElementById('{!$Component.adminForm.accountRelatedTo}'));
+            var selectedPersonAccountWarningEl = $(document.getElementById('{!$Component.adminForm.accountRelatedToDisabled}'));
+            selectedPersonAccountsEle.css('display', 'none');
+            selectedPersonAccountWarningEl.css('display', 'none');
+
+            personAccountsEnabled().then(function(bool) {
+              selectedPersonAccountsEle.css('display', (bool === true ? 'block' : 'none') );
+              selectedPersonAccountWarningEl.css('display', (bool === false ? 'block' : 'none') );
+            });
+
+            function personAccountsEnabled() {
+              return new Promise(function (resolve, reject) {
+                  window.Visualforce &&  Visualforce.remoting.Manager.invokeAction(
+                 '{!$RemoteAction.AdminUIController.personAccountsEnabled}',
+                 function(res, err) {
+                  if(res === null) {
+                    reject(err);
+                  } else {
+                    resolve(res);
+                  }
+                });
+              });
+            }
+            const isHvsModeEnable = document.getElementById('{!$Component.adminForm.hvsModeEnhancementBlock.hvsModeCheckbox}');
+            if(isHvsModeEnable && isHvsModeEnable.checked) {
+              document.getElementById('{!$Component.adminForm.hvsModeEnhancementBlock.hvsSettingsSection}').style.display = "block";
+            }
+
+        });
+        $("#accountRelatedToBtn").click(function(event) {
+          var accountRelatedToEl = document.getElementById('{!$Component.adminForm.accountRelatedTo.accountRelatedToOption}');
+          var accountRelatedTo =  accountRelatedToEl && accountRelatedToEl.value === "{true}" ? true : false;
+
+          var btnElem = $("#accountRelatedToBtn")[0];
+
+          btnElem.innerHTML = MESSAGE.SAVING;
+          btnElem.disabled = true;
+
+          Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AdminUIController.accountRelatedToSettings}',
+                accountRelatedTo,
+                function(result, event) {
+                    if (event.statusCode === 200) {
+                        $.alert(MESSAGE.UPDATE_SUCCESSFUL_ACCOUNT_RELATED_TO, MESSAGE.ACCOUNT_RELATED_TO);
+                    } else {
+                        $.alert(event.message || MESSAGE.UPDATE_FAILURE, MESSAGE.ACCOUNT_RELATED_TO);
+                    }
+                    btnElem.disabled = false;
+                    btnElem.innerHTML = MESSAGE.SAVE;
+                },
+                {escape: false}
+            );
+            event.preventDefault();
+        });
+
+        $("#hvsModeSaveBtn").click(function(event){
+             event.preventDefault();
+             var hvsModeEl = document.getElementById('{!$Component.adminForm.hvsModeEnhancementBlock.hvsModeCheckbox}');
+             var isHvsMode = hvsModeEl && hvsModeEl.checked ? true : false;
+             var toVoiceMailEl = document.getElementById('{!$Component.adminForm.hvsModeEnhancementBlock.toVoiceMailCheckbox}');
+             var isToVoiceMail = toVoiceMailEl && toVoiceMailEl.checked ? true : false;
+             var hvsDispositionFieldEl = document.getElementById('{!$Component.adminForm.hvsModeEnhancementBlock.hvsDispositionFieldOption}');
+             var hvsDispositionField = hvsDispositionFieldEl && hvsDispositionFieldEl.value;
+             var isMandatoryEl =  document.getElementById('{!$Component.adminForm.hvsModeEnhancementBlock.isMandatoryCheckbox}');
+             var isMandatory = isMandatoryEl && isMandatoryEl.checked ? true : false;
+             var btnElem = $("#hvsModeSaveBtn")[0];
+             btnElem.innerHTML = MESSAGE.SAVING;
+             btnElem.disabled = true;
+
+             Visualforce.remoting.Manager.invokeAction(
+                 '{!$RemoteAction.AdminUIController.setHvsSettings}',
+                isHvsMode,
+                isToVoiceMail,
+                isMandatory,
+                hvsDispositionField,
+                function(result, event) {
+                    if (event.statusCode === 200) {
+                        $.alert(MESSAGE.UPDATE_SUCCESSFUL_AUTOSAVE, MESSAGE.HVS);
+                        window.location.reload();
+                    } else {
+                        $.alert(event.message || MESSAGE.UPDATE_FAILURE, MESSAGE.HVS);
+                    }
+                    btnElem.innerHTML = MESSAGE.SAVE;
+                    btnElem.disabled = false;
+                },
+                {escape: false}
+            );
+        });
+        $('#hvsSetting').click(function(event){
+          event.preventDefault();
+            const hvsSettingPage = `${orgDomain}/lightning/setup/HighVelocitySales/home`;
+            window.open(hvsSettingPage);
+        });
+        $('#objectManager').click(function(event){
+          event.preventDefault();
+            const objectManagerSettingPage = `${orgDomain}/lightning/setup/ObjectManager/home`;
+            window.open(objectManagerSettingPage);
+
+        });
+
+        $('#hvsModeCheckBoxWrapper').click(function(event){
+            if(event.target && event.target.nodeName === 'INPUT') {
+              const isChecked = event.target.checked;
+              const warningEl = document.getElementById("{!$Component.adminForm.hvsModeEnhancementBlock.hvsSettingsSection}");
+              if(isChecked) {
+                 warningEl.style.display = "block";
+              } else {
+                 warningEl.style.display = "none";
+              }
+            }
+        });
+
+        $('.infoIcon').hover(function(event){
+          const tooltipEle = this.parentElement && this.parentElement.nextElementSibling;
+          if (tooltipEle && tooltipEle.classList.contains("mouse-over-info")) {
+            tooltipEle.classList.add("mouse-over-info-active");
+          }
+        }, function(event) {
+           const tooltipEle = this.parentElement && this.parentElement.nextElementSibling;
+           if (tooltipEle && tooltipEle.classList.contains("mouse-over-info")) {
+             tooltipEle.classList.remove("mouse-over-info-active");
+           }
+        })
+
+        $('.mouse-over-info').hover(function() {
+          this.classList.add('mouse-over-info-active');
+        }, function() {
+          this.classList.remove('mouse-over-info-active');
+        });
+       $('#onClickupArrowIcon').click(function(event) {
+            var selectedList = '{!$Component.adminForm.customLogBlock.selectedList}';
+            orderFields(selectedList, 'up');
+        });
+        $('#onClickDownArrowIcon').click(function(event) {
+            var selectedList = '{!$Component.adminForm.customLogBlock.selectedList}';
+            orderFields(selectedList, 'down');
+        });
+        $('#onClickRightArrowIcon').click(function(event) {
+            var selectedList = '{!$Component.adminForm.customLogBlock.selectedList}';
+            var availableList = '{!$Component.adminForm.customLogBlock.availableList}';
+            moveFields(availableList, selectedList);
+        });
+        $('#onClickLeftArrowIcon').click(function(event) {
+            var selectedList = '{!$Component.adminForm.customLogBlock.selectedList}';
+            var availableList = '{!$Component.adminForm.customLogBlock.availableList}';
+            moveFields(selectedList, availableList);
+        });
+    </script>
+
+        <script>
+        // will replace by gulp;
+        var defaultJsonSetting = {"dncVerifyEnable":false,"dncAllowForceCall":false,"dncAllowForceSMS":false,"entityMatchRule":"1","clickToSettings":"0"};
+        var userJsonSetting = "{!JSENCODE(VerificationSettings)}";
+        try {
+            userJsonSetting = JSON.parse(userJsonSetting);
+        } catch (error) {
+            userJsonSetting={};
+            console.error('get json setting error', error);
+        }
+        var jsonSettings = {...defaultJsonSetting, ...userJsonSetting};
+        initSettingValues();
+
+        function initSettingValues() {
+            const dncCallModeValue = jsonSettings.dncAllowForceCall ? 'true' : 'false';
+            const dncSMSModeValue = jsonSettings.dncAllowForceSMS ? 'true' : 'false';
+            $('#DNCSettingBlock').find('#dncVerifyEnable').prop('checked', jsonSettings.dncVerifyEnable);
+            $('#DNCSettingBlock input:radio[name=dncCallMode]').val([dncCallModeValue]);
+            $('#DNCSettingBlock input:radio[name=dncSMSMode]').val([dncSMSModeValue]);
+            settingsStyle();
+
+            // entity match rules
+            const entityMatchRuleValue = jsonSettings.entityMatchRule;
+            $('#MatchingSettingBlock input:radio[name=entityMatchRule]').val([entityMatchRuleValue]);
+            // click to call/sms
+            const clickToSettingsValue = jsonSettings.clickToSettings;
+            $('#ClickToSettingsBlock input:radio[name=clickToSettings]').val([clickToSettingsValue]);
+        }
+
+        function settingsStyle() {
+            const checked = $('#DNCSettingBlock').find('#dncVerifyEnable').prop('checked');
+            if (checked) {
+                $('.dnc-option').removeClass('disabled');
+            } else {
+                $('.dnc-option').addClass('disabled');
+            }
+            $('#DNCSettingBlock input:radio').prop('disabled', !checked);
+        }
+
+        $('#dncVerifyEnable').on('change', settingsStyle);
+
+        function setJsonSettings({
+            settings,
+            targetSaveBtn,
+            saveMessage,
+        }) {
+            const settingString = JSON.stringify(settings);
+            targetSaveBtn.innerHTML = MESSAGE.SAVING;
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.AdminUIController.setSettings}',
+                settingString,
+                function(result, event) {
+                    if (event.statusCode === 200) {
+                        $.alert(MESSAGE.UPDATE_SUCCESSFUL_AUTOSAVE, saveMessage);
+                    } else {
+                        $.alert(event.message || MESSAGE.UPDATE_FAILURE, saveMessage);
+                    }
+                    targetSaveBtn.innerHTML = MESSAGE.SAVE;
+                    targetSaveBtn.disabled = false;
+                },
+                {escape: false}
+            );
+        }
+
+        $('#dncModeSaveBtn').on('click', function(){
+            const btnEle = $('#dncModeSaveBtn');
+            const dncVerifyEnable = $('#DNCSettingBlock').find('#dncVerifyEnable').prop('checked');
+            const dncAllowForceCallValue = $('#DNCSettingBlock input:radio[name=dncCallMode]:checked').val()
+            const dncAllowForceCall = dncAllowForceCallValue === 'true' ? true : false;
+            const dncAllowForceSMSValue = $('#DNCSettingBlock input:radio[name=dncSMSMode]:checked').val()
+            const dncAllowForceSMS = dncAllowForceSMSValue === 'true' ? true : false;
+            const settings = {
+                ...jsonSettings,
+                dncVerifyEnable,
+                dncAllowForceCall,
+                dncAllowForceSMS,
+            };
+            setJsonSettings({
+                settings,
+                targetSaveBtn: btnEle,
+                saveMessage: MESSAGE.DNCSAVE,
+            });
+        })
+
+        $('#entityMatchRuleSaveBtn').on('click', function(){
+            const btnEle = $('#entityMatchRuleSaveBtn');
+            const entityMatchRuleValue = $('#MatchingSettingBlock input:radio[name=entityMatchRule]:checked').val()
+            const settings = {
+                ...jsonSettings,
+                entityMatchRule: entityMatchRuleValue,
+            };
+            setJsonSettings({
+                settings,
+                targetSaveBtn: btnEle,
+                saveMessage: MESSAGE.PHONE_NUMBER_MATCHING,
+            });
+        })
+
+    </script>
+
+</apex:page>

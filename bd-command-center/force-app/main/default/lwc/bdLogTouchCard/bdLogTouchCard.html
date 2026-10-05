@@ -5,6 +5,9 @@
                 <span class="strong">BD partner</span>
                 <span class="muted sm"> · Log coffees, calls, texts and notes to keep the 14-day touch clock current.</span>
             </div>
+            <template lwc:if={intakeUrl}>
+                <button class="btn btn-s" onclick={copyLink} title={intakeUrl}>Copy lead intake link</button>
+            </template>
             <button class="btn btn-p btn-s" onclick={openModal}>Log touch</button>
         </div>
         <template lwc:if={open}>

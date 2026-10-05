@@ -1,0 +1,34 @@
+<!--
+ - Created by J9 on 8/6/2021.
+ -->
+
+<aura:component description="Alert" controller="AlertController" implements="force:hasRecordId,flexipage:availableForAllPageTypes,force:lightningQuickAction" >
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+    <aura:attribute name="metadataId" type="String" access="global"/>
+    <aura:attribute name="fields" type="Object"/>
+    <aura:attribute name="isMissingFields" type="Boolean" default="false"/>
+    <aura:attribute name="alert" type="Object"/>
+    <aura:attribute name="percentMissing" type="Decimal"/>
+
+
+    <aura:if isTrue="{!v.isMissingFields}">
+        <div class="{!if(lessthan(v.percentMissing,20),'slds-notify slds-notify_alert slds-alert_error','slds-notify slds-notify_alert slds-alert_warning')}"  role="alert" style="display:flex; flex-wrap:wrap;">
+            <p class="slds-text-heading--medium">{!v.alert.Incomplete_Message__c}</p>
+            <ul style="width:100%; padding:10px;">
+                <aura:iteration items="{!v.fields}" var="field">
+                    <li style="margin-left:40px;">{!field.Title__c}</li>
+                </aura:iteration>
+            </ul>
+
+        </div>
+        <div >
+        </div>
+        <aura:set attribute="else">
+            <div class="slds-notify slds-notify_alert slds-alert_offline" role="alert">
+                {!v.alert.Complete_Message__c}
+            </div>
+        </aura:set>
+    </aura:if>
+
+</aura:component>

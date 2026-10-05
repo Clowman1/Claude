@@ -1,0 +1,54 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-14T18:14:35.000Z",
+        "fileName": "unpackaged/classes/LeadConditionAssignmentTest.cls",
+        "fullName": "LeadConditionAssignmentTest",
+        "id": "01pQi000003FMjFIAW",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T20:07:28.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T22:02:43.086Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T22:02:43.086Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OiuVJMAZ",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "LeadConditionAssignmentTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LeadConditionAssignmentTest.cls"
+      },
+      {
+        "fullName": "LeadConditionAssignmentTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\ref\\classes\\LeadConditionAssignmentTest.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

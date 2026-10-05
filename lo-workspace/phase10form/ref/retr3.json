@@ -1,0 +1,79 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.151.7.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-03-03T15:19:55.000Z",
+        "fileName": "unpackaged/classes/DpaSecondTransactionInvocableTest.cls",
+        "fullName": "DpaSecondTransactionInvocableTest",
+        "id": "01pQi000002eKDOIA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-07-30T20:27:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Nimbus Development",
+        "createdDate": "2026-03-03T15:19:55.000Z",
+        "fileName": "unpackaged/classes/DpaSecondTransactionService.cls",
+        "fullName": "DpaSecondTransactionService",
+        "id": "01pQi000002eKDPIA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-07-30T20:27:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-05T19:50:21.302Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-05T19:50:21.302Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OoCL7MAN",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "DpaSecondTransactionInvocableTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\DpaSecondTransactionInvocableTest.cls"
+      },
+      {
+        "fullName": "DpaSecondTransactionInvocableTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\DpaSecondTransactionInvocableTest.cls-meta.xml"
+      },
+      {
+        "fullName": "DpaSecondTransactionService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\DpaSecondTransactionService.cls"
+      },
+      {
+        "fullName": "DpaSecondTransactionService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase10form\\ref\\force-app\\main\\default\\classes\\DpaSecondTransactionService.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

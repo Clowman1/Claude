@@ -1,0 +1,16 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="submission-title">
+        <div class="modal-card modal-card-wide">
+            <header class="modal-header">
+                <h2 id="submission-title">Loan origination submission</h2>
+                <p>Complete the submission form. Status updates follow the same rules as the internal transaction page.</p>
+            </header>
+            <div class="modal-body">
+                <lightning-flow onstatuschange={handleStatusChange}></lightning-flow>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick={handleClose}>Close</button>
+            </footer>
+        </div>
+    </section>
+</template>

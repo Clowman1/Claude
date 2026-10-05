@@ -1,0 +1,69 @@
+<apex:page title="Rollup Helper" standardStylesheets="false" sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head> 
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/modernizr-1.7.min.js') }"/>
+        <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }" />
+        <apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />
+        <apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/font-awesome/css/font-awesome.min.css') }" />  
+        <apex:includeLightning />
+    </head> 
+    <script>
+        var rh = rh || {};
+        rh.j$ = jQuery.noConflict();
+
+        let additionalTopOffset;
+        let headerPosition;
+
+        if(UITheme.getUITheme() !== 'Theme3'){
+            additionalTopOffset = 10;
+            headerPosition = 'fixed';
+        } else{
+            additionalTopOffset = 128;
+            headerPosition = 'sticky';
+        }
+
+        rh.j$(window).scroll(function(){
+            fixHeader(document.getElementById("readOnlyPage"), additionalTopOffset, headerPosition);
+        });
+
+        rh.j$(window).resize(function(){
+            fixWidth(document.getElementById("readOnlyPage"), additionalTopOffset, headerPosition);
+        });
+
+        let namespace = "{!JSENCODE(IF(CONTAINS($CurrentPage.Name, "__"),LEFT($CurrentPage.Name,FIND("__", $CurrentPage.Name)-1),"c"))}";
+        $Lightning.use( namespace + ":PS_Read_Only_Rollups", function() {
+            $Lightning.createComponent( namespace + ":ps_readOnlyRollups",
+                                       {},
+                                       "readOnlyPage", function(cmp) {}
+                                      );  
+        });
+
+        function sendColumnWidths(lwcElement){
+            try{
+                const columnList = [
+                    "label-cell", "run-mode-cell", "relationship-field-cell",
+                    "source-field-cell", "logic-cell", "condition-cell",
+                    "target-field-cell", "parent-condition-cell", "description-cell"
+                ];
+
+                const columnWidths = columnList.map(columnName => {
+                    const element = lwcElement.getElementsByClassName(columnName)[0];
+                    return element.offsetWidth;
+                });
+
+                var event = new CustomEvent('columns', {
+                    detail: {
+                        columnWidths
+                    }
+                });
+
+                window.dispatchEvent(event);
+            } catch (error){}
+        }
+    </script>
+    <div id="readOnlyPage">
+
+    </div>
+</html>
+</apex:page>

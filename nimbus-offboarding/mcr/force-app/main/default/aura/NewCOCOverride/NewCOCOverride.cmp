@@ -1,0 +1,6 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,lightning:actionOverride,lightning:hasPageReference" access="global">
+    <div class="slds-m-around_medium">
+        <h2 class="slds-text-heading_large">Action Not Allowed</h2>
+        <p>Change of Circumstance cannot be created directly. Use COC Request button on Transaction to properly create Change of Circumstance and Case related to it.</p>
+    </div>
+</aura:component>

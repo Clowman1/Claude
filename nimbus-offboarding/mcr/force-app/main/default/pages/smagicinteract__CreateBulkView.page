@@ -1,0 +1,11 @@
+<apex:page >
+    <apex:includeLightning rendered="true"/>
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("smagicinteract:CreateBulkPageApp", function() {
+          $Lightning.createComponent("smagicinteract:CreateBulkSms",{},"lightning",function(cmp) {});
+        });
+    </script>
+
+</apex:page>

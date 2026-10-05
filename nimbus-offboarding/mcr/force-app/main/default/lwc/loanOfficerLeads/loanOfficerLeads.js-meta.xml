@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Loan Officer Leads</masterLabel>
+    <description>Consumer leads owned by the running user.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <property name="cardTitle" type="String" label="Card Title" default="Active Leads"/>
+            <property name="mode" type="String" label="Mode (active or preapproved)" default="active"
+                      datasource="active,preapproved"/>
+            <property name="iconName" type="String" label="Icon Name" default="standard:lead"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

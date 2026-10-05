@@ -1,0 +1,12 @@
+<aura:component>
+    <aura:attribute name="isShown" default="false" type="Boolean"/>
+    <aura:attribute name="content" type="String" default="Loading..."/>
+    <aura:attribute name="imgWidth" type="String" default="200px;"/>
+    <!--    <aura:attribute name="imgSrc" type="String" default="{!$Resource.AriveLoadingGif}"/>-->
+    <div class="{!(v.isShown) ? 'arive-overlay' : 'arive-overlay arive-hide'}">
+        <div>
+            <!--            <img style="{!'height:auto; width: ' + v.imgWidth}" src="{!v.imgSrc}"/>-->
+            <div style="text-align:center;">{!v.content}</div>
+        </div>
+    </div>
+</aura:component>

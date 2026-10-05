@@ -1,0 +1,28 @@
+<!--
+ - Created by MSI Laptop on 7/22/2022.
+ -->
+
+<aura:component description="ActionRequired" implements="force:hasRecordId,flexipage:availableForAllPageTypes">
+    <aura:attribute name="transactionRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="reasons" type="Object[]"/>
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Closer_Action_Required__c,Closer_Action_Reason__c"
+                      targetFields="{!v.transactionRecord}"
+                      targetError="{!v.recordLoadError}"
+                      recordUpdated="{!c.loadData}"
+    />
+
+    <aura:if isTrue="{!v.transactionRecord.Closer_Action_Required__c}">
+        <div class="slds-notify slds-notify_alert slds-alert_warning"  role="alert" style="display:flex; flex-wrap:wrap;background-color: #ffe08a">
+            <lightning:icon iconName="utility:warning"/>
+            <b style="font-size: 23px;font-weight: normal" class="slds-m-left_medium">Closer Action Required</b>
+            <ul style="width:100%; padding:10px;">
+                <aura:iteration var="reason" items="{!v.reasons}">
+                    <li style="margin-left:40px;">{!reason}</li>
+                </aura:iteration>
+            </ul>
+        </div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,19 @@
+<aura:component 
+implements="force:appHostable,forceCommunity:availableForAllPageTypes" 
+controller="OptOutController"
+access="global">
+	<aura:attribute name="isError" type="Boolean"/>
+	<aura:attribute name="resultMessage" type="String"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<div class="slds-scope">
+		<div class="slds-m-around_medium">
+			<div class="slds-notify slds-notify_alert slds-theme_alert-texture" aura:id="alertDiv" role="alert">
+				<span class="slds-assistive-text">Info</span>
+				<h2 class="slds-text-heading_medium">
+					{!v.resultMessage}
+				</h2>
+			</div>
+		</div>
+	</div>
+</aura:component>

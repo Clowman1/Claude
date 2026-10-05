@@ -1,0 +1,122 @@
+<apex:page title="Rollup Helper Exception Page" standardStylesheets="false"  sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head> 
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>    
+        <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }"/>	  
+        <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />
+        <apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />   
+        <apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }" />
+        <apex:includeLightning />
+    </head> 
+    <apex:slds /> 
+    <style>
+        #toastContainer {
+            position: fixed;
+            z-index: 999;
+        }
+    </style>
+    <script>
+        var namespace;
+        var rh = rh || {};
+        rh.j$ = jQuery.noConflict();
+        
+        let additionalTopOffset;
+        let headerPosition;
+
+        if (UITheme.getUITheme() !== 'Theme3') {
+            additionalTopOffset = 65;
+            headerPosition = 'fixed';
+        } else {
+            additionalTopOffset = 193;
+            headerPosition = 'sticky';
+        }
+
+        document.addEventListener('lightning__showtoast', event => {
+            if(UITheme.getUITheme() !== 'Theme3') {
+                sforce.one.showToast(event.toastAttributes);
+            }
+            else {
+                showToastInClassic(event.toastAttributes);
+                let svgType = "{!URLFOR($Asset.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#" + event.toastAttributes.type+"')}";
+                document.getElementById('toastIcon').innerHTML = '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="'+svgType+'"></use>';
+            }
+        });
+
+        rh.j$(window).scroll(function(){
+            fixHeader(document.getElementById("viewExceptions"), additionalTopOffset, headerPosition);
+        });
+
+        rh.j$(window).resize(function(){
+            fixWidth(document.getElementById("viewExceptions"), additionalTopOffset, headerPosition);
+        });
+
+        rh.j$(document).ready(function(){
+            namespace = "{!JSENCODE(IF(CONTAINS($CurrentPage.Name, "__"),LEFT($CurrentPage.Name, FIND("__", $CurrentPage.Name)-1), "c"))}";
+            createViewExceptionsLwc();
+        });
+
+        function createViewExceptionsLwc() {
+            let rootPage = sessionStorage.getItem('rootPage') || 'home';
+            let isNavigatedFromAllSettingsPage = rootPage === 'settings';
+
+            $Lightning.use(namespace + ":PS_View_Exceptions", function() {
+                $Lightning.createComponent(
+                    namespace + ":ps_viewExceptions",
+                    {
+                        allRollupsBreadCrumb: isNavigatedFromAllSettingsPage,
+                    },
+                    "viewExceptions",
+                    function(cmp) {}
+                );
+            });
+        }
+
+        function sendColumnWidths(lwcElement){
+            try{
+                const columnList = [
+                    "stack-trace-cell", "date-cell",
+                    "failed-records-cell", "records-affected-cell",
+                    "help-cell"
+                ];
+
+                const columnWidths = columnList.map(columnName => {
+                    const element = lwcElement.getElementsByClassName(columnName)[0];
+                    return element.offsetWidth;
+                });
+
+                var event = new CustomEvent('columns', {
+                    detail: {
+                        columnWidths
+                    }
+                });
+
+                window.dispatchEvent(event);
+            } catch (error){}
+        }
+    </script>
+    <apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+        <div class="slds-notify_container slds-is-relative slds-hide" id="toastContainer">
+            <div class="slds-notify slds-notify_toast" role="alert" id="toastType">
+                <span class="slds-assistive-text" id="toastAssist"></span>
+                <span class="slds-icon_container slds-icon-utility slds-m-right_small slds-no-flex slds-align-top">
+                <svg class="slds-icon slds-icon_small" id="toastIcon" aria-hidden="true">
+                </svg>
+                </span>
+                <div class="slds-notify__content">
+                <h2 class="slds-text-heading_small" id="toastTitle"></h2>
+                <p id="toastMessage"></p>
+                </div>
+                <div class="slds-notify__close">
+                <button class="slds-button slds-button_icon slds-button_icon-inverse" onclick="closeToastInClassic('toastContainer');" title="Close">
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                </div>
+            </div>
+        </div>
+    </apex:outputPanel>
+    <div id="viewExceptions"></div>
+</html> 
+</apex:page>

@@ -1,0 +1,77 @@
+<apex:page controller="dfsle.CLMEOSViewController" showHeader="true" sidebar="false"
+		   title="{!$Label.dfsle__DocuSignCLM}">
+	<apex:includeLightning />
+	<apex:slds />
+	<apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+
+	<style type="text/css">
+		#content {
+			background-color: white;
+			position: relative;
+			overflow: auto;
+		}
+
+		.ds-agreementsFooter {
+			background: #f3f2f2;
+			margin-top: 0px;
+		}
+
+		.ds-agreementsHeader {
+			background: #f3f2f2 !important;
+		}
+
+		.ds-agreementsContainer {
+			border: 1px solid #dcdbda;
+		}
+
+		.ds-agreementsBody {
+			border: 0px !important;
+		}
+	</style>
+	<div class="slds-scope" id="content">
+		<div class="slds-container_medium slds-container_center">
+			<div class="ds-agreementsHeader slds-page-header slds-m-bottom_medium slds-m-top_medium">
+				<div class="slds-page-header__row">
+					<div class="slds-page-header__col-title">
+						<div class="slds-page-header__name">
+							<div class="slds-page-header__name-title">
+								<h1>
+                                    <span class="slds-page-header__title slds-truncate"
+										  title="{!sourceEntity.Name}">{!sourceEntity.Name}</span>
+								</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ds-agreementsContainer">
+				<div id="ds-clmeosviewpage"></div>
+			</div>
+			<footer class="slds-card__footer ds-agreementsFooter">
+				<button type="button" class="slds-button slds-button_neutral slds-align_absolute-center"
+						onclick="navigateToSourceRecord('{!JSENCODE($CurrentPage.parameters.sid)}')">{!$Label.Back}
+				</button>
+			</footer>
+		</div>
+	</div>
+
+	<script>
+		var _namespace = '{!JSENCODE(namespace)}';
+		var _navigateToURL = function (event) {
+			window.location.replace(event.getParam('url'));
+		};
+		$Lightning.use(_namespace + ':CLMEOSViewApp', function () {
+			$Lightning.createComponent(_namespace + ':CLMEOSView', {
+				visualforce: true, recordId: '{!JSENCODE($CurrentPage.parameters.sid)}',
+				sobjecttype: '{!sourceEntity.typeName}'
+			}, 'ds-clmeosviewpage', function () {
+				$A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': _navigateToURL});
+			});
+		});
+
+		function navigateToSourceRecord(sourceId) {
+			navUtils.navigateToSObject(sourceId, "{!$Site.prefix}");
+		}
+	</script>
+
+</apex:page>

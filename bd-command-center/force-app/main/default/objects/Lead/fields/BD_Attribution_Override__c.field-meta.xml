@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BD_Attribution_Override__c</fullName>
+    <label>Biz Dev Admin Override</label>
+    <description>Set automatically when an admin changes Biz Dev by hand; the BD partner attribution rule then leaves this lead alone. Uncheck to hand it back to the rule.</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+    <trackHistory>false</trackHistory>
+</CustomField>

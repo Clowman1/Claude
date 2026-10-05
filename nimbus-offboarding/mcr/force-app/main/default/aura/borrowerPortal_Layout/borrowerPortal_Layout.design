@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="primaryGradientColor" type="Color" label="Please select a primary gradient color."/>
+    <design:attribute name="secondaryGradientColor" type="Color" label="Please select a secondary gradient color."/>
+    <design:attribute name="mobileHeaderText" type="Color" label="Please enter the text for the mobile header." default="Secure Document Portal"/>
+</design:component>

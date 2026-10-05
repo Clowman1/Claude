@@ -1,0 +1,24 @@
+<!--
+ - Created by toma on 10/14/2021.
+ -->
+
+<apex:page id="AddNewNote">
+    <apex:includeLightning />
+    <div id="addNewNote"></div>
+
+    <script>
+        $Lightning.use("c:EnhancedNotesApp", function() {
+            $Lightning.createComponent("c:AddNewNote",
+                {
+                    applicationId : '{!$CurrentPage.parameters.appId}',
+                    noteId:'{!$CurrentPage.parameters.noteId}'
+                },
+                "addNewNote",
+                function(cmp) {
+                    console.log('Lightning Out Loaded.')
+                    console.log('cmp:' + cmp);
+                }
+            );
+        });
+    </script>
+</apex:page>

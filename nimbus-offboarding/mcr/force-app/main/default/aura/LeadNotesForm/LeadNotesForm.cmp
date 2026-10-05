@@ -1,0 +1,106 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId"
+                controller="LeadNotesFormController">
+    <aura:attribute name="sections" type="List" />
+    <aura:attribute name="activeSections" type="List" />
+    <aura:attribute name="hasCoBorrower" type="Boolean" default="false" />
+    <aura:attribute name="readOnly" type="Boolean" default="false" />
+    <aura:attribute name="legacyNotes" type="String" />
+    <aura:attribute name="showLegacy" type="Boolean" default="false" />
+    <aura:attribute name="isLoading" type="Boolean" default="true" />
+    <aura:attribute name="isSaving" type="Boolean" default="false" />
+    <aura:attribute name="edits" type="Map" default="{}" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+
+        .slds-modal__content{
+        overflow-y:auto !important;
+        height:unset !important;
+        max-height:70vh !important;
+        }
+        .slds-modal__container{
+        width: 60% !important;
+        max-width: 60% !important;
+        }
+    </aura:html>
+
+    <div class="content">
+        <div class="summaryHeader">
+            <h2 class="summaryTitle">Application Summary</h2>
+            <p class="summarySubtitle">Built from call summaries. Edit anything that is wrong; later calls add to it rather than replacing what you write.</p>
+        </div>
+
+        <aura:if isTrue="{!v.isLoading}">
+            <div class="loadingBox">
+                <lightning:spinner alternativeText="Loading application summary" size="small" variant="brand" />
+            </div>
+        </aura:if>
+
+        <aura:if isTrue="{! !v.isLoading }">
+            <aura:if isTrue="{!v.readOnly}">
+                <div class="readOnlyBanner">Read only. This summary is maintained by the loan officer.</div>
+            </aura:if>
+
+            <aura:if isTrue="{! !v.readOnly }">
+                <div class="coBorrowerToggle">
+                    <lightning:input type="checkbox" label="Include Co-Borrower"
+                                     checked="{!v.hasCoBorrower}"
+                                     onchange="{!c.handleToggleCoBorrower}" />
+                </div>
+            </aura:if>
+
+            <lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="{!v.activeSections}">
+                <aura:iteration items="{!v.sections}" var="section">
+                    <lightning:accordionSection name="{!section.name}" label="{!section.label}">
+                        <aura:iteration items="{!section.blocks}" var="block">
+                            <aura:if isTrue="{! or(not(block.coBorrower), v.hasCoBorrower) }">
+                                <div class="summaryBlock">
+                                    <aura:if isTrue="{! not(section.single) }">
+                                        <p class="blockLabel">{!block.label}</p>
+                                    </aura:if>
+                                    <lightning:textarea name="{!block.field}"
+                                                        label="{!block.label}"
+                                                        variant="label-hidden"
+                                                        value="{!block.value}"
+                                                        disabled="{!v.readOnly}"
+                                                        onchange="{!c.handleBlockChange}"
+                                                        class="summaryText"
+                                                        placeholder="Nothing captured yet. This fills in from call summaries." />
+                                </div>
+                            </aura:if>
+                        </aura:iteration>
+                    </lightning:accordionSection>
+                </aura:iteration>
+            </lightning:accordion>
+
+            <aura:if isTrue="{!v.legacyNotes}">
+                <div class="legacySection">
+                    <lightning:button variant="base"
+                                      label="{!v.showLegacy ? 'Hide notes from the old form' : 'Show notes from the old form'}"
+                                      onclick="{!c.handleToggleLegacy}" />
+                    <aura:if isTrue="{!v.showLegacy}">
+                        <pre class="legacyBody">{!v.legacyNotes}</pre>
+                    </aura:if>
+                </div>
+            </aura:if>
+        </aura:if>
+
+        <div class="footerBar">
+            <lightning:button label="Cancel" onclick="{!c.handleCancel}" />
+            <aura:if isTrue="{! !v.readOnly }">
+                <lightning:button variant="neutral" label="Save to Note" onclick="{!c.handleSaveToNote}"
+                                  disabled="{!v.isSaving}" />
+                <lightning:button variant="brand" label="Save" onclick="{!c.handleSave}"
+                                  disabled="{!v.isSaving}" />
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,97 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName" access="global" controller="ChecklistController">
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+    <aura:attribute name="checklist" type="Object" access="global" default="{ 'items' : [] }"/>
+    <aura:attribute name="isLoading" type="Object" access="global" default="true"/>
+    <aura:attribute name="fields" type="String" access="global"/>
+    <aura:attribute name="title" type="String" default="Loan Checklist"/>
+    <aura:attribute name="canSort" type="Boolean" default="true"/>
+    <aura:attribute name="autoSort" type="Boolean" default="true"/>
+    <aura:attribute name="showHelpText" type="Boolean" default="false"/>
+    <aura:attribute name="saveOnlyOneField" type="Boolean" default="false"/>
+    <aura:attribute name="completedDate" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <lightning:card title="{!v.title}" iconName="custom:custom18" variant="base" >
+        <aura:if isTrue="{!v.isLoading}">
+            <lightning:spinner alternativeText="Loading"/>
+        </aura:if>
+        <div class="slds-card__body_inner slds-m-vertical--medium">
+            <lightning:recordEditForm  onsuccess="{!c.toggleAllClosed}" onerror="{!c.debug}"  aura:id="recordLoader" recordId="{!v.recordId}"   objectApiName="{!v.sObjectName}">
+
+                <aura:iteration items="{!v.checklist.items}" var="item" >
+                    <lightning:layout aura:id="checklistItem" class="slds-m-bottom_small  slds-p-around_xx-small slds-border_bottom" horizontalAlign="spread" verticalAlign="center" >
+                        <lightning:layoutItem class="slds-size_6-of-12">
+                            <lightning:layout horizontalAlign="spread" verticalAlign="center">
+                                <lightning:layoutItem >
+                                    <div class="slds-media">
+                                        <div data-item="{!item.apiName}" class=" slds-media__figure">
+                                            <p class="slds-text-body_regular">{!item.label}</p>
+                                            <aura:if isTrue="{!v.showHelpText}">
+                                                <br/><p style="width:400px" class="slds-size_6-of-12 slds-text-color_weak">{!item.helpText} </p>
+                                            </aura:if>
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem class="slds-size_6-of-12">
+                            <aura:if isTrue="{!or(equals(item.fieldType, 'DATETIME'),equals(item.fieldType, 'DATE'))}">
+                                <aura:if isTrue="{!empty(item.completedDate)}">
+                                    <div data-item="{!item.apiName}" onclick="{!c.completeItem}">
+                                        <lightning:button class="checklist-button">
+                                            <p class="checklist-button-hover-text" data-item="{!item.apiName}" onclick="{!c.toggleEdit}">Complete</p>
+                                            <p class="checklist-button-text">Open</p>
+                                        </lightning:button>
+                                    </div>
+                                    <aura:set attribute="else" >
+                                        <div class="slds-text-body_regular slds-text-color_weak">
+                                            <aura:if isTrue="{!not(item.isEdit)}">
+                                                <lightning:layout verticalAlign="center">
+                                                    <lightning:outputField fieldName="{!item.apiName}"/>
+                                                    <!--                                                    <div onclick="{!c.toggleEdit}" data-item="{!item.apiName}">-->
+                                                    <!--                                                        <lightning:icon size="xx-small" iconName="utility:edit"/>-->
+                                                    <!--                                                    </div>-->
+                                                </lightning:layout>
+                                                <aura:set attribute="else">
+                                                    <lightning:layout verticalAlign="center">
+                                                        <lightning:inputField value="{!item.modifiedValue}" fieldName="{!item.apiName}"/>
+                                                        <!--                                                        <div onclick="{!c.updateField}" data-item="{!item.apiName}">-->
+                                                        <!--                                                            <lightning:icon size="xx-small" iconName="utility:save"/>-->
+                                                        <!--                                                        </div>-->
+                                                    </lightning:layout>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </aura:set>
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!equals(item.fieldType, 'TEXTAREA')}">
+                                        <div style="width:555px" class="slds-float_right">
+                                            <lightning:textarea data-item="{!item.apiName}" onblur="{!c.updateField}" value="{!item.completedDate}"/>
+                                        </div>
+
+
+
+                                        <lightning:inputField class="slds-hide" value="{!item.completedDate}" fieldName="{!item.apiName}"/>
+                                        <aura:set attribute="else">
+                                            <lightning:inputField onchange="{!c.updateField}" fieldName="{!item.apiName}"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </aura:iteration>
+            </lightning:recordEditForm>
+        </div>
+    </lightning:card>
+</aura:component>

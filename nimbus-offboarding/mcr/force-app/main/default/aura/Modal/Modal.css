@@ -1,0 +1,36 @@
+.THIS.slds-modal {
+    padding-top: 0.75rem;
+}
+
+.THIS .slds-modal__header {
+    position: relative;
+    padding-right: 3.5rem;
+}
+
+.THIS .slds-modal__close {
+    top: 0.30rem;
+    right: 0.35rem;
+    transform: none;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 0 0 1px rgba(22, 50, 92, 0.12);
+    z-index: 2;
+}
+
+.THIS .slds-modal__close:hover,
+.THIS .slds-modal__close:focus {
+    background: #ffffff;
+    box-shadow: 0 0 0 1px rgba(22, 50, 92, 0.25);
+}
+
+@media (max-width: 768px) {
+    .THIS .slds-modal__close {
+        z-index: 2;
+    }
+}
+
+@media (min-height: 900px) {
+    .THIS.slds-modal {
+        padding-top: 1.25rem;
+    }
+}

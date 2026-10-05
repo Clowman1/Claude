@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title="RingSense Webhook" icon-name="custom:custom53">
+        <div class="admin-body">
+            <p class="health">{healthSummary}</p>
+            <p class="status" lwc:if={message}>{message}</p>
+            <div class="actions">
+                <lightning-button
+                    label="Refresh"
+                    onclick={handleRefresh}
+                    disabled={loading}
+                    class="slds-m-right_x-small"
+                ></lightning-button>
+                <lightning-button
+                    label="Re-register"
+                    variant="brand"
+                    onclick={handleReregister}
+                    disabled={loading}
+                ></lightning-button>
+            </div>
+            <template lwc:if={loading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            <template lwc:if={hasSubscriptions}>
+                <lightning-datatable
+                    key-field="id"
+                    data={subscriptions}
+                    columns={columns}
+                    hide-checkbox-column
+                ></lightning-datatable>
+            </template>
+            <template lwc:elseif={showEmpty}>
+                <p class="empty">No subscriptions loaded.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,35 @@
+<template>
+    <template lwc:if={showDetail}>
+        <c-lo-ws-past-client-detail record-id={recordId}></c-lo-ws-past-client-detail>
+    </template>
+    <template lwc:else>
+    <c-portal-list-layout
+        title="Past Clients"
+        subtitle="Borrowers you imported as past clients. Open a record to log activity."
+        search-value={search}
+        search-placeholder="Search past clients"
+        loading={loading}
+        is-empty={isEmpty}
+        empty-title="No past clients yet"
+        empty-message="Use Import Data and set Type to Past Client, or ask an admin to update Lead Source."
+        result-label={resultLabel}
+        row-type="generic"
+        items={clients}
+        onsearchchange={handleSearchChange}
+        onrowaction={handleRowAction}
+    ></c-portal-list-layout>
+    </template>
+    <template lwc:if={errorMessage}>
+        <p class="form-error" role="alert">{errorMessage}</p>
+    </template>
+    <template lwc:if={contactRow}>
+        <div class="contact-backdrop" onclick={handleContactClose}></div>
+        <aside class="contact-drawer" role="dialog" aria-modal="true" aria-label="Contact">
+            <div class="contact-drawer-head">
+                <h2 class="contact-drawer-title">{contactRow.name}</h2>
+                <button type="button" class="contact-drawer-close" onclick={handleContactClose}>Close</button>
+            </div>
+            <c-lo-ws-contact-card record-id={contactRow.id} onsaved={handleContactSaved}></c-lo-ws-contact-card>
+        </aside>
+    </template>
+</template>

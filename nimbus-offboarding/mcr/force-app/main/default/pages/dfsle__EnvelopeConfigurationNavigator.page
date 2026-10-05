@@ -1,0 +1,90 @@
+<apex:page id="EnvelopeConfigurationNavigatorPage" sidebar="false" showHeader="true"
+           standardController="dfsle__EnvelopeConfiguration__c"
+           title="{!$Label.dfsle__DocuSign}" extensions="dfsle.EnvelopeConfigurationController">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:includeLightning />
+    <apex:stylesheet value="{!$Resource.dfsle__dstooltip}"/>
+    <apex:slds />
+
+    <apex:form >
+        <apex:actionFunction name="redirectToNewConfigUrl" action="{!redirectToNewConfigUrl}" reRender="">
+            <apex:param name="configId" assignTo="{!envelopeConfigId}" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+    <style>
+        /* CSS to override default padding applied in Classic Experience */
+        .bodyDiv .outerNoSidebar, .noSidebarCell, .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        /* CSS for positioning the spinner container */
+        .noSidebarCell #ds-spinner {
+            height: calc(100vh - 165px);
+        }
+
+        .noSidebarCell #ds-pageContent #decWizard .slds-spinner_container {
+            height: calc(100vh - 165px);
+            background: white;
+        }
+    </style>
+
+    <div id="ds-pageContent" style="display: none;">
+        <div id="decNavigator"></div>
+        <div id="decWizard"></div>
+    </div>
+
+    <div id="ds-spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      var navigateToNewEnvelopeConfigUrl = function (configId) {
+        if (configId != null) {
+          redirectToNewConfigUrl(configId);
+        }
+      };
+      var onCancel = function () {
+        window.location.replace('{!JSENCODE(objectHomeUrl)}');
+      };
+      var ns = '{!JSENCODE(namespace)}';
+      var configIdParameter = '{!JSENCODE($CurrentPage.parameters.id)}';
+      //capture step from url parameter
+      var step = '{!JSENCODE($CurrentPage.parameters.step)}';
+      //if step is not defined then assign it to a default value of '1'
+      if (typeof step === 'undefined' || step === null || step === '') {
+        step = '1';
+      }
+      $Lightning.use(ns + ':DECNavigatorApp', function () {
+        if (configIdParameter == null || configIdParameter == '') {
+          //if config id not in url then load navigator component ( new config )
+          $Lightning.createComponent(ns + ':DECNavigator', {
+            namespace: ns,
+            isRedirectOnCancel: true,
+            navigateToNewEnvelopeConfigUrl: navigateToNewEnvelopeConfigUrl,
+            isFromSetupWizard: false
+          }, 'decNavigator', function (component, status) {
+            if (status === 'SUCCESS') {
+              $A.eventService.addHandler({'event': 'force:navigateToObjectHome', 'handler': onCancel});
+              document.getElementById('ds-spinner').style.display = 'none';
+              document.getElementById('ds-pageContent').style.display = 'block';
+            }
+          });
+        } else {
+          //if config id exist in url then load wizard component
+          $Lightning.createComponent(ns + ':decSetupConfig', {
+            recordId: configIdParameter,
+            currentStep: step
+          }, 'decWizard', function (component, status) {
+            if (status === 'SUCCESS') {
+              document.getElementById('ds-spinner').style.display = 'none';
+              document.getElementById('ds-pageContent').style.display = 'block';
+            }
+          });
+        }
+      })
+    </script>
+    </html>
+</apex:page>

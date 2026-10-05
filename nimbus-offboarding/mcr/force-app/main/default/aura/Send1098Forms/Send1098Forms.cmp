@@ -1,0 +1,34 @@
+<aura:component controller="RunFormSendingInvocable" implements="force:appHostable,flexipage:availableForAllPageTypes"
+    access="global">
+    <!-- Attribute to control modal visibility -->
+    <aura:attribute name="isModalOpen" type="Boolean" default="false" />
+
+    <!-- Button to open the modal -->
+    <lightning:button label="Send 1098 forms" onclick="{!c.openModal}" variant="brand" />
+
+    <!-- Modal Structure -->
+    <aura:if isTrue="{!v.isModalOpen}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close" class="slds-modal__close" onclick="{!c.closeModal}"
+                        alternativeText="Close" />
+                    <h2 class="slds-text-heading_medium">Confirm</h2>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Confirm sending of the form to all recipients</p>
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.closeModal}" />
+                    <lightning:button variant="brand" label="Confirm" onclick="{!c.confirmSend}" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <rules>
+        <fullName>Transaction Closing Date change</fullName>
+        <actions>
+            <name>Email_when_transaction_closing_date_changes</name>
+            <type>Alert</type>
+        </actions>
+        <active>false</active>
+        <formula>AND(ISCHANGED( Closing_Date__c ),  OR(ISPICKVAL(  Biz_Dev__c  , &quot;Biz Dev - Carey&quot;), ISPICKVAL(  Biz_Dev__c  , &quot;Biz Dev - Boufford&quot;),ISPICKVAL(Biz_Dev__c , &quot;Biz Dev - Saludes&quot;) ) )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

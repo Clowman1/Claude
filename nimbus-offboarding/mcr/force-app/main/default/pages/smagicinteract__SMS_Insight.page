@@ -1,0 +1,16 @@
+<apex:page showHeader="false" sidebar="false" title="SMS Insight" >
+    
+    <apex:includeLightning rendered="true"/>
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("smagicinteract:SMSInsight", function() {
+          $Lightning.createComponent("smagicinteract:smsInsightComponent",
+          { label : "Press Me!" },
+          "lightning",
+          function(cmp) {
+          });
+        });
+    </script>
+
+</apex:page>

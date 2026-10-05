@@ -1,0 +1,21 @@
+<!-- Borrower Portal Contact Card -->
+<template>
+    <div class="imbus-contact-card-container">
+        <div class="contact-card-wrapper">
+            <img class="contact-card-image" alt="Contact Card Image" src={headShotUrl} />
+            <div class="contact-card-details">
+                <div class="contact-card-info">
+                    <div class="contact-card-name-title">
+                        <div class="contact-card-name">{fullName}</div>
+                        <div class="contact-card-title">{title}</div>
+                    </div>
+                    <div class="contact-card-contact slds-truncate">
+                       {nmlsText}<br/>
+                        {phone}<br/>
+                        <a href={email}>{email}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

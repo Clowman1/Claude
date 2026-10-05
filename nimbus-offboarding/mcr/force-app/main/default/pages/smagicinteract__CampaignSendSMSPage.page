@@ -1,0 +1,32 @@
+<apex:page standardController="Campaign" sidebar="false" showHeader="false">
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/soap/ajax/14.0/apex.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/soap/ajax/14.0/connection.js')}"/>
+    <script>
+    var packagePrefix = "smagicinteract__";
+    var recordType = "campaignmember";
+    var idToUpdate = "{!$CurrentPage.parameters.id}";//"{! Campaign.Id }";
+    var leadPhoneField = "MobilePhone";  // Enter the API Name of a Mobile Field for Lead Object. 
+    var contactPhoneField = "MobilePhone"; // Enter the API Name of a Mobile Field for Contact Object.
+    var optOutDefaultValue = 'no'; // Enter the default OptOut Value.
+    var unrelatedObjectAPIName = ''; // Enter the API Name of an Unrelated object.
+    
+    if({!$Permission.smagicinteract__AllowToSendCampaignMessage}) { 
+        var queryString = window.location.pathname;
+        if (window.location.search){
+            queryString = queryString + window.location.search
+        }
+        var url = "/apex/"+packagePrefix+"CampaignSMSSendPage?retURL="+queryString + "&objectType="+recordType+"&recordIds="+idToUpdate+"&optOutDefaultValue="+ optOutDefaultValue+"&leadPhoneField="+leadPhoneField+"&contactPhoneField="+contactPhoneField+"&unrelatedObjectName="+unrelatedObjectAPIName;
+        if(typeof sforce !== 'undefined' && sforce.one) {
+            sforce.one.navigateToURL(url, true);
+        } else {
+            window.location = url;
+        }
+    }
+    </script>
+    <apex:form >
+        <apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToSendCampaignMessage}">
+        <apex:pageMessage severity="error" summary="{!$Label.smagicinteract__cannot_snd_sms}" />
+        <apex:commandButton id="Cancel" value="{!$Label.smagicinteract__cancel}" title="{!$Label.smagicinteract__cancel}" action="{!Cancel}"/>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

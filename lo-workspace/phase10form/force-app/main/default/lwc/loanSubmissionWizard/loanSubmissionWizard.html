@@ -1,0 +1,202 @@
+<template>
+    <div class="wiz">
+        <header class="hero">
+            <div class="hero-top">
+                <div class="hero-titles">
+                    <p class="eyebrow">Reach Home Loans · Submission Form</p>
+                    <h2 class="hero-title">{stepName}</h2>
+                    <template lwc:if={transactionName}><p class="hero-sub">{transactionName}</p></template>
+                </div>
+                <span class="hero-count">{stepLabel}</span>
+            </div>
+            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={percent}>
+                <span class="bar-fill" style={progressStyle}></span>
+            </div>
+            <ol class="stepper">
+                <template for:each={stepper} for:item="s">
+                    <li key={s.index}>
+                        <button type="button" class={s.cls} data-index={s.index} onclick={handleJump} disabled={s.disabled} aria-current={s.ariaCurrent}>
+                            <span class="stp-num">{s.number}</span>
+                            <span class="stp-name">{s.name}</span>
+                        </button>
+                    </li>
+                </template>
+            </ol>
+        </header>
+
+        <div class="body">
+            <template lwc:if={loading}>
+                <div class="state">Loading the loan and its borrowers&hellip;</div>
+            </template>
+            <template lwc:if={loadError}>
+                <div class="alert alert-err" role="alert">{loadError}</div>
+            </template>
+
+            <template lwc:if={done}>
+                <div class="state state-ok">
+                    <p class="ok-title">Submission form saved</p>
+                    <p>The loan has been updated from your answers.</p>
+                    <button type="button" class="btn btn-primary" onclick={handleClose}>Close</button>
+                </div>
+            </template>
+
+            <template lwc:if={isReady}>
+                <template lwc:if={lockedMessage}>
+                    <div class="alert alert-lock" role="status">{lockedMessage}</div>
+                </template>
+
+                <template lwc:if={isBorrowerStep}>
+                    <section class="card card-slate">
+                        <h3 class="card-title">Borrowers on this file</h3>
+                        <div class="bcards">
+                            <div class="bcard bcard-primary">
+                                <span class="btag">Primary borrower</span>
+                                <span class="bname">{primaryBorrowerName}</span>
+                            </div>
+                            <template for:each={borrowerCards} for:item="b">
+                                <div key={b.id} class={b.cls}>
+                                    <span class="btag">{b.tag}</span>
+                                    <span class="bname">{b.label}</span>
+                                    <span class="bdetail">{b.detail}</span>
+                                </div>
+                            </template>
+                        </div>
+                        <template lwc:if={draftBorrower}>
+                            <div class="grid add-borrower">
+                                <lightning-input label="First name" required data-field="first" value={draftBorrower.first} onchange={handleDraftBorrower}></lightning-input>
+                                <lightning-input label="Last name" required data-field="last" value={draftBorrower.last} onchange={handleDraftBorrower}></lightning-input>
+                                <lightning-input label="Email" type="email" data-field="email" value={draftBorrower.email} onchange={handleDraftBorrower}></lightning-input>
+                                <lightning-input label="Phone" type="tel" data-field="phone" value={draftBorrower.phone} onchange={handleDraftBorrower}></lightning-input>
+                            </div>
+                            <template lwc:if={borrowerError}><p class="err-text">{borrowerError}</p></template>
+                            <div class="row-actions">
+                                <button type="button" class="btn btn-ghost" onclick={handleCancelBorrower}>Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick={handleSaveBorrower} disabled={addingBorrower}>Save borrower</button>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <button type="button" class="btn btn-link" onclick={handleAddBorrower}>+ Add borrower</button>
+                        </template>
+                    </section>
+                </template>
+
+                <template for:each={currentSections} for:item="sec">
+                    <section key={sec.key} class={sec.cls}>
+                        <h3 class="card-title">{sec.title}</h3>
+                        <div class="grid">
+                            <template for:each={sec.fields} for:item="f">
+                                <div key={f.key} class={f.wrapCls}>
+                                    <template lwc:if={f.isInfo}>
+                                        <p class="info">{f.label}</p>
+                                    </template>
+                                    <template lwc:elseif={f.isToggle}>
+                                        <button type="button" class={f.toggleCls} data-key={f.key} onclick={handleToggle} aria-pressed={f.yesPressed}>
+                                            <span class="toggle-dot"></span>{f.label}
+                                        </button>
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="lbl-row">
+                                            <span class="lbl">
+                                                {f.label}<template lwc:if={f.required}><abbr class="req" title="required">*</abbr></template>
+                                            </span>
+                                            <template lwc:if={f.prefilled}><span class="pf">Prefilled</span></template>
+                                        </div>
+
+                                        <template lwc:if={f.isLookup}>
+                                            <c-loan-submission-lookup data-key={f.key} object-name={f.object} value={f.value} display-name={f.displayName} onselect={handleLookup}></c-loan-submission-lookup>
+                                        </template>
+                                        <template lwc:elseif={f.isInput}>
+                                            <lightning-input variant="label-hidden" label={f.label} type={f.inputType} formatter={f.formatter} step={f.step} data-key={f.key} value={f.value} onchange={handleInput}></lightning-input>
+                                        </template>
+                                        <template lwc:elseif={f.isCombo}>
+                                            <lightning-combobox variant="label-hidden" label={f.label} placeholder="Select…" options={f.comboOptions} data-key={f.key} value={f.value} onchange={handleInput}></lightning-combobox>
+                                        </template>
+                                        <template lwc:elseif={f.isTextarea}>
+                                            <lightning-textarea variant="label-hidden" label={f.label} data-key={f.key} value={f.value} onchange={handleInput}></lightning-textarea>
+                                        </template>
+                                        <template lwc:elseif={f.isChips}>
+                                            <div class="chips" role="group" aria-label={f.label}>
+                                                <template for:each={f.options} for:item="o">
+                                                    <button key={o.key} type="button" class={o.cls} data-key={f.key} data-value={o.value} aria-pressed={o.pressed} onclick={handleChip}>{o.label}</button>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template lwc:elseif={f.isMulti}>
+                                            <div class="chips" role="group" aria-label={f.label}>
+                                                <template for:each={f.options} for:item="o">
+                                                    <button key={o.key} type="button" class={o.cls} data-key={f.key} data-value={o.value} aria-pressed={o.pressed} onclick={handleMulti}>{o.label}</button>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template lwc:elseif={f.isBool}>
+                                            <div class="chips" role="group" aria-label={f.label}>
+                                                <button type="button" class={f.yesCls} data-key={f.key} data-value="true" aria-pressed={f.yesPressed} onclick={handleBool}>Yes</button>
+                                                <button type="button" class={f.noCls} data-key={f.key} data-value="false" aria-pressed={f.noPressed} onclick={handleBool}>No</button>
+                                            </div>
+                                        </template>
+
+                                        <template lwc:if={f.help}><p class="help">{f.help}</p></template>
+                                        <template lwc:if={f.error}><p class="err-text" role="alert">{f.error}</p></template>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </section>
+                </template>
+
+                <template lwc:if={isReview}>
+                    <template for:each={reviewGroups} for:item="g">
+                        <section key={g.index} class={g.cls}>
+                            <div class="rv-head">
+                                <h3 class="card-title">{g.name}</h3>
+                                <button type="button" class="btn btn-link" data-index={g.index} onclick={handleJump}>Edit</button>
+                            </div>
+                            <template lwc:if={g.missing}><p class="err-text">{g.missingText}</p></template>
+                            <template lwc:if={g.empty}><p class="muted">Nothing entered.</p></template>
+                            <dl class="rv-list">
+                                <template for:each={g.rows} for:item="r">
+                                    <div key={r.key} class="rv-row">
+                                        <dt>{r.label}</dt>
+                                        <dd>{r.text}</dd>
+                                    </div>
+                                </template>
+                                <template lwc:if={g.extraBorrowers}>
+                                    <div class="rv-row">
+                                        <dt>Additional borrowers</dt>
+                                        <dd>{g.extraBorrowers}</dd>
+                                    </div>
+                                </template>
+                            </dl>
+                        </section>
+                    </template>
+                </template>
+
+                <template lwc:if={saveError}>
+                    <div class="alert alert-err" role="alert">{saveError}</div>
+                </template>
+            </template>
+        </div>
+
+        <template lwc:if={isReady}>
+            <footer class="foot">
+                <button type="button" class="btn btn-ghost" onclick={handleClose}>Cancel</button>
+                <div class="foot-right">
+                    <template lwc:if={showBack}>
+                        <button type="button" class="btn btn-ghost" onclick={handleBack}>Back</button>
+                    </template>
+                    <template lwc:if={isLast}>
+                        <button type="button" class="btn btn-primary" onclick={handleSubmit} disabled={submitDisabled}>{submitLabel}</button>
+                    </template>
+                    <template lwc:else>
+                        <button type="button" class="btn btn-primary" onclick={handleNext}>Next</button>
+                    </template>
+                </div>
+            </footer>
+        </template>
+        <template lwc:if={loadError}>
+            <footer class="foot">
+                <button type="button" class="btn btn-ghost" onclick={handleClose}>Close</button>
+            </footer>
+        </template>
+    </div>
+</template>

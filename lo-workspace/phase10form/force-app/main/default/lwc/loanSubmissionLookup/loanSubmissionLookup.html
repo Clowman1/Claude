@@ -1,0 +1,42 @@
+<template>
+    <template lwc:if={hasValue}>
+        <span class="chip">
+            <span class="chip-text" title={chipLabel}>{chipLabel}</span>
+            <button type="button" class="chip-x" onclick={handleClear} disabled={disabled} aria-label="Remove selection">&times;</button>
+        </span>
+    </template>
+    <template lwc:else>
+        <div class="box">
+            <input
+                class="search"
+                type="search"
+                placeholder={placeholder}
+                value={term}
+                disabled={disabled}
+                autocomplete="off"
+                oninput={handleInput}
+                onfocus={handleFocus}
+                onblur={handleBlur}
+                role="combobox"
+                aria-expanded={open}
+                aria-autocomplete="list"
+            />
+            <template lwc:if={showList}>
+                <ul class="list" role="listbox">
+                    <template lwc:if={searching}>
+                        <li class="muted">Searching&hellip;</li>
+                    </template>
+                    <template for:each={results} for:item="r">
+                        <li key={r.id} role="option" class="opt" data-id={r.id} data-name={r.name} onmousedown={handlePick}>
+                            <span class="opt-name">{r.name}</span>
+                            <span class="opt-sub">{r.sub}</span>
+                        </li>
+                    </template>
+                    <template lwc:if={noResults}>
+                        <li class="muted">No matches. Use "Can't find" to add a new contact.</li>
+                    </template>
+                </ul>
+            </template>
+        </div>
+    </template>
+</template>

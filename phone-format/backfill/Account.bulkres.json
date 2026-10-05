@@ -1,0 +1,14 @@
+{
+  "status": 0,
+  "result": {
+    "processedRecords": 19595,
+    "successfulRecords": 19589,
+    "failedRecords": 6,
+    "status": "JobComplete",
+    "operation": "update",
+    "object": "Account",
+    "successFilePath": "750Qi000017rR8qIAE-success-records.csv",
+    "failedFilePath": "750Qi000017rR8qIAE-failed-records.csv"
+  },
+  "warnings": []
+}

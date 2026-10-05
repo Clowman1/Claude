@@ -1,0 +1,190 @@
+<apex:page controller="dfsle.AgreementsController" title="{!$Label.dfsle__DocumentPreviewPageTitle}" sidebar="false"
+           showHeader="false" extensions="dfsle.OnlineEditorController" applyHtmlTag="false" standardStylesheets="false">
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__jquery}"/>
+    <apex:includeScript value="{!$Resource.dfsle__userEvents}"/>
+    <apex:includeScript value="{!$Resource.dfsle__OnlineEditorJS}"/>
+    <apex:includeScript value="{!$Resource.dfsle__scmwidgetsjs}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__dsEditor}"/>
+    <apex:includeScript value="{!$Resource.dfsle__negotiatecontainer}"/>
+
+
+    <style type="text/css">
+        #appContainer {
+            background-color: #f7f9fb;
+        }
+
+        .noSidebarCell #appContainer {
+            min-height: calc(100vh - 120px);
+            width: -webkit-fill-available;
+        }
+
+        .bodyDiv .outerNoSidebar,
+        .noSidebarCell,
+        .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        .noSidebarCell #ds-spinner {
+            height: calc(100vh - 165px);
+        }
+
+        .ds-blue-brand {
+            background: rgb(176, 196, 223);
+            background-image: url({!URLFOR($Resource.lightningBlueBackground)});
+            background-repeat: repeat-x;
+        }
+
+        .ds-adfEditor {
+            margin-left: 400px;
+            top: 72px;
+            position: fixed;
+            width: 72vw !important;
+        }
+
+        body {
+            margin: 0;
+            -webkit-font-smoothing: inherit;
+        }
+
+        #ds-spinner2 {
+            height: calc(100vh - 165px);
+        }
+
+        #onlineEditorGenerator {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 72px);
+            overflow-x: scroll;
+            border-left: 1px solid rgb(204, 204, 204);
+        }
+
+        .onlineEditorToolbarIcon {
+            background: rgb(243, 242, 242);
+        }
+
+        html {
+            font-size: inherit;
+            font-weight: 400;
+            line-height: 18px;
+            font-family: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
+        }
+    </style>
+
+
+    <div id="ds-pageContent" class="ds-blue-brand">
+        <div id="appContainer"/>
+        <div id="onlineEditorGenerator" class="ds-adfEditor"></div>
+    </div>
+
+
+    <div id="ds-spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+      Visualforce.remoting.timeout = 120000;
+      var templateJsonEncoded = '{!JSENCODE(templateJson)}';
+      var initErrorMessage = '{!JSENCODE(errorMessage)}';
+
+      RemoteActions = {
+        getUserProperties: '{!$RemoteAction.OnlineEditorController.getUserProperties}',
+        generateDownloadToken: '{!$RemoteAction.OnlineEditorController.generateDownloadToken}',
+        getMergeData: '{!$RemoteAction.OnlineEditorController.getMergeData}',
+        getMergeFields: '{!$RemoteAction.OnlineEditorController.getMergeFields}',
+        getEntityRecords: '{!$RemoteAction.OnlineEditorController.getEntityRecords}',
+        getEntityRecordsWithSearch: '{!$RemoteAction.OnlineEditorController.getEntityRecordsWithSearch}',
+        getIsChorusNegotiateAllowed: '{!$RemoteAction.OnlineEditorController.getIsChorusNegotiateAllowed}'
+      };
+
+      Configuration = {
+        isCreating: false,
+        isEditing: false,
+        isGenerating: true,
+        namespace: '{!JSENCODE(namespace)}',
+        docuSignAccountId: '{!JSENCODE(docuSignAccountId)}',
+        docuSignUserId: '{!JSENCODE(docuSignUserId)}',
+        docuSignEnvironment: '{!JSENCODE(docuSignEnvironment)}',
+        template: templateJsonEncoded ? Object.freeze(JSON.parse(templateJsonEncoded)) : '',
+        sourceId: '{!JSENCODE($CurrentPage.parameters.recordId)}',
+        sendingUrl: '{!URLFOR($Page.Sending)}',
+        hasInitError: !!initErrorMessage,
+        initError: initErrorMessage,
+        translationPath: '{!$Resource.dsEditorTranslations}',
+        userLanguage: '{!JSENCODE(userLanguage)}'
+      };
+
+      Labels = {
+        templateUndefinedLabel: '{!JSENCODE($Label.UndefinedOnlineEditorTemplate)}',
+        templateExportDataIsUndefinedLabel: '{!JSENCODE($Label.ExportDataIsUndefinedLabel)}',
+        apiError_3: '{!JSENCODE($Label.ApiError_3)}',
+        UnauthorizedQueryMessage: '{!JSENCODE($Label.UnauthorizedQueryMessage)}'
+      };
+
+
+      var renderOnlineEditorPreviewer = function (options) {
+        return prepareOnlineEditorDocumentPreviewer(options);
+      };
+
+      var saveAgreement = function (isSaveAndClose) {
+        return processSaveAgreement(isSaveAndClose);
+      };
+
+      function showSetupComponent() {
+        document.getElementById('ds-spinner').style.display = 'none';
+        document.getElementById('ds-pageContent').style.display = 'block';
+      }
+
+      function showSetupSpinner() {
+        document.getElementById('ds-spinner').style.display = 'block';
+        document.getElementById('ds-pageContent').style.display = 'none';
+      }
+
+      function showADFEditor() {
+        document.getElementById('onlineEditorGenerator').style.display = 'block';
+      }
+
+      var namespace = '{!JSENCODE(namespace)}';
+      var _navigateToURL = function (event) {
+        var url = event.getParam('url');
+        window.open(url, '_blank');
+      };
+      $Lightning.use(namespace + ':DocumentPreviewApp', function () {
+        $Lightning.createComponent(namespace + ':DocumentPreview',
+          {
+            sourceId: '{!JSENCODE($CurrentPage.parameters.sourceId)}',
+            agreementId: '{!JSENCODE($CurrentPage.parameters.agreementId)}',
+            currentUserEmail: '{!JSENCODE($User.email)}',
+            showSetupComponent: showSetupComponent,
+            showSetupSpinner: showSetupSpinner,
+            renderOnlineEditorPreviewer: renderOnlineEditorPreviewer,
+            saveAgreement: saveAgreement,
+            showADFEditor: showADFEditor
+          },
+          'appContainer',
+          function (component, status, errorMessage) {
+            if (errorMessage) {
+              //FixMe:Need Design
+            }
+            $A.eventService.addHandler({
+              event: 'force:navigateToSObject',
+              handler: function (event) {
+                navUtils.navigateToSObject(event.getParams().recordId);
+              }
+            });
+            $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': _navigateToURL});
+          });
+      });
+    </script>
+</apex:page>

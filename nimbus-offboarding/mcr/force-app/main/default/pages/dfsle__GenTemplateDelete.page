@@ -1,0 +1,26 @@
+<apex:page id="GenTemplateDelete" sidebar="false" showHeader="true" standardController="dfsle__GenTemplate__c"
+           title="{!$Label.dfsle__DocuSign}" extensions="dfsle.GenController">
+    <apex:includeLightning />
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:slds />
+    <!-- div for rendering the lightning component -->
+    <div id="lightning"></div>
+
+    <script type="text/javascript">
+      var onComplete = function () {
+        window.location.replace('{!JSENCODE(objectHomeUrl)}');
+      };
+      var ns = '{!JSENCODE(namespace)}';
+      $Lightning.use(ns + ':GenTemplateDeleteApp', function () {
+        $Lightning.createComponent(ns + ':GenTemplateDelete', {
+          namespace: ns,
+          templateId: '{!GenTemplate__c.Id}'
+        }, 'lightning', function (component, status) {
+          if (status === 'SUCCESS') {
+            $A.eventService.addHandler({'event': 'force:navigateToObjectHome', 'handler': onComplete});
+          }
+        });
+      });
+    </script>
+</apex:page>

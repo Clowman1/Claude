@@ -1,0 +1,123 @@
+<apex:page standardController="smagicinteract__SenderId_Profile_Map__c" extensions="smagicinteract.DefaultSenderIdController" tabStyle="SMS_Magic_Settings__tab" >
+
+<apex:includeScript value="{!URLFOR($Resource.smagicinteract__jquery)}"/>
+<script>
+                              
+</script> 
+  
+  <style>
+  .buttonCls{
+            margin-left: 3px;
+            margin-right: 3px;
+            padding: 4px 3px;
+            color: #333;
+            margin: 1px;
+            border: 1px solid #B5B5B5;
+            border-bottom-color: #7F7F7F;
+            background-color: transparent;
+            font-weight: bold;
+            font-size: .9em;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            text-decoration:none;
+   }
+   
+   </style>
+
+<apex:form id="confForm">
+<apex:pageMessages escape="false" id="pgmsg"/>
+
+ <apex:pageBlock id="objDropDown" title="{!$Label.smagicinteract__dflt_sender_id_title}">
+<table>
+            <tr>
+                <td class="labelCol" title="{!$Label.smagicinteract__sender_id_title}">
+                    {!$Label.smagicinteract__senderid}
+                </td>
+                <td class="labelCol">
+                    :
+                </td>
+                <td>
+                  <apex:selectList id="senderIdDropDown" size="1" value="{!selectedSenderId}" style="width:130px;"  >
+                  <apex:actionSupport event="onchange" action="{!loadselectedProfileAndUser}" rerender="selectedRecipient ,selectedRecipientUser, availableRecipient ,availableRecipientUser " status="loadText"/>
+                        <apex:selectOptions value="{!senderIdList}" />  
+                  </apex:selectList>                
+                </td>
+            </tr>
+       </table>
+       <apex:actionStatus id="loadText" starttext="{!$Label.smagicinteract__lod_status}" stoptext=" "  />                      
+       <br/>
+       <hr size ="1" height ="2"/>
+       <br/>
+         <table>
+             <apex:outputPanel rendered="{!renderProfileSection}">
+                <tr>
+                    <td class="labelCol" style="width:115px;" title="{!$Label.AVL_PROFILES_TITLE}">{!$Label.AVL_PROFILES}</td>
+                    <td>&nbsp;</td>
+                    <td class="labelCol" style="width:115px;" title="{!$Label.SEL_PROFILES_TITLE}">{!$Label.SEL_PROFILES}</td>
+                </tr>
+                <tr>
+                    <td style="width:115px;">
+                 
+                        <apex:selectList id="availableRecipient" value="{!availableRecipientList}" multiselect="true" size="6" style="width:100%;">                                                          
+                              <apex:selectOptions value="{!availableRecipient}" />                           
+                        </apex:selectList>                    
+                                                                                                                     
+                    </td>
+                     <td>
+                        <br />  
+                        <apex:commandButton action="{!leftToRightMove}" value=">>" id="lefttoright" rerender="availableRecipient, selectedRecipient, pgmsg" />
+                        <br/>
+                        <apex:commandButton action="{!rightToLeftMove}" value="<<" id="righttoleft" rerender="availableRecipient, selectedRecipient ,pgmsg "/>
+                     </td>
+                   
+                    <td style="width:115px;">
+                        <apex:selectList id="selectedRecipient" value="{!selectedRecipientList}" multiselect="true" size="6" style="width:100%;">                             
+                          <apex:selectOptions value="{!selectedRecipient}" />  
+                        </apex:selectList>
+                    </td >
+                                     
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+             </apex:outputPanel>
+             	<tr>
+                    <td class="labelCol" style="width:115px;" title="{!$Label.AVL_USERS_TITLE}">{!$Label.AVL_USER}</td>
+                    <td>&nbsp;</td>
+                    <td class="labelCol" style="width:115px;" title="{!$Label.SEL_USERS_TITLE}">{!$Label.SEL_USER}</td>
+                </tr>
+             	<tr>
+                    <td style="width:115px;">
+                 
+                        <apex:selectList id="availableRecipientUser" value="{!availableRecipientUserList}" multiselect="true" size="6" style="width:100%;">                                                          
+                              <apex:selectOptions value="{!availableRecipientUser}" />                           
+                        </apex:selectList>                    
+                                                                                                                     
+                    </td>
+                     <td>
+                        <br />  
+                        <apex:commandButton action="{!leftToRightMoveUser}" value=">>" id="lefttorightUser" rerender="availableRecipientUser, selectedRecipientUser, pgmsg" />
+                        <br/>
+                        <apex:commandButton action="{!rightToLeftMoveUser}" value="<<" id="righttoleftUser" rerender="availableRecipientUser, selectedRecipientUser ,pgmsg "/>
+                     </td>
+                   
+                    <td style="width:115px;">
+                        <apex:selectList id="selectedRecipientUser" value="{!selectedRecipientUserList}" multiselect="true" size="6" style="width:100%;">                             
+                          <apex:selectOptions value="{!selectedRecipientUser}" />  
+                        </apex:selectList>
+                    </td >
+                                     
+                </tr>
+          </table>
+                  <apex:inputhidden value="{!selectedFieldValue}" id="fieldList" />
+                  <apex:pageBlockButtons location="both">
+                      <apex:commandButton title="{!$Label.smagicinteract__save}" value="{!$Label.smagicinteract__save}" action="{!saveDefaultSenderId}" disabled="{!disableSave}"/>
+                       <apex:commandButton title="{!$Label.smagicinteract__cancel}" value="{!$Label.smagicinteract__cancel}" action="{!clickCancel }" />
+                  </apex:pageBlockButtons>
+        </apex:pageBlock>
+     </apex:form>
+  
+</apex:page>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>LO_Workspace</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>LO_Workspace_Demo</name>
+    </customPermissions>
+    <description>Lets an internal user (Brandon) demo the LO Workspace app with their own live data and the outside-LO workspace behaviour. No External_LO permission, so restriction rules do not apply.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LO Workspace Demo</label>
+    <tabSettings>
+        <tab>LO_Workspace</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>LO_Workspace_Approved_Investors</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

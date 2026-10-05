@@ -1,0 +1,25 @@
+<apex:page standardController="smagicinteract__SMS_Schedule__c" extensions="smagicinteract.ReschedulerExtension">
+
+    <apex:form >
+    <apex:pageMessages escape="false" id="pageMessagesSection"/>
+        <apex:pageBlock >
+                <apex:pageBlockSection title="Scheduled Information">
+                    <apex:outputField value="{!smsSchedule.Name}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.Name.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__Object__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__Object__c.label}"/>                    
+                    <apex:outputField value="{!smsSchedule.smagicinteract__Phone_Field__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__Phone_Field__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__SMS_Text__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__SMS_Text__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__Optout_Field__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__Optout_Field__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__isOptout__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__isOptout__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__SenderId__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__SenderId__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__Status__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__Status__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__Record_Ids__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__Record_Ids__c.label}"/>
+                    <apex:outputField value="{!smsSchedule.smagicinteract__Job_ID__c}" label="{!$ObjectType.smagicinteract__SMS_Schedule__c.fields.smagicinteract__Job_ID__c.label}"/>        
+
+                    
+                </apex:pageBlockSection>
+            <c:SendSMSScheduler scComponentWrap="{!reScData}"/>
+            <apex:commandButton action="{!reschedule}" value="{!$Label.smagicinteract__sc_reschedule}" title="{!$Label.smagicinteract__sc_reschedule}" rendered="{!If(isPackageAutomation && ($Permission.smagicinteract__AllowToScheduleMessage) ,true,false)}" rerender="confirmpopup,pageMessagesSection" />
+        </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

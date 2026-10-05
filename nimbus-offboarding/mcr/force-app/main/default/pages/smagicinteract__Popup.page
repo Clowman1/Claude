@@ -1,0 +1,402 @@
+<apex:page sidebar="false" showHeader="false" controller="smagicinteract.BulkSMSController" tabStyle="smagicinteract__smsMagic__c">
+    <apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+    <apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/js/jquery-1.10.2.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.smagicinteract__smJQuery, '/js/jquery-ui-1.10.4.custom.min.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.smagicinteract__smJQuery, '/css/sm-theme/jquery-ui-1.10.4.custom.min.css')}"  />
+    <apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+    <script type="text/javascript">
+    function closePopup(){
+        var parentWindowUrl = "{!JSINHTMLENCODE(redirectUrl)}";
+        window.parent.postMessage("close sendsms popup", parentWindowUrl);
+    }       
+    $( document ).ready(function() {
+        displayPopUpPageMessage();
+        var selectedDefaultSenderId = '{!JSINHTMLENCODE(defaultSenderId)}';
+        document.getElementById("{!$Component.formId.main.selectedSenderId}").value = selectedDefaultSenderId;
+        selectDefaultSenderId();
+    });
+    
+    $(document).on("keypress", ":input:not(textarea)", function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
+    
+    function selectDefaultSenderId(){
+        var selectedDefaultSenderId = '{!JSINHTMLENCODE(defaultSenderId)}';
+        document.getElementById("{!$Component.formId.main.selectedSenderId}").value = selectedDefaultSenderId;
+    }
+    
+    function clearDefaultSenderId(){
+        $('#defaultRadioButton2').attr('checked', true);
+    }
+    
+    function showErrorMessage(action,btn){
+        var errmsg = document.getElementById("{!$Component.formId.main.trTextID}").innerHTML;
+        if(errmsg.trim().length != 0 ) {
+            alert(errmsg);
+            toggle(btn);
+        }   
+        else if(action == 2)
+            closePopup();       
+    }
+
+    function toggle(btn) {
+        var isProcessable = {!disableMe} ;  
+        if(isProcessable || btn == null ) 
+            return;     
+        btn.disabled = !btn.disabled;   
+    }
+    </script>
+    
+    <style type="text/css">
+        .custPopup{
+        background-color: white;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #000000;
+        z-index: 9999;
+        padding:10px;
+        position: absolute;
+        width: 350px;
+        left:40%;
+        top:250px;
+        }
+        .popupBackground{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        }
+        .myClass {
+        font-family: Verdana,Arial,sans-serif;
+        font-size: 10px;
+        }
+        p{
+        margin: 1em 0;   
+        }
+        
+        strong{
+        font-weight: 900;   
+        }
+        
+        .green_button{
+        background-color:#3c9965;
+        color:#ffffff;         
+        text-decoration:none;
+        font-size:16px;
+        line-height: 20px;
+        border:1px;
+        font-weight:bold;
+        padding:5px 12px 5px 12px;
+        cursor:pointer;
+        border-radius:2px;
+        } 
+
+        body .bPageBlock .pbBody .labelCol, body .bPageBlock .pbBody .dataCol, body .bPageBlock .pbBody .data2Col, body .print .topics-label, body .print .topics-list {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 0px;
+            padding-right: 0px;
+            word-wrap: break-word;
+            white-space: pre-line;
+            width : 100%;
+        }
+        
+        .apexp .detailList .list .headerRow th {
+            border-bottom: 2px solid #ccc;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        
+        .apexp .bPageBlock .detailList table.unrelatedTableStyleClass {
+            table-layout: fixed;
+        }
+        
+        .inputSearch {
+            max-width: 99%;
+        }
+        
+        body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th {
+            padding: 2px 2px 2px 2px;
+        }
+        
+        .apexp .detailList .list .headerRow .rowNoHeaderClass {
+            width:6%;
+        }
+        .apexp .detailList .list .headerRow .unrelObjectHeaderClass {
+            width: 20%;
+        }
+        .apexp .detailList .list .headerRow .inputSearchHeaderClass {
+            width: 20%;
+        }
+        .apexp .detailList .list .headerRow .SearchImgHeaderClass {
+            width: 13%;
+        }
+        .apexp .detailList .list .headerRow .recordNameHeaderClass {
+            width: 27%;
+        }
+        .apexp .detailList .list .headerRow .removeHeaderClass {
+            width: 15%;
+        }
+        body .pbBody table.list tr.dataRow td.SearchImgClass {
+            vertical-align:middle;
+            text-align:center;
+        } 
+        body .pbBody table.list tr.dataRow td.removeClass{
+            vertical-align:middle;
+            text-align:center;
+        }
+        
+    </style>
+    
+    <apex:outputPanel rendered="{!!$Permission.smagicinteract__AllowToSendBulkMessage}"> 
+        <div style="width:300px;margin:10px auto; text-align:center;line-height:40px;" >
+            <h1 style="font-size:30px;">{!$Label.CAMP_MNG_CANNOT_SND_MSG} </h1> <br/> 
+            <h5 style="font-size:15px;">{!$Label.CAMP_MNG_PLZ_CNTCT_ADMN}</h5> <br/>             
+        </div>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="veryOutermostPanel" rendered="{!$Permission.smagicinteract__AllowToSendBulkMessage}" > 
+        
+        
+        <apex:form id="formId" style="width:100%">
+            <apex:actionFunction name="displayPopUpPageMessage" action="{!clearPopUpPageMessage}" reRender="outPanel" />
+            <apex:outputPanel id="outPanel" >
+                <apex:pageMessages escape="false" id="pagemessage" rendered="{!displayPopUpMessage}" />
+            </apex:outputPanel>
+            <apex:outputPanel id="pageBlockMessages">
+            <div class="ui-widget myClass" style="display:block;">
+                <apex:outputPanel id="showInfoMessageId" rendered="{!showInfoMessage}">
+                <div id="infoMessageType" class="ui-state-highlight ui-corner-all" style="padding: .8em;"> 
+                    <apex:repeat value="{!infoMessage}" var="string" id="theRepeat1">
+                        <p>
+                            <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                            {!JSINHTMLENCODE(string)}
+                        </p>
+                    </apex:repeat>
+                </div>
+                </apex:outputPanel>
+
+                <br />
+                <apex:outputPanel id="showWarningMessageId" rendered="{!showWarningMessage}">
+                <div id="warningMessageType" class="ui-state-highlight ui-corner-all" style="padding: .8em;"> 
+                    <apex:repeat value="{!warningMessage}" var="string1" id="theRepeat2">
+                        <p>
+                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                            <strong>Alert:</strong> {!JSINHTMLENCODE(string1)}
+                        </p>
+                    </apex:repeat>
+                </div>
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="showErrorMessageId" rendered="{!showErrorMessage}">
+                <div id="errorMessageType" class="ui-state-error ui-corner-all" style="padding: .8em;"> 
+                    <apex:repeat value="{!errorMessage}" var="string2" id="theRepeat3">
+                        <p>
+                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                            <strong>Error:</strong> {!JSINHTMLENCODE(string2)} 
+                        </p>
+                    </apex:repeat>
+                </div>
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="showStarterMessageId" rendered="{!showStarterMessage}">
+                <div>
+                    <div id="starterMessageType" class="ui-state-error ui-corner-all" style="padding: .8em;"> 
+                        <p>
+                            <span  style="float: left; margin-right: .3em;"></span>
+                            {!$Label.STARTER_SUBSCRIPTION_MSG}
+                        </p>                                    
+                    </div>
+                    <br/><br/>
+                    <input type="button" id="subscribeBtn" value="{!$Label.SBCRB_NOW}" class="green_button" onclick="window.open('http://screen-magic.com/salesforce/shoppingCart.html')"  />
+                </div>
+                </apex:outputPanel>
+            </div>
+
+            </apex:outputPanel>
+                        
+            <c:Expired_Message_Component isPanelVisible="{! NOT(isVisible) }"/>
+            
+            <br/>
+            
+            <apex:pageBlock id="main" rendered="{!IF((isPopupAllowable && isVisible) , true , false )}" >
+                
+                
+                <apex:outputText id="trTextID" value="{!vrfyTmplErrMsg}" style="display:none" />
+                
+                <apex:outputPanel styleClass="popupBackground" rendered="{!isConfigurationDone}" />
+                <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isConfigurationDone}"  >
+                    <div id="popupMessageHeader" style="width:100%; height:10%; background-color:#8BBEC1;">
+                        <div title="" style="color:white; text-align:left; font-family:sans-serif; font-weight:bold; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; padding-left: 5px;"> 
+                            {!$Label.PENDING_CONFIGURATION_MSG_HEADER}
+                        </div> 
+                    </div>
+                    <br />
+                    <apex:outputPanel style="font-size:15px;">
+                        {!$Label.smagicinteract__pending_configuration_msg_body}
+                        <br/><br/><br/><br/>
+                    </apex:outputPanel>
+                    <apex:outputPanel style="margin-left:40%">
+                        <apex:commandButton title="{!$Label.smagicinteract__pending_configuration_msg_ok_button}" value="{!$Label.smagicinteract__pending_configuration_msg_ok_button}" action="{!openSetUpWizard}"/>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <apex:pageBlockSection id="sectionSenderId" title="" rendered="{!isRegistered}" >
+                    <apex:facet name="header"> {!$Label.smagicinteract__senderid_section_title} </apex:facet>
+                </apex:pageBlockSection>
+                <div id="radio1">
+                    <apex:outputPanel id="defaultSenderIdPanel" rendered="{!showDefaultSenderId}">
+                        <input type="radio" id="defaultRadioButton1" name="radio" value="{!defaultSenderId}" checked="true" onclick="selectDefaultSenderId();"/>
+                        <label for="defaultRadioButton1">
+                            {!JSINHTMLENCODE(defaultSenderId)}
+                        </label>
+                    </apex:outputPanel>
+                    <apex:outputPanel >
+                        <apex:outputPanel id="senderIdPanel" rendered="{!showDefaultSenderId}">
+                            <input type="radio" id="defaultRadioButton2" name="radio"/>
+                        </apex:outputPanel>
+                        <label for="defaultRadioButton2">
+                            <apex:selectList size="1" id="selectedSenderId" value="{!senderId}" onchange="clearDefaultSenderId();">
+                                <apex:selectOptions id="senderIdList" value="{!senderIds}"/>
+                            </apex:selectList>
+                        </label>
+                    </apex:outputPanel>
+                </div>
+                
+                <apex:pageBlockSection id="sectionSenderName" title="" rendered="{!showUserDropDown}" >
+                    <apex:facet name="header">{!$Label.smagicinteract__sender_name_section_title}</apex:facet>
+                    <apex:selectList size="1"  value="{!userId}" title="{!$Label.smagicinteract__sender_name_list_title}" style="max-width:150px; width:150px;">
+                        <apex:selectOptions value="{!senderList}" />
+                    </apex:selectList>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection id="RecipientsList" columns="2" title="" rendered="{!isRegistered}" >
+                    <apex:facet name="header">{!$Label.smagicinteract__recipients_list_title}</apex:facet>
+                    <apex:pageBlockTable value="{!smsObjects}" var="item" id="smslist" style="width:100%;table-layout:fixed;word-wrap:break-word;">
+                        <apex:column value="{!item.name}" headerClass="apexp" > 
+                            <apex:facet name="header">{!$Label.smagicinteract__recipient_table_name_column}</apex:facet>
+                        </apex:column>
+                        
+                        <apex:column value="{!item.mobilenumber}" > 
+                            <apex:facet name="header">{!$Label.smagicinteract__recipient_table_phonenumber_column}</apex:facet>
+                        </apex:column>
+                        
+                        <apex:column value="{!item.phoneFieldType}" > 
+                            <apex:facet name="header">{!$Label.smagicinteract__recipient_table_phone_type_column}</apex:facet>
+                        </apex:column>
+                        
+                        <apex:column value="{!item.objectType}" > 
+                            <apex:facet name="header">{!$Label.smagicinteract__recipient_table_objecttype_column}</apex:facet>
+                        </apex:column>
+                        
+                        <apex:column id="removeButtonCol" styleclass="removeClass">
+                            <apex:facet name="header">{!$Label.smagicinteract__remove_label}</apex:facet>
+                            <apex:image value="{!imageUrl}" title="{!$Label.smagicinteract__remove_label}">
+                                <apex:actionSupport rerender="pageBlockMessages,RecipientsList,buttonOutputPanel" action="{!removeRecord}" event="onclick" immediate="true" oncomplete="characterCounter('controllerDiv','{!$Component.formId.main.textSection.SMSText}', '{!$Component.formId.main.textSection.charaterCountMsg.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');">
+                                    <apex:param name="smsexternaluniqueid" value="{!item.externalId}" assignTo="{!itemIdForRemoval}"/>
+                                </apex:actionSupport>
+                            </apex:image>
+                        </apex:column>
+                        
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>  
+                
+                <br/>
+                 
+                <!-- section for unrelated functionality.-->
+                <apex:outputPanel id="unrelated" rendered="{!showUnrelatedPanel}" styleClass="unrelatedPanelStyleClass">  
+                    <apex:pageBlockSection id="blockSectionId1" columns="1" title="{!$Label.smagicinteract__custom_lookup}">
+                        <apex:variable var="rowNumber" value="{!0}"/>
+                        <apex:pageBlockTable title="{!$Label.smagicinteract__unrelated_panel}" var="wrap" value="{!unrelatedObjectStoreList}" styleClass="unrelatedTableStyleClass">
+                            
+                            <apex:column headerValue="{!$Label.smagicinteract__number}" headerClass="rowNoHeaderClass" styleClass="rowNoClass">
+                                <apex:outputText value="{!rowNumber+1}" style="text-align:center;"> 
+                                    <apex:variable var="rowNumber" value="{!rowNumber+1}"/>
+                                </apex:outputText> 
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.smagicinteract__unrelated_object_name}" headerClass="unrelObjectHeaderClass" styleClass="unrelObjectClass">
+                                <apex:outputText title="{!$Label.smagicinteract__unrelated_object_name}" value="{!wrap.objectLabel}"/>
+                            </apex:column>
+                            <apex:column title="{!$Label.smagicinteract__unrelated_search_helper_text}" headerValue="{!$Label.smagicinteract__search_string}" headerClass="inputSearchHeaderClass" styleClass="inputSearch">
+                                <apex:inputText id="searchStringText" value="{!wrap.searchString}" styleclass="inputSearch" />
+                            </apex:column> 
+                            <apex:column id="searchButtonCol" headerClass="SearchImgHeaderClass" styleClass="SearchImgClass">
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__search}" /></apex:facet>
+                                <apex:image value="{!searchImageUrl}" title="{!$Label.smagicinteract__search_all_fields}">
+                                    <apex:actionSupport rerender="pageBlockMessages,unrelated" action="{!populateRecordList}" event="onclick" >
+                                        <apex:param name="rowIndexRemove" value="{!rowNumber}" assignTo="{!rowCount}" />
+                                    </apex:actionSupport>
+                                </apex:image>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.smagicinteract__selected_record}" id="selRecId" headerClass="recordNameHeaderClass" styleClass="recordNameClass">  
+                                <apex:outputLink title="{!$Label.smagicinteract__unrelated_selected_record_helper}" value="{!'/'+ wrap.recordId}" target="_blank">{!wrap.recordName}</apex:outputLink>
+                            </apex:column>
+                            <apex:column id="removeUnrelatedId" headerClass="removeHeaderClass" styleClass="removeClass">
+                                <apex:facet name="header"><apex:outputText value="{!$Label.smagicinteract__label_remove}" /></apex:facet>
+                                <apex:image value="{!imageUrl}" title="{!$Label.smagicinteract__remove}">
+                                    <apex:actionSupport rerender="pageBlockMessages,unrelated" action="{!removeSelectedRecord}" event="onclick" immediate="true">
+                                        <apex:param name="rowIndexRemove" value="{!rowNumber}" assignTo="{!rowCount}" />
+                                    </apex:actionSupport>
+                                </apex:image>
+                            </apex:column>
+                            
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                    <apex:outputPanel id="radioPanel"  layout="block" style="overflow:auto;height:100px" rendered="{!onSearch}">
+                        <span id="thePanel"><b>{!$Label.smagicinteract__search_result}</b></span>
+                         
+                        <apex:selectRadio value="{!selectedRecordId}" layout="pageDirection">
+                            <apex:selectOptions value="{!UnrelatedRecordList}"/>
+                            <apex:actionSupport event="onclick" action="{!recordSelection}" rerender="pageBlockMessages,unrelated" />
+                        </apex:selectRadio>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                
+                <apex:pageBlockSection title="" rendered="{!isRegistered}">
+                    <apex:facet name="header">{!$Label.smagicinteract__template_section_title}</apex:facet>
+                    <apex:selectList value="{!template}" size="1" title="{!$Label.smagicinteract__template_list_title}" onchange="sayHello();"> 
+                        <apex:selectOptions value="{!items}"/>
+                    </apex:selectList>
+                </apex:pageBlockSection>
+                
+                <apex:actionFunction name="sayHello" action="{!changeTemplateText}" rerender="textSection,charaterCountMsg,SMSText,trTextID" oncomplete="showErrorMessage(1,null);characterCounter('controllerDiv','{!$Component.formId.main.textSection.SMSText}', '{!$Component.formId.main.textSection.charaterCountMsg.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');"/>
+                
+                <apex:pageBlockSection id="textSection" columns="2" title="" rendered="{!isRegistered}">  
+                    <apex:facet name="header">{!$Label.smagicinteract__sms_text_section_title}</apex:facet>
+                    <apex:pageBlockSectionItem id="charaterCountMsg" >
+                        <apex:outputText style="color:green;font-size:14px;" id="numberOfChars" value="{!$Label.smagicinteract__charater_count_msg}">
+                            <apex:param value="0"/>
+                        </apex:outputText> 
+                    </apex:pageBlockSectionItem>
+                    <br/>
+                    <apex:inputTextArea id="SMSText"  style="width: 100%;;height:80px;" value="{!smsText}" onkeyup="characterCounter('controllerDiv','{!$Component.formId.main.textSection.SMSText}', '{!$Component.formId.main.textSection.charaterCountMsg.numberOfChars}','{!$Label.smagicinteract__charater_count_msg}');" readonly="{!hasPermissionForTemplateSelection}"/>
+                </apex:pageBlockSection>
+                 <c:MMSComponent mmsComponentWrapper="{!mmsDetails}"/>
+                <apex:pageBlockSection id="optOut" columns="2" title="" rendered="{!showOptoutSection}">
+                    <apex:facet name="header">{!$Label.smagicinteract__optout_section_title}</apex:facet>
+                    <apex:selectList id="optOutList" value="{!optOutFieldValue}" size="1" rendered="{!showOptoutSection}" title="{!$Label.smagicinteract__optout_section_title}" disabled="{!hasPermissionToChangeOptOut}">
+                        <apex:selectOptions value="{!optOutList}"/>
+                    </apex:selectList>
+                </apex:pageBlockSection>
+                
+                <br />
+                <apex:outputPanel id="buttonOutputPanel">
+                    <div style="left: 50%;margin-left: 40%;">
+                        <apex:commandButton action="{!sendSMS}" value="{!$Label.smagicinteract__send_sms_button_title}" title="{!$Label.smagicinteract__send_sms_button_title}" rendered="{!isRegistered}" disabled="{!IF (disableMe,true, false)}"  rerender="pageBlockMessages,trTextID,charaterCountMsg" oncomplete="showErrorMessage(2,this);" onclick="toggle(this)" />
+                        <apex:commandButton rendered="{!isRegistered}" value="{!$Label.smagicinteract__cancel_button_title}" title="{!$Label.smagicinteract__cancel_button_title}" onclick="closePopup();" />
+                    </div>
+                </apex:outputPanel>
+            </apex:pageBlock>
+        </apex:form>
+    </apex:outputPanel>
+</apex:page>

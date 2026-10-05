@@ -1,0 +1,13 @@
+/**
+ * Created by Zeyad Jabra on 8/15/2019.
+ */
+.THIS .arive-nmlscr-header-img{
+    width:auto;margin-right:90px;height:165px;
+}
+.THIS .arive-rmla-status-list slds-item{
+    padding:3px;
+}
+
+.THIS .slds-tile+.slds-tile {
+    margin-top: auto;
+}

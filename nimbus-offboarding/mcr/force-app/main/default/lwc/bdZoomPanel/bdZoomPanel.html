@@ -1,0 +1,92 @@
+<template>
+    <div class="wrap">
+        <template lwc:if={loading}><div class="pad"><lightning-spinner alternative-text="Loading Zoom" size="small"></lightning-spinner></div></template>
+        <template lwc:if={unavailable}>
+            <div class="note">Zoom isn't available for your user yet. Ask an admin to check your Zoom permission sets.</div>
+        </template>
+
+        <template lwc:if={context}>
+            <div class="cols">
+                <section class="box">
+                    <div class="head">
+                        <div class="zicon"><lightning-icon icon-name="utility:video" size="small"></lightning-icon></div>
+                        <div>
+                            <div class="h2">Schedule a Zoom</div>
+                            <div class="muted sm">Booked on your Zoom account, added to your calendar, cloud recording on.</div>
+                        </div>
+                    </div>
+                    <lightning-input label="Meeting topic" data-field="topic" value={topic} onchange={handleInput} required></lightning-input>
+                    <div class="three">
+                        <lightning-input type="date" label="Date" data-field="startDate" value={startDate} onchange={handleInput} required></lightning-input>
+                        <lightning-combobox label="Time" data-field="startTime" value={startTime} options={startTimeOptions} placeholder="Select" onchange={handleInput} required></lightning-combobox>
+                        <lightning-combobox label="Length" data-field="duration" value={duration} options={durationOptions} onchange={handleInput}></lightning-combobox>
+                    </div>
+                    <lightning-textarea label="Agenda / notes (internal)" data-field="agenda" value={agenda} onchange={handleInput}></lightning-textarea>
+                    <div class="actions">
+                        <span class="muted sm">You'll review the invite email next.</span>
+                        <button class="btn btn-p" disabled={scheduleDisabled} onclick={openInvite}>Schedule Zoom</button>
+                    </div>
+                </section>
+
+                <section class="box">
+                    <div class="h2">Zoom meetings with this partner</div>
+                    <template lwc:if={hasMeetings}>
+                        <template for:each={meetings} for:item="m">
+                            <div key={m.id} class="mtg">
+                                <div class="grow">
+                                    <div class="strong">{m.topic}</div>
+                                    <div class="muted sm">{m.startLabel} · {m.durationMinutes} min</div>
+                                    <template lwc:if={m.hasRecordings}>
+                                        <div class="recs">
+                                            <template for:each={m.recordings} for:item="r">
+                                                <a key={r.id} href={r.playbackUrl} target="_blank" rel="noopener" class="linkish">Open {r.fileType}</a>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                                <span class={m.statusCls}>{m.statusLabel}</span>
+                                <div class="mbtns">
+                                    <template lwc:if={m.upcoming}>
+                                        <button class="btn btn-o btn-s" data-id={m.id} onclick={start}>Start</button>
+                                        <button class="btn btn-s" data-url={m.joinUrl} onclick={join}>Join link</button>
+                                    </template>
+                                    <template lwc:else>
+                                        <button class="btn btn-s" data-id={m.id} disabled={busy} onclick={importRecording}>Import recording</button>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    <template lwc:else><div class="muted sm empty">No Zoom meetings with this partner yet.</div></template>
+                </section>
+            </div>
+        </template>
+
+        <template lwc:if={showInvite}>
+            <div class="backdrop">
+                <section class="modal" role="dialog" aria-modal="true" aria-label="Zoom invitation">
+                    <div class="mh">
+                        <h2 class="title">Zoom invitation</h2>
+                        <div class="seg">
+                            <template for:each={templateButtons} for:item="t">
+                                <button key={t.value} class={t.cls} data-value={t.value} onclick={pickTemplate}>{t.label}</button>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="mb">
+                        <lightning-input type="email" label="Partner email" data-field="partnerEmail" value={partnerEmail} onchange={handleInput}></lightning-input>
+                        <lightning-textarea label="Other recipients" data-field="additionalEmails" value={additionalEmails} onchange={handleInput}
+                            placeholder="Separate emails with commas"></lightning-textarea>
+                        <lightning-input label="Subject" data-field="invitationSubject" value={invitationSubject} onchange={handleInput} required></lightning-input>
+                        <lightning-textarea class="body" label="Email" data-field="invitationBody" value={invitationBody} onchange={handleInput} required></lightning-textarea>
+                        <div class="muted sm">Sent from {senderLine}; replies come to you. The Zoom link and your signature card are added automatically.</div>
+                    </div>
+                    <div class="mf">
+                        <button class="btn" disabled={busy} onclick={closeInvite}>Cancel</button>
+                        <button class="btn btn-p" disabled={busy} onclick={confirmSchedule}>Schedule &amp; send invite</button>
+                    </div>
+                </section>
+            </div>
+        </template>
+    </div>
+</template>

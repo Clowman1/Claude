@@ -1,0 +1,16 @@
+/**
+ * Created by andrk on 11.11.2022.
+ */
+
+.THIS .modal-close {
+    --slds-c-icon-color-background: transparent;
+    --sds-c-icon-color-background: transparent;
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --sds-c-icon-color-foreground: #ffffff;
+}
+
+.THIS .form-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

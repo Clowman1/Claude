@@ -1,0 +1,7 @@
+<!--
+ - Created by J9 on 8/6/2021.
+ -->
+
+<design:component>
+    <design:attribute name="metadataId" label="metadataId" />
+</design:component>

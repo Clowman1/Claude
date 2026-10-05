@@ -1,0 +1,47 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009CkYAAA0",
+        "createdByName": "Bryan Snyder",
+        "createdDate": "2018-08-06T17:08:17.000Z",
+        "fileName": "unpackaged/workflows/Transaction__c.workflow",
+        "fullName": "Transaction__c",
+        "id": "01If2000001QBu5EAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-07-16T01:32:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "Workflow"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-03T13:36:20.707Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-03T13:36:20.707Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000Ok8HhMAJ",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "Transaction__c",
+        "type": "Workflow",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\phone-format\\cleanup\\off\\force-app\\main\\default\\workflows\\Transaction__c.workflow-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

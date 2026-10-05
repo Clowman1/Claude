@@ -1,0 +1,73 @@
+<apex:page standardController="smagicinteract__incoming_lookup_config__c"  extensions="smagicinteract.IncomingLookupController" >
+<script>
+    function closeHelpMessage(){
+        document.getElementById('stepDiv').style.display = "none";
+    }
+</script>
+<apex:includeScript value="/soap/ajax/15.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/15.0/apex.js"/>
+<apex:includeScript value="{!$Resource.smagicinteract__BulkSMSJS}"/>
+
+<apex:form id="formid">
+<apex:pageMessages escape="false" id="pageMessagesSection"/>
+
+<apex:pageBlock title="{!$Label.smagicinteract__incoming_lookup_page_title}"  rendered="{!allowConfiguration }" >
+
+    <table border="0" style="margin-top:10px;">
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__object_name_label} </td>
+        <td>
+          <apex:selectList id="allObjectDropDown" value="{!selectedObjName}"  size="1">
+           <apex:actionSupport event="onchange" rerender="mobileFieldDropDown"/>
+                <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_object_label}"/>
+                <apex:selectOptions value="{!lookupObjects}" />
+          </apex:selectList>
+        </td>
+    </tr>
+
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__mobile_field_name_label} </td>
+        <td>
+          <apex:selectList id="mobileFieldDropDown" value="{!mobileFieldName}" size="1">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_field_label}"/>
+                <apex:selectOptions value="{!mobileFieldsForSelectedObject}" />
+          </apex:selectList>
+      </td>
+    </tr>
+
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__reference_field_name_label} </td>
+        <td>
+          <apex:selectList id="referenceFieldDropDown" value="{!referenceFieldName}" size="1">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_field_label}"/>
+                <apex:selectOptions value="{!referenceFieldsList}" />
+          </apex:selectList>
+        </td>
+    </tr>
+
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__incoming_sms_owner_label} </td>
+        <td>
+          <apex:selectList id="incomingSMSOwner" value="{!incomingSMSOwner}" size="1">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__none_label}"/>
+                <apex:selectOption itemValue="recordowner" itemLabel="{!$Label.smagicinteract__record_owner_label}"/>
+                <apex:selectOption itemValue="lastsender" itemLabel="{!$Label.smagicinteract__last_sender_label}"/>
+          </apex:selectList>
+        </td>
+    </tr>
+
+    <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__notify_owner_label} </td>
+        <td>
+          <apex:inputCheckbox value="{!notifyRecordOwner}"/>
+        </td>
+    </tr>
+    </table>
+
+    <apex:pageBlockButtons location="bottom">
+        <apex:commandButton action="{!save}" value="{!$Label.smagicinteract__save_button}" title="{!$Label.smagicinteract__save_button}"/>
+        <apex:commandButton action="{!Cancel}" value="{!$Label.smagicinteract__cancel_button_title}" title="{!$Label.smagicinteract__cancel_button_title}" />
+    </apex:pageBlockButtons>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

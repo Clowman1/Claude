@@ -1,0 +1,108 @@
+<apex:page id="Sending" controller="dfsle.SendingController" showHeader="true" sidebar="false"
+           title="{!$Label.dfsle__SendWithDocuSign}">
+    <apex:includeLightning />
+    <apex:includeScript value="/support/console/60.0/integration.js" />
+    <apex:slds />
+
+    <style type="text/css">
+
+        /* CSS to override default padding applied in Lightning Experience */
+        html body.sfdcBody {
+            padding: 0;
+        }
+
+        /* CSS to override default padding applied in Classic Experience */
+        .bodyDiv .outerNoSidebar, .noSidebarCell, .sidebarCell .fixed {
+            padding: 0;
+        }
+
+        .noSidebarCell #ds-spinner,  .noSidebarCell #ds-sending {
+            height: calc(100vh - 165px);
+        }
+
+
+
+    </style>
+
+    <div id="ds-sending" style="display: none;"> 
+    </div>
+    <div id="ds-spinner">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+
+    <script>
+      function showSendingComponent() {
+        document.getElementById('ds-spinner').style.display = 'none';
+        document.getElementById('ds-sending').style.display = 'block';
+      }
+
+      var _namespace = '{!JSENCODE(namespace)}';
+      var _navigateToURL = function (event) {
+        var url = event.getParam('url');
+        window.open(url, '_self');
+      };
+      var _files = '{!JSENCODE($CurrentPage.parameters.files)}'.trim();
+      var _sendingExperience = '{!JSENCODE(sendingExperience)}' || '';
+      var _quickSending = _sendingExperience === 'quickSend';
+      _files = _files ? _files.split(',') : [];
+      var _phrs = '{!JSENCODE($CurrentPage.parameters.phrs)}'.trim();
+      _phrs = _phrs ? JSON.parse(_phrs) : null;
+      var _sendNow = '{!JSENCODE($CurrentPage.parameters.sendNow)}'.trim() === '1';
+      var _lock = '{!JSENCODE($CurrentPage.parameters.lock)}'.trim() === '1';
+      var _sourceId = '{!JSENCODE($CurrentPage.parameters.sId)}';
+      var _title = '{!JSENCODE($CurrentPage.parameters.title)}' || '{!JSENCODE($Label.SendWithDocuSign)}';
+      var _loadDefaultContacts = '{!JSENCODE($CurrentPage.parameters.loadDefaultContacts)}'.trim() === '0' ? false : true;
+      var _sendingComponent = _quickSending ? _namespace + ':quickSending' : _sendingExperience === 'send'? _namespace + ':sendNow': _namespace + ':sendingConfig';
+      var uiTheme = '{!$User.UIThemeDisplayed}';
+      var _isMobileApp = typeof sforce !== 'undefined' && sforce && sforce.one && uiTheme === 'Theme4t';
+      var _isConsoleView = sforce.console.isInConsole();
+      //Load LWC page
+      var _navigateToSObject = function (recordId) {
+        if (typeof sforce != 'undefined') {
+          sforce.one.navigateToSObject(recordId);
+        } else {
+          window.location.replace('/' + recordId);
+        }
+      };
+      var _mobileNavigateToUrl = function (url) {
+        const userAgent = navigator.userAgent || navigator.vendor;
+        const isAndroid = /android/i.test(userAgent);
+        if (typeof sforce != 'undefined' && isAndroid) {
+         sforce.one.navigateToURL(url, true);
+        } else {
+          window.open(url, '_blank');
+        }
+      };
+      $Lightning.use(_namespace + ':SendingApp', function () {
+        $Lightning.createComponent(_sendingComponent, {
+          visualforce: true,
+          recordId: _sourceId,
+          recordName: '{!JSENCODE(recordName)}',
+          title: _title,
+          settings: {
+            envelopeTemplateId: '{!JSENCODE($CurrentPage.parameters.templateId)}',
+            sObjectName: '{!JSENCODE(sObjectName)}',
+            files: _files,
+            loadDefaultContacts: _loadDefaultContacts,
+            placeholderRecipients: _phrs,
+            sendNow: _sendNow,
+            sendingExperience: _sendingExperience,
+            lock: _lock,     
+            sourceId: _sourceId,
+            navigateToSObject: _navigateToSObject,
+            isMobileApp: _isMobileApp,
+            isConsoleView: _isConsoleView,
+            mobileNavigateToUrl: _mobileNavigateToUrl
+          }
+        }, 'ds-sending', function () {
+          showSendingComponent();
+          $A.eventService.addHandler({'event': 'force:navigateToURL', 'handler': _navigateToURL});
+        });
+      });
+
+    </script>
+</apex:page>

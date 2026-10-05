@@ -16,6 +16,9 @@
 public without sharing class BdCommandCenterController {
 
     public static final Integer NEEDS_TOUCH_DAYS = 14;
+    // The realtor Lead Intake Form; ?email= pre-identifies the sender, and LeadBdAttribution
+    // files them as Buying Agent (realtors) or Referral Source (everyone else).
+    static final String INTAKE_FORM_URL = 'https://reachhomeloans.my.site.com/LeadIntakeForm/s/?email=';
     static final String NOTE_PREFIX = 'BD Note';
     static final List<String> STAGE_ORDER = new List<String>{
         'Prospect', 'Contacted', 'Meeting Set', 'Met', 'Active Partner', 'Dormant'
@@ -42,6 +45,7 @@ public without sharing class BdCommandCenterController {
         @AuraEnabled public Integer daysQuiet;
         @AuraEnabled public Boolean needsTouch;
         @AuraEnabled public Integer referredLeads90;
+        @AuraEnabled public String intakeUrl;
     }
 
     public class CallRow {
@@ -156,6 +160,14 @@ public without sharing class BdCommandCenterController {
         @AuraEnabled public String note { get; set; }
         @AuraEnabled public List<Id> partnerIds { get; set; }
         @AuraEnabled public List<Id> coHostIds { get; set; }
+        @AuraEnabled public String scope { get; set; }         // null = BD rep's book; 'lo' = LO Workspace (outside LO)
+    }
+
+    /** LO Workspace "In Person Invite": the outside LO's invitable partners and their own upcoming events. */
+    public class LoInviteHome {
+        @AuraEnabled public String repFirstName;
+        @AuraEnabled public List<Partner> partners = new List<Partner>();
+        @AuraEnabled public List<EventRow> upcoming = new List<EventRow>();
     }
 
     public class InviteeRow {
@@ -322,6 +334,7 @@ public without sharing class BdCommandCenterController {
             p.daysQuiet = since.date().daysBetween(Date.today());
             p.needsTouch = p.stage != 'Dormant' && p.daysQuiet >= NEEDS_TOUCH_DAYS;
             p.referredLeads90 = referred.containsKey(a.Id) ? referred.get(a.Id) : 0;
+            applyIntakeUrl(p);
             out.put(a.Id, p);
         }
         return out;
@@ -470,6 +483,7 @@ public without sharing class BdCommandCenterController {
             else if (p.lastTouch != null && p.stage == 'Prospect') next = 'Contacted';
             if (next != p.stage || accounts.get(p.id).BD_Stage__c == null) {
                 p.stage = next;
+                applyIntakeUrl(p);
                 updates.add(new Account(Id = p.id, BD_Stage__c = next));
             }
         }
@@ -477,6 +491,28 @@ public without sharing class BdCommandCenterController {
     }
 
     static Integer rank(String stage) { return STAGE_ORDER.indexOf(stage); }
+
+    /** Active Partners with an email get their personal intake-form link for Fred to copy. */
+    static void applyIntakeUrl(Partner p) {
+        p.intakeUrl = p.stage == 'Active Partner' && String.isNotBlank(p.email)
+            ? INTAKE_FORM_URL + EncodingUtil.urlEncode(p.email.trim(), 'UTF-8')
+            : null;
+    }
+
+    /** The account-page strip: the partner's intake link, or null when not shareable yet. */
+    @AuraEnabled
+    public static String getIntakeLink(Id accountId) {
+        if (accountId == null || !isRep()) return null;
+        List<Account> rows = [
+            SELECT BD_Stage__c, PersonEmail FROM Account WHERE Id = :accountId AND BD_Rep__c = :UserInfo.getUserId()
+        ];
+        if (rows.isEmpty()) return null;
+        Partner p = new Partner();
+        p.stage = rows[0].BD_Stage__c;
+        p.email = rows[0].PersonEmail;
+        applyIntakeUrl(p);
+        return p.intakeUrl;
+    }
 
     /**
      * The rep's own RingCentral sign-in, via the org's existing OAuth flow. Connected means the
@@ -782,8 +818,9 @@ public without sharing class BdCommandCenterController {
     @AuraEnabled
     public static void addExisting(Id accountId, String industry) {
         requireRep();
-        Account a = [SELECT Id, BD_Rep__c, BD_Stage__c FROM Account WHERE Id = :accountId AND IsPersonAccount = true];
+        Account a = [SELECT Id, BD_Rep__c, BD_Stage__c, Biz_Dev_Designation__c FROM Account WHERE Id = :accountId AND IsPersonAccount = true];
         a.BD_Rep__c = UserInfo.getUserId();
+        a.Biz_Dev_Designation__c = LeadBdAttribution.designationForNewPartner(a.Biz_Dev_Designation__c, UserInfo.getUserId());
         if (String.isNotBlank(industry)) a.BD_Industry__c = industry;
         if (a.BD_Stage__c == null) a.BD_Stage__c = 'Prospect';
         update a;
@@ -811,6 +848,7 @@ public without sharing class BdCommandCenterController {
             PersonEmail = String.isBlank(email) ? null : email.trim(),
             PersonTitle = String.isBlank(company) ? null : company.trim(),
             BD_Rep__c = UserInfo.getUserId(), BD_Industry__c = industry, BD_Stage__c = 'Prospect',
+            Biz_Dev_Designation__c = LeadBdAttribution.designationForNewPartner(null, UserInfo.getUserId()),
             Type__c = TYPE_FOR_INDUSTRY.containsKey(industry) ? TYPE_FOR_INDUSTRY.get(industry) : 'Other'
         );
         if (industry == 'Realtor') a.Is_Realtor__c = true;
@@ -933,10 +971,84 @@ public without sharing class BdCommandCenterController {
         return 'Event';
     }
 
+    // ---------------------------------------------------------------- LO Workspace (outside LOs)
+    // Same invite engine for LO Workspace users (External_LO, or LO_Workspace_Demo for Brandon).
+    // They have no BD book: they may invite only their own tagged partners (Phase 5 tags) and
+    // partner-type Person Accounts they own, and they see only events they host or co-host.
+
+    static void requireLo() {
+        if (!LoWsPartnerTagService.isTagMode()) throw new AuraHandledException('In-person invites are for LO Workspace loan officers.');
+    }
+
+    @TestVisible
+    static Map<Id, Account> loPartnerAccounts(Set<Id> onlyIds) {
+        Id me = UserInfo.getUserId();
+        Set<Id> tagged = LoWsPartnerTagService.myTags(onlyIds).keySet();
+        String q = 'SELECT Id, Name, FirstName, PersonContactId, PersonTitle, Company__c, BD_Industry__c, Is_Realtor__c, '
+            + 'Type, Type__c, Group__pc FROM Account '
+            + 'WHERE IsPersonAccount = true AND PersonContactId != null AND (Id IN :tagged OR OwnerId = :me)';
+        if (onlyIds != null) q += ' AND Id IN :onlyIds';
+        Map<Id, Account> out = new Map<Id, Account>();
+        for (Account a : (List<Account>) Database.query(q + ' ORDER BY Name LIMIT 2000')) {
+            if (tagged.contains(a.Id) || LoWsPartnerTagService.isPartner(a)) out.put(a.Id, a);
+        }
+        return out;
+    }
+
+    static void requireHostedByMe(Id campaignId) {
+        Id me = UserInfo.getUserId();
+        Boolean host = [SELECT COUNT() FROM Campaign WHERE Id = :campaignId AND OwnerId = :me] > 0
+            || [SELECT COUNT() FROM Campaign_Co_Host__c WHERE Campaign__c = :campaignId AND Co_Host__c = :me] > 0;
+        if (!host) throw new AuraHandledException('You can only open events you host.');
+    }
+
+    @AuraEnabled
+    public static LoInviteHome getLoInviteHome() {
+        requireLo();
+        LoInviteHome h = new LoInviteHome();
+        h.repFirstName = UserInfo.getFirstName();
+        for (Account a : loPartnerAccounts(null).values()) {
+            Partner p = new Partner();
+            p.id = a.Id;
+            p.name = a.Name;
+            p.company = String.isNotBlank(a.Company__c) ? a.Company__c : a.PersonTitle;
+            h.partners.add(p);
+        }
+        for (EventRow e : eventRows(hostedCampaignIds(UserInfo.getUserId()), null)) {
+            if (e.startDate >= Date.today()) h.upcoming.add(e);
+        }
+        return h;
+    }
+
     @AuraEnabled
     public static List<RealtorEventWorkspaceController.CoHostOption> searchCoHosts(String term) {
-        requireRep();
-        return RealtorEventWorkspaceController.searchReachEmployees(term);
+        if (isRep()) return RealtorEventWorkspaceController.searchReachEmployees(term);
+        requireLo();
+        List<RealtorEventWorkspaceController.CoHostOption> out = new List<RealtorEventWorkspaceController.CoHostOption>();
+        String t = String.isBlank(term) ? '' : term.trim();
+        if (t.length() < 2) return out;
+        String pattern = '%' + t + '%';
+        for (User u : [
+            SELECT Id, Name, Email, Title FROM User
+            WHERE Id IN :internalStaffIds(null) AND (Name LIKE :pattern OR Email LIKE :pattern)
+            ORDER BY Name LIMIT 20
+        ]) {
+            RealtorEventWorkspaceController.CoHostOption o = new RealtorEventWorkspaceController.CoHostOption();
+            o.userId = u.Id;
+            o.name = u.Name;
+            o.email = u.Email;
+            o.title = u.Title;
+            out.add(o);
+        }
+        return out;
+    }
+
+    /** Outside LOs may co-host only with internal Reach staff: active Standard users outside the External LO role. */
+    static Set<Id> internalStaffIds(Set<Id> onlyIds) {
+        String q = 'SELECT Id FROM User WHERE IsActive = true AND UserType = \'Standard\' '
+            + 'AND (UserRoleId = null OR UserRole.DeveloperName != \'External_Loan_Officer\')';
+        if (onlyIds != null) q += ' AND Id IN :onlyIds';
+        return new Map<Id, User>((List<User>) Database.query(q)).keySet();
     }
 
     /**
@@ -946,7 +1058,8 @@ public without sharing class BdCommandCenterController {
      */
     @AuraEnabled
     public static Id createInvite(InviteRequest req) {
-        requireRep();
+        Boolean lo = req != null && req.scope == 'lo';
+        if (lo) requireLo(); else requireRep();
         if (req == null || req.eventDate == null || String.isBlank(req.eventTime)) throw new AuraHandledException('Pick a date and time.');
         if (req.partnerIds == null || req.partnerIds.isEmpty()) throw new AuraHandledException('Invite at least one partner.');
         String kind = String.isBlank(req.kind) ? 'Coffee' : req.kind;
@@ -954,10 +1067,22 @@ public without sharing class BdCommandCenterController {
         Time t = Time.newInstance(Integer.valueOf(hm[0]), Integer.valueOf(hm[1]), 0, 0);
         Integer minutes = req.minutes == null || req.minutes <= 0 ? 60 : req.minutes;
 
-        List<Account> partners = [
-            SELECT Id, Name, FirstName, PersonContactId FROM Account
-            WHERE Id IN :req.partnerIds AND BD_Rep__c = :UserInfo.getUserId() AND PersonContactId != null
-        ];
+        List<Account> partners;
+        if (lo) {
+            // Every requested partner must be one this LO may invite; nothing is silently dropped.
+            Set<Id> requested = new Set<Id>(req.partnerIds);
+            partners = loPartnerAccounts(requested).values();
+            if (partners.size() != requested.size()) throw new AuraHandledException('You can only invite your own partners.');
+            if (req.coHostIds != null && !req.coHostIds.isEmpty()) {
+                Set<Id> coHosts = new Set<Id>(req.coHostIds);
+                if (!internalStaffIds(coHosts).containsAll(coHosts)) throw new AuraHandledException('Co-hosts must be Reach team members.');
+            }
+        } else {
+            partners = [
+                SELECT Id, Name, FirstName, PersonContactId FROM Account
+                WHERE Id IN :req.partnerIds AND BD_Rep__c = :UserInfo.getUserId() AND PersonContactId != null
+            ];
+        }
         if (partners.isEmpty()) throw new AuraHandledException('Those partners are not in your book.');
 
         String name = String.isBlank(req.name) ? defaultEventName(kind, partners) : req.name.trim();
@@ -996,7 +1121,10 @@ public without sharing class BdCommandCenterController {
 
     @AuraEnabled
     public static EventDetail getEvent(Id campaignId) {
-        if (!isRep() && !isManager()) throw new AuraHandledException('You do not have access to the BD command center.');
+        if (!isRep() && !isManager()) {
+            if (!LoWsPartnerTagService.isTagMode()) throw new AuraHandledException('You do not have access to the BD command center.');
+            requireHostedByMe(campaignId);
+        }
         EventDetail d = new EventDetail();
         List<EventRow> rows = eventRows(new Set<Id>{ campaignId }, null);
         if (rows.isEmpty()) throw new AuraHandledException('Event not found.');
@@ -1028,7 +1156,12 @@ public without sharing class BdCommandCenterController {
 
     @AuraEnabled
     public static String resendInvite(Id campaignMemberId) {
-        requireRep();
+        if (!isRep()) {
+            requireLo();
+            List<CampaignMember> m = [SELECT CampaignId FROM CampaignMember WHERE Id = :campaignMemberId];
+            if (m.isEmpty()) throw new AuraHandledException('Invitee not found.');
+            requireHostedByMe(m[0].CampaignId);
+        }
         return RealtorEventWorkspaceController.resendInvitation(campaignMemberId).message;
     }
 

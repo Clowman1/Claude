@@ -1,0 +1,6 @@
+<!--
+ - Created by toma on 9/1/2021.
+ -->
+
+<aura:event type="APPLICATION" description="ReInitEvent">
+</aura:event>

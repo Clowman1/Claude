@@ -1,5 +1,8 @@
 {
-  "packageDirectories": [{ "path": "force-app", "default": true }],
+  "packageDirectories": [
+    { "path": "force-app", "default": true },
+    { "path": "fls-step" }
+  ],
   "namespace": "",
   "sourceApiVersion": "62.0"
 }

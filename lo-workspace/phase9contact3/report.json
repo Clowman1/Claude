@@ -2,17 +2,28 @@
   "status": 0,
   "result": {
     "checkOnly": true,
-    "completedDate": "2026-10-02T21:59:13.000Z",
+    "completedDate": "2026-10-02T22:19:35.000Z",
     "createdBy": "005f2000009OtLn",
     "createdByName": "Christopher Lowman",
-    "createdDate": "2026-10-02T21:54:39.000Z",
+    "createdDate": "2026-10-02T22:14:03.000Z",
     "details": {
       "componentSuccesses": [
         {
           "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-02T22:14:09.000Z",
+          "deleted": false,
+          "fileName": "objects/Borrower__c.object",
+          "fullName": "Borrower__c.Relationship__c",
+          "id": "00NQi00000BjEmrMAF",
+          "success": true
+        },
+        {
+          "changed": true,
           "componentType": "ApexClass",
           "created": false,
-          "createdDate": "2026-10-02T21:54:44.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "classes/ExternalLoLeadService.cls",
           "fullName": "ExternalLoLeadService",
@@ -23,7 +34,7 @@
           "changed": true,
           "componentType": "ApexClass",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "classes/ExternalLoPortalController.cls",
           "fullName": "ExternalLoPortalController",
@@ -34,7 +45,62 @@
           "changed": true,
           "componentType": "ApexClass",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadDocumentRequestService.cls",
+          "fullName": "LeadDocumentRequestService",
+          "id": "01pQi000002zkcqIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsBorrowerService.cls",
+          "fullName": "LoWsBorrowerService",
+          "id": "01pQi000003IwobIAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsBorrowerServiceTest.cls",
+          "fullName": "LoWsBorrowerServiceTest",
+          "id": "01pQi000003IwocIAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsContactService.cls",
+          "fullName": "LoWsContactService",
+          "id": "01pQi000003Iuy5IAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsContactServiceTest.cls",
+          "fullName": "LoWsContactServiceTest",
+          "id": "01pQi000003Iuy6IAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "classes/LoWsLeadDetailsService.cls",
           "fullName": "LoWsLeadDetailsService",
@@ -45,7 +111,7 @@
           "changed": true,
           "componentType": "ApexClass",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "classes/LoWsLeadDetailsServiceTest.cls",
           "fullName": "LoWsLeadDetailsServiceTest",
@@ -56,7 +122,7 @@
           "changed": true,
           "componentType": "LightningComponentBundle",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "lwc/externalLoPreApprovals",
           "fullName": "externalLoPreApprovals",
@@ -67,7 +133,29 @@
           "changed": true,
           "componentType": "LightningComponentBundle",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "lwc/leadDocumentRequestManager",
+          "fullName": "leadDocumentRequestManager",
+          "id": "0RbQi0000003tuRKAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "lwc/leadPortalDocumentRequestManager",
+          "fullName": "leadPortalDocumentRequestManager",
+          "id": "0RbQi0000004YCnKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "lwc/loWsAddLeadForm",
           "fullName": "loWsAddLeadForm",
@@ -78,7 +166,29 @@
           "changed": true,
           "componentType": "LightningComponentBundle",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsBorrowerPills",
+          "fullName": "loWsBorrowerPills",
+          "id": "0RbQi0000004dijKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsContactCard",
+          "fullName": "loWsContactCard",
+          "id": "0RbQi0000004dZ4KAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "lwc/portalListLayout",
           "fullName": "portalListLayout",
@@ -89,7 +199,7 @@
           "changed": true,
           "componentType": "",
           "created": false,
-          "createdDate": "2026-10-02T21:54:49.000Z",
+          "createdDate": "2026-10-02T22:14:21.000Z",
           "deleted": false,
           "fileName": "package.xml",
           "fullName": "package.xml",
@@ -98,6 +208,1480 @@
       ],
       "runTestResult": {
         "codeCoverage": [
+          {
+            "id": "01pQi000002zkcqIAA",
+            "locationsNotCovered": [
+              {
+                "column": 0,
+                "line": 60,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 61,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 62,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 63,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 70,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 87,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 110,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 113,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 118,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 119,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 120,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 124,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 125,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 128,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 129,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 130,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 131,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 132,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 133,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 134,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 135,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 136,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 137,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 138,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 139,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 140,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 142,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 143,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 145,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 146,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 226,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 227,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 228,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 289,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 292,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 295,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 298,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 302,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 340,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 375,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 376,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 484,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 485,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 486,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 487,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 489,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 490,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 514,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 523,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 528,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 541,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 546,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 573,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 579,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 593,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 620,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 636,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 642,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 660,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 680,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 683,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 689,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 743,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 759,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 779,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 784,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 835,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 842,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 904,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 905,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 914,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 923,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 924,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 925,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 926,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 927,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 953,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1039,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1047,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1048,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1049,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1079,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1080,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1081,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1082,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1083,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1085,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1086,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1087,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1091,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1092,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1093,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1097,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1098,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1099,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1100,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1120,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1136,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1140,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1144,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1148,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1149,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1150,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1151,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1152,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1153,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1154,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1155,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1158,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1159,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1163,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1164,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1171,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1173,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1187,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1198,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1201,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1225,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1232,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1233,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1234,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1235,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1236,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1242,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1289,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1320,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1334,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1359,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1367,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1368,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1369,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1378,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1382,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1383,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1404,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1410,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1411,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1412,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1414,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1415,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1417,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1418,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1422,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1423,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1424,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1429,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1444,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1445,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1453,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1454,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1460,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1480,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1484,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1501,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1517,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1521,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1556,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1560,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1561,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1621,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1630,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1637,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1644,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1648,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1649,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1660,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1667,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1682,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1693,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1698,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1715,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1735,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1736,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1741,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1742,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1777,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1784,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1788,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1831,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1842,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1876,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1906,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1963,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1970,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1994,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1995,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1996,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1998,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 1999,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2000,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2013,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2014,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2036,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2039,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2040,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2056,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2065,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2069,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2075,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2076,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2077,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2078,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2079,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2080,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2081,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2083,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2084,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2087,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2092,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2109,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2114,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2115,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2116,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2118,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2119,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2121,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2124,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2141,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2142,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2152,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2159,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2187,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2192,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2205,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2208,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2309,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2313,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2319,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2323,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2324,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2325,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2331,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2345,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2360,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2386,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2387,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2388,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 2390,
+                "numExecutions": 0,
+                "time": -1
+              }
+            ],
+            "name": "LeadDocumentRequestService",
+            "namespace": null,
+            "numLocations": 1303,
+            "numLocationsNotCovered": 238,
+            "type": "Class",
+            "dmlInfo": [],
+            "methodInfo": [],
+            "soqlInfo": [],
+            "soslInfo": []
+          },
+          {
+            "id": "01pQi000003Iuy5IAC",
+            "locationsNotCovered": [
+              {
+                "column": 0,
+                "line": 125,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 236,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 287,
+                "numExecutions": 0,
+                "time": -1
+              }
+            ],
+            "name": "LoWsContactService",
+            "namespace": null,
+            "numLocations": 158,
+            "numLocationsNotCovered": 3,
+            "type": "Class",
+            "dmlInfo": [],
+            "methodInfo": [],
+            "soqlInfo": [],
+            "soslInfo": []
+          },
           {
             "id": "01pQi000003CdWzIAK",
             "locationsNotCovered": [
@@ -132,6 +1716,32 @@
             "namespace": null,
             "numLocations": 152,
             "numLocationsNotCovered": 1,
+            "type": "Class",
+            "dmlInfo": [],
+            "methodInfo": [],
+            "soqlInfo": [],
+            "soslInfo": []
+          },
+          {
+            "id": "01pQi000003IwobIAC",
+            "locationsNotCovered": [
+              {
+                "column": 0,
+                "line": 75,
+                "numExecutions": 0,
+                "time": -1
+              },
+              {
+                "column": 0,
+                "line": 77,
+                "numExecutions": 0,
+                "time": -1
+              }
+            ],
+            "name": "LoWsBorrowerService",
+            "namespace": null,
+            "numLocations": 48,
+            "numLocationsNotCovered": 2,
             "type": "Class",
             "dmlInfo": [],
             "methodInfo": [],
@@ -1047,14 +2657,13 @@
             "elementsNotCovered": [
               "create_uwm_loan_info_0",
               "get_uwm_loan_info_0",
-              "is_lender_uwm_0",
-              "is_lender_uwm"
+              "is_lender_uwm_0"
             ],
             "flowId": "301AJ00000002kp",
             "flowName": "Create_UWM_Loan_Info",
             "flowNamespace": null,
             "numElements": 4,
-            "numElementsNotCovered": 4,
+            "numElementsNotCovered": 3,
             "processType": "AutoLaunchedFlow"
           },
           {
@@ -1365,9 +2974,7 @@
           {
             "elementsNotCovered": [
               "add_to_collection",
-              "check_if_insights_found",
               "assignment",
-              "get_call_insights",
               "loop_t_call_insights",
               "update_call_insights"
             ],
@@ -1375,7 +2982,7 @@
             "flowName": "Lead_Assign_Call_Insights_To_Transaction_On_Conversion",
             "flowNamespace": null,
             "numElements": 6,
-            "numElementsNotCovered": 6,
+            "numElementsNotCovered": 4,
             "processType": "AutoLaunchedFlow"
           },
           {
@@ -1503,16 +3110,13 @@
             "elementsNotCovered": [
               "add_to_collection",
               "assign_transaction_instead_of_opportunity",
-              "get_tasks",
-              "loop_t_tasks",
-              "failsafe_assignment",
-              "update_tasks"
+              "failsafe_assignment"
             ],
             "flowId": "301Qi00000hTxDg",
             "flowName": "Lead_Conversion_Relate_Activity_To_Transaction",
             "flowNamespace": null,
             "numElements": 6,
-            "numElementsNotCovered": 6,
+            "numElementsNotCovered": 3,
             "processType": "AutoLaunchedFlow"
           },
           {
@@ -1549,15 +3153,13 @@
             "processType": "AutoLaunchedFlow"
           },
           {
-            "elementsNotCovered": [
-              "carry_forward_document_requests"
-            ],
             "flowId": "301Qi00001Q3HFp",
             "flowName": "Lead_Document_Requests_Carry_Forward_On_Conversion",
             "flowNamespace": null,
             "numElements": 1,
-            "numElementsNotCovered": 1,
-            "processType": "AutoLaunchedFlow"
+            "numElementsNotCovered": 0,
+            "processType": "AutoLaunchedFlow",
+            "elementsNotCovered": []
           },
           {
             "elementsNotCovered": [
@@ -1684,15 +3286,13 @@
             "processType": "AutoLaunchedFlow"
           },
           {
-            "elementsNotCovered": [
-              "update_user_working_the_lead_field"
-            ],
             "flowId": "3015x0000001bWn",
             "flowName": "Leads_Documents_Requested",
             "flowNamespace": null,
             "numElements": 1,
-            "numElementsNotCovered": 1,
-            "processType": "AutoLaunchedFlow"
+            "numElementsNotCovered": 0,
+            "processType": "AutoLaunchedFlow",
+            "elementsNotCovered": []
           },
           {
             "elementsNotCovered": [
@@ -1888,15 +3488,13 @@
             "processType": "AutoLaunchedFlow"
           },
           {
-            "elementsNotCovered": [
-              "set_requested_date_as_today"
-            ],
             "flowId": "301Qi000018aVTY",
             "flowName": "Populate_Blank_Requested_Date",
             "flowNamespace": null,
             "numElements": 1,
-            "numElementsNotCovered": 1,
-            "processType": "AutoLaunchedFlow"
+            "numElementsNotCovered": 0,
+            "processType": "AutoLaunchedFlow",
+            "elementsNotCovered": []
           },
           {
             "elementsNotCovered": [
@@ -3188,15 +4786,13 @@
             "processType": "AutoLaunchedFlow"
           },
           {
-            "elementsNotCovered": [
-              "update_transaction_name"
-            ],
             "flowId": "301Qi000018aVTN",
             "flowName": "Update_Transaction_Name_with_Loan_Number",
             "flowNamespace": null,
             "numElements": 1,
-            "numElementsNotCovered": 1,
-            "processType": "AutoLaunchedFlow"
+            "numElementsNotCovered": 0,
+            "processType": "AutoLaunchedFlow",
+            "elementsNotCovered": []
           },
           {
             "elementsNotCovered": [
@@ -3242,710 +4838,1186 @@
           }
         ],
         "numFailures": 0,
-        "numTestsRun": 100,
+        "numTestsRun": 168,
         "successes": [
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "logActivity_closesMatchingPromptAndResolvesNames",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 20264
+            "time": 16810
           },
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "logActivity_countWritesOneTaskWithCategoryAndChannel",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 3128
+            "time": 2240
           },
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "logActivity_requiresContactWhenCatalogSaysSo",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 2268
+            "time": 2039
           },
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "logActivity_viaControllerSuppressesCompletedPromptKey",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 2975
+            "time": 3536
           },
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "logActivity_viaControllerWithContact",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 4028
+            "time": 3541
           },
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "nameResolver_coversWhoAndWhatLookups",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 17386
+            "time": 15484
           },
           {
             "id": "01pQi000003FNVkIAO",
             "methodName": "snoozePrompt_insertsOpenTaskForTomorrow",
             "name": "ExternalLoActivityLogServiceTest",
             "namespace": null,
-            "time": 3710
+            "time": 3341
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "communicationService_validatesAndLogsChannels",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 2690
+            "time": 2260
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "createPartnerTypes_andControllerErrors",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 1160
+            "time": 1048
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "initializeDocumentRequestDataForOwnedLead",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 685
+            "time": 1464
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "leadService_validatesAndCreates",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 1055
+            "time": 900
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "partnerService_validatesSearchAndHouseLock",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 513
+            "time": 427
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "portalController_exposesConversionAndCocEntryPoints",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 693
+            "time": 604
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "portalFiltersAndRecordSets_coverRemainingBranches",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 843
+            "time": 687
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "portalService_getLoanDetail_includesConditionSnapshot",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 1769
+            "time": 1674
           },
           {
             "id": "01pQi000003CdX2IAK",
             "methodName": "repositories_nullGuardsAndPartnerSearch",
             "name": "ExternalLoPortalCoverageTest",
             "namespace": null,
-            "time": 781
+            "time": 729
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "controllerCreateMethods_delegateToServices",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 921
+            "time": 935
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "controllerCreatePartner_delegatesToService",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 1150
+            "time": 1022
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "controllerMethods_exposePortalData",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 1016
+            "time": 980
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "createLead_returnsNewRecord",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 960
+            "time": 933
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "createPartner_returnsSharedAccount",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 1171
+            "time": 993
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "getLeadsAndDetail_returnPortalRows",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 517
+            "time": 432
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "getLeads_bulkScenario_processes200Records",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 15974
+            "time": 15168
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "getLoansAndPreApprovals_returnWorkspaceRows",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 591
+            "time": 506
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "getRealtorsAndPartnerDetail_returnRows",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 618
+            "time": 520
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "getRecordSet_returnsPriorityRecords",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 682
+            "time": 569
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "linkPartner_returnsPartnerRow",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 633
+            "time": 489
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "logCommunication_createsCompletedTask",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 3200
+            "time": 2456
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "logCommunication_withFollowUpCreatesEvent",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 2787
+            "time": 2470
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "repositoryMethods_supportPortalAndLegacyPaths",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 1679
+            "time": 1558
           },
           {
             "id": "01pQi000003CdX4IAK",
             "methodName": "workspaceCoverage_exercisesHomeAndPortalPaths",
             "name": "ExternalLoPortalServiceTest",
             "namespace": null,
-            "time": 1139
+            "time": 1955
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "assignmentSurvivesConversion",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 3120
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "blankAssignmentOnAnUpdateLeavesTheExistingOwnerAlone",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 800
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "perBorrowerEmailsSplitConditionsByOwner",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 1418
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "perBorrowerSendNeedsSomebodyToSendTo",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 615
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "portalLinksAreMintedForBorrowersWithAnEmailAndRevokedWithout",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 745
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "rosterIsEmptyForANullLead",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 101
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "rosterListsPrimaryFirstAndFlagsBorrowersWithoutEmail",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 624
+          },
+          {
+            "id": "01pQi000003FMjFIAW",
+            "methodName": "theThreeAssignmentStatesWriteDistinctRecords",
+            "name": "LeadConditionAssignmentTest",
+            "namespace": null,
+            "time": 642
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "aDifferentEmailToTheSameLeadStillSends",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1530
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "aSecondSendOfTheSameEmailIsRefused",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1257
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "borrowerBase64UploadStoresTheFileAndFlipsToReview",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1680
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "borrowerUploadRejectsEmptyAndForeignRequests",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 860
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "carryForwardCreatesConditionsAndLinksFiles",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 3717
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "carryForwardFallsBackForPackageBucketType",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1761
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "carryForwardKeepsTheLabelAndTheFolder",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 2104
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "carryForwardSharedDocumentLinksAllConditionsWithoutAmbiguousStamp",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 2130
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "carryForwardSkipsConvertedRequestFilesAndProcessesOpenRequests",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 2626
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "categoryResolvesToTheDocumentsTabFolder",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 101
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "controllerAndInvocableErrorPathsAreHandled",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 537
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "controllerEmailEntryPointsAreCovered",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1013
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "convertedLeadPortalReturnsTransactionRedirect",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1320
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "createInvocableSupportsManualOneOffRequests",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 648
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "createRequestsFromReferencesMapsCatalogValues",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 776
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "createRequestsFromSpecialIncomeReferencesIncludesChecklistItems",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 708
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "firstDocsRequestEmailMovesTheLeadStatusOnce",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1178
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "followUpTemplateLeavesTheLeadStatusAlone",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 586
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "internalUploadLinksFileAndReturnsPreviewDocuments",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 2337
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "leadPortalCountsUseBorrowerTileStatusMapping",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 753
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "loanRepositorySelectorsReturnExpectedLoans",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1291
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "notNeededCanCloseTheConditionAndRejectsBadInput",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1395
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "notNeededFilesTheDocumentAndLeavesTheConditionOpen",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 2178
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "onlyARowLockIsTreatedAsSentAfterDispatch",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 101
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "portalUploadLinksFileAndSetsReview",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1312
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "portalUploadRejectsRequestOutsideActiveLeadHash",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1253
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "referenceInvocableFiltersInitialBundleLikeTransaction",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 255
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "referenceInvocablesQueryAndCreateRequests",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 768
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "rejectingADocumentStoresTheReasonOnTheRequest",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1485
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "repositorySelectorsHandleEmptyInputsAndSkipConvertedRequests",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1354
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "repositorySelectorsReturnExpectedLeadDocumentData",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1244
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "saveNotesUpdatesBorrowerFacingDescription",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 660
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "saveRequestsAcceptsModalStyleBulkPayload",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 665
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "saveRequestsAcceptsRowsWithRequestDetails",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 622
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "saveRequestsPopulatesHashAndSendsOnlyLeadEmail",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1569
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "saveRequestsRejectsBlankRows",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 593
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "theLanguageFlagIsReadSafely",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 709
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "theRefinanceTemplateAlsoMovesTheStatusOnce",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 979
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "theSpanishToggleWritesOnlyTheLanguageFlag",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 731
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectBuildsLeadPortalUrlsFromSettingsAndQueries",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 95
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectFallsBackForUnknownHash",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 102
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectFallsBackToLeadPortalForOpenLead",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 627
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectFallsBackWhenBorrowerHomeUrlIsBlank",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 2320
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectFallsBackWhenConvertedTransactionHasNoHash",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1141
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectKeepsOpenLeadOnLeadPortal",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 101
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectReturnsNoPageWithoutHash",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 102
+          },
+          {
+            "id": "01pQi000002zkciIAA",
+            "methodName": "visualforceRedirectSendsConvertedLeadToTransactionPortal",
+            "name": "LeadDocumentCollectionServiceTest",
+            "namespace": null,
+            "time": 1226
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "createPortalSelectedConditions_createsFromReference",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 2114
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "emailFacadeMethods_invokeWithPortalContext",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 606
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "getBorrowerOptions_returnsEmptyListForNullLeadId",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 85
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "getBorrowerOptions_returnsPrimaryAndAllForOwnedLead",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 1700
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "getPortalBorrowerLinks_returnsEmptyForNullContext",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 103
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "getPortalPresetConditions_includesRealEstateOwnedAndCatalogRows",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 181
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "initializePortalData_returnsStringContextWithoutLeadIdField",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 571
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "savePortalRequests_createsManualRequest",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 633
+          },
+          {
+            "id": "01pQi000003HF7OIAW",
+            "methodName": "setPortalSpanishCommunications_updatesLeadPreference",
+            "name": "LeadPortalDocumentRequestFacadeTest",
+            "namespace": null,
+            "time": 683
+          },
+          {
+            "id": "01pQi000003IB4vIAG",
+            "methodName": "createSelectedConditionKeys_createsReferenceAndRealEstateRows",
+            "name": "LeadPortalPresetConditionTest",
+            "namespace": null,
+            "time": 765
+          },
+          {
+            "id": "01pQi000003IB4vIAG",
+            "methodName": "createSelectedConditionKeys_requiresSelection",
+            "name": "LeadPortalPresetConditionTest",
+            "namespace": null,
+            "time": 523
+          },
+          {
+            "id": "01pQi000003IB4vIAG",
+            "methodName": "getPresetConditions_andPortalVariant_returnFilteredCatalog",
+            "name": "LeadPortalPresetConditionTest",
+            "namespace": null,
+            "time": 176
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "consumerLeadCannotBeLoggedAsRealtorOutreach",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 396
+            "time": 333
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "consumerLogWritesNoteStampedForLoAndShowsInLoggedCalls",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 1786
+            "time": 2528
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "logCommunicationOnConsumerLeadCreditsConsumerConvos",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 1691
+            "time": 1455
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "logCommunicationOnPartnerAndLoanPickMatchingCategories",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 2213
+            "time": 2002
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "partnerCannotBeLoggedAsConsumerAndPartnerCategoriesWork",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 1345
+            "time": 1126
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "pastClientsAndBorrowersAreLoggableButStrangersAreNot",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 2365
+            "time": 1336
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "pickerFindsLeadsPartnersPastClientsAndBorrowers",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 674
+            "time": 453
           },
           {
             "id": "01pQi000003ItynIAC",
             "methodName": "socialPostHasNoContactNoChannelAndCreditsSocialPosts",
             "name": "LoWsActivityLogTest",
             "namespace": null,
-            "time": 1119
+            "time": 829
           },
           {
             "id": "01pQi000003IwocIAC",
-            "methodName": "addRequiresTheAddLeadFields",
+            "methodName": "documentRequestSendExplainsANoEmailCoBorrower",
             "name": "LoWsBorrowerServiceTest",
             "namespace": null,
-            "time": 377
+            "time": 398
           },
           {
             "id": "01pQi000003IwocIAC",
             "methodName": "myLoansShowTheBorrowerNameNeverTheId",
             "name": "LoWsBorrowerServiceTest",
             "namespace": null,
-            "time": 708
+            "time": 578
           },
           {
             "id": "01pQi000003IwocIAC",
             "methodName": "nonOwnerIsRefused",
             "name": "LoWsBorrowerServiceTest",
             "namespace": null,
-            "time": 585
+            "time": 462
+          },
+          {
+            "id": "01pQi000003IwocIAC",
+            "methodName": "onlyNamesAreRequiredAndFilledFieldsAreChecked",
+            "name": "LoWsBorrowerServiceTest",
+            "namespace": null,
+            "time": 490
           },
           {
             "id": "01pQi000003IwocIAC",
             "methodName": "ownerAddsSeesEditsAndRemovesACoBorrower",
             "name": "LoWsBorrowerServiceTest",
             "namespace": null,
-            "time": 1120
+            "time": 669
           },
           {
             "id": "01pQi000003IwocIAC",
             "methodName": "removalIsRefusedWhileADocumentRequestIsAssigned",
             "name": "LoWsBorrowerServiceTest",
             "namespace": null,
-            "time": 876
+            "time": 724
           },
           {
             "id": "01pQi000003Iuy6IAC",
             "methodName": "borrowerOnMyLoanIsReadOnly",
             "name": "LoWsContactServiceTest",
             "namespace": null,
-            "time": 409
+            "time": 336
           },
           {
             "id": "01pQi000003Iuy6IAC",
             "methodName": "nextAppointmentShowsMyEarliestFutureEventOnly",
             "name": "LoWsContactServiceTest",
             "namespace": null,
-            "time": 2858
+            "time": 2589
           },
           {
             "id": "01pQi000003Iuy6IAC",
             "methodName": "ownedPartnerAndPastClientAreEditable",
             "name": "LoWsContactServiceTest",
             "namespace": null,
-            "time": 844
+            "time": 726
           },
           {
             "id": "01pQi000003Iuy6IAC",
             "methodName": "ownerEditsLeadAndOnlyContactFieldsChange",
             "name": "LoWsContactServiceTest",
             "namespace": null,
-            "time": 687
+            "time": 575
           },
           {
             "id": "01pQi000003Iuy6IAC",
             "methodName": "sharedPartnerIsReadOnlyAndRefused",
             "name": "LoWsContactServiceTest",
             "namespace": null,
-            "time": 432
+            "time": 370
           },
           {
             "id": "01pQi000003Iuy6IAC",
             "methodName": "unseenRecordAndBadFormatsAreRefused",
             "name": "LoWsContactServiceTest",
             "namespace": null,
-            "time": 480
+            "time": 380
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "aFailedLeadRollsBackTheNewRealtor",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 1083
+            "time": 978
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "addLeadOnAWorkedLeadIsStillRefused",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 503
+            "time": 409
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "addLeadRequiresFieldsAndRefusesForeignRealtorAndPlaceholder",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 798
+            "time": 632
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "addLeadStillTakesOverANurturingLeadAndRecordsTheRealtor",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 2913
+            "time": 2551
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "addLeadWithMyRealtorSetsTheBuyingAgent",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 1298
+            "time": 1123
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "buyingTimelineHasExactlyTheThreeValues",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 125
+            "time": 92
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "duplicateNewRealtorReturnsTheMatchAndCreatesNothing",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 444
+            "time": 402
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "leadSourceIsOptionalActiveOnlyAndFixedWithARealtor",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 1614
+            "time": 1372
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "loanProgramComesFromTheTransactionListAndKeepsLegacyText",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 1057
+            "time": 1742
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "newRealtorAndLeadAreCreatedTogetherAndTaggedActive",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 1845
+            "time": 1666
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "nonOwnerForeignRealtorAndBadValuesAreRefused",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 577
+            "time": 493
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "ownerSavesEveryDetailInOneCall",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 1835
+            "time": 1430
           },
           {
             "id": "01pQi000003Iuy8IAC",
             "methodName": "prospectRealtorUsedOnALeadBecomesActivePartner",
             "name": "LoWsLeadDetailsServiceTest",
             "namespace": null,
-            "time": 2102
+            "time": 1237
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "addLeadRefusesWorkedLeadsAndClientsAndAlertsAdmins",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 1759
+            "time": 1533
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "addLeadTakesOverSomeoneElsesNurturingLead",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 1493
+            "time": 2019
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "alertsGoOnlyToOversightHolders",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 200
+            "time": 167
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "csvTakesOverAndRefusesInOnePass",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 2139
+            "time": 1780
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "leadSourceLockStillBlocksEveryoneElse",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 521
+            "time": 451
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "placeholderEmailNeverMatches",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 360
+            "time": 319
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "webhookBlocksWorkedLeadAndUnknownLo",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 1909
+            "time": 1555
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "webhookCreatesLeadNotifiesAndLeadsPerfectDay",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 2226
+            "time": 1926
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "webhookRejectsBadCalls",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 292
+            "time": 315
           },
           {
             "id": "01pQi000003IfcVIAS",
             "methodName": "webhookTakeoverRunsPastTheLockAsAutomatedProcess",
             "name": "LoWsLeadIntakeServiceTest",
             "namespace": null,
-            "time": 1838
+            "time": 1498
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "consumerCsvRefusesSomeoneElsesPeople",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 3168
+            "time": 2601
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "deletingATaggedPartnerIsNotBlocked",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 2350
+            "time": 2564
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "lineCountIgnoresQuotedNewlines",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 116
+            "time": 111
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "newPartnerIsCreatedOwnedAndTagged",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 1655
+            "time": 1561
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "nonPartnerMatchIsRefusedWithAdminMessage",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 523
+            "time": 1271
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "partnerCsvFollowsTheSameRules",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 1030
+            "time": 840
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "partnerMatchIsTaggedWithoutDuplicateAndIsolatedPerLo",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 2551
+            "time": 2085
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "pastClientCsvKeepsLoanHistory",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 1044
+            "time": 842
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "pastClientsAreMyClosedLoans",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 3890
+            "time": 2473
           },
           {
             "id": "01pQi000003IdfWIAS",
             "methodName": "untagNeverRemovesAccessGrantedAnotherWay",
             "name": "LoWsPartnerTagServiceTest",
             "namespace": null,
-            "time": 883
+            "time": 842
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "completeSomeoneElsesTask_throwsDomainException",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 1140
+            "time": 1107
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "completeUpNextItem_rejectsNonTasksAndClosedTasks",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 369
+            "time": 345
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "controller_completeUnexpectedError_wrapsMessage",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 293
+            "time": 276
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "controller_deferAndComplete_updateRecords",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 795
+            "time": 774
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "controller_wrapsServiceResultsAndErrors",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 982
+            "time": 896
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "deferAndCompleteUpNextItem_updateRecords",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 1366
+            "time": 1203
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "deferUnsupportedObject_throwsDomainException",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 310
+            "time": 275
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "deferUpNextItem_supportsShorterWindows",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 621
+            "time": 533
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "deferUpNextItem_supportsTaskAndAfternoonWindows",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 814
+            "time": 736
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_behindPaceWhenNothingLoggedLateInDay",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 742
+            "time": 716
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_bulkWorkloadStaysWithinGovernorLimits",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 16575
+            "time": 15694
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_emptyWorkloadStillRendersUsableState",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 722
+            "time": 539
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_keepsUpNextAndPrioritiesForRollback",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 1009
+            "time": 904
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_returnsPersonalizedWorkspace",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 1001
+            "time": 879
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_returnsPromptsAndHonoursSnooze",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 1879
+            "time": 1559
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_returnsRecentLogWithCatalogLabelAndCount",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 2367
+            "time": 1378
           },
           {
             "id": "01pQi000003CdXBIA0",
             "methodName": "getHomeData_returnsTodayPlanForEveryActiveCategory",
             "name": "PerfectDayHomeServiceTest",
             "namespace": null,
-            "time": 1536
+            "time": 1298
           }
         ],
-        "totalTime": 241497,
+        "totalTime": 294843,
         "codeCoverageWarnings": [],
         "failures": [],
         "flowCoverageWarnings": []
@@ -3953,22 +6025,22 @@
       "componentFailures": []
     },
     "done": true,
-    "id": "0AfQi000001TuuHKAS",
+    "id": "0AfQi000001TvQXKA0",
     "ignoreWarnings": false,
-    "lastModifiedDate": "2026-10-02T21:59:13.000Z",
+    "lastModifiedDate": "2026-10-02T22:19:35.000Z",
     "numberComponentErrors": 0,
-    "numberComponentsDeployed": 7,
-    "numberComponentsTotal": 7,
-    "numberFiles": "26",
+    "numberComponentsDeployed": 17,
+    "numberComponentsTotal": 17,
+    "numberFiles": "58",
     "numberTestErrors": 0,
-    "numberTestsCompleted": 100,
-    "numberTestsTotal": 100,
+    "numberTestsCompleted": 168,
+    "numberTestsTotal": 168,
     "rollbackOnError": true,
     "runTestsEnabled": true,
-    "startDate": "2026-10-02T21:54:39.000Z",
+    "startDate": "2026-10-02T22:14:06.000Z",
     "status": "Succeeded",
     "success": true,
-    "zipSize": "99260",
+    "zipSize": "541506",
     "files": [
       {
         "fullName": "ExternalLoLeadService",
@@ -3995,6 +6067,66 @@
         "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\ExternalLoPortalController.cls-meta.xml"
       },
       {
+        "fullName": "LeadDocumentRequestService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LeadDocumentRequestService.cls"
+      },
+      {
+        "fullName": "LeadDocumentRequestService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LeadDocumentRequestService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsBorrowerService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsBorrowerService.cls"
+      },
+      {
+        "fullName": "LoWsBorrowerService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsBorrowerService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsBorrowerServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsBorrowerServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsBorrowerServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsBorrowerServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsContactService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsContactService.cls"
+      },
+      {
+        "fullName": "LoWsContactService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsContactService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsContactServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsContactServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsContactServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsContactServiceTest.cls-meta.xml"
+      },
+      {
         "fullName": "LoWsLeadDetailsService",
         "type": "ApexClass",
         "state": "Changed",
@@ -4017,6 +6149,18 @@
         "type": "ApexClass",
         "state": "Changed",
         "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\classes\\LoWsLeadDetailsServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "Borrower__c.Relationship__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\fls-step\\main\\default\\objects\\Borrower__c\\fields\\Relationship__c.field-meta.xml"
+      },
+      {
+        "fullName": "Borrower__c.Relationship__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\objects\\Borrower__c\\fields\\Relationship__c.field-meta.xml"
       },
       {
         "fullName": "externalLoPreApprovals",
@@ -4043,6 +6187,54 @@
         "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\externalLoPreApprovals\\externalLoPreApprovals.js-meta.xml"
       },
       {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.css"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.html"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.js"
+      },
+      {
+        "fullName": "leadDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadDocumentRequestManager\\leadDocumentRequestManager.js-meta.xml"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.css"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.html"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.js"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\leadPortalDocumentRequestManager\\leadPortalDocumentRequestManager.js-meta.xml"
+      },
+      {
         "fullName": "loWsAddLeadForm",
         "type": "LightningComponentBundle",
         "state": "Changed",
@@ -4065,6 +6257,54 @@
         "type": "LightningComponentBundle",
         "state": "Changed",
         "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsAddLeadForm\\loWsAddLeadForm.js-meta.xml"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.css"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.html"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.js"
+      },
+      {
+        "fullName": "loWsBorrowerPills",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsBorrowerPills\\loWsBorrowerPills.js-meta.xml"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.css"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.html"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.js"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phase9contact3\\force-app\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.js-meta.xml"
       },
       {
         "fullName": "portalListLayout",

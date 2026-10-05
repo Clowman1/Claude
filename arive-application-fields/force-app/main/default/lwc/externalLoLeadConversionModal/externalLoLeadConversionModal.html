@@ -1,0 +1,42 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="conversion-title">
+        <div class="modal-card">
+            <header class="modal-header">
+                <h2 id="conversion-title">Confirm TRID application pieces</h2>
+                <p>Review the six items below. Decline leaves the lead unchanged; confirm starts conversion.</p>
+            </header>
+
+            <template lwc:if={loading}>
+                <div class="modal-body loading" aria-busy="true">
+                    <lightning-spinner alternative-text="Loading checklist"></lightning-spinner>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="modal-body">
+                    <dl class="checklist">
+                        <template for:each={checklistRows} for:item="row">
+                            <div key={row.key} class="checklist-row">
+                                <dt>{row.label}</dt>
+                                <dd>{row.value}</dd>
+                            </div>
+                        </template>
+                    </dl>
+                    <template lwc:if={missingMessage}>
+                        <p class="warning" role="alert">{missingMessage}</p>
+                    </template>
+                    <label class="ack">
+                        <input type="checkbox" checked={acknowledged} onchange={handleAckChange} />
+                        <span>I confirm these application pieces are accurate and I am ready to convert this lead.</span>
+                    </label>
+                </div>
+            </template>
+
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick={handleDecline} disabled={saving}>Decline</button>
+                <button type="button" class="btn btn-brand" onclick={handleConfirm} disabled={disableConfirm}>
+                    Confirm conversion
+                </button>
+            </footer>
+        </div>
+    </section>
+</template>

@@ -1,0 +1,312 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-03T12:25:45.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-03T12:25:07.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:15.000Z",
+          "deleted": false,
+          "fileName": "classes/FormattingUtility.cls",
+          "fullName": "FormattingUtility",
+          "id": "01pQi000000a07xIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:16.000Z",
+          "deleted": false,
+          "fileName": "classes/FormattingUtilityTest.cls",
+          "fullName": "FormattingUtilityTest",
+          "id": "01pQi000003J2XRIA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:16.000Z",
+          "deleted": false,
+          "fileName": "classes/NCS_GetTwilioMessagesWithParams.cls",
+          "fullName": "NCS_GetTwilioMessagesWithParams",
+          "id": "01pQi000000O5GIIA0",
+          "success": true
+        },
+        {
+          "changed": false,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:16.000Z",
+          "deleted": false,
+          "fileName": "classes/NCS_GetTwiloMessagesWithParamsTest.cls",
+          "fullName": "NCS_GetTwiloMessagesWithParamsTest",
+          "id": "01pQi000000O5GJIA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:16.000Z",
+          "deleted": false,
+          "fileName": "classes/UserTriggerHandler.cls",
+          "fullName": "UserTriggerHandler",
+          "id": "01pQi000000a07yIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:16.000Z",
+          "deleted": false,
+          "fileName": "classes/UserTriggerHandlerTest.cls",
+          "fullName": "UserTriggerHandlerTest",
+          "id": "01pQi000000a07zIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatAccount.trigger",
+          "fullName": "PhoneFormatAccount",
+          "id": "01qQi00000H9UmfIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatBorrower.trigger",
+          "fullName": "PhoneFormatBorrower",
+          "id": "01qQi00000H9UmgIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatContact.trigger",
+          "fullName": "PhoneFormatContact",
+          "id": "01qQi00000H9UmhIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatLead.trigger",
+          "fullName": "PhoneFormatLead",
+          "id": "01qQi00000H9UmiIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatRecruit.trigger",
+          "fullName": "PhoneFormatRecruit",
+          "id": "01qQi00000H9UmjIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatSubmissionForm.trigger",
+          "fullName": "PhoneFormatSubmissionForm",
+          "id": "01qQi00000H9UmkIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "triggers/PhoneFormatTransaction.trigger",
+          "fullName": "PhoneFormatTransaction",
+          "id": "01qQi00000H9UmlIAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "lwc/bdUtils",
+          "fullName": "bdUtils",
+          "id": "0RbQi0000004bNfKAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "Flow",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "flows/Stamp_Missing_WhoId_for_RC_Tasks.flow",
+          "fullName": "Stamp_Missing_WhoId_for_RC_Tasks",
+          "id": "301Qi00001bM4YdIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-03T12:25:20.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001TyEjKAK",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-03T12:25:45.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 15,
+    "numberComponentsTotal": 15,
+    "numberFiles": "35",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-03T12:25:08.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "99279",
+    "files": [
+      {
+        "fullName": "FormattingUtility",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/FormattingUtility.cls"
+      },
+      {
+        "fullName": "FormattingUtilityTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/FormattingUtilityTest.cls"
+      },
+      {
+        "fullName": "NCS_GetTwilioMessagesWithParams",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/NCS_GetTwilioMessagesWithParams.cls"
+      },
+      {
+        "fullName": "NCS_GetTwiloMessagesWithParamsTest",
+        "type": "ApexClass",
+        "state": "Unchanged",
+        "filePath": "classes/NCS_GetTwiloMessagesWithParamsTest.cls"
+      },
+      {
+        "fullName": "UserTriggerHandler",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/UserTriggerHandler.cls"
+      },
+      {
+        "fullName": "UserTriggerHandlerTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/UserTriggerHandlerTest.cls"
+      },
+      {
+        "fullName": "PhoneFormatAccount",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatAccount.trigger"
+      },
+      {
+        "fullName": "PhoneFormatBorrower",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatBorrower.trigger"
+      },
+      {
+        "fullName": "PhoneFormatContact",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatContact.trigger"
+      },
+      {
+        "fullName": "PhoneFormatLead",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatLead.trigger"
+      },
+      {
+        "fullName": "PhoneFormatRecruit",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatRecruit.trigger"
+      },
+      {
+        "fullName": "PhoneFormatSubmissionForm",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatSubmissionForm.trigger"
+      },
+      {
+        "fullName": "PhoneFormatTransaction",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/PhoneFormatTransaction.trigger"
+      },
+      {
+        "fullName": "Stamp_Missing_WhoId_for_RC_Tasks",
+        "type": "Flow",
+        "state": "Changed",
+        "filePath": "flows/Stamp_Missing_WhoId_for_RC_Tasks.flow"
+      },
+      {
+        "fullName": "bdUtils",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/bdUtils"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001TyEjKAK%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

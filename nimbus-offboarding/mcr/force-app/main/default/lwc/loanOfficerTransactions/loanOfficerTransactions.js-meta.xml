@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Loan Officer Transactions</masterLabel>
+    <description>Transactions where the running user is the assigned Loan Officer.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage">
+            <property name="cardTitle" type="String" label="Card Title" default="Active Transactions"/>
+            <property name="mode" type="String" label="Mode (active or closed)" default="active"
+                      datasource="active,closed"/>
+            <property name="iconName" type="String" label="Icon Name" default="standard:opportunity"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

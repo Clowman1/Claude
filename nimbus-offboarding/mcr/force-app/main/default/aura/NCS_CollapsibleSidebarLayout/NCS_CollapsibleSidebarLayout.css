@@ -1,0 +1,43 @@
+.THIS .ncs_button {
+    position: fixed;
+    border: none;
+    min-height: 40px;
+    font-size:16px;
+    font-weight:800;
+    background-color: #001B54;
+    color:white;
+    box-shadow: 0px 1px 4px 1px rgba(0 ,0, 0, .3);
+    bottom : 3em;
+    right: 0;
+    cursor: pointer;
+    z-index:2000;
+    padding-right:20px;
+    transition: 1s;
+}
+.THIS .ncs_small_sidebar{
+    widtH:0% !important;
+}
+.THIS .ncs_small_sidebar .ncs_button{
+}
+.THIS .ncs_closed{
+    display:none;
+}
+.THIS .ncs_open{
+    display:none;
+}
+.THIS .ncs_small_sidebar div{
+    opacity:0;
+    transition:1s;
+}
+
+.THIS .ncs_small_sidebar div > *{
+    display: none;
+}
+
+.THIS .ncs_width {
+    max-width: 75%;
+}
+
+.THIS .ncs_sidebar {
+    transition: 1s ease;
+}

@@ -172,6 +172,8 @@ private class BdCommandCenterControllerTest {
             System.assertNotEquals(null, leadId);
             BdCommandCenterController.Home h = BdCommandCenterController.getHome(null);
             System.assertEquals('Active Partner', h.partners[0].stage);
+            System.assert(h.partners[0].intakeUrl.endsWith('?email=rae.referrer%40example.com'), h.partners[0].intakeUrl);
+            System.assertEquals(h.partners[0].intakeUrl, BdCommandCenterController.getIntakeLink(partnerId));
             System.assertEquals(1, h.stats.referredLeads90);
             System.assertEquals(1, BdCommandCenterController.getPartner(partnerId, null).referredLeads.size());
         }

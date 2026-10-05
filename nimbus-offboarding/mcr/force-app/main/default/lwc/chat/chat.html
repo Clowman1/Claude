@@ -1,0 +1,157 @@
+<!--
+ - Created by taras on 06.03.2025.
+ -->
+
+<!-- Chat -->
+<template>
+
+    <section class="chat-section" if:true={configuration}>
+        <div class="collapsible">
+            <div class="collapsible-trigger" aria-expanded={isExpandedString} onclick={handleCollapsibleClick}>
+                <div class="chat-header">
+                    <c-hero-icon name="chat-bubble-bottom-center-text" scale="1.8"></c-hero-icon>
+                    <span>{title}</span>
+                </div>
+                <c-hero-icon name="chevron-down" scale="1.3" stroke="2"></c-hero-icon>
+            </div>
+
+
+            <div class="collapsible-content">
+                <template lwc:if={isLoading}>
+                    <div class="slds-is-relative">
+                        <div class="slds-card__body slds-card__body_inner slds-align_absolute-center">
+                            <c-hero-icon is-loading=true scale="4" icon-style=" color: #d7d7d7;"></c-hero-icon>
+                        </div>
+                    </div>
+                </template>
+                <template lwc:elseif={showError}>
+                    <div class="slds-card__body slds-card__body_inner slds-align_absolute-center">
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <lightning-layout>
+                                    <lightning-layout-item size="12">
+                                        <lightning-icon icon-name="utility:error" size="small"></lightning-icon>
+                                        <span class="slds-m-left_x-small">{errorMessage}</span>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <section role="log" class="slds-chat">
+                        <div class="messages-wrapper">
+                            <div class="message-container">
+                                <ul lwc:ref="list" class="slds-chat-list">
+                                    <template for:each={groupedMessages} for:item="group">
+                                        <li key={group.key}>
+                                            <div class="divider">
+                                                <h6>{group.date}</h6>
+                                            </div>
+                                            <ul>
+                                                <template for:each={group.messages} for:item="message">
+                                                    <li key={message.id} lwc:if={message.isOutbound} ondblclick={doubleClickHandler} data-id={message.id} data-status={message.status}
+                                                        class="slds-chat-listitem slds-chat-listitem_outbound">
+                                                        <div class="slds-chat-message">
+                                                            <div class="slds-chat-message__body">
+                                                                <div class="message-header">
+                                                                    <div class="message-actions">
+                                                                        <template for:each={message.actions} for:item="action">
+                                                                            <c-chat-action key={action.config.id} action={action} message={message}></c-chat-action>
+                                                                        </template>
+                                                                    </div>
+                                                                    <span class="message-author">{message.createdBy}</span>
+                                                                    <span lwc:if={message.userTypeName} class={message.badge}>{message.userTypeName}</span>
+                                                                    <span class="message-time"> {message.createdOnFormatted}</span>
+                                                                    <span lwc:if={message.unRead} class="unread"></span>
+                                                                </div>
+                                                                <div class="slds-chat-message__text slds-chat-message__text_outbound">
+                                                                    <span>
+                                                                        <lightning-formatted-rich-text value={message.message}></lightning-formatted-rich-text>
+                                                                    </span>
+                                                                    <div class="not-sent-message slds-chat-message__text_delivery-failure-reason" role="alert">
+                                                                        <span class="slds-icon_container slds-icon-utility-error slds-chat-icon">
+                                                                            <svg style="color: red;width: 20px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                                      d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
+                                                                            </svg>
+                                                                        </span>
+                                                                        <span>Message was not delivered.</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li key={message.id} lwc:else ondblclick={doubleClickHandler} data-id={message.id} class="slds-chat-listitem slds-chat-listitem_inbound">
+                                                        <div class="slds-chat-message">
+                                                            <div class="slds-chat-message__body">
+                                                                <div class="message-header">
+                                                                    <span class="message-author">{message.createdBy}</span>
+                                                                    <span lwc:if={message.userTypeName} class={message.badge}>{message.userTypeName}</span>
+                                                                    <span class="message-time"> {message.createdOnFormatted}</span>
+                                                                    <span lwc:if={message.unRead} class="unread"></span>
+                                                                    <div class="message-actions">
+                                                                        <template for:each={message.actions} for:item="action">
+                                                                            <c-chat-action key={action.config.id} action={action} message={message}></c-chat-action>
+                                                                        </template>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                                                                    <span><lightning-formatted-rich-text value={message.message}></lightning-formatted-rich-text></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                        <footer class="slds-popover__footer rounded">
+                            <template if:true={isSending}>
+                                <div class="message-container">
+                                    <div class="loading-spinner"></div>
+                                    <p>Sending message...</p>
+                                </div>
+                            </template>
+                            <lightning-textarea onchange={newMessageHandler} value={newMessage} class="new-message"
+                                                name="input3" label=""
+                                                placeholder="Type your message right here...."></lightning-textarea>
+
+                            <div class="slds-grid slds-wrap slds-p-vertical_x-small">
+                                <div class="slds-col
+                                                        slds-medium-size_12-of-12
+                                                        slds-large-size_12-of-12
+                                                        slds-grid slds-grid_align-end">
+
+                                    <button if:true={isSending} disabled type="submit" class="send-button">
+                                        <c-hero-icon is-loading=true scale="1.5" icon-style=" color: #d7d7d7;"></c-hero-icon>
+                                        Sending
+                                    </button>
+
+                                    <slot name="sendButtonLeftSlot"></slot>
+                                    <button if:false={isSending} onclick={sendMessageHandler} disabled={sendDisabled} type="submit" class="send-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round">
+                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                        </svg>
+                                        Send
+                                    </button>
+
+
+                                </div>
+
+                            </div>
+
+                        </footer>
+                    </section>
+                </template>
+            </div>
+        </div>
+    </section>
+
+
+</template>

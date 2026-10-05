@@ -1,0 +1,30 @@
+<aura:component implements="lightning:recordHomeTemplate" description="One Mail Column, and a second collapsible Column">
+    <aura:attribute name="header" type="Aura.Component[]" />
+    <aura:attribute name="left" type="Aura.Component[]" />
+    <aura:attribute name="right" type="Aura.Component[]" />
+
+    <div>
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem flexibility="grow" size="12"
+                                  class="slds-m-bottom_large">
+                {!v.header}
+            </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:layout>
+            <lightning:layoutItem aura:Id="leftSide" flexibility="grow"
+                                  class="ncs_width">
+                {!v.left}
+            </lightning:layoutItem>
+            <lightning:layoutItem aura:id="sidebar" size="3"
+                                  class="slds-m-left_small ncs_sidebar ">
+                <button class="ncs_button" onclick="{!c.toggleSidebar}">
+                    <img src="{!$Resource.taskbarIcon}" style="height:40px; width:40px; "/> <span class="ncs_closed">Close Utility Panel</span>
+                </button>
+                <div>
+                    {!v.right}
+                </div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+
+</aura:component>

@@ -1,0 +1,51 @@
+<apex:page standardController="smagicinteract__forward_config__c" extensions="smagicinteract.IncomingAlertConfigurationController" tabStyle="SMS_Magic_Settings__tab">
+ 
+<apex:pageMessages escape="false" id="pageMessage"/> 
+
+<br/>
+<apex:form id="confForm">
+<apex:pageBlock id="incomingSettings" title="{!$Label.smagicinteract__kba_title}" rendered="{!hasPermission }">
+    <div style="margin:10px;">
+<apex:outputText >{!$Label.smagicinteract__kba_line1}</apex:outputText>
+
+</div>
+         <apex:pageBlockSection title="{!$Label.smagicinteract__chs_keywd}" >
+         <apex:facet name="header">
+			<h3>{!$Label.smagicinteract__chs_keywd}</h3>			
+         </apex:facet>        
+
+         <apex:inputField label="{!$Label.smagicinteract__entr_kywd}"  value="{!smagicinteract__forward_config__c.smagicinteract__Keyword__c}" />
+         </apex:pageBlockSection> 
+        
+         <apex:pageBlockSection title="{!$Label.smagicinteract__usr_to_ntfy}" >                
+         <apex:facet name="header">
+			<h3>{!$Label.smagicinteract__usr_to_ntfy}</h3>			
+         </apex:facet>        
+
+                <apex:selectList label="{!$Label.smagicinteract__chs_user}" size="1" id="userList" value="{!smagicinteract__forward_config__c.smagicinteract__forwardToUser__c}" >
+                    <apex:selectOptions value="{!userListDropdown}"/>
+                </apex:selectList>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="{!$Label.smagicinteract__ntfy_mthd}" >      
+         <apex:facet name="header">
+			<h3>{!$Label.smagicinteract__ntfy_mthd}</h3>			
+         </apex:facet>        
+                   
+            <apex:inputField label="{!$Label.smagicinteract__ntfy_ins_email}"  value="{!smagicinteract__forward_config__c.smagicinteract__forwardToEmail__c}" />
+            <br/>
+            <apex:inputField label="{!$Label.smagicinteract__ntfy_ins_sms}"  value="{!smagicinteract__forward_config__c.smagicinteract__forwardToMobilePhone__c}" />
+                    
+        </apex:pageBlockSection>
+            
+    <apex:pageBlockButtons location="Bottom" >
+        <apex:commandButton action="{!save}" value="{!$Label.smagicinteract__save}" />
+        <apex:commandButton action="{!cancel}" value="{!$Label.smagicinteract__cancel}" />
+        
+    </apex:pageBlockButtons>
+    
+</apex:pageBlock>
+
+</apex:form>
+   
+</apex:page>

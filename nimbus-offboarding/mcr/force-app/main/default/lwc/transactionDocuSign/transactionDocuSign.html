@@ -1,0 +1,122 @@
+<template>
+    <lightning-card title="DocuSign" icon-name="standard:contract">
+        <lightning-button-icon slot="actions" icon-name="utility:refresh" variant="border-filled" alternative-text="Refresh" onclick={load}></lightning-button-icon>
+
+        <template lwc:if={data}>
+            <div class="slds-p-horizontal_medium">
+                <template lwc:if={data.canSend}>
+                    <div class="slds-grid slds-wrap slds-gutters_small">
+                        <!-- Signers -->
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                            <h3 class="section-title">1 · Signers</h3>
+                            <template for:each={signers} for:item="s">
+                                <div key={s.key} class={s.tileClass}>
+                                    <div class="slds-media slds-media_center">
+                                        <div class="slds-media__figure">
+                                            <lightning-icon icon-name="standard:avatar" size="small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-media__body slds-truncate">
+                                            <p class="slds-truncate"><strong>{s.name}</strong></p>
+                                            <p class="slds-text-body_small slds-text-color_weak slds-truncate">{s.role} · {s.email}</p>
+                                        </div>
+                                        <template lwc:if={s.fixed}>
+                                            <lightning-badge label="Always"></lightning-badge>
+                                        </template>
+                                        <template lwc:else>
+                                            <lightning-input type="toggle" data-key={s.key} checked={s.checked} disabled={s.disabled}
+                                                message-toggle-active="" message-toggle-inactive="" label={s.role} variant="label-hidden"
+                                                onchange={handleSigner}></lightning-input>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Documents -->
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-3">
+                            <h3 class="section-title">2 · Documents</h3>
+                            <div class="slds-grid slds-grid_vertical-align-end">
+                                <p class="slds-col slds-form-element__label">Templates</p>
+                                <p class="slds-text-body_small slds-text-color_weak">{templateCountLabel}</p>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-gutters_x-small">
+                                <template for:each={templateTiles} for:item="t">
+                                    <div key={t.name} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <div class={t.tileClass} role="checkbox" aria-checked={t.checked} tabindex="0"
+                                            data-name={t.name} onclick={handleTemplate} onkeydown={handleTemplateKey}>
+                                            <div class="slds-media slds-media_center">
+                                                <div class="slds-media__figure">
+                                                    <lightning-icon icon-name="doctype:pdf" size="small"></lightning-icon>
+                                                </div>
+                                                <div class="slds-media__body slds-truncate"><strong>{t.name}</strong></div>
+                                                <lightning-input type="checkbox" label={t.name} variant="label-hidden" checked={t.checked} tabindex="-1"></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="slds-grid slds-grid_vertical-align-end slds-m-top_small">
+                                <div class="slds-col">
+                                    <lightning-input type="search" label="Add files from this Transaction" placeholder="Search files"
+                                        value={search} onchange={handleSearch}></lightning-input>
+                                </div>
+                                <div class="slds-col_bump-left slds-p-left_small slds-text-body_small slds-text-color_weak">{fileCountLabel}</div>
+                            </div>
+                            <template lwc:if={hasAnyFiles}>
+                                <div class="files slds-m-top_x-small">
+                                    <lightning-datatable key-field="versionId" data={files} columns={fileColumns}
+                                        selected-rows={selected} onrowselection={handleRows} resize-column-disabled></lightning-datatable>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <p class="slds-m-top_x-small slds-text-color_weak">No signable files (PDF, Word, images) on this Transaction.</p>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Send -->
+                    <div class="send-bar slds-grid slds-grid_vertical-align-center slds-m-top_medium">
+                        <p class="slds-col slds-text-body_small slds-truncate">{summary}</p>
+                        <lightning-button class="slds-p-left_small" variant="brand" icon-name="utility:send" label="Prepare in DocuSign"
+                            onclick={handleSend} disabled={sendDisabled}></lightning-button>
+                    </div>
+                </template>
+
+                <!-- Envelopes -->
+                <h3 class="section-title slds-m-top_medium">Envelopes</h3>
+                <template lwc:if={hasEnvelopes}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col">Subject</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Sent by</th>
+                                <th scope="col">Sent</th>
+                                <th scope="col">Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={envelopes} for:item="e">
+                                <tr key={e.key}>
+                                    <td class="slds-truncate">{e.subject}</td>
+                                    <td><span class={e.badgeClass}>{e.status}</span></td>
+                                    <td class="slds-truncate">{e.sender}</td>
+                                    <td>{e.sentLabel}</td>
+                                    <td>{e.completedLabel}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template lwc:else>
+                    <p class="slds-text-color_weak">Nothing sent through DocuSign on this file yet.</p>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:if={busy}>
+            <lightning-spinner alternative-text="Preparing envelope"></lightning-spinner>
+        </template>
+    </lightning-card>
+</template>

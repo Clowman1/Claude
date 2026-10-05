@@ -145,10 +145,10 @@ public with sharing class ExternalLoPortalController {
     @AuraEnabled
     public static LoWsContactService.ContactInfo updateContactInfo(
         Id recordId, String firstName, String lastName, String phone, String email,
-        String street, String city, String state, String postalCode
+        String street, String city, String state, String postalCode, String relationship
     ) {
         try {
-            return LoWsContactService.updateContact(recordId, firstName, lastName, phone, email, street, city, state, postalCode);
+            return LoWsContactService.updateContact(recordId, firstName, lastName, phone, email, street, city, state, postalCode, relationship);
         } catch (Exception error) {
             throw toAura(error);
         }
@@ -164,9 +164,9 @@ public with sharing class ExternalLoPortalController {
     }
 
     @AuraEnabled
-    public static Id addLeadBorrower(Id leadId, String firstName, String lastName, String phone, String email) {
+    public static Id addLeadBorrower(Id leadId, String firstName, String lastName, String phone, String email, String relationship) {
         try {
-            return LoWsBorrowerService.addBorrower(leadId, firstName, lastName, phone, email);
+            return LoWsBorrowerService.addBorrower(leadId, firstName, lastName, phone, email, relationship);
         } catch (Exception error) {
             throw toAura(error);
         }

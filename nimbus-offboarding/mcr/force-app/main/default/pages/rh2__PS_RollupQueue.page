@@ -1,0 +1,126 @@
+<apex:page title="Rollup Helper Queue Monitoring" standardStylesheets="false"  sidebar="false" applyBodyTag="false" docType="html-5.0" showHeader="true">
+     <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	     <head> 
+	     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		 <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/modernizr-1.7.min.js') }"/>
+	     <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/UI_Utilities.js') }"/>	  
+         <apex:includeScript value="{! URLFOR($Resource.PT_Resources_v1, '/js/hs_breadcrumbs.js')}" />
+		 <apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-3.6.0.min.js')}" />   
+		 <apex:includeScript value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.js')}" />
+		 <apex:stylesheet value="{! URLFOR($Resource.HS_Jquery, 'jquery-ui.min.css')}" />
+		 <apex:stylesheet value="{! URLFOR($Resource.PT_Resources_v1, '/css/grayBackground.css') }" /> 
+		 <apex:includeLightning />
+	     </head>
+		 <style>
+		lightning-breadcrumb.slds-breadcrumb__item::marker {
+            color: transparent !important;
+        }
+		</style>
+		<script>
+			var rh = rh || {};
+			rh.j$ = jQuery.noConflict();
+
+			let additionalTopOffset;
+			let headerPosition;
+
+			if(UITheme.getUITheme() !== 'Theme3'){
+				additionalTopOffset = 40;
+				headerPosition = 'fixed';
+			} else{
+				additionalTopOffset = 148;
+				headerPosition = 'sticky';
+			}
+
+			rh.j$(window).scroll(function(){
+				fixHeader(document.getElementById("rollupQueue"), additionalTopOffset, headerPosition);
+			});
+
+			rh.j$(window).resize(function(){
+				fixWidth(document.getElementById("rollupQueue"), additionalTopOffset, headerPosition);
+			});
+			
+			document.addEventListener('lightning__showtoast', event => {
+				if(UITheme.getUITheme() !== 'Theme3') {
+					sforce.one.showToast(event.toastAttributes);
+				}
+				else {
+					showToastInClassic(event.toastAttributes);
+					let svgType = "{!URLFOR($Asset.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#" + event.toastAttributes.type+"')}";
+					document.getElementById('toastIcon').innerHTML = '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="'+svgType+'"></use>';
+				}
+			});
+			rh.j$(document).ready(function(){
+				let namespace = "{!JSENCODE(IF(CONTAINS($CurrentPage.Name, "__"),LEFT($CurrentPage.Name,FIND("__", $CurrentPage.Name)-1),"c"))}";
+				let rootPage = window.sessionStorage.getItem('rootPage') || 'home';
+				let allSettingsNavigation = rootPage === 'settings';
+				let queryString = window.location.search;
+				let params = new URLSearchParams(queryString);
+				let preSelectedObject = params.get('s') || '';
+				$Lightning.use(namespace + ":PS_Rollup_Queue", function() {
+					$Lightning.createComponent(
+						namespace + ":ps_rollupQueue", {
+							allSettingsBreadcrumb: allSettingsNavigation,
+							selectedTargetObject: preSelectedObject
+						},
+						"rollupQueue",
+						function(cmp) {
+							const popupText = document.querySelector("lightning-primitive-bubble");
+							if(popupText) {
+								popupText.classList.add("slds-scope");
+							}
+						}
+					);
+				});
+			});
+
+			function sendColumnWidths(lwcElement){
+				try{
+					const columnList = [
+						"id-cell", "priority-cell", "target-cell",
+						 "status-cell", "created-date-cell", "modified-date-cell", 
+						"recordScope-cell", "filter-cell", "action-cell"
+					];
+
+					const columnWidths = columnList.map(columnName => {
+						const element = lwcElement.getElementsByClassName(columnName)[0];
+						return element.offsetWidth;
+					});
+
+					var event = new CustomEvent('columns', {
+						detail: {
+							columnWidths
+						}
+					});
+
+					window.dispatchEvent(event);
+				} catch (error){}
+			}
+		</script>
+
+	    <apex:slds />
+		<apex:outputPanel rendered="{!$User.UITheme == 'Theme3'}">
+		  <div class="slds-notify_container slds-is-relative slds-hide" id="toastContainer">
+			  <div class="slds-notify slds-notify_toast" role="alert" id="toastType">
+				<span class="slds-assistive-text" id="toastAssist"></span>
+				<span class="slds-icon_container slds-icon-utility slds-m-right_small slds-no-flex slds-align-top">
+				  <svg class="slds-icon slds-icon_small" id="toastIcon" aria-hidden="true">
+				  </svg>
+				</span>
+				<div class="slds-notify__content">
+				  <h2 class="slds-text-heading_small" id="toastTitle"></h2>
+				  <p id="toastMessage"></p>
+				</div>
+				<div class="slds-notify__close">
+				  <button class="slds-button slds-button_icon slds-button_icon-inverse" onclick="closeToastInClassic('toastContainer');" title="Close">
+					<svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+					  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+					</svg>
+					<span class="slds-assistive-text">Close</span>
+				  </button>
+				</div>
+			  </div>
+			</div>
+		</apex:outputPanel>
+		<div id="rollupQueue"></div> 
+	</html>
+</apex:page>

@@ -1,0 +1,182 @@
+/**
+ * Created by toma on 10/8/2021.
+ */
+
+.THIS {
+    background: #eef1f6;
+}
+
+.THIS .noteShell {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(17, 31, 56, 0.12);
+    display: flex;
+    flex-direction: column;
+    margin: 12px;
+    overflow: hidden;
+}
+
+/* ---- header ---- */
+
+.THIS .noteHeader {
+    background: linear-gradient(110deg, #142342 0%, #1c3155 100%);
+    padding: 18px 22px;
+}
+
+.THIS .noteEyebrow {
+    color: #ffa534;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.THIS .noteTitle {
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 5px 0 0;
+}
+
+.THIS .noteKicker {
+    color: #aebbd0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin: 4px 0 0;
+    text-transform: uppercase;
+}
+
+/* ---- fields ---- */
+
+.THIS .noteFields {
+    padding: 18px 22px 4px;
+}
+
+.THIS .fieldLabel {
+    color: #66738d;
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+}
+
+.THIS .subjectField {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.THIS .height .slds-rich-text-area__content {
+    height: 260px;
+}
+
+.THIS .slds-form-element__control {
+    padding: 0 !important;
+    clear: unset !important;
+}
+
+.THIS .slds-form-element__label {
+    display: none;
+}
+
+.THIS .autoSavedivConfirmation {
+    display: none;
+}
+
+.THIS .hide-elem {
+    height: 0;
+}
+
+.THIS .noteTimestamp {
+    color: #8290aa;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 12px 0 0;
+    text-align: right;
+}
+
+/* ---- hint ---- */
+
+.THIS .mentionHint {
+    align-items: flex-start;
+    background: #f3f6fb;
+    border-left: 3px solid #ffa534;
+    border-radius: 4px;
+    color: #3c4a63;
+    display: flex;
+    font-size: 0.78rem;
+    gap: 8px;
+    line-height: 1.45;
+    margin-top: 14px;
+    padding: 10px 12px;
+}
+
+.THIS .mentionHintIcon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+}
+
+/* ---- footer ---- */
+
+.THIS .noteFooter {
+    border-top: 1px solid #e2e7f0;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 18px;
+    padding: 14px 22px;
+}
+
+/* lightning:button puts the class on the <button> itself, so these must be
+   element+class selectors -- a descendant selector never matches. */
+
+.THIS button.btnPrimary {
+    background: #ff9824;
+    border-color: #ff8c16;
+    border-radius: 999px;
+    color: #122242;
+    font-weight: 800;
+    padding: 0 22px;
+}
+
+.THIS button.btnPrimary:hover,
+.THIS button.btnPrimary:focus {
+    background: #ffb24a;
+    border-color: #ff9824;
+    color: #122242;
+}
+
+.THIS button.btnGhost {
+    background: transparent;
+    border: 1px solid #d4dbe6;
+    border-radius: 999px;
+    color: #52607a;
+    font-weight: 700;
+    padding: 0 18px;
+}
+
+.THIS button.btnGhost:hover,
+.THIS button.btnGhost:focus {
+    background: #f3f6fb;
+    color: #3c4a63;
+}
+
+.THIS button.btnDanger {
+    background: transparent;
+    border: 1px solid #e6a6a6;
+    border-radius: 999px;
+    color: #b3261e;
+    font-weight: 700;
+    margin-right: auto; /* pushes Delete away from the primary action */
+    padding: 0 18px;
+}
+
+.THIS button.btnDanger:hover,
+.THIS button.btnDanger:focus {
+    background: #fdeceb;
+    color: #8f1d17;
+}

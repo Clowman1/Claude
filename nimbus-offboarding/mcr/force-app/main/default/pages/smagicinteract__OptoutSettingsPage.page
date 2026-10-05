@@ -1,0 +1,47 @@
+<apex:page standardController="smagicinteract__Optout_Settings__c" extensions="smagicinteract.OptoutSettingsExtension">
+
+<apex:form id="formId">
+<apex:pageMessages escape="false" id="pageMessagesSection"/>
+
+<apex:pageBlock title="{!$Label.smagicinteract__optout_settings_page_block_title}" id="pageBlkId">
+    <table border="0" style="margin-top:10px;">
+    <tr style="height:40px;">   
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__object_name_label} </td>
+        <td>    
+         
+           <apex:actionRegion >
+          <apex:selectList id="allObjectDropDown" value="{!smagicinteract__Optout_Settings__c.smagicinteract__Object_Name__c}"  size="1" style="margin-left:15px;width:150px;">
+           <apex:actionSupport event="onchange" rerender="optoutFieldDropDown"/>
+                <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_object_label}"/>
+                <apex:selectOptions value="{!lookupObjects}" />  
+          </apex:selectList>
+          </apex:actionRegion>
+        </td>
+    </tr>
+
+    <tr style="height:40px;">   
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__optout_field_name_label} </td>
+        <td>
+          
+          <apex:selectList id="optoutFieldDropDown" value="{!smagicinteract__Optout_Settings__c.smagicinteract__Optout_Field__c}" size="1" style="margin-left:15px;width:150px;">
+                <apex:selectOption itemValue="" itemLabel="{!$Label.smagicinteract__choose_field_label}"  />
+                <apex:selectOptions value="{!optOutFieldsForSelectedObject}" />  
+          </apex:selectList>
+      </td>
+    </tr>
+     
+   <tr style="height:40px;">
+        <td style="color: #4A4A56; padding-top: 5px; padding-bottom: 5px; padding-left: 2px; text-align: right; font-size: 91%; font-weight: bold;">{!$Label.smagicinteract__keyword_label} </td>
+        <td style="padding-left:15px;">
+            <apex:inputField required="true" value="{!smagicinteract__Optout_Settings__c.smagicinteract__Keyword__c}" />
+        </td>
+    </tr>
+    </table>
+          
+    <apex:pageBlockButtons location="bottom">
+        <apex:commandButton action="{!save}" value="{!$Label.smagicinteract__save_button}" title="{!$Label.smagicinteract__save_optout_settings_label}" />
+        <apex:commandButton action="{!Cancel}" value="{!$Label.smagicinteract__cancel_button_title}" title="{!$Label.smagicinteract__cancel_button_title}"/>
+    </apex:pageBlockButtons>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

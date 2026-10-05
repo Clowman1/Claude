@@ -1,0 +1,133 @@
+<apex:page id="OnlineEditorDocumentGenerator" sidebar="false" showHeader="false" controller="dfsle.OnlineEditorController"
+           title="Generate Documents" standardStylesheets="false" applyHtmlTag="false">
+    <apex:includeLightning />
+    <apex:slds />
+    <apex:includeScript value="{!$Resource.dfsle__jquery}"/>
+    <apex:includeScript value="{!$Resource.dfsle__navUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__userEvents}"/>
+    <apex:includeScript value="{!$Resource.dfsle__OnlineEditorJS}"/>
+    <apex:includeScript value="{!$Resource.dfsle__scmwidgetsjs}"/>
+    <apex:includeScript value="{!$Resource.dfsle__stringUtils}"/>
+    <apex:includeScript value="{!$Resource.dfsle__dsEditor}"/>
+    <apex:includeScript value="{!$Resource.dfsle__negotiatecontainer}"/>
+
+    <script type="application/javascript">
+      Visualforce.remoting.timeout = 120000;
+      var templateJsonEncoded = '{!JSENCODE(templateJson)}';
+      var initErrorMessage = '{!JSENCODE(errorMessage)}';
+
+      RemoteActions = {
+        getUserProperties: '{!$RemoteAction.OnlineEditorController.getUserProperties}',
+        generateDownloadToken: '{!$RemoteAction.OnlineEditorController.generateDownloadToken}',
+        getMergeData: '{!$RemoteAction.OnlineEditorController.getMergeData}',
+        getMergeFields: '{!$RemoteAction.OnlineEditorController.getMergeFields}',
+        getEntityRecords: '{!$RemoteAction.OnlineEditorController.getEntityRecords}',
+        getEntityRecordsWithSearch: '{!$RemoteAction.OnlineEditorController.getEntityRecordsWithSearch}',
+        getIsChorusNegotiateAllowed: '{!$RemoteAction.OnlineEditorController.getIsChorusNegotiateAllowed}',
+        getIsAuthorized: '{!$RemoteAction.OnlineEditorController.getIsAuthorized}'
+      };
+
+      Configuration = {
+        isCreating: false,
+        isEditing: false,
+        isGenerating: true,
+        namespace: '{!JSENCODE(namespace)}',
+        docuSignAccountId: '{!JSENCODE(docuSignAccountId)}',
+        docuSignUserId: '{!JSENCODE(docuSignUserId)}',
+        docuSignEnvironment: '{!JSENCODE(docuSignEnvironment)}',
+        template: templateJsonEncoded ? Object.freeze(JSON.parse(templateJsonEncoded)) : '',
+        sourceId: '{!JSENCODE($CurrentPage.parameters.recordId)}',
+        sendingUrl: '{!URLFOR($Page.Sending)}',
+        hasInitError: !!initErrorMessage,
+        initError: initErrorMessage,
+        translationPath: '{!$Resource.dsEditorTranslations}',
+        userLanguage: '{!JSENCODE(userLanguage)}'
+      };
+
+      Labels = {
+        templateUndefinedLabel: '{!JSENCODE($Label.UndefinedOnlineEditorTemplate)}',
+        templateExportDataIsUndefinedLabel: '{!JSENCODE($Label.ExportDataIsUndefinedLabel)}',
+        apiError_3: '{!JSENCODE($Label.ApiError_3)}',
+        UnauthorizedQueryMessage: '{!JSENCODE($Label.UnauthorizedQueryMessage)}'
+      };
+
+
+      var renderOnlineEditorGenerator = function (isChorusNegotiateAllowed) {
+        return prepareOnlineEditorDocumentGenerator(isChorusNegotiateAllowed);
+      };
+
+      var renderOnlineEditorPreviewer = function (options) {
+        return prepareOnlineEditorDocumentPreviewer(options);
+      };
+
+      var saveAgreement = function (isSaveAndClose) {
+        return processSaveAgreement(isSaveAndClose);
+      };
+
+      var sendForSignature = function (scmFile) {
+        prepareSendForSignature(scmFile);
+      };
+
+      var onCancel = function () {
+        cancelGeneration();
+      };
+
+      var exportGeneratedDocument = function (isChorusNegotiateAllowed) {
+        return isChorusNegotiateAllowed === true ? exportOnlineEditorDocument() : exportHtmlDocument();
+      };
+
+      var ns = '{!JSENCODE(namespace)}';
+      $Lightning.use(ns + ':LightningOutApp', function () {
+        $Lightning.createComponent(ns + ':OnlineEditorDocumentGenerator', {
+          templateId: '{!JSENCODE($CurrentPage.parameters.templateId)}',
+          recordName: '{!JSENCODE(recordName)}',
+          title: '{!JSENCODE($CurrentPage.parameters.title)}',
+          recordId: '{!JSENCODE($CurrentPage.parameters.recordId)}',
+          renderOnlineEditorGenerator: renderOnlineEditorGenerator,
+          renderOnlineEditorPreviewer: renderOnlineEditorPreviewer,
+          sendForSignature: sendForSignature,
+          onCancel: onCancel,
+          exportGeneratedDocument: exportGeneratedDocument,
+          saveAgreement: saveAgreement
+        }, 'lightning', function () {
+        });
+      });
+
+    </script>
+
+    <style type="text/css">
+
+        body {
+            margin: 0;
+            -webkit-font-smoothing: inherit;
+        }
+
+        #ds-spinner2 {
+            height: calc(100vh - 165px);
+        }
+
+        #onlineEditorGenerator {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 72px);
+            overflow-x: scroll;
+            border-left: 1px solid rgb(204, 204, 204);
+        }
+
+        .onlineEditorToolbarIcon {
+            background: rgb(243, 242, 242);
+        }
+
+        html {
+            font-size: inherit;
+            font-weight: 400;
+            line-height: 18px;
+            font-family: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
+        }
+    </style>
+
+    <div id="toastNotificationContainer"></div>
+    <div id="userEventsContainer"/>
+    <div id="lightning"></div>
+    <div id="onlineEditorGenerator"></div>
+</apex:page>

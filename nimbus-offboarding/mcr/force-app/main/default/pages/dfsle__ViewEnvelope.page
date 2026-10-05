@@ -1,0 +1,26 @@
+<apex:page sidebar="false" showHeader="true" standardController="dfsle__EnvelopeStatus__c" extensions="dfsle.StatusController">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <apex:includeLightning />
+    <apex:pageBlock rendered="{!JSENCODE(hasError) == 'true'}">
+      <apex:pageMessages />
+    </apex:pageBlock>
+    <div id="viewEnvelopeContent"></div>
+    <script type="text/javascript">
+      if ('{!JSENCODE(hasError)}' !== 'true') {
+        var _namespace = '{!JSENCODE(namespace)}';
+        var _envelopeId ='{!JSENCODE(docuSignId)}';
+        var _sourceId = '{!JSENCODE(sourceId)}';
+        $Lightning.use(_namespace + ':ViewEnvelopeApp', function () {
+          $Lightning.createComponent(_namespace + ':statusEnvelopeActionsView',
+            {
+              sourceId: _sourceId,
+              envelopeId: _envelopeId
+            },
+            "viewEnvelopeContent",
+            function (cmp) {
+            });
+        });
+      }
+    </script>
+    </html>
+</apex:page>

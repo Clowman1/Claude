@@ -268,10 +268,10 @@ private class LoWsLeadDetailsServiceTest {
             ExternalLoPortalController.createLoWorkspaceLead('Dee', 'Buyer', '(407) 555-0181', 'p9d.dee@example.com',
                 'Purchase', tagged.Id, null, null, null, null, null, null);
             System.assertEquals('Active Partner', LoWsPartnerTagService.myTags(new Set<Id>{ tagged.Id }).get(tagged.Id).Stage__c);
-            // Never a downgrade: Dormant (not a prospect stage) is left alone.
+            // A Dormant realtor who refers a lead is active again.
             LoWsPartnerTagService.setStage(tagged.Id, 'Dormant');
             LoWsLeadDetailsService.activateRealtor(tagged.Id);
-            System.assertEquals('Dormant', LoWsPartnerTagService.myTags(new Set<Id>{ tagged.Id }).get(tagged.Id).Stage__c);
+            System.assertEquals('Active Partner', LoWsPartnerTagService.myTags(new Set<Id>{ tagged.Id }).get(tagged.Id).Stage__c);
         }
     }
 
