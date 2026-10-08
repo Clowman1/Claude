@@ -1,0 +1,193 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-08T21:21:30.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-08T21:20:56.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-08T21:21:09.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCommunicationsService.cls",
+          "fullName": "LoWsCommunicationsService",
+          "id": "01pQi000003K50DIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-08T21:21:10.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCommunicationsServiceTest.cls",
+          "fullName": "LoWsCommunicationsServiceTest",
+          "id": "01pQi000003K50EIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoLeads",
+          "fullName": "externalLoLeads",
+          "id": "0RbQi0000004SP7KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoLoans",
+          "fullName": "externalLoLoans",
+          "id": "0RbQi0000004SP8KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsCommunications",
+          "fullName": "loWsCommunications",
+          "id": "0RbQi0000004hsnKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsPastClientDetail",
+          "fullName": "loWsPastClientDetail",
+          "id": "0RbQi0000004fnlKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": false,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_Account_Record_Page.flexipage",
+          "fullName": "LO_Workspace_Account_Record_Page",
+          "id": "0M0Qi000000CUYbKAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "PermissionSet",
+          "created": false,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "permissionsets/External_LO_Perfect_Day_Access.permissionset",
+          "fullName": "External_LO_Perfect_Day_Access",
+          "id": "0PSQi000000KfS1OAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-08T21:21:19.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001ULfxKAG",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-08T21:21:30.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 8,
+    "numberComponentsTotal": 8,
+    "numberFiles": "31",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-08T21:20:57.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "262422",
+    "files": [
+      {
+        "fullName": "LoWsCommunicationsService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsCommunicationsService.cls"
+      },
+      {
+        "fullName": "LoWsCommunicationsServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsCommunicationsServiceTest.cls"
+      },
+      {
+        "fullName": "LO_Workspace_Account_Record_Page",
+        "type": "FlexiPage",
+        "state": "Changed",
+        "filePath": "flexipages/LO_Workspace_Account_Record_Page.flexipage"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoLeads"
+      },
+      {
+        "fullName": "externalLoLoans",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoLoans"
+      },
+      {
+        "fullName": "loWsCommunications",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsCommunications"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsPastClientDetail"
+      },
+      {
+        "fullName": "External_LO_Perfect_Day_Access",
+        "type": "PermissionSet",
+        "state": "Changed",
+        "filePath": "permissionsets/External_LO_Perfect_Day_Access.permissionset"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001ULfxKAG%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

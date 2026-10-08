@@ -1,0 +1,244 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-08T17:40:34.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-08T17:39:49.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:55.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLOBaselineHelper.cls",
+          "fullName": "ExternalLOBaselineHelper",
+          "id": "01pQi000003CdWwIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLOBaselineHelperTest.cls",
+          "fullName": "ExternalLOBaselineHelperTest",
+          "id": "01pQi000003CdWxIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalService.cls",
+          "fullName": "ExternalLoPortalService",
+          "id": "01pQi000003CdX3IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPromptService.cls",
+          "fullName": "ExternalLoPromptService",
+          "id": "01pQi000003FNW5IAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCalendarService.cls",
+          "fullName": "LoWsCalendarService",
+          "id": "01pQi000003IuRpIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCalendarServiceTest.cls",
+          "fullName": "LoWsCalendarServiceTest",
+          "id": "01pQi000003IuRqIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/LoanRepository.cls",
+          "fullName": "LoanRepository",
+          "id": "01pAJ0000008pdZYAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/PerfectDayHomeBuilder.cls",
+          "fullName": "PerfectDayHomeBuilder",
+          "id": "01pQi000003CdX6IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/UserTriggerHandler.cls",
+          "fullName": "UserTriggerHandler",
+          "id": "01pQi000000a07yIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "classes/UserTriggerHandlerTest.cls",
+          "fullName": "UserTriggerHandlerTest",
+          "id": "01pQi000000a07zIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPreApprovals",
+          "fullName": "externalLoPreApprovals",
+          "id": "0RbQi0000004SPAKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-08T17:39:59.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UIzpKAG",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-08T17:40:34.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 11,
+    "numberComponentsTotal": 11,
+    "numberFiles": "28",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-08T17:39:49.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "167619",
+    "files": [
+      {
+        "fullName": "ExternalLOBaselineHelper",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLOBaselineHelper.cls"
+      },
+      {
+        "fullName": "ExternalLOBaselineHelperTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLOBaselineHelperTest.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalService.cls"
+      },
+      {
+        "fullName": "ExternalLoPromptService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPromptService.cls"
+      },
+      {
+        "fullName": "LoWsCalendarService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsCalendarService.cls"
+      },
+      {
+        "fullName": "LoWsCalendarServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsCalendarServiceTest.cls"
+      },
+      {
+        "fullName": "LoanRepository",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoanRepository.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeBuilder",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/PerfectDayHomeBuilder.cls"
+      },
+      {
+        "fullName": "UserTriggerHandler",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/UserTriggerHandler.cls"
+      },
+      {
+        "fullName": "UserTriggerHandlerTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/UserTriggerHandlerTest.cls"
+      },
+      {
+        "fullName": "externalLoPreApprovals",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPreApprovals"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UIzpKAG%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

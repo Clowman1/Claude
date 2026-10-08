@@ -1,0 +1,244 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-08T18:30:32.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-08T18:29:49.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:29:56.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalService.cls",
+          "fullName": "ExternalLoPortalService",
+          "id": "01pQi000003CdX3IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalServiceTest.cls",
+          "fullName": "ExternalLoPortalServiceTest",
+          "id": "01pQi000003CdX4IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPromptService.cls",
+          "fullName": "ExternalLoPromptService",
+          "id": "01pQi000003FNW5IAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadRepository.cls",
+          "fullName": "LeadRepository",
+          "id": "01pAJ0000009GgRYAU",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsTouchService.cls",
+          "fullName": "LoWsTouchService",
+          "id": "01pQi000003K2lVIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/PerfectDayHomeController.cls",
+          "fullName": "PerfectDayHomeController",
+          "id": "01pQi000003CdX8IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/PerfectDayHomeService.cls",
+          "fullName": "PerfectDayHomeService",
+          "id": "01pQi000003CdXAIA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "classes/PerfectDayHomeServiceTest.cls",
+          "fullName": "PerfectDayHomeServiceTest",
+          "id": "01pQi000003CdXBIA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoActivityPrompts",
+          "fullName": "externalLoActivityPrompts",
+          "id": "0RbQi0000004WNtKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPreApprovals",
+          "fullName": "externalLoPreApprovals",
+          "id": "0RbQi0000004SPAKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "lwc/perfectDayHome",
+          "fullName": "perfectDayHome",
+          "id": "0RbQi0000004SPCKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-08T18:30:04.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UJsfKAG",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-08T18:30:32.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 11,
+    "numberComponentsTotal": 11,
+    "numberFiles": "34",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-08T18:29:49.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "290681",
+    "files": [
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalService.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalServiceTest.cls"
+      },
+      {
+        "fullName": "ExternalLoPromptService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPromptService.cls"
+      },
+      {
+        "fullName": "LeadRepository",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadRepository.cls"
+      },
+      {
+        "fullName": "LoWsTouchService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsTouchService.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/PerfectDayHomeController.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/PerfectDayHomeService.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/PerfectDayHomeServiceTest.cls"
+      },
+      {
+        "fullName": "externalLoActivityPrompts",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoActivityPrompts"
+      },
+      {
+        "fullName": "externalLoPreApprovals",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPreApprovals"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/perfectDayHome"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UJsfKAG%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

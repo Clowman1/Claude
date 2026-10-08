@@ -1,0 +1,48 @@
+<template>
+    <button type="button" class="edge-tab" aria-expanded={expanded} aria-controls="lows-volume-drawer" onclick={toggle}>Volume</button>
+    <div class={scrimClass} onclick={close}></div>
+    <aside id="lows-volume-drawer" class={drawerClass} aria-label="My volume" aria-hidden={hidden}>
+        <header class="head">
+            <h2>My volume</h2>
+            <span class="muted">{monthLabel}</span>
+            <button type="button" class="x" aria-label="Close" onclick={close}>×</button>
+        </header>
+        <div class="body">
+            <template lwc:if={loading}>
+                <p class="muted" role="status">Loading your volume…</p>
+            </template>
+            <template lwc:elseif={error}>
+                <p class="error" role="alert">{error}</p>
+            </template>
+            <template lwc:elseif={ready}>
+                <div class="hero">
+                    <span class="eyebrow">Closed · month to date</span>
+                    <strong class="big">{closedMtd}</strong>
+                    <span class="sub">{closedMtdUnits} · by Funding Date</span>
+                </div>
+                <div class="grid">
+                    <div class="tile wide">
+                        <span class="label">Closed · last month ({lastMonthLabel})</span>
+                        <strong>{closedLast}</strong>
+                        <small>{closedLastUnits}</small>
+                    </div>
+                    <div class="tile wide">
+                        <span class="label">Pre-approved (status Pre-Approval)</span>
+                        <strong>{preApproved}</strong>
+                        <small>{preApprovedUnits} · total lead loan amount</small>
+                    </div>
+                    <div class="tile">
+                        <span class="label">New leads · MTD</span>
+                        <strong>{newLeadsMtd}</strong>
+                        <small>{newLeadsLast}</small>
+                    </div>
+                    <div class="tile">
+                        <span class="label">Realtor partners added · MTD</span>
+                        <strong>{realtorsMtd}</strong>
+                        <small>{realtorsLast}</small>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </aside>
+</template>

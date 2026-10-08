@@ -1,0 +1,578 @@
+<title>LO Workspace Upgrade Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky screen switcher on top, one mock "app frame" per screen, variants side by side where offered. Palette lifted from the live LO Workspace shell. */
+:root{
+  --bg:#f4f6fa; --surface:#ffffff; --surface-2:#f1f5fa; --line:#dfe8f3; --line-2:#c0d1e6;
+  --ink:#0f1f36; --ink-2:#1a2d4a; --muted:#5b6b82; --brand:#3d6296; --accent:#1d63c4; --accent-soft:#e6effb;
+  --ok:#17794a; --ok-soft:#e3f4ea; --warn:#a35a00; --warn-soft:#fdf0dc; --bad:#a32020; --bad-soft:#fbe6e6;
+  --shadow:0 1px 2px rgba(15,31,54,.06),0 8px 24px -12px rgba(15,31,54,.18);
+  --scrim:rgba(15,31,54,.45);
+  --font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1422; --surface:#122036; --surface-2:#172842; --line:#22385a; --line-2:#2f4a72;
+  --ink:#e8eef8; --ink-2:#cdd8ea; --muted:#8d9db6; --brand:#8fb0dd; --accent:#6aa3f0; --accent-soft:#1a3358;
+  --ok:#5fcf95; --ok-soft:#163a2a; --warn:#f0b35c; --warn-soft:#3a2c14; --bad:#f08a8a; --bad-soft:#3d1c1c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6); --scrim:rgba(3,8,16,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1422; --surface:#122036; --surface-2:#172842; --line:#22385a; --line-2:#2f4a72;
+  --ink:#e8eef8; --ink-2:#cdd8ea; --muted:#8d9db6; --brand:#8fb0dd; --accent:#6aa3f0; --accent-soft:#1a3358;
+  --ok:#5fcf95; --ok-soft:#163a2a; --warn:#f0b35c; --warn-soft:#3a2c14; --bad:#f08a8a; --bad-soft:#3d1c1c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6); --scrim:rgba(3,8,16,.6); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;padding-inline:16px;padding-block:0 64px}
+h1,h2,h3{text-wrap:balance;margin:0;color:var(--ink)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto}
+.num{font-variant-numeric:tabular-nums}
+
+/* header + switcher */
+.top{padding-block:28px 12px;display:grid;gap:6px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand)}
+.top h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
+.top p{margin:0;color:var(--muted);max-width:68ch}
+.switch{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.switch .wrap{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.switch button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;white-space:nowrap;font-weight:500;color:var(--ink-2)}
+.switch button[aria-selected="true"]{background:var(--ink-2);border-color:var(--ink-2);color:var(--surface)}
+:root[data-theme="dark"] .switch button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#08111f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .switch button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#08111f}}
+
+.screen{display:grid;gap:18px}
+.screen-head{display:grid;gap:4px}
+.screen-head h2{font-size:20px;font-weight:700}
+.screen-head p{margin:0;color:var(--muted);max-width:75ch}
+.variants{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px}
+.variant{display:grid;gap:10px;align-content:start;min-width:0}
+.vlabel{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.vlabel b{font-size:13px;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px}
+.vlabel span{font-weight:600}
+.vlabel small{color:var(--muted);flex-basis:100%}
+
+/* mock app chrome */
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;min-width:0;position:relative}
+.frame-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.frame-bar .crumb{font-size:12px;color:var(--muted)}
+.frame-bar .crumb strong{color:var(--ink);font-weight:600}
+.frame-body{padding:16px;display:grid;gap:14px;min-width:0}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs span,.tabs button{padding:8px 12px;font-size:13px;color:var(--muted);border:0;background:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs .on{color:var(--ink);font-weight:600;border-bottom-color:var(--accent)}
+.count{display:inline-block;min-width:20px;padding:0 6px;margin-left:4px;border-radius:999px;background:var(--surface-2);font-size:11px;font-weight:600;color:var(--muted);text-align:center}
+.tabs .on .count{background:var(--accent-soft);color:var(--accent)}
+
+.btn{border:1px solid var(--line-2);background:var(--surface);border-radius:8px;padding:7px 14px;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#08111f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#08111f}}
+.btn.ghost{border-color:transparent;background:none;color:var(--accent)}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.info{background:var(--accent-soft);color:var(--accent)}
+.pill.mute{background:var(--surface-2);color:var(--muted)}
+.meta{font-size:12px;color:var(--muted)}
+textarea,input,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:8px;padding:9px 11px;width:100%}
+textarea{resize:vertical;min-height:88px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:12.5px}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.spacer{flex:1}
+
+/* notes */
+.note{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--line)}
+.note:first-child{border-top:0}
+.note-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.note-h strong{font-size:13px}
+.note p{margin:0;color:var(--ink-2)}
+.avatar{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--accent-soft);color:var(--accent);flex:none}
+.composer-inline{border:1px solid var(--line-2);border-radius:10px;overflow:hidden}
+.composer-inline textarea{border:0;border-radius:0;min-height:64px}
+.composer-inline .row{padding:8px 10px;background:var(--surface-2);border-top:1px solid var(--line)}
+.modal-mock{background:var(--scrim);padding:22px 14px;display:grid;place-items:center}
+.modal-card{background:var(--surface);border-radius:12px;width:100%;max-width:420px;box-shadow:var(--shadow);display:grid}
+.modal-card header,.modal-card footer{padding:14px 16px;display:flex;align-items:center;gap:8px}
+.modal-card header{border-bottom:1px solid var(--line)}
+.modal-card footer{border-top:1px solid var(--line);justify-content:flex-end}
+.modal-card .mbody{padding:16px;display:grid;gap:12px}
+.modal-card h3{font-size:15px}
+.x{margin-left:auto;border:0;background:none;font-size:18px;color:var(--muted);line-height:1}
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:300px}
+.split > div{padding:14px;min-width:0}
+.split > div + div{border-left:1px solid var(--line);background:var(--surface-2);display:grid;gap:10px;align-content:start}
+@media (max-width:560px){.split{grid-template-columns:1fr}.split > div + div{border-left:0;border-top:1px solid var(--line)}}
+.fieldlabel{font-size:12px;font-weight:600;color:var(--ink-2);display:grid;gap:5px}
+
+/* appraisal */
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.step{display:grid;justify-items:center;gap:6px;text-align:center;font-size:12px;position:relative;padding-top:2px}
+.step::before{content:"";position:absolute;top:12px;left:-50%;width:100%;height:2px;background:var(--line-2);z-index:0}
+.step:first-child::before{display:none}
+.step.done::before,.step.now::before{background:var(--accent)}
+.dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--line-2);background:var(--surface);display:grid;place-items:center;font-size:11px;font-weight:700;z-index:1;color:var(--muted)}
+.step.done .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+.step.now .dot{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.step b{font-weight:600;color:var(--ink)} .step small{color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fact{background:var(--surface);padding:10px 12px;display:grid;gap:2px}
+.fact span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.fact strong{font-size:15px}
+.hero{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px;border-radius:10px;background:var(--surface-2)}
+.hero h3{font-size:16px}
+details{border:1px solid var(--line);border-radius:10px}
+details summary{padding:10px 12px;cursor:pointer;font-weight:600;font-size:13px;color:var(--accent)}
+details ol{margin:0;padding:0 14px 12px 32px;display:grid;gap:6px;font-size:13px;color:var(--ink-2)}
+.bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.compare{display:grid;gap:8px}
+.cmp-row{display:grid;grid-template-columns:110px 1fr 90px;align-items:center;gap:10px;font-size:13px}
+.cmp-row .track{height:14px;border-radius:4px;background:var(--surface-2);position:relative;overflow:hidden}
+.cmp-row .track i{position:absolute;inset:0 auto 0 0;border-radius:4px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:13px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:500}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:12px;overflow-x:auto;padding-bottom:4px}
+.col{background:var(--surface-2);border-radius:10px;padding:10px;display:grid;gap:8px;align-content:start;min-height:280px}
+.col h4{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:flex;justify-content:space-between}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:4px;font-size:13px}
+.card.flag{border-left:3px solid var(--bad)}
+.card .amt{font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:6px 12px;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line)}
+.scrollx{overflow-x:auto}
+
+/* volume drawer v2 (personalised navy header, colour-coded tiles) */
+.page-mock{min-height:600px;padding:16px;display:grid;gap:12px;align-content:start;background:var(--surface-2)}
+.ghostline{height:12px;border-radius:6px;background:var(--line)}
+.ghostcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;height:110px}
+.edge-tab{position:absolute;right:0;top:120px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px 14px;border:0;border-radius:10px 0 0 10px;background:linear-gradient(180deg,#2f7ce0,#12284a);color:#fff;box-shadow:-4px 4px 14px -6px rgba(11,25,48,.55)}
+.edge-tab span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:12.5px;font-weight:600;letter-spacing:.06em}
+.edge-tab svg{width:16px;height:16px}
+.dscrim{position:absolute;inset:0;background:rgba(11,25,48,.4);opacity:0;pointer-events:none;transition:opacity .25s;z-index:2}
+.dscrim.open{opacity:1;pointer-events:auto}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:min(380px,94%);background:#f2f6fc;box-shadow:-16px 0 40px -18px rgba(11,25,48,.55);transform:translateX(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);z-index:4;display:flex;flex-direction:column;overflow:hidden;color:#0f1f36}
+.drawer.open{transform:none}
+@media (prefers-reduced-motion:reduce){.drawer,.dscrim{transition:none}}
+.vd-band{display:grid;gap:18px;padding:18px 18px 20px;color:#fff;background:radial-gradient(120% 90% at 100% 0%,rgba(47,124,224,.45),transparent 60%),linear-gradient(160deg,#12284a,#0b1930)}
+.vd-top{display:flex;align-items:center;gap:12px}
+.vd-avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.35);font-weight:700;font-size:16px;flex:none}
+.vd-hello{display:grid}
+.vd-hi{font-size:12.5px;color:#b9cdea}
+.vd-hello h3{margin:0;font-size:17px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.vd-x{margin-left:auto;align-self:flex-start;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;font-size:18px;line-height:1}
+.vd-hero{display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.vd-eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8fb6ef}
+.vd-big{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.vd-sub,.vd-note{font-size:12.5px;color:#b9cdea}
+.vd-pace{position:relative;height:8px;margin-top:10px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden}
+.vd-pace i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,#5fd3a0,#8fe7c0)}
+.vd-pace b{position:absolute;top:-2px;bottom:-2px;width:2px;background:rgba(255,255,255,.75)}
+.vd-body{display:grid;gap:12px;align-content:start;padding:16px;overflow:auto;font-variant-numeric:tabular-nums}
+.vd-tile{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #dfe8f3;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(15,31,54,.05)}
+.vd-tile div{display:grid;gap:1px}
+.vd-chip{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;flex:none;font-weight:700}
+.vd-chip svg{width:18px;height:18px}
+.vd-label{font-size:12px;font-weight:500;color:#5b6b82}
+.vd-tile strong{font-size:19px;font-weight:700}
+.vd-tile small{font-size:12px;color:#5b6b82}
+.vd-navy .vd-chip{background:#e3ebf7;color:#1a3a6b}
+.vd-green{border-color:#cfeadc}.vd-green .vd-chip{background:#def4e9;color:#17794a}
+.vd-amber{background:linear-gradient(180deg,#fffaf0,#fff)}.vd-amber .vd-chip{background:#fdf0d9;color:#b26200}
+.vd-violet{background:linear-gradient(180deg,#f8f5ff,#fff)}.vd-violet .vd-chip{background:#ece6fb;color:#5b3cc4}
+.vd-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vd-small{flex-direction:column;align-items:flex-start;gap:6px}
+.vd-small .vd-chip{width:32px;height:32px;border-radius:9px}
+.vd-count{font-size:26px!important;line-height:1}
+/* up next */
+.un-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.un-item:first-of-type{border-top:0}
+.un-ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--surface-2);font-size:13px;font-weight:700;color:var(--brand)}
+.un-item strong{font-size:13.5px;display:block}
+.overlay{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;padding:16px;z-index:50}
+.big-modal{background:var(--surface);border-radius:14px;width:min(640px,100%);max-height:min(80vh,720px);display:grid;grid-template-rows:auto auto 1fr;box-shadow:var(--shadow);overflow:hidden}
+.big-modal header{padding:16px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+.big-modal .filters{padding:10px 18px;border-bottom:1px solid var(--line)}
+.big-modal .mlist{overflow:auto;padding:4px 18px 18px}
+.group-h{position:sticky;top:0;background:var(--surface);padding:12px 0 6px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.group-h.bad{color:var(--bad)} .group-h.now{color:var(--accent)} .group-h.soon{color:var(--muted)}
+
+/* comms */
+.call{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.call:first-child{border-top:0}
+.dir{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700}
+.dir.in{background:var(--ok-soft);color:var(--ok)} .dir.out{background:var(--accent-soft);color:var(--accent)} .dir.miss{background:var(--bad-soft);color:var(--bad)}
+.sms-day{text-align:center;font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin:6px 0}
+.bubbles{display:grid;gap:6px}
+.bub{max-width:78%;padding:8px 12px;border-radius:14px;font-size:13.5px;display:grid;gap:2px}
+.bub small{font-size:11px;opacity:.75}
+.bub.them{background:var(--surface-2);border:1px solid var(--line);justify-self:start;border-bottom-left-radius:4px}
+.bub.us{background:var(--accent);color:#fff;justify-self:end;border-bottom-right-radius:4px}
+:root[data-theme="dark"] .bub.us{color:#08111f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bub.us{color:#08111f}}
+.thread{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.thread + .thread{margin-top:10px}
+.thread > button{width:100%;text-align:left;border:0;background:var(--surface);padding:11px 12px;display:grid;grid-template-columns:1fr auto;gap:2px 10px}
+.thread > button strong{font-size:13.5px}
+.thread > button .meta{grid-column:1/-1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread .msgs{border-top:1px solid var(--line);background:var(--surface-2);padding:10px 12px;display:grid;gap:10px}
+.msg{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:4px;font-size:13px}
+.msg p{margin:0;color:var(--ink-2)}
+.sample{font-size:11.5px;color:var(--muted);font-style:italic}
+.decided{display:grid;gap:4px;padding:12px 14px;border-radius:10px;border:1px dashed var(--line-2);font-size:13px;color:var(--ink-2)}
+.decided b{color:var(--ink)}
+@media (max-width:480px){.vol-grid{grid-template-columns:1fr}.cmp-row{grid-template-columns:80px 1fr 70px}.stepper .step small{display:none}}
+</style>
+
+<div class="wrap top">
+  <div class="eyebrow">LO Workspace · upgrade batch Oct 2026</div>
+  <h1>Pick your screens</h1>
+  <p>Six screens from the 2026-10-08 decisions. Notes and Appraisal have three variants each; pick one per screen. The other four are a single layout to approve or mark up. All names and numbers are sample data.</p>
+</div>
+
+<nav class="switch" aria-label="Screens"><div class="wrap" role="tablist" id="switch">
+  <button role="tab" data-s="notes" aria-selected="true">1 · Notes composer</button>
+  <button role="tab" data-s="appraisal" aria-selected="false">2 · Appraisal tab</button>
+  <button role="tab" data-s="volume" aria-selected="false">3 · Volume drawer</button>
+  <button role="tab" data-s="board" aria-selected="false">4 · Active Loans board</button>
+  <button role="tab" data-s="upnext" aria-selected="false">5 · Up Next · Open all</button>
+  <button role="tab" data-s="comms" aria-selected="false">6 · Communications</button>
+</div></nav>
+
+<main class="wrap">
+
+<!-- 1 NOTES -->
+<section class="screen" id="s-notes">
+  <div class="screen-head"><h2>Notes composer</h2><p>Replaces the current New Note modal on Lead and Transaction pages. All three save the same note; they differ in where you write it.</p></div>
+  <div class="variants">
+    <div class="variant">
+      <div class="vlabel"><b>A</b><span>Inline, always open</span><small>Type straight into the top of the Notes tab. No modal at all.</small></div>
+      <div class="frame">
+        <div class="frame-bar"><span class="crumb">Lead · <strong>Maria Delgado</strong></span></div>
+        <div class="frame-body">
+          <div class="tabs"><span>Details</span><span class="on">Notes <span class="count">3</span></span><span>Communications</span><span>Conditions</span></div>
+          <div class="composer-inline">
+            <textarea id="na-text" aria-label="New note" placeholder="Write a note…">Spoke with Maria, she's touring 2 homes in Kissimmee Saturday. Wants to stay under $2,400/mo.</textarea>
+            <div class="row"><button class="chip" aria-pressed="false">📌 Pin</button><span class="spacer"></span><span class="meta">Ctrl+Enter to save</span><button class="btn primary">Save note</button></div>
+          </div>
+          <div>
+            <div class="note"><div class="note-h"><span class="avatar">JR</span><strong>Jordan Reyes</strong><span class="pill info">Pinned</span><span class="meta">Oct 6</span></div><p>Pre-approved at $365k FHA. Realtor is Dana Whitfield (Keller Williams).</p></div>
+            <div class="note"><div class="note-h"><span class="avatar">JR</span><strong>Jordan Reyes</strong><span class="meta">Oct 3</span></div><p>Paystubs and W-2s received. Waiting on 2 months of bank statements.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant">
+      <div class="vlabel"><b>B</b><span>Slim modal</span><span class="pill ok">Picked</span><small>Keeps the "New note" button, but the modal is one text box and a type. No title field, no extra pickers.</small></div>
+      <div class="frame">
+        <div class="modal-mock">
+          <div class="modal-card" role="dialog" aria-label="New note mock">
+            <header><h3>New note</h3><span class="meta">Maria Delgado</span><button class="x" aria-label="Close">×</button></header>
+            <div class="mbody">
+              <div class="chips" role="group" aria-label="Note type">
+                <button class="chip" aria-pressed="true">General</button><button class="chip" aria-pressed="false">Borrower call</button><button class="chip" aria-pressed="false">Realtor</button><button class="chip" aria-pressed="false">Docs</button>
+              </div>
+              <textarea id="nb-text" aria-label="Note">Spoke with Maria, she's touring 2 homes in Kissimmee Saturday. Wants to stay under $2,400/mo.</textarea>
+              <label class="row meta"><input type="checkbox" id="nb-pin" style="width:auto"> Pin to top of notes</label>
+            </div>
+            <footer><button class="btn">Cancel</button><button class="btn primary">Save note</button></footer>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="variant">
+      <div class="vlabel"><b>C</b><span>Side-by-side</span><small>Notes history on the left, composer docked on the right. Best on a laptop; stacks on phone.</small></div>
+      <div class="frame">
+        <div class="frame-bar"><span class="crumb">Loan · <strong>Marcus &amp; Tia Bell</strong> · Notes</span></div>
+        <div class="split">
+          <div>
+            <div class="note"><div class="note-h"><span class="avatar">JR</span><strong>You</strong><span class="meta">Oct 7</span></div><p>Appraisal came in at value. Told realtor.</p></div>
+            <div class="note"><div class="note-h"><span class="avatar">KP</span><strong>Kim (Processor)</strong><span class="meta">Oct 5</span></div><p>Need updated HOI declarations page with lender clause.</p></div>
+            <div class="note"><div class="note-h"><span class="avatar">JR</span><strong>You</strong><span class="meta">Oct 2</span></div><p>Rate locked 30 days at 6.375%.</p></div>
+          </div>
+          <div>
+            <label class="fieldlabel" for="nc-text">Add a note<textarea id="nc-text" placeholder="What happened?">Borrower sent HOI dec page to Kim directly.</textarea></label>
+            <div class="row"><button class="chip" aria-pressed="false">📌 Pin</button><span class="spacer"></span><button class="btn primary">Save</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 APPRAISAL -->
+<section class="screen" id="s-appraisal" hidden>
+  <div class="screen-head"><h2>Appraisal tab</h2><p>Same data as today, presented more simply. The full event timeline is still there but collapsed, so the LO sees where it stands at a glance.</p></div>
+  <div class="variants">
+    <div class="variant">
+      <div class="vlabel"><b>A</b><span>Status + 4 steps</span><span class="pill ok">Picked</span><small>Where it stands in one line, a four-step tracker, the key numbers, then the message thread with the appraisal company.</small></div>
+      <div class="frame"><div class="frame-body">
+        <div class="hero"><span class="pill info">Inspection done</span><h3>Report due Oct 14</h3><span class="spacer"></span><span class="meta">Clear Capital · AMC</span></div>
+        <div class="stepper">
+          <div class="step done"><span class="dot">✓</span><b>Ordered</b><small>Sep 29</small></div>
+          <div class="step done"><span class="dot">✓</span><b>Scheduled</b><small>Oct 1</small></div>
+          <div class="step now"><span class="dot">3</span><b>Inspected</b><small>Oct 4</small></div>
+          <div class="step"><span class="dot">4</span><b>Report in</b><small>Due Oct 14</small></div>
+        </div>
+        <div class="facts num">
+          <div class="fact"><span>Contract price</span><strong>$389,000</strong></div>
+          <div class="fact"><span>Appraised</span><strong>Pending</strong></div>
+          <div class="fact"><span>Type</span><strong>FHA 1004</strong></div>
+          <div class="fact"><span>Fee</span><strong>$650 · Paid</strong></div>
+        </div>
+        <details><summary>Full history (9 events)</summary><ol>
+          <li>Sep 29: Order placed with Clear Capital</li><li>Sep 30: Payment received</li><li>Oct 1: Appraiser assigned, inspection set for Oct 4</li><li>Oct 4: Inspection completed</li><li>…5 more</li></ol></details>
+        <div style="display:grid;gap:10px;border-top:1px solid var(--line);padding-top:14px">
+          <div class="row"><strong style="font-size:13.5px">Messages with the appraisal company</strong><span class="count">2</span></div>
+          <div class="bubbles">
+            <div class="bub them">Inspection complete. Report expected by Oct 14.<small>Clear Capital · Oct 4, 3:10 PM</small></div>
+            <div class="bub us">Thanks! Any chance of a rush? Closing is Nov 14.<small>You · Oct 5, 9:02 AM</small></div>
+          </div>
+          <div class="composer-inline">
+            <textarea id="aa-msg" aria-label="Message to the appraisal company" placeholder="Message the appraisal company…" style="min-height:52px"></textarea>
+            <div class="row"><span class="meta">Goes to Clear Capital and is saved on the loan</span><span class="spacer"></span><button class="btn primary">Send</button></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="variant">
+      <div class="vlabel"><b>B</b><span>Compact summary</span><small>Smallest footprint: one progress bar and two short columns. Good if the LO only glances here.</small></div>
+      <div class="frame"><div class="frame-body">
+        <div class="row"><strong>Appraisal</strong><span class="pill info">Step 3 of 4 · Inspected</span><span class="spacer"></span><span class="meta">Report due Oct 14</span></div>
+        <div class="bar" role="img" aria-label="75% complete"><i style="width:75%"></i></div>
+        <div class="variants" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+          <dl class="kv num"><dt>Ordered</dt><dd>Sep 29</dd><dt>Inspection</dt><dd>Oct 4</dd><dt>Due</dt><dd>Oct 14</dd></dl>
+          <dl class="kv num"><dt>Contract</dt><dd>$389,000</dd><dt>Appraised</dt><dd>Pending</dd><dt>Fee</dt><dd>$650 paid</dd></dl>
+        </div>
+        <details><summary>Show history</summary><ol><li>Sep 29: Order placed</li><li>Oct 1: Inspection set</li><li>Oct 4: Inspection completed</li></ol></details>
+      </div></div>
+    </div>
+
+    <div class="variant">
+      <div class="vlabel"><b>C</b><span>Value-first</span><small>Leads with the answer the LO cares about once the report is in: did it come in at value? Shown here with a completed report.</small></div>
+      <div class="frame"><div class="frame-body">
+        <div class="hero"><span class="pill ok">At value</span><h3>Appraised $395,000</h3><span class="spacer"></span><span class="meta num">+$6,000 over contract</span></div>
+        <div class="compare num" role="img" aria-label="Appraised 395,000 versus contract 389,000">
+          <div class="cmp-row"><span class="meta">Contract</span><span class="track"><i style="width:94.5%;background:var(--line-2)"></i></span><strong>$389,000</strong></div>
+          <div class="cmp-row"><span class="meta">Appraised</span><span class="track"><i style="width:96%;background:var(--ok)"></i></span><strong>$395,000</strong></div>
+        </div>
+        <div class="row meta"><span>✓ Ordered Sep 29</span><span>✓ Inspected Oct 4</span><span>✓ Report Oct 9</span></div>
+        <details><summary>Report details &amp; history</summary><ol><li>Form FHA 1004 · Clear Capital · $650 paid</li><li>No repairs required</li><li>…full event list</li></ol></details>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 VOLUME -->
+<section class="screen" id="s-volume" hidden>
+  <div class="screen-head"><h2>Volume drawer</h2><p>Version 2: personalised navy header with the month-to-date pace against last month, and colour-coded tiles. The tab sits on the right edge of the main screens; it's shown open here.</p></div>
+  <div class="frame" id="vol-frame">
+    <div class="frame-bar"><span class="crumb">LO Workspace · <strong>Perfect Day</strong></span></div>
+    <div class="page-mock" aria-hidden="true">
+      <div class="ghostline" style="width:40%"></div>
+      <div class="variants" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))"><div class="ghostcard"></div><div class="ghostcard"></div><div class="ghostcard"></div></div>
+      <div class="ghostcard" style="height:180px"></div><div class="ghostline" style="width:65%"></div>
+    </div>
+    <button class="edge-tab" id="vol-tab" aria-expanded="false" aria-controls="vol-drawer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Volume</span></button>
+    <div class="dscrim" id="vol-scrim"></div>
+    <aside class="drawer" id="vol-drawer" aria-label="My volume">
+      <header class="vd-band">
+        <div class="vd-top">
+          <span class="vd-avatar" aria-hidden="true">J</span>
+          <div class="vd-hello"><span class="vd-hi">Good morning, Jordan</span><h3>Your October volume</h3></div>
+          <button class="vd-x" id="vol-close" aria-label="Close">×</button>
+        </div>
+        <div class="vd-hero">
+          <span class="vd-eyebrow">Closed this month</span>
+          <strong class="vd-big">$1,184,500</strong>
+          <span class="vd-sub">3 units · by Funding Date</span>
+          <div class="vd-pace" role="img" aria-label="58% of September's total, day 8 of 31"><i style="width:58%"></i><b style="left:25.8%"></b></div>
+          <span class="vd-note">58% of September's total · day 8 of 31</span>
+        </div>
+      </header>
+      <div class="vd-body">
+        <div class="vd-tile vd-navy"><span class="vd-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span><div><span class="vd-label">Closed in September</span><strong>$2,036,000</strong><small>6 units</small></div></div>
+        <div class="vd-tile vd-green"><span class="vd-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg></span><div><span class="vd-label">Pre-approved pipeline</span><strong>$4,210,000</strong><small>12 units in Pre-Approval</small></div></div>
+        <div class="vd-pair">
+          <div class="vd-tile vd-amber vd-small"><span class="vd-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="vd-label">New leads</span><strong class="vd-count">14</strong><small>31 in September</small></div>
+          <div class="vd-tile vd-violet vd-small"><span class="vd-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg></span><span class="vd-label">Realtor partners added</span><strong class="vd-count">3</strong><small>5 in September</small></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 4 BOARD -->
+<section class="screen" id="s-board" hidden>
+  <div class="screen-head"><h2>My Loans · Active</h2><p>Board is the default; List is one click away and the choice is remembered. Closed and Cancelled are their own tabs. "Needs update" only shows on Waiting On Loan Officer.</p></div>
+  <div class="frame">
+    <div class="frame-body">
+      <div class="row">
+        <div class="tabs" style="border:0"><span class="on">Active <span class="count">11</span></span><span>Closed <span class="count">48</span></span><span>Cancelled <span class="count">7</span></span></div>
+        <span class="spacer"></span>
+        <div class="seg" role="group" aria-label="View"><button id="v-board" aria-pressed="true">Board</button><button id="v-list" aria-pressed="false">List</button></div>
+      </div>
+      <div id="board-view" class="board num"></div>
+      <div id="list-view" class="scrollx" hidden><table class="num"><thead><tr><th>Borrower</th><th>Status</th><th>Amount</th><th>Est. close</th><th></th></tr></thead><tbody id="list-body"></tbody></table></div>
+      <p class="sample">Column grouping is a starting proposal; the exact status-to-column mapping goes in the build plan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 UP NEXT -->
+<section class="screen" id="s-upnext" hidden>
+  <div class="screen-head"><h2>Up Next with Open all</h2><p>The Perfect Day card shows the next five. "Open all" opens a modal with everything, grouped by urgency. Pre-approvals show up once their weekly touch is due.</p></div>
+  <div class="variants" style="grid-template-columns:minmax(0,520px)">
+    <div class="frame"><div class="frame-body">
+      <div class="row"><h3 style="font-size:15px">Up Next</h3><span class="pill bad">4 overdue</span><span class="spacer"></span><button class="btn ghost" id="open-all">Open all (16) →</button></div>
+      <div id="un-short"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 6 COMMS -->
+<section class="screen" id="s-comms" hidden>
+  <div class="screen-head"><h2>Communications tab</h2><p>Read-only, on Lead, Transaction and Person Account pages in LO Workspace. Shows every Reach user's contact with this borrower, labelled by who sent it.</p></div>
+  <div class="frame">
+    <div class="frame-bar"><span class="crumb">Lead · <strong>Maria Delgado</strong> · Communications</span></div>
+    <div class="frame-body">
+      <div class="tabs" role="tablist" id="ctabs">
+        <button class="on" data-c="calls">Calls <span class="count">6</span></button>
+        <button data-c="sms">SMS <span class="count">14</span></button>
+        <button data-c="email">Emails <span class="count">5</span></button>
+      </div>
+      <div id="c-calls">
+        <div class="call"><span class="dir out" title="Outgoing">↗</span><div><strong>Jordan Reyes → Maria</strong><div class="meta">Oct 7, 4:12 PM · 11m 40s</div></div><button class="btn ghost">Summary</button></div>
+        <div class="call"><span class="dir in" title="Incoming">↙</span><div><strong>Maria → Kim Pham (Processor)</strong><div class="meta">Oct 5, 10:03 AM · 4m 02s</div></div><span></span></div>
+        <div class="call"><span class="dir miss" title="Missed">✕</span><div><strong>Maria → Jordan Reyes</strong><div class="meta">Oct 3, 6:48 PM · Missed</div></div><span></span></div>
+        <div class="call"><span class="dir out" title="Logged by hand">↗</span><div><strong>Jordan Reyes → Maria</strong> <span class="pill mute">Logged</span><div class="meta">Sep 30 · "Went over FHA vs Conventional"</div></div><span></span></div>
+      </div>
+      <div id="c-sms" hidden>
+        <div class="sms-day">Oct 6</div>
+        <div class="bubbles">
+          <div class="bub them">Hi! We found one we love on Elm St 🏡 Can we offer at 389?<small>Maria · 9:14 AM</small></div>
+          <div class="bub us">Love it. 389 keeps you right at your budget. I'll send Dana an updated letter now.<small>Jordan Reyes · 9:20 AM</small></div>
+        </div>
+        <div class="sms-day">Oct 7</div>
+        <div class="bubbles"><div class="bub us">Hi Maria, please upload your Sept bank statement when you get a sec.<small>Kim Pham (Processor) · 11:02 AM</small></div></div>
+      </div>
+      <div id="c-email" hidden>
+        <div class="thread"><button aria-expanded="true" data-t><strong>Pre-approval letter: 418 Elm St</strong><span class="meta">Oct 6</span><span class="meta">Jordan Reyes, Dana Whitfield, Maria · 3 messages</span></button>
+          <div class="msgs">
+            <div class="msg"><div class="row"><strong>Jordan Reyes</strong><span class="meta">to Maria, Dana · Oct 6, 9:31 AM</span></div><p>Attached is the updated pre-approval at $389,000 for 418 Elm St.</p></div>
+            <div class="msg"><div class="row"><strong>Dana Whitfield</strong><span class="meta">to Jordan, Maria · Oct 6, 10:05 AM</span></div><p>Got it, submitting the offer this morning.</p></div>
+          </div></div>
+        <div class="thread"><button aria-expanded="false" data-t><strong>Documents needed</strong><span class="meta">Oct 2</span><span class="meta">Kim Pham (Processor), Maria · 2 messages · Please upload the following…</span></button>
+          <div class="msgs" hidden><div class="msg"><div class="row"><strong>Kim Pham</strong><span class="meta">to Maria · Oct 2</span></div><p>Please upload your two most recent bank statements and your 2025 W-2.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="decided" style="margin-top:28px">
+  <b>How to reply</b>
+  <span>Reply with your pick per screen, e.g. "Notes B, Appraisal A + value line from C, rest approved". Markups welcome ("move pin next to Save", "drop the fee").</span>
+</div>
+</main>
+
+<div class="overlay" id="un-modal" hidden>
+  <div class="big-modal" role="dialog" aria-modal="true" aria-labelledby="un-title">
+    <header><h3 id="un-title" style="font-size:16px">Everything up next</h3><span class="pill mute">16</span><button class="x" id="un-close" aria-label="Close">×</button></header>
+    <div class="filters chips" role="group" aria-label="Filter">
+      <button class="chip" aria-pressed="true" data-f="all">All</button><button class="chip" aria-pressed="false" data-f="touch">Weekly touches</button><button class="chip" aria-pressed="false" data-f="task">Tasks</button><button class="chip" aria-pressed="false" data-f="appt">Appointments</button>
+    </div>
+    <div class="mlist" id="un-list"></div>
+  </div>
+</div>
+
+<script>
+// screen switcher
+const sw=document.getElementById('switch');
+function show(id){sw.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.s===id));
+  document.querySelectorAll('.screen').forEach(s=>s.hidden=s.id!=='s-'+id);
+  try{localStorage.setItem('mock-screen',id)}catch(e){}}
+sw.addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.s)});
+try{const s=localStorage.getItem('mock-screen');if(s)show(s)}catch(e){}
+
+// toggle chips
+document.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c||c.closest('.filters'))return;
+  const g=c.closest('[role=group]');if(g)g.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===c));
+  else c.setAttribute('aria-pressed',c.getAttribute('aria-pressed')!=='true')});
+
+// volume drawer
+const dr=document.getElementById('vol-drawer'),sc=document.getElementById('vol-scrim'),vt=document.getElementById('vol-tab');
+function vol(open){dr.classList.toggle('open',open);sc.classList.toggle('open',open);vt.setAttribute('aria-expanded',open)}
+vt.onclick=()=>vol(!dr.classList.contains('open'));vol(true);sc.onclick=()=>vol(false);document.getElementById('vol-close').onclick=()=>vol(false);
+
+// board
+const loans=[
+ ['Application','Maria Delgado','Disclosures Out',389000,'Nov 14',0],
+ ['Application','Kevin Osei','TRID Application',312500,'Nov 21',0],
+ ['Processing','Marcus & Tia Bell','Waiting On Loan Officer',455000,'Nov 3',1],
+ ['Processing','Priya Natarajan','Pre-Processing',278900,'Nov 7',0],
+ ['Processing','Luis Ortega','Submitted',342000,'Nov 10',0],
+ ['Approved','Hannah Cole','Conditionally Approved',512000,'Oct 30',0],
+ ['Approved','Darnell Brooks','Waiting On Loan Officer',298000,'Oct 28',1],
+ ['Approved','Sofia Ruiz','Conditionally Approved',366000,'Nov 1',0],
+ ['Clear to Close','Ethan Park','Clear to Close',401500,'Oct 17',0],
+ ['Closing','Grace Liu','Closing',624000,'Oct 10',0],
+ ['Closing','Andre Silva','Closing',289000,'Oct 11',0]];
+const money=n=>'$'+n.toLocaleString('en-US');
+const cols=['Application','Processing','Approved','Clear to Close','Closing'];
+document.getElementById('board-view').innerHTML=cols.map(c=>{const L=loans.filter(l=>l[0]===c);
+ return `<div class="col"><h4><span>${c}</span><span>${L.length}</span></h4>${L.map(l=>`<div class="card${l[5]?' flag':''}"><strong>${l[1]}</strong><span class="amt">${money(l[3])}</span><span class="meta">${l[2]} · Est. close ${l[4]}</span>${l[5]?'<span><span class="pill bad">Needs update</span></span>':''}</div>`).join('')}</div>`}).join('');
+document.getElementById('list-body').innerHTML=loans.map(l=>`<tr><td><strong>${l[1]}</strong></td><td>${l[2]}</td><td>${money(l[3])}</td><td>${l[4]}</td><td>${l[5]?'<span class="pill bad">Needs update</span>':''}</td></tr>`).join('');
+const vb=document.getElementById('v-board'),vl=document.getElementById('v-list');
+function view(v){vb.setAttribute('aria-pressed',v==='board');vl.setAttribute('aria-pressed',v==='list');
+ document.getElementById('board-view').hidden=v!=='board';document.getElementById('list-view').hidden=v!=='list'}
+vb.onclick=()=>view('board');vl.onclick=()=>view('list');
+
+// up next
+const items=[
+ ['over','touch','T','Weekly touch: Kevin Osei','Pre-approval · last touch 12 days ago'],
+ ['over','touch','T','Weekly touch: Brianna Hall','Pre-approval · last touch 9 days ago'],
+ ['over','task','✓','Send updated letter to Dana Whitfield','Task · due Oct 6'],
+ ['over','touch','T','Weekly touch: Omar Haddad','Pre-approval · last touch 8 days ago'],
+ ['today','appt','◷','Consult call: Priya Natarajan','Appointment · 2:30 PM'],
+ ['today','touch','T','Weekly touch: Maria Delgado','Pre-approval · last touch 7 days ago'],
+ ['today','task','✓','Review HOI for Marcus & Tia Bell','Task · due today'],
+ ['today','task','✓','Call back realtor Jamal Price','Task · due today'],
+ ['soon','appt','◷','Zoom: first-time buyer review, Sofia Ruiz','Appointment · Oct 9, 11:00 AM'],
+ ['soon','task','✓','Rate lock expiring: Hannah Cole','Task · due Oct 10'],
+ ['soon','appt','◷','Realtor lunch: Dana Whitfield','Appointment · Oct 10, 12:30 PM'],
+ ['soon','task','✓','Follow up on gift letter: Luis Ortega','Task · due Oct 11'],
+ ['soon','task','✓','Send closing gift: Grace Liu','Task · due Oct 12'],
+ ['soon','appt','◷','Closing: Andre Silva','Appointment · Oct 11, 3:00 PM'],
+ ['soon','task','✓','Check in on appraisal: Ethan Park','Task · due Oct 13'],
+ ['soon','task','✓','Quarterly call: past client Rob Tate','Task · due Oct 14']];
+const row=i=>`<div class="un-item"><span class="un-ico">${i[2]}</span><div><strong>${i[3]}</strong><span class="meta">${i[4]}</span></div>${i[0]==='over'?'<span class="pill bad">Overdue</span>':i[0]==='today'?'<span class="pill info">Today</span>':'<span class="pill mute">Upcoming</span>'}</div>`;
+document.getElementById('un-short').innerHTML=items.slice(0,5).map(row).join('');
+const groups=[['over','bad','Overdue'],['today','now','Today'],['soon','soon','Coming up']];
+let filt='all';
+function renderModal(){const f=items.filter(i=>filt==='all'||i[1]===filt);
+ document.getElementById('un-list').innerHTML=groups.map(g=>{const L=f.filter(i=>i[0]===g[0]);return L.length?`<div class="group-h ${g[1]}">${g[2]} <span class="count">${L.length}</span></div>${L.map(row).join('')}`:''}).join('')||'<p class="meta">Nothing here.</p>'}
+const modal=document.getElementById('un-modal');
+document.getElementById('open-all').onclick=()=>{renderModal();modal.hidden=false;document.getElementById('un-close').focus()};
+document.getElementById('un-close').onclick=()=>modal.hidden=true;
+modal.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){modal.hidden=true;vol(false)}});
+modal.querySelector('.filters').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;filt=c.dataset.f;
+ modal.querySelectorAll('.filters .chip').forEach(x=>x.setAttribute('aria-pressed',x===c));renderModal()});
+
+// comms
+const ct=document.getElementById('ctabs');
+ct.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ct.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+ ['calls','sms','email'].forEach(k=>document.getElementById('c-'+k).hidden=k!==b.dataset.c)});
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',o);b.nextElementSibling.hidden=!o});
+</script>

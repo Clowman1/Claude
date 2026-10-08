@@ -1,0 +1,78 @@
+<template>
+    <button type="button" class="edge-tab" aria-expanded={expanded} aria-controls="lows-volume-drawer" onclick={toggle}>
+        <span class="edge-icon"><c-portal-icon name="trending-up" size="16"></c-portal-icon></span>
+        <span class="edge-label">Volume</span>
+    </button>
+    <div class={scrimClass} onclick={close}></div>
+    <aside id="lows-volume-drawer" class={drawerClass} aria-label="My volume" aria-hidden={hidden}>
+        <header class="band">
+            <div class="band-top">
+                <template lwc:if={photoUrl}>
+                    <img class="avatar" src={photoUrl} alt="" />
+                </template>
+                <template lwc:else>
+                    <span class="avatar avatar-initial" aria-hidden="true">{initial}</span>
+                </template>
+                <div class="hello">
+                    <span class="hi">{greeting}</span>
+                    <h2>{headline}</h2>
+                </div>
+                <button type="button" class="x" aria-label="Close" onclick={close}>×</button>
+            </div>
+
+            <template lwc:if={ready}>
+                <div class="hero">
+                    <span class="eyebrow">Closed this month</span>
+                    <strong class="big">{closedMtd}</strong>
+                    <span class="hero-sub">{closedMtdUnits} · by Funding Date</span>
+                    <div class="pace" role="img" aria-label={paceLabel}>
+                        <span class="pace-fill" style={paceStyle}></span>
+                        <span class="pace-mark" style={dayMarkStyle}></span>
+                    </div>
+                    <span class="pace-note">{paceLabel}</span>
+                </div>
+            </template>
+        </header>
+
+        <div class="body">
+            <template lwc:if={loading}>
+                <p class="muted" role="status">Loading your volume…</p>
+            </template>
+            <template lwc:elseif={error}>
+                <p class="error" role="alert">{error}</p>
+            </template>
+            <template lwc:elseif={ready}>
+                <div class="tile tile-navy">
+                    <span class="chip"><c-portal-icon name="check-circle-2" size="18"></c-portal-icon></span>
+                    <div class="tile-text">
+                        <span class="label">Closed in {lastMonthLabel}</span>
+                        <strong>{closedLast}</strong>
+                        <small>{closedLastUnits}</small>
+                    </div>
+                </div>
+                <div class="tile tile-green">
+                    <span class="chip"><c-portal-icon name="file-check-2" size="18"></c-portal-icon></span>
+                    <div class="tile-text">
+                        <span class="label">Pre-approved pipeline</span>
+                        <strong>{preApproved}</strong>
+                        <small>{preApprovedUnits} in Pre-Approval</small>
+                    </div>
+                </div>
+                <div class="pair">
+                    <div class="tile tile-amber tile-small">
+                        <span class="chip"><c-portal-icon name="users" size="16"></c-portal-icon></span>
+                        <span class="label">New leads</span>
+                        <strong class="count">{newLeadsMtd}</strong>
+                        <small>{newLeadsLast}</small>
+                    </div>
+                    <div class="tile tile-violet tile-small">
+                        <span class="chip"><c-portal-icon name="handshake" size="16"></c-portal-icon></span>
+                        <span class="label">Realtor partners added</span>
+                        <strong class="count">{realtorsMtd}</strong>
+                        <small>{realtorsLast}</small>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </aside>
+</template>

@@ -1,0 +1,142 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-08T21:38:48.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-08T21:38:26.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-08T21:38:27.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsVolumeService.cls",
+          "fullName": "LoWsVolumeService",
+          "id": "01pQi000003K5EjIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-08T21:38:28.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsVolumeServiceTest.cls",
+          "fullName": "LoWsVolumeServiceTest",
+          "id": "01pQi000003K5EkIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T21:38:39.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPortalShell",
+          "fullName": "externalLoPortalShell",
+          "id": "0RbQi0000004SP9KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-08T21:38:39.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsVolumeDrawer",
+          "fullName": "loWsVolumeDrawer",
+          "id": "0RbQi0000004hw1KAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "PermissionSet",
+          "created": false,
+          "createdDate": "2026-10-08T21:38:39.000Z",
+          "deleted": false,
+          "fileName": "permissionsets/External_LO_Perfect_Day_Access.permissionset",
+          "fullName": "External_LO_Perfect_Day_Access",
+          "id": "0PSQi000000KfS1OAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-08T21:38:39.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001ULmPKAW",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-08T21:38:48.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 5,
+    "numberComponentsTotal": 5,
+    "numberFiles": "19",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-08T21:38:26.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "69700",
+    "files": [
+      {
+        "fullName": "LoWsVolumeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsVolumeService.cls"
+      },
+      {
+        "fullName": "LoWsVolumeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsVolumeServiceTest.cls"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPortalShell"
+      },
+      {
+        "fullName": "loWsVolumeDrawer",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsVolumeDrawer"
+      },
+      {
+        "fullName": "External_LO_Perfect_Day_Access",
+        "type": "PermissionSet",
+        "state": "Changed",
+        "filePath": "permissionsets/External_LO_Perfect_Day_Access.permissionset"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001ULmPKAW%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

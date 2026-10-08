@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Pinned__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>LO Workspace: pinned notes sort to the top of the Notes tab (2026-10-08).</description>
+    <externalId>false</externalId>
+    <label>Pinned</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
