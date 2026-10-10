@@ -1,0 +1,228 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:48.000Z",
+        "fileName": "unpackaged/classes/ExternalLoWorkspaceController.cls",
+        "fullName": "ExternalLoWorkspaceController",
+        "id": "01pQi000003FNW7IAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:25:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T15:25:52.000Z",
+        "fileName": "unpackaged/classes/LoWsOnboardingGateService.cls",
+        "fullName": "LoWsOnboardingGateService",
+        "id": "01pQi000003KDKLIA4",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:25:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T15:25:52.000Z",
+        "fileName": "unpackaged/classes/LoWsOnboardingGateServiceTest.cls",
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "id": "01pQi000003KDKMIA4",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:25:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoCsvImportService.cls",
+        "fullName": "ExternalLoCsvImportService",
+        "id": "01pQi000003FNVrIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:13.000Z",
+        "fileName": "unpackaged/classes/LoLandingPageWebhook.cls",
+        "fullName": "LoLandingPageWebhook",
+        "id": "01pQi000003IfcTIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoCsvImportServiceTest.cls",
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "id": "01pQi000003FNVsIAO",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-09-14T18:47:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:13.000Z",
+        "fileName": "unpackaged/classes/LoWsLeadIntakeService.cls",
+        "fullName": "LoWsLeadIntakeService",
+        "id": "01pQi000003IfcUIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:13.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:13.000Z",
+        "fileName": "unpackaged/classes/LoWsLeadIntakeServiceTest.cls",
+        "fullName": "LoWsLeadIntakeServiceTest",
+        "id": "01pQi000003IfcVIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T19:01:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T15:44:26.045Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:44:26.045Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxJf7MAF",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\ExternalLoWorkspaceController.cls"
+      },
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\ExternalLoWorkspaceController.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsOnboardingGateService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateService.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoCsvImportService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\ExternalLoCsvImportService.cls"
+      },
+      {
+        "fullName": "ExternalLoCsvImportService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\ExternalLoCsvImportService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoLandingPageWebhook",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoLandingPageWebhook.cls"
+      },
+      {
+        "fullName": "LoLandingPageWebhook",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoLandingPageWebhook.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\ExternalLoCsvImportServiceTest.cls"
+      },
+      {
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\ExternalLoCsvImportServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsLeadIntakeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsLeadIntakeService.cls"
+      },
+      {
+        "fullName": "LoWsLeadIntakeService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsLeadIntakeService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsLeadIntakeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsLeadIntakeServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsLeadIntakeServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2b\\ref\\src\\main\\default\\classes\\LoWsLeadIntakeServiceTest.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

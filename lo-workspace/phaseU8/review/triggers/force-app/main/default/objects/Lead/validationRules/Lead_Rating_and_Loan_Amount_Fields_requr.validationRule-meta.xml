@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Rating_and_Loan_Amount_Fields_requr</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Status, &apos;Pre-Approval&apos;),
+    ISBLANK(Loan_Amount__c)
+)</errorConditionFormula>
+    <errorMessage>The Loan Amount field must be filled in before applying for pre-approval</errorMessage>
+</ValidationRule>

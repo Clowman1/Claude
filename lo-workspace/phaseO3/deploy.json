@@ -1,0 +1,295 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-09T17:05:12.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-09T17:04:40.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:48.000Z",
+          "deleted": false,
+          "fileName": "objects/TwilioSF__Message__c.object",
+          "fullName": "TwilioSF__Message__c.External_LO__c",
+          "id": "00NQi00000BmR39MAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:48.000Z",
+          "deleted": false,
+          "fileName": "objects/TwilioSF__Message__c.object",
+          "fullName": "TwilioSF__Message__c.LoWs_Lead__c",
+          "id": "00NQi00000BmR3AMAV",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:48.000Z",
+          "deleted": false,
+          "fileName": "objects/TwilioSF__Message__c.object",
+          "fullName": "TwilioSF__Message__c.LoWs_Phone_Key__c",
+          "id": "00NQi00000BmR3BMAV",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:48.000Z",
+          "deleted": false,
+          "fileName": "objects/TwilioSF__Message__c.object",
+          "fullName": "TwilioSF__Message__c.LoWs_Transaction__c",
+          "id": "00NQi00000BmR3CMAV",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:51.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoStampService.cls",
+          "fullName": "ExternalLoStampService",
+          "id": "01pQi000003IZjxIAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:51.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCommunicationsService.cls",
+          "fullName": "LoWsCommunicationsService",
+          "id": "01pQi000003K50DIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:51.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsTextsService.cls",
+          "fullName": "LoWsTextsService",
+          "id": "01pQi000003KEDBIA4",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:51.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsTextsServiceTest.cls",
+          "fullName": "LoWsTextsServiceTest",
+          "id": "01pQi000003KEDCIA4",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:51.000Z",
+          "deleted": false,
+          "fileName": "classes/PerfectDayHomeController.cls",
+          "fullName": "PerfectDayHomeController",
+          "id": "01pQi000003CdX8IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:52.000Z",
+          "deleted": false,
+          "fileName": "triggers/ExternalLoStampTwilioMessage.trigger",
+          "fullName": "ExternalLoStampTwilioMessage",
+          "id": "01qQi00000HEmFtIAL",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:58.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoRealtors",
+          "fullName": "externalLoRealtors",
+          "id": "0RbQi0000004SPBKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:58.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoRecentLog",
+          "fullName": "externalLoRecentLog",
+          "id": "0RbQi0000004WO1KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:58.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsCommunications",
+          "fullName": "loWsCommunications",
+          "id": "0RbQi0000004hsnKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "RestrictionRule",
+          "created": true,
+          "createdDate": "2026-10-09T17:04:58.000Z",
+          "deleted": false,
+          "fileName": "restrictionRules/TwilioSF_Message_External_LO.rule",
+          "fullName": "TwilioSF_Message_External_LO",
+          "id": "0eYQi00000001NVMAY",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-09T17:04:58.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UPBhKAO",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-09T17:05:12.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 14,
+    "numberComponentsTotal": 14,
+    "numberFiles": "35",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-09T17:04:40.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "124115",
+    "files": [
+      {
+        "fullName": "ExternalLoStampService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoStampService.cls"
+      },
+      {
+        "fullName": "LoWsCommunicationsService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsCommunicationsService.cls"
+      },
+      {
+        "fullName": "LoWsTextsService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsTextsService.cls"
+      },
+      {
+        "fullName": "LoWsTextsServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsTextsServiceTest.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/PerfectDayHomeController.cls"
+      },
+      {
+        "fullName": "ExternalLoStampTwilioMessage",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "triggers/ExternalLoStampTwilioMessage.trigger"
+      },
+      {
+        "fullName": "TwilioSF__Message__c.External_LO__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/TwilioSF__Message__c.object"
+      },
+      {
+        "fullName": "TwilioSF__Message__c.LoWs_Lead__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/TwilioSF__Message__c.object"
+      },
+      {
+        "fullName": "TwilioSF__Message__c.LoWs_Phone_Key__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/TwilioSF__Message__c.object"
+      },
+      {
+        "fullName": "TwilioSF__Message__c.LoWs_Transaction__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/TwilioSF__Message__c.object"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoRealtors"
+      },
+      {
+        "fullName": "externalLoRecentLog",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoRecentLog"
+      },
+      {
+        "fullName": "loWsCommunications",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsCommunications"
+      },
+      {
+        "fullName": "TwilioSF_Message_External_LO",
+        "type": "RestrictionRule",
+        "state": "Created",
+        "filePath": "restrictionRules/TwilioSF_Message_External_LO.rule"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UPBhKAO%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

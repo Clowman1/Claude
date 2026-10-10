@@ -1,0 +1,21 @@
+First Name,Last Name,Stage,Source,Email 1,Phone 1,Phone 2,Address City,Property Address,Price,Loan Amount,Closed,Interest Rate,Loan Program,Loan Purpose,Lender,Tags,Notes,Created
+Kevin,Marsh,Lead,Zillow,kevin.marsh@loimporttest.example,(480) 555-0131,,Mesa,,"$425,000",,,,,,,first-time buyer,Pre-qual call scheduled,9/30/2026
+Danielle,Ford,Hot Prospect,Realtor Referral,dani.ford@loimporttest.example,602-555-0132,,Phoenix,,"$610,000","$488,000",,,VA,Purchase,,VA,"Referred by Marcus Bell. Wants VA, 0 down",9/12/2026
+Luis,Ramirez,Nurture,Open House,,623.555.0133,,Glendale,,,,,,,,,,No email - text only,8/22/2026
+Amy,Chen,Past Client,Sphere,amy.chen@loimporttest.example,480-555-0134,,,"2241 E Spruce Dr, Gilbert, AZ 85234","$395,000","$316,000",3/15/2024,6.875%,Conv 30 Yr Fixed,Purchase,UWM,refi watch,Watch for rate drop,3/15/2024
+Robert,Sanchez,Lead,Facebook Ad,rsanchez@loimporttest.example,,,Tempe,,,,,,,,,,,10/1/2026
+Megan,O'Brien,Lead,Website,megan.obrien@loimporttest.example,480-555-0136,480-555-0137,Chandler,,"$500,000",,,,,,,,"Line one of notes
+Line two: works nights, call after 6pm",10/3/2026
+Jordan,,Lead,Zillow,jordan.x@loimporttest.example,602-555-0138,,Phoenix,,,,,,,,,,Only gave first name,10/4/2026
+,,Lead,Website,,,,,,,,,,,,,,Junk form fill,10/5/2026
+Sarah,Whitfield,Past Client,Sphere,sarah.whitfield@loimporttest.example,480-555-0139,,,"9820 N 87th Pl, Scottsdale, AZ 85258","$1,150,000","$800,000",2023-11-20,7.125,Jumbo 30 Fixed,Purchase,Rocket Pro TPO,jumbo,,11/20/2023
+Kevin,Marsh,Lead,Zillow,KEVIN.MARSH@loimporttest.example,480-555-0131,,Mesa,,,,,,,,,,Duplicate of row 2,9/30/2026
+Tomas,Vega,Lead,Realtor Referral,tvega@loimporttest.example,+1 480 555 0141,,Queen Creek,,"$380,000",,,,FHA,,,FHA,Credit ~620,9/25/2026
+Brianna,Lopez,Hot Prospect,Google,brianna.lopez@loimporttest.example,602-555-0142,,Phoenix,,"$450k",,,,,,,,Price typed as 450k,9/28/2026
+DAVID,NGUYEN,Lead,Open House,DAVID.NGUYEN@LOIMPORTTEST.EXAMPLE,4805550143,,Mesa,,,,,,,,,,All caps from sign-in sheet,10/6/2026
+Grace,Holloway-Price,Past Client,Sphere,grace.hp@loimporttest.example,480-555-0144,,,"615 W Ray Rd, Unit 12, Chandler, AZ 85225","$520,000","$416,000",6/30/22,0.0525,FHA 30yr,Cash Out Refi,Pennymac,,,6/30/2022
+Ian,McAllister,Nurture,Website,ian.mca@loimporttest.example,602-555-0145,,Peoria,,,,,,DSCR,,,investor,Looking at DSCR for 2nd rental,7/18/2026
+Fatima,Rahman,Lead,Realtor Referral,fatima.rahman@loimporttest.example,480-555-0146,,Tempe,,"$335,000",,,,,,,first-time buyer,🏡 excited - wants to tour this weekend,10/7/2026
+Chris,Doyle,Lead,Zillow,chris.doyle@loimporttest,480-555-0147,,Mesa,,,,,,,,,,Email missing .example (bad address),10/7/2026
+Paige,Turner,Past Client,Sphere,,623-555-0148,,Surprise,,,,1/9/2025,,VA IRRRL,Rate/Term Refi,,,Past client with phone only,1/9/2025
+Hector,Ibarra,Nurture,Sphere,hector.ibarra@loimporttest.example,602-555-0149,,,"4410 W Thunderbird Rd, Glendale, AZ 85306","$289,000","$231,200",4/2/2021,3.25%,Conventional,Purchase,UWM,,Stage never updated - closed in 2021,4/2/2021

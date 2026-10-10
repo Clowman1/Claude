@@ -1,0 +1,143 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:03:00.000Z",
+        "fileName": "unpackaged/classes/LeadNotesFormController.cls",
+        "fullName": "LeadNotesFormController",
+        "id": "01pQi000000kkO1IAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T10:21:43.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T13:48:26.000Z",
+        "fileName": "unpackaged/permissionsets/Zoom_Meeting_Assistant_Access.permissionset",
+        "fullName": "Zoom_Meeting_Assistant_Access",
+        "id": "0PSQi000000JWfJOAW",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-03T15:50:00.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-19T15:07:54.000Z",
+        "fileName": "unpackaged/permissionsets/Application_Summary_Access.permissionset",
+        "fullName": "Application_Summary_Access",
+        "id": "0PSQi000000JsazOAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-19T15:07:54.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:21.000Z",
+        "fileName": "unpackaged/permissionsets/External_LO_Perfect_Day_Access.permissionset",
+        "fullName": "External_LO_Perfect_Day_Access",
+        "id": "0PSQi000000KfS1OAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:38:29.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:53.000Z",
+        "fileName": "unpackaged/permissionsets/External_LO_Access.permissionset",
+        "fullName": "External_LO_Access",
+        "id": "0PSQi000000L8ozOAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-05T20:44:10.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T18:06:17.000Z",
+        "fileName": "unpackaged/permissionsets/Zoom_OAuth_Connection_Access.permissionset",
+        "fullName": "Zoom_OAuth_Connection_Access",
+        "id": "0PSQi000000JXI1OAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-10T17:27:47.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T16:36:30.403Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T16:36:30.403Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxOZyMAN",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "LeadNotesFormController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\LeadNotesFormController.cls"
+      },
+      {
+        "fullName": "LeadNotesFormController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\LeadNotesFormController.cls-meta.xml"
+      },
+      {
+        "fullName": "Zoom_Meeting_Assistant_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\permissionsets\\Zoom_Meeting_Assistant_Access.permissionset-meta.xml"
+      },
+      {
+        "fullName": "Application_Summary_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\permissionsets\\Application_Summary_Access.permissionset-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Perfect_Day_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\permissionsets\\External_LO_Perfect_Day_Access.permissionset-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\permissionsets\\External_LO_Access.permissionset-meta.xml"
+      },
+      {
+        "fullName": "Zoom_OAuth_Connection_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\permissionsets\\Zoom_OAuth_Connection_Access.permissionset-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

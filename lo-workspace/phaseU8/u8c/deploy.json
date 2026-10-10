@@ -1,0 +1,193 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-09T14:02:22.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-09T14:01:50.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T14:01:53.000Z",
+          "deleted": false,
+          "fileName": "classes/ConvertLeadsInvocable.cls",
+          "fullName": "ConvertLeadsInvocable",
+          "id": "01pAJ0000008v5CYAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T14:01:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadConversionGuardService.cls",
+          "fullName": "LeadConversionGuardService",
+          "id": "01pQi000003FcG9IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T14:01:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadConvertedTransactionSyncService.cls",
+          "fullName": "LeadConvertedTransactionSyncService",
+          "id": "01pQi0000036JizIAE",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-09T14:01:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadRecycleService.cls",
+          "fullName": "LeadRecycleService",
+          "id": "01pQi000003KBYfIAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-09T14:01:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadRecycleServiceTest.cls",
+          "fullName": "LeadRecycleServiceTest",
+          "id": "01pQi000003KBYgIAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T14:01:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsVolumeService.cls",
+          "fullName": "LoWsVolumeService",
+          "id": "01pQi000003K5EjIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexTrigger",
+          "created": false,
+          "createdDate": "2026-10-09T14:01:54.000Z",
+          "deleted": false,
+          "fileName": "triggers/TransactionStatusSync.trigger",
+          "fullName": "TransactionStatusSync",
+          "id": "01qQi00000F2GWHIA3",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomNotificationType",
+          "created": true,
+          "createdDate": "2026-10-09T14:01:55.000Z",
+          "deleted": false,
+          "fileName": "notificationtypes/Lead_Recycled.notiftype",
+          "fullName": "Lead_Recycled",
+          "id": "0MLQi00000Kr7uIOAR",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-09T14:01:55.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UNppKAG",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-09T14:02:22.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 8,
+    "numberComponentsTotal": 8,
+    "numberFiles": "19",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-09T14:01:50.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "45086",
+    "files": [
+      {
+        "fullName": "ConvertLeadsInvocable",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ConvertLeadsInvocable.cls"
+      },
+      {
+        "fullName": "LeadConversionGuardService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadConversionGuardService.cls"
+      },
+      {
+        "fullName": "LeadConvertedTransactionSyncService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadConvertedTransactionSyncService.cls"
+      },
+      {
+        "fullName": "LeadRecycleService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LeadRecycleService.cls"
+      },
+      {
+        "fullName": "LeadRecycleServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LeadRecycleServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsVolumeService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsVolumeService.cls"
+      },
+      {
+        "fullName": "TransactionStatusSync",
+        "type": "ApexTrigger",
+        "state": "Changed",
+        "filePath": "triggers/TransactionStatusSync.trigger"
+      },
+      {
+        "fullName": "Lead_Recycled",
+        "type": "CustomNotificationType",
+        "state": "Created",
+        "filePath": "notificationtypes/Lead_Recycled.notiftype"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UNppKAG%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

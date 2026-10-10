@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Waived_Connections__c</fullName>
+    <description>LO Workspace first-login gate (O2): connections an admin waived for this LO (reason logged in Custom_Log__c, Source LO Workspace Onboarding Waiver).</description>
+    <externalId>false</externalId>
+    <label>LO Workspace Waived Connections</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Zoom</fullName><default>false</default><label>Zoom</label></value>
+            <value><fullName>Outlook</fullName><default>false</default><label>Outlook</label></value>
+            <value><fullName>RingCentral</fullName><default>false</default><label>RingCentral</label></value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

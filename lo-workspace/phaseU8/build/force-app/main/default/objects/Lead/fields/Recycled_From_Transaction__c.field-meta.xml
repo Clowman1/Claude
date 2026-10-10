@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recycled_From_Transaction__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Set only by LeadRecycleService: this lead was created back in pre-approval when the linked purchase loan was cancelled by the borrower (U8, 2026-10). Flows and triggers use it to stay silent on the system's own writes.</description>
+    <externalId>false</externalId>
+    <label>Recycled From Transaction</label>
+    <referenceTo>Transaction__c</referenceTo>
+    <relationshipLabel>Recycled Leads</relationshipLabel>
+    <relationshipName>Recycled_Leads</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

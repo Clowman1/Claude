@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Outlook_Attested_At__c</fullName>
+    <description>LO Workspace first-login gate (O2): when the LO confirmed Outlook is connected in Settings > Connected Accounts. Written by LoWsOnboardingGateService in system mode.</description>
+    <externalId>false</externalId>
+    <label>LO Workspace Outlook Attested At</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

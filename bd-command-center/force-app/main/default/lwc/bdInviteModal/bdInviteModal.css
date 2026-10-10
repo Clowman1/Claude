@@ -8,3 +8,9 @@
 .hit { text-align: left; border: 0; background: #f6f9fd; padding: 8px 10px; border-radius: 8px; margin-top: 2px; cursor: pointer; font-weight: 600; font-size: 13.5px; color: #17233f; }
 .hit:hover { background: #e6eefb; }
 .sent { background: #f3f6fb; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+/* Fit the viewport: header and the Cancel / Send footer stay put, only the form scrolls. */
+.backdrop { padding: 3vh 16px; align-items: center; }
+.modal { max-height: 94vh; }
+.mh { flex-shrink: 0; padding-bottom: 12px; }
+.mb { overflow-y: auto; min-height: 0; }
+.mf { flex-shrink: 0; }

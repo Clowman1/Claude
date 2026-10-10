@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <decisions>
+        <name>Owner_Has_Loan_Partner</name>
+        <label>Owner Has Loan Partner?</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Remove_Any_Previous_Loan_Partner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No, Clear Loan Partner</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Assign_Loan_Partner</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Owner:User.Loan_Partner__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Loan_Partner</targetReference>
+            </connector>
+            <label>Yes, Assign Loan Partner</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>U8 (2026-10): stop on the system's own recycled-lead writes (the recycle insert, or the reactivation stamp). Everything else proceeds unchanged.</description>
+        <name>Recycle_Silent_Check</name>
+        <label>Recycle Silent Check</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Owner_Has_Loan_Partner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Proceed</defaultConnectorLabel>
+        <rules>
+            <name>Silent_Recycle_Write</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Recycle_Silent_Write</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Silent recycle write</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <description>U8: true on the recycle insert or the reactivation stamp.</description>
+        <name>Recycle_Silent_Write</name>
+        <dataType>Boolean</dataType>
+        <expression>OR(AND(ISNEW(), NOT(ISBLANK({!$Record.Recycled_From_Transaction__c}))), ISCHANGED({!$Record.Recycle_Reactivated_At__c}))</expression>
+    </formulas>
+    <interviewLabel>Assign Loan Partner on Lead {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Assign Loan Partner on Lead</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Remove_Any_Previous_Loan_Partner</name>
+        <label>Remove Any Previous Loan Partner</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Loan_Partner__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Loan_Partner</name>
+        <label>Update Loan Partner</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Loan_Partner__c</field>
+            <value>
+                <elementReference>$Record.Owner:User.Loan_Partner__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Recycle_Silent_Check</targetReference>
+        </connector>
+        <filterFormula>OR(
+ISNEW(),
+ISCHANGED({!$Record.OwnerId})
+)</filterFormula>
+        <object>Lead</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

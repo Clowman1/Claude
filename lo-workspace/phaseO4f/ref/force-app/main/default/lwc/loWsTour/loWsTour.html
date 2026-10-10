@@ -1,0 +1,80 @@
+<template>
+    <template lwc:if={menuOpen}>
+        <div class="menu-backdrop" onclick={closeMenu}></div>
+        <section class="menu" role="dialog" aria-modal="true" aria-labelledby="tour-menu-title">
+            <header class="menu-head">
+                <img class="menu-head-img" src={headUrl} alt="" />
+                <div>
+                    <h2 id="tour-menu-title" class="menu-title">Take the tour</h2>
+                    <p class="menu-sub">Pick a part to replay. Bran will show you around.</p>
+                </div>
+                <button type="button" class="menu-close" aria-label="Close" title="Close" onclick={closeMenu}>✕</button>
+            </header>
+            <ul class="menu-list">
+                <template for:each={menuRows} for:item="row">
+                    <li key={row.id}>
+                        <button type="button" class={row.rowClass} data-id={row.id} data-autofocus aria-label={row.ariaLabel} onclick={handleMenuPick}>
+                            <span class="menu-row-label">{row.label}</span>
+                            <span class="menu-row-detail">{row.detail}</span>
+                            <span class="menu-tick" aria-hidden="true"><template lwc:if={row.done}>✓</template></span>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+        </section>
+    </template>
+
+    <template lwc:if={showOverlay}>
+        <div class="tour-root">
+            <!-- Click blocker + dim layer with one cut-out per hook (even-odd path, so no SVG ids needed). -->
+            <div class="blocker"></div>
+            <svg class="dim" aria-hidden="true">
+                <path class="dim-path" d={overlayPath} fill-rule="evenodd"></path>
+                <template for:each={holes} for:item="hole">
+                    <rect key={hole.key} class="ring" x={hole.x} y={hole.y} width={hole.w} height={hole.h} rx="10" ry="10"></rect>
+                </template>
+            </svg>
+
+            <img class={branClass} src={poseUrl} alt="Bran the Mortgage Man" />
+
+            <section class={bubbleClass} style={bubbleStyle} role="dialog" aria-modal="true" aria-labelledby="tour-bubble-text">
+                <template lwc:if={showName}>
+                    <p class="bubble-name">Bran <span class="bubble-counter">{counterLabel}</span></p>
+                </template>
+                <p id="tour-bubble-text" class="bubble-text" aria-live="polite">{bubbleText}</p>
+                <template lwc:if={confirmSkip}>
+                    <div class="bubble-actions">
+                        <button type="button" class="tbtn tbtn-ghost" onclick={confirmSkipTour}>Skip</button>
+                        <button type="button" class="tbtn tbtn-primary" data-autofocus onclick={keepGoing}>Keep going</button>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <template lwc:if={showShot}>
+                        <img class="bubble-shot-img" src={shotUrl} alt={shotAlt} />
+                    </template>
+                    <template lwc:if={searching}>
+                        <p class="bubble-hint" role="status">Finding it on the page…</p>
+                    </template>
+                    <div class="bubble-actions">
+                        <template lwc:if={showSkip}>
+                            <button type="button" class="tbtn tbtn-link" onclick={handleSkip}>{skipLabel}</button>
+                        </template>
+                        <span class="bubble-spacer"></span>
+                        <template lwc:if={showBack}>
+                            <button type="button" class="tbtn tbtn-ghost" onclick={handleBack}>Back</button>
+                        </template>
+                        <template lwc:if={showLetsGo}>
+                            <button type="button" class="tbtn tbtn-primary" data-autofocus onclick={handleNext}>Let's go</button>
+                        </template>
+                        <template lwc:if={showNext}>
+                            <button type="button" class="tbtn tbtn-primary" data-autofocus onclick={handleNext}>Next</button>
+                        </template>
+                        <template lwc:if={showFinish}>
+                            <button type="button" class="tbtn tbtn-primary" data-autofocus onclick={handleDone}>{finishLabel}</button>
+                        </template>
+                    </div>
+                </template>
+            </section>
+        </div>
+    </template>
+</template>

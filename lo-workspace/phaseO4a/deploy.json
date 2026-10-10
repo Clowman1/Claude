@@ -1,0 +1,227 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-09T17:17:28.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-09T17:17:06.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:12.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadPreApprovalLetterController.cls",
+          "fullName": "LeadPreApprovalLetterController",
+          "id": "01pQi000003CtILIA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadPreApprovalLetterTest.cls",
+          "fullName": "LeadPreApprovalLetterTest",
+          "id": "01pQi000003CtINIA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoLeads",
+          "fullName": "externalLoLeads",
+          "id": "0RbQi0000004SP7KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoRealtors",
+          "fullName": "externalLoRealtors",
+          "id": "0RbQi0000004SPBKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsApplicationSummary",
+          "fullName": "loWsApplicationSummary",
+          "id": "0RbQi0000004iP3KAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsFollowUpPicker",
+          "fullName": "loWsFollowUpPicker",
+          "id": "0RbQi0000004dPOKAY",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsPastClientDetail",
+          "fullName": "loWsPastClientDetail",
+          "id": "0RbQi0000004fnlKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsZoomCard",
+          "fullName": "loWsZoomCard",
+          "id": "0RbQi0000004iP4KAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/zoomMeetingAssistant",
+          "fullName": "zoomMeetingAssistant",
+          "id": "0RbQi0000004MwPKAU",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomTab",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "tabs/LO_Workspace.tab",
+          "fullName": "LO_Workspace",
+          "id": "01rQi00001YFcgnIAD",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-09T17:17:17.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UPI9KAO",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-09T17:17:28.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 10,
+    "numberComponentsTotal": 10,
+    "numberFiles": "44",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-09T17:17:09.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "265955",
+    "files": [
+      {
+        "fullName": "LeadPreApprovalLetterController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadPreApprovalLetterController.cls"
+      },
+      {
+        "fullName": "LeadPreApprovalLetterTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadPreApprovalLetterTest.cls"
+      },
+      {
+        "fullName": "LO_Workspace",
+        "type": "CustomTab",
+        "state": "Changed",
+        "filePath": "tabs/LO_Workspace.tab"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoLeads"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoRealtors"
+      },
+      {
+        "fullName": "loWsApplicationSummary",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsApplicationSummary"
+      },
+      {
+        "fullName": "loWsFollowUpPicker",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsFollowUpPicker"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsPastClientDetail"
+      },
+      {
+        "fullName": "loWsZoomCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsZoomCard"
+      },
+      {
+        "fullName": "zoomMeetingAssistant",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/zoomMeetingAssistant"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UPI9KAO%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

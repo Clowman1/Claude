@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Bypasses the Lead Source Change Restricted validation rule on Lead. Grant only to Admins. Deliberately NOT granted to the Nimbus Development integration user, so automations cannot rewrite Lead Source once it is set.</description>
+    <isLicensed>false</isLicensed>
+    <label>Lead Source Change</label>
+</CustomPermission>

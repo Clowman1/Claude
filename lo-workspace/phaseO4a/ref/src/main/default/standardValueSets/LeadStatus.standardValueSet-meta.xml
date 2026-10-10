@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>New</fullName>
+        <default>true</default>
+        <label>New</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contacted/Call Back</fullName>
+        <default>false</default>
+        <label>Contacted/Call Back</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contact Attempt 1</fullName>
+        <color>#FFFF66</color>
+        <default>false</default>
+        <label>Contact Attempt 1</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contact Attempt 2</fullName>
+        <color>#FFFF66</color>
+        <default>false</default>
+        <label>Contact Attempt 2</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contact Attempt 3</fullName>
+        <color>#FFFF66</color>
+        <default>false</default>
+        <label>Contact Attempt 3</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contact Attempt 4</fullName>
+        <default>false</default>
+        <label>Contact Attempt 4</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contact Attempt 5</fullName>
+        <default>false</default>
+        <label>Contact Attempt 5</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contact Attempt 6</fullName>
+        <default>false</default>
+        <label>Contact Attempt 6</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Working</fullName>
+        <default>false</default>
+        <label>Working</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Application Link Out</fullName>
+        <default>false</default>
+        <label>Application Link Out</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Application</fullName>
+        <color>#3333FF</color>
+        <default>false</default>
+        <label>Application</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Documents Requested</fullName>
+        <default>false</default>
+        <label>Documents Requested</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Documents Received for Review</fullName>
+        <default>false</default>
+        <label>Documents Received for Review</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>30 Day + Follow Up</fullName>
+        <default>false</default>
+        <label>30 Day + Follow Up</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Pre-Approval</fullName>
+        <color>#A845DC</color>
+        <default>false</default>
+        <label>Pre-Approval</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Scheduling Meeting</fullName>
+        <default>false</default>
+        <label>Scheduling Meeting</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Call - Referral Pending</fullName>
+        <default>false</default>
+        <label>Call - Referral Pending</label>
+        <converted>true</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Meeting Set</fullName>
+        <default>false</default>
+        <label>Meeting Set</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Meeting Complete</fullName>
+        <default>false</default>
+        <label>Meeting Complete</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Active</fullName>
+        <default>false</default>
+        <label>Active</label>
+        <converted>true</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Nurture - Preapproval</fullName>
+        <default>false</default>
+        <label>Nurture - Preapproval</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Nurturing</fullName>
+        <default>false</default>
+        <label>Nurturing</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Nurturing - Meeting Complete</fullName>
+        <default>false</default>
+        <label>Nurturing - Meeting Complete</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Under Contract</fullName>
+        <default>false</default>
+        <label>Under Contract</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Submitted For Disclosures</fullName>
+        <default>false</default>
+        <label>Submitted For Disclosures</label>
+        <converted>true</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Credit Repair</fullName>
+        <default>false</default>
+        <label>Credit Repair</label>
+        <converted>false</converted>
+    </standardValue>
+</StandardValueSet>

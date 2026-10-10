@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>External_LO__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>LO Workspace (O3): the LO Workspace loan officer this text belongs to, from its originating loan or lead (LoWsTextsService). Drives restriction rule TwilioSF_Message_External_LO; blank = LO Workspace LOs cannot see it.</description>
+    <externalId>false</externalId>
+    <label>Workspace LO</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>LoWs_Texts</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

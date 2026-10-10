@@ -1,0 +1,209 @@
+/* Wrapper */
+.wrapper {
+    padding: 0.75rem 1rem;
+}
+
+/* Card */
+.ci-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: box-shadow .15s ease, transform .1s ease;
+}
+
+.ci-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+}
+
+/* Header */
+.ci-header {
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+/* Grid layout */
+.ci-grid {
+    display: grid;
+    grid-template-columns: 90px 160px 1fr 180px 80px 30px;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.col {
+    display: flex;
+    align-items: center;
+}
+
+/* Score badge */
+.score-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: white;
+}
+
+/* Score colors */
+.score-red { background-color: #d9534f; }
+.score-yellow { background-color: #f0ad4e; }
+.score-green { background-color: #5cb85c; }
+/* Zoom-sourced insights carry no AI score, so the badge is muted rather than green. */
+.score-none { background-color: #98a5b7; }
+
+/* Host */
+.col.host {
+    font-weight: 500;
+    color: #4b72b0;
+}
+
+/* Title */
+.title-text {
+    font-weight: 600;
+    color: #222;
+}
+
+/* Date/time */
+.col.datetime {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Duration */
+.col.duration {
+    font-size: 0.85rem;
+    color: #444;
+}
+
+/* Body */
+.ci-body {
+    padding: 0.5rem 1rem 1rem;
+    border-top: 1px solid #ececec;
+}
+/* ---- Conversational transcript ----
+   One block per speaker turn. The two-tone treatment tracks the order a speaker first
+   appears, so on a typical two-party call the loan officer and the borrower alternate
+   and the exchange is readable at a glance. */
+.ci-transcript {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 460px;
+    overflow-y: auto;
+    padding: 4px 8px 4px 0;
+}
+
+.ci-turn {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #1a2541;
+    background-color: #f5f7fa;
+}
+
+.ci-turn-alt {
+    border-left-color: #5b9bd5;
+    background-color: #eef4fb;
+}
+
+.ci-turn-speaker {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #52606d;
+    margin-bottom: 3px;
+}
+
+.ci-turn-text {
+    margin: 0;
+    line-height: 1.55;
+    white-space: pre-wrap;
+}
+
+.ci-turn-empty {
+    margin: 0;
+    color: #6b7684;
+    font-style: italic;
+}
+
+/* ---- Zoom recording links ---- */
+.ci-recordings {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.ci-recording {
+    padding: 8px 12px;
+    border: 1px solid #dde3ec;
+    border-radius: 6px;
+    background-color: #fbfcfd;
+}
+
+.ci-recording-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ci-recording-type {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: #1a2541;
+    border-radius: 3px;
+    padding: 2px 7px;
+}
+
+.ci-recording-meta {
+    font-size: 0.78rem;
+    color: #6b7684;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Recordings made while Zoom's passcode setting was on keep it permanently, so the
+   code has to travel with the link or the link is useless. */
+.ci-recording-passcode {
+    margin: 6px 0 0;
+    font-size: 0.75rem;
+    color: #6b7684;
+}
+
+.ci-recording-code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.72rem;
+    word-break: break-all;
+    color: #3d4964;
+    background-color: #eef1f6;
+    border-radius: 3px;
+    padding: 1px 4px;
+}
+
+/* ---- Tab empty states and summary layout ---- */
+.ci-empty-tab {
+    margin: 4px 0;
+    color: #6b7684;
+    font-style: italic;
+}
+
+.ci-summary-overall {
+    margin-bottom: 12px;
+    line-height: 1.55;
+}
+
+.ci-subheading {
+    margin: 0 0 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #52606d;
+}

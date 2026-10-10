@@ -160,7 +160,7 @@ public without sharing class BdCommandCenterController {
         @AuraEnabled public String note { get; set; }
         @AuraEnabled public List<Id> partnerIds { get; set; }
         @AuraEnabled public List<Id> coHostIds { get; set; }
-        @AuraEnabled public String scope { get; set; }         // null = BD rep's book; 'lo' = LO Workspace (outside LO)
+        @AuraEnabled public String scope { get; set; }         // null = BD rep's book; 'lo' = LO Workspace (outside LO); 'recruit' = LO Recruiting (Lead Ids)
     }
 
     /** LO Workspace "In Person Invite": the outside LO's invitable partners and their own upcoming events. */
@@ -950,14 +950,14 @@ public without sharing class BdCommandCenterController {
             out.add(e);
         }
         for (CampaignMember m : [
-            SELECT CampaignId, Status, Contact.Name FROM CampaignMember WHERE CampaignId IN :byId.keySet()
+            SELECT CampaignId, Status, Name FROM CampaignMember WHERE CampaignId IN :byId.keySet()
         ]) {
             EventRow e = byId.get(m.CampaignId);
             e.invited++;
             if (m.Status == 'Yes - Attending') e.attending++;
             else if (m.Status == 'No - Unable to Attend') e.declined++;
             else e.awaiting++;
-            if (e.partnerNames.size() < 3) e.partnerNames.add(m.Contact.Name);
+            if (e.partnerNames.size() < 3) e.partnerNames.add(m.Name);
         }
         return out;
     }
@@ -975,6 +975,8 @@ public without sharing class BdCommandCenterController {
     // Same invite engine for LO Workspace users (External_LO, or LO_Workspace_Demo for Brandon).
     // They have no BD book: they may invite only their own tagged partners (Phase 5 tags) and
     // partner-type Person Accounts they own, and they see only events they host or co-host.
+
+    static Boolean isRecruiter() { return FeatureManagement.checkPermission('LO_Recruiting'); }
 
     static void requireLo() {
         if (!LoWsPartnerTagService.isTagMode()) throw new AuraHandledException('In-person invites are for LO Workspace loan officers.');
@@ -1022,7 +1024,7 @@ public without sharing class BdCommandCenterController {
 
     @AuraEnabled
     public static List<RealtorEventWorkspaceController.CoHostOption> searchCoHosts(String term) {
-        if (isRep()) return RealtorEventWorkspaceController.searchReachEmployees(term);
+        if (isRep() || isRecruiter()) return RealtorEventWorkspaceController.searchReachEmployees(term);
         requireLo();
         List<RealtorEventWorkspaceController.CoHostOption> out = new List<RealtorEventWorkspaceController.CoHostOption>();
         String t = String.isBlank(term) ? '' : term.trim();
@@ -1059,7 +1061,10 @@ public without sharing class BdCommandCenterController {
     @AuraEnabled
     public static Id createInvite(InviteRequest req) {
         Boolean lo = req != null && req.scope == 'lo';
-        if (lo) requireLo(); else requireRep();
+        Boolean recruit = req != null && req.scope == 'recruit';
+        if (recruit) {
+            if (!isRecruiter()) throw new AuraHandledException('In-person invites to recruits need LO Recruiting access.');
+        } else if (lo) requireLo(); else requireRep();
         if (req == null || req.eventDate == null || String.isBlank(req.eventTime)) throw new AuraHandledException('Pick a date and time.');
         if (req.partnerIds == null || req.partnerIds.isEmpty()) throw new AuraHandledException('Invite at least one partner.');
         String kind = String.isBlank(req.kind) ? 'Coffee' : req.kind;
@@ -1067,8 +1072,24 @@ public without sharing class BdCommandCenterController {
         Time t = Time.newInstance(Integer.valueOf(hm[0]), Integer.valueOf(hm[1]), 0, 0);
         Integer minutes = req.minutes == null || req.minutes <= 0 ? 60 : req.minutes;
 
-        List<Account> partners;
-        if (lo) {
+        // Invitees: Person Account contacts, or (recruit scope) the recruit Leads themselves.
+        List<Id> inviteeIds = new List<Id>();
+        List<String> inviteeNames = new List<String>();
+        if (recruit) {
+            Set<Id> requested = new Set<Id>(req.partnerIds);
+            for (Lead l : [
+                SELECT Id, Name FROM Lead
+                WHERE Id IN :requested AND RecordType.DeveloperName = 'Loan_Officer_Lead_Record_Type' AND Recruit_Stage__c != null
+            ]) {
+                inviteeIds.add(l.Id);
+                inviteeNames.add(l.Name);
+            }
+            if (inviteeIds.size() != requested.size()) throw new AuraHandledException('You can only invite LO Recruiting leads.');
+        }
+        List<Account> partners = new List<Account>();
+        if (recruit) {
+            // no partner accounts
+        } else if (lo) {
             // Every requested partner must be one this LO may invite; nothing is silently dropped.
             Set<Id> requested = new Set<Id>(req.partnerIds);
             partners = loPartnerAccounts(requested).values();
@@ -1083,9 +1104,13 @@ public without sharing class BdCommandCenterController {
                 WHERE Id IN :req.partnerIds AND BD_Rep__c = :UserInfo.getUserId() AND PersonContactId != null
             ];
         }
-        if (partners.isEmpty()) throw new AuraHandledException('Those partners are not in your book.');
+        for (Account a : partners) {
+            inviteeIds.add(a.PersonContactId);
+            inviteeNames.add(a.Name);
+        }
+        if (inviteeIds.isEmpty()) throw new AuraHandledException('Those partners are not in your book.');
 
-        String name = String.isBlank(req.name) ? defaultEventName(kind, partners) : req.name.trim();
+        String name = String.isBlank(req.name) ? defaultEventName(kind, inviteeNames) : req.name.trim();
         // The invite artwork is chosen from the name, so make sure the kind is in it.
         if (kindOf(name) != kind) name = kind + ': ' + name;
 
@@ -1105,17 +1130,15 @@ public without sharing class BdCommandCenterController {
         );
 
         if (req.coHostIds != null && !req.coHostIds.isEmpty()) RealtorEventWorkspaceController.addCoHosts(c.Id, req.coHostIds);
-        List<Id> contactIds = new List<Id>();
-        for (Account a : partners) contactIds.add(a.PersonContactId);
-        RealtorEventWorkspaceController.addInvitees(c.Id, contactIds);
+        RealtorEventWorkspaceController.addInvitees(c.Id, inviteeIds);
 
         RealtorEventWorkspaceController.InvitationDraft draft = RealtorEventWorkspaceController.getInvitationDraft(c.Id);
         RealtorEventWorkspaceController.sendInvitations(c.Id, draft.emailSubject, draft.emailBody, draft.smsBody);
         return c.Id;
     }
 
-    static String defaultEventName(String kind, List<Account> partners) {
-        String who = partners.size() == 1 ? partners[0].Name : partners.size() + ' partners';
+    static String defaultEventName(String kind, List<String> names) {
+        String who = names.size() == 1 ? names[0] : names.size() + ' partners';
         return kind + ' with ' + UserInfo.getFirstName() + ' · ' + who;
     }
 
@@ -1133,15 +1156,15 @@ public without sharing class BdCommandCenterController {
         d.hosts.add(c.Owner.Name);
         for (Campaign_Co_Host__c h : [SELECT Co_Host__r.Name FROM Campaign_Co_Host__c WHERE Campaign__c = :campaignId ORDER BY CreatedDate]) d.hosts.add(h.Co_Host__r.Name);
         for (CampaignMember m : [
-            SELECT Id, Status, Contact.Name, Contact.AccountId, Contact.Account.BD_Industry__c,
+            SELECT Id, Status, Name, LeadId, Contact.AccountId, Contact.Account.BD_Industry__c,
                    Invite_Email_Sent_At__c, Invite_SMS_Sent_At__c, RSVP_Reminder_Sent_At__c, Event_Reminder_Sent_At__c
-            FROM CampaignMember WHERE CampaignId = :campaignId ORDER BY Contact.Name
+            FROM CampaignMember WHERE CampaignId = :campaignId ORDER BY Name
         ]) {
             InviteeRow r = new InviteeRow();
             r.memberId = m.Id;
-            r.partnerId = m.Contact.AccountId;
-            r.name = m.Contact.Name;
-            r.industry = m.Contact.Account.BD_Industry__c;
+            r.partnerId = m.LeadId != null ? m.LeadId : m.Contact.AccountId;
+            r.name = m.Name;
+            r.industry = m.LeadId != null ? 'Recruit' : m.Contact.Account.BD_Industry__c;
             r.status = m.Status;
             List<String> sent = new List<String>();
             if (m.Invite_Email_Sent_At__c != null) sent.add('Email ' + m.Invite_Email_Sent_At__c.format('M/d'));

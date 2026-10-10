@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>LoWsOnboardingGateService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>LO_Workspace_Onboarding_Admin</name>
+    </customPermissions>
+    <description>LO Workspace onboarding admin (O2): Waive / Reset onboarding on the Oversight tab, new-LO landing-page alert, and FLS on the LoWs_ onboarding User fields. Assign to Christopher Lowman only.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_Gate_Passed_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_Outlook_Attested_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_RingCentral_Required__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_Tour_Chapters_Seen__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_Tour_Completed_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_Waived_Connections__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.LoWs_Zoom_Verified_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LO Workspace Onboarding Admin</label>
+</PermissionSet>

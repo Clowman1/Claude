@@ -1,0 +1,304 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoRecentLog/externalLoRecentLog.html",
+        "fullName": "externalLoRecentLog/externalLoRecentLog.html",
+        "id": "0RdQi0000007VSAKA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-09-14T18:47:28.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoRecentLog/externalLoRecentLog.css",
+        "fullName": "externalLoRecentLog/externalLoRecentLog.css",
+        "id": "0RdQi0000007VSCKA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-09-14T18:48:02.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:28.000Z",
+        "fileName": "unpackaged/lwc/externalLoRecentLog/externalLoRecentLog.js",
+        "fullName": "externalLoRecentLog/externalLoRecentLog.js",
+        "id": "0RdQi0000007VSDKA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-09-14T18:47:28.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.js",
+        "fullName": "externalLoRealtors/externalLoRealtors.js",
+        "id": "0RdQi0000007QZIKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.html",
+        "fullName": "externalLoRealtors/externalLoRealtors.html",
+        "id": "0RdQi0000007QZJKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.css",
+        "fullName": "externalLoRealtors/externalLoRealtors.css",
+        "id": "0RdQi0000007QZKKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T10:21:43.000Z",
+        "fileName": "unpackaged/classes/RecordAccessGuard.cls",
+        "fullName": "RecordAccessGuard",
+        "id": "01pQi000003IZyTIAW",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T10:21:43.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/PerfectDayHomeController.cls",
+        "fullName": "PerfectDayHomeController",
+        "id": "01pQi000003CdX8IAK",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T18:29:54.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T09:33:14.000Z",
+        "fileName": "unpackaged/classes/ExternalLoStampService.cls",
+        "fullName": "ExternalLoStampService",
+        "id": "01pQi000003IZjxIAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T09:33:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/PerfectDayHomeModels.cls",
+        "fullName": "PerfectDayHomeModels",
+        "id": "01pQi000003CdX9IAK",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-09-14T18:47:48.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T09:33:14.000Z",
+        "fileName": "unpackaged/classes/ExternalLoStampServiceTest.cls",
+        "fullName": "ExternalLoStampServiceTest",
+        "id": "01pQi000003IZjyIAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T09:33:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T09:33:16.000Z",
+        "fileName": "unpackaged/triggers/ExternalLoStampCallInsight.trigger",
+        "fullName": "ExternalLoStampCallInsight",
+        "id": "01qQi00000H7WJCIA3",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T09:33:16.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexTrigger"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T16:08:30.381Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T16:08:30.381Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxLFVMA3",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "externalLoRecentLog",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRecentLog\\externalLoRecentLog.css"
+      },
+      {
+        "fullName": "externalLoRecentLog",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRecentLog\\externalLoRecentLog.html"
+      },
+      {
+        "fullName": "externalLoRecentLog",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRecentLog\\externalLoRecentLog.js"
+      },
+      {
+        "fullName": "externalLoRecentLog",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRecentLog\\externalLoRecentLog.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.css"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.html"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.js"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.js-meta.xml"
+      },
+      {
+        "fullName": "RecordAccessGuard",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\RecordAccessGuard.cls"
+      },
+      {
+        "fullName": "RecordAccessGuard",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\RecordAccessGuard.cls-meta.xml"
+      },
+      {
+        "fullName": "PerfectDayHomeController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\PerfectDayHomeController.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\PerfectDayHomeController.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoStampService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\ExternalLoStampService.cls"
+      },
+      {
+        "fullName": "ExternalLoStampService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\ExternalLoStampService.cls-meta.xml"
+      },
+      {
+        "fullName": "PerfectDayHomeModels",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\PerfectDayHomeModels.cls"
+      },
+      {
+        "fullName": "PerfectDayHomeModels",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\PerfectDayHomeModels.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoStampServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\ExternalLoStampServiceTest.cls"
+      },
+      {
+        "fullName": "ExternalLoStampServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\classes\\ExternalLoStampServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoStampCallInsight",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\triggers\\ExternalLoStampCallInsight.trigger"
+      },
+      {
+        "fullName": "ExternalLoStampCallInsight",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO3\\ref\\src\\main\\default\\triggers\\ExternalLoStampCallInsight.trigger-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

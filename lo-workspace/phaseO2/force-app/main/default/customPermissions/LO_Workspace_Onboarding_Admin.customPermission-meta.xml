@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>LO Workspace onboarding (O2): waive a gate connection, reset an LO's onboarding, and receive the new-LO landing-page alert. Chris only - Brandon and Adam are System Administrators, so the profile cannot be the gate.</description>
+    <isLicensed>false</isLicensed>
+    <label>LO Workspace Onboarding Admin</label>
+</CustomPermission>

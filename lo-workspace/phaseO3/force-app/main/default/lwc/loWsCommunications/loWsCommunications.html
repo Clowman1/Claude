@@ -1,0 +1,112 @@
+<template>
+    <section class="comms" aria-label="Communications">
+        <div lwc:if={showTabs} class="tabs" role="tablist">
+            <template for:each={tabs} for:item="t">
+                <button key={t.id} type="button" role="tab" class={t.className} aria-selected={t.selected} data-tab={t.id} onclick={handleTab}>
+                    {t.label}<span class="count">{t.count}</span>
+                </button>
+            </template>
+        </div>
+
+        <template lwc:if={loading}>
+            <p class="muted" role="status">Loading communications…</p>
+        </template>
+        <template lwc:elseif={error}>
+            <p class="error" role="alert">{error}</p>
+        </template>
+        <template lwc:else>
+            <!-- Calls -->
+            <template lwc:if={showCalls}>
+                <template lwc:if={callsEmpty}>
+                    <p class="muted">No calls with this borrower yet.</p>
+                </template>
+                <ul class="calls">
+                    <template for:each={calls} for:item="c">
+                        <li key={c.id} class="call">
+                            <span class={c.dirClass} title={c.dirLabel} aria-label={c.dirLabel}>{c.dirIcon}</span>
+                            <div class="call-main">
+                                <p class="call-title">{c.title}<template lwc:if={c.logged}> <span class="pill">Logged</span></template></p>
+                                <p class="muted">{c.meta}</p>
+                                <template lwc:if={c.body}>
+                                    <p class="call-note">{c.body}</p>
+                                </template>
+                                <template lwc:if={c.summaryOpen}>
+                                    <p class="summary">{c.summary}</p>
+                                </template>
+                            </div>
+                            <template lwc:if={c.hasSummary}>
+                                <button type="button" class="link" data-id={c.id} aria-expanded={c.summaryExpanded} onclick={handleSummary}>{c.summaryLabel}</button>
+                            </template>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <!-- SMS -->
+            <template lwc:if={showSms}>
+                <template lwc:if={smsEmpty}>
+                    <p class="muted">No texts with this borrower yet.</p>
+                </template>
+                <template for:each={smsDays} for:item="day">
+                    <div key={day.label} class="sms-day">
+                        <p class="day-label">{day.label}</p>
+                        <template for:each={day.messages} for:item="m">
+                            <div key={m.id} class={m.bubbleClass}>
+                                <span class="bubble-text">{m.body}</span>
+                                <span class="bubble-stamp">{m.stamp}</span>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Texts (O3) -->
+            <template lwc:if={showTexts}>
+                <p class="muted">Texts Reach sent automatically to the borrower and agents, and their replies. Replies can't be sent from here.</p>
+                <template lwc:if={textsEmpty}>
+                    <p class="muted">No texts yet.</p>
+                </template>
+                <template for:each={textDays} for:item="day">
+                    <div key={day.label} class="sms-day">
+                        <p class="day-label">{day.label}</p>
+                        <template for:each={day.messages} for:item="m">
+                            <div key={m.id} class={m.bubbleClass}>
+                                <span class="bubble-text">{m.body}</span>
+                                <span class="bubble-stamp">{m.stamp}</span>
+                            </div>
+                            <template lwc:if={m.replyHint}>
+                                <p key={m.hintKey} class="reply-hint">{m.replyHint}</p>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Emails -->
+            <template lwc:if={showEmails}>
+                <template lwc:if={emailsEmpty}>
+                    <p class="muted">No emails with this borrower yet.</p>
+                </template>
+                <template for:each={threads} for:item="t">
+                    <div key={t.key} class="thread">
+                        <button type="button" class="thread-head" data-key={t.key} aria-expanded={t.expanded} onclick={handleThread}>
+                            <span class="thread-subject">{t.subject}</span>
+                            <span class="muted">{t.last}</span>
+                            <span class="thread-line">{t.summaryLine}</span>
+                        </button>
+                        <template lwc:if={t.open}>
+                            <div class="msgs">
+                                <template for:each={t.messages} for:item="m">
+                                    <article key={m.id} class="msg">
+                                        <p class="msg-head"><strong>{m.fromLabel}</strong> <span class="muted">to {m.toLabel} · {m.when}</span></p>
+                                        <p class="msg-body">{m.body}</p>
+                                    </article>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </template>
+    </section>
+</template>

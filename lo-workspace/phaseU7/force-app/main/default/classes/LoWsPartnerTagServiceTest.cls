@@ -299,7 +299,8 @@ private with sharing class LoWsPartnerTagServiceTest {
             List<ExternalLoPortalService.PartnerRow> rows = ExternalLoPortalController.getPartnersByKind('all', null, 'all');
             System.assertEquals(1, rows.size(), 'the orphaned tag is ignored');
             System.assertEquals(titleId, rows[0].id);
-            System.assertEquals(1, ExternalLoPortalController.getRealtorProspects(null).size());
+            System.assertEquals(0, ExternalLoPortalController.getRealtorProspects(null).size(), 'Realtor Prospects lists realtors only; the title agent is in Other Contacts');
+            System.assertEquals(1, ExternalLoPortalController.getPartnersByKind('prospects', null, 'other').size());
             System.assertNotEquals(null, ExternalLoPortalController.getNavBadges());
             try { ExternalLoPortalController.setPartnerStage(realtorId, 'Met'); System.assert(false, 'expected an error'); } catch (AuraHandledException e) { assertHas(e, 'not on your list'); }
             try { ExternalLoPortalController.untagPartner(realtorId); System.assert(false, 'expected an error'); } catch (AuraHandledException e) { assertHas(e, 'not on your list'); }

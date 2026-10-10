@@ -1,0 +1,626 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-01T20:21:49.000Z",
+        "fileName": "unpackaged/lwc/leadPreApprovalLetter/leadPreApprovalLetter.css",
+        "fullName": "leadPreApprovalLetter/leadPreApprovalLetter.css",
+        "id": "0RdQi0000007R3VKAU",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:54:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-01T20:21:49.000Z",
+        "fileName": "unpackaged/lwc/leadPreApprovalLetter/leadPreApprovalLetter.js",
+        "fullName": "leadPreApprovalLetter/leadPreApprovalLetter.js",
+        "id": "0RdQi0000007R3WKAU",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:54:41.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-01T20:21:49.000Z",
+        "fileName": "unpackaged/lwc/leadPreApprovalLetter/leadPreApprovalLetter.html",
+        "fullName": "leadPreApprovalLetter/leadPreApprovalLetter.html",
+        "id": "0RdQi0000007R3YKAU",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:54:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLeads/externalLoLeads.html",
+        "fullName": "externalLoLeads/externalLoLeads.html",
+        "id": "0RdQi0000007QZ5KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:21:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLeads/externalLoLeads.css",
+        "fullName": "externalLoLeads/externalLoLeads.css",
+        "id": "0RdQi0000007QZ7KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:21:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoLeads/externalLoLeads.js",
+        "fullName": "externalLoLeads/externalLoLeads.js",
+        "id": "0RdQi0000007QZ8KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:21:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.js",
+        "fullName": "externalLoRealtors/externalLoRealtors.js",
+        "id": "0RdQi0000007QZIKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.html",
+        "fullName": "externalLoRealtors/externalLoRealtors.html",
+        "id": "0RdQi0000007QZJKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoRealtors/externalLoRealtors.css",
+        "fullName": "externalLoRealtors/externalLoRealtors.css",
+        "id": "0RdQi0000007QZKKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-05T21:53:03.000Z",
+        "fileName": "unpackaged/lwc/loWsPastClientDetail/loWsPastClientDetail.html",
+        "fullName": "loWsPastClientDetail/loWsPastClientDetail.html",
+        "id": "0RdQi0000007gqXKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:21:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-05T21:53:03.000Z",
+        "fileName": "unpackaged/lwc/loWsPastClientDetail/loWsPastClientDetail.css",
+        "fullName": "loWsPastClientDetail/loWsPastClientDetail.css",
+        "id": "0RdQi0000007gqYKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:21:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-05T21:53:03.000Z",
+        "fileName": "unpackaged/lwc/loWsPastClientDetail/loWsPastClientDetail.js",
+        "fullName": "loWsPastClientDetail/loWsPastClientDetail.js",
+        "id": "0RdQi0000007gqZKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:21:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:31:21.000Z",
+        "fileName": "unpackaged/lwc/leadQuickActions/leadQuickActions.css",
+        "fullName": "leadQuickActions/leadQuickActions.css",
+        "id": "0RdQi0000005k3pKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-03T14:36:29.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:31:21.000Z",
+        "fileName": "unpackaged/lwc/leadQuickActions/leadQuickActions.html",
+        "fullName": "leadQuickActions/leadQuickActions.html",
+        "id": "0RdQi0000005k3qKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-03T14:36:29.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:31:21.000Z",
+        "fileName": "unpackaged/lwc/leadQuickActions/leadQuickActions.js",
+        "fullName": "leadQuickActions/leadQuickActions.js",
+        "id": "0RdQi0000005k3sKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-03T14:36:41.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T13:48:12.000Z",
+        "fileName": "unpackaged/lwc/zoomMeetingAssistant/zoomMeetingAssistant.html",
+        "fullName": "zoomMeetingAssistant/zoomMeetingAssistant.html",
+        "id": "0RdQi0000007JvZKAU",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-28T18:42:29.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T13:48:12.000Z",
+        "fileName": "unpackaged/lwc/zoomMeetingAssistant/zoomMeetingAssistant.css",
+        "fullName": "zoomMeetingAssistant/zoomMeetingAssistant.css",
+        "id": "0RdQi0000007JvaKAE",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-28T18:42:29.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T13:48:12.000Z",
+        "fileName": "unpackaged/lwc/zoomMeetingAssistant/zoomMeetingAssistant.js",
+        "fullName": "zoomMeetingAssistant/zoomMeetingAssistant.js",
+        "id": "0RdQi0000007JvbKAE",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-28T18:42:31.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T18:16:36.000Z",
+        "fileName": "unpackaged/lwc/loWsFollowUpPicker/loWsFollowUpPicker.css",
+        "fullName": "loWsFollowUpPicker/loWsFollowUpPicker.css",
+        "id": "0RdQi0000007eATKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:16:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T18:16:36.000Z",
+        "fileName": "unpackaged/lwc/loWsFollowUpPicker/loWsFollowUpPicker.html",
+        "fullName": "loWsFollowUpPicker/loWsFollowUpPicker.html",
+        "id": "0RdQi0000007eAUKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:16:36.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T18:16:36.000Z",
+        "fileName": "unpackaged/lwc/loWsFollowUpPicker/loWsFollowUpPicker.js",
+        "fullName": "loWsFollowUpPicker/loWsFollowUpPicker.js",
+        "id": "0RdQi0000007eAVKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T18:16:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:14:13.000Z",
+        "fileName": "unpackaged/quickActions/Lead.Leads_Notes_Form.quickAction",
+        "fullName": "Lead.Leads_Notes_Form",
+        "id": "09DQi000000CFkrMAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-17T18:23:17.000Z",
+        "manageableState": "unmanaged",
+        "type": "QuickAction"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T10:24:57.000Z",
+        "fileName": "unpackaged/tabs/LO_Workspace.tab",
+        "fullName": "LO_Workspace",
+        "id": "01rQi00001YFcgnIAD",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T17:57:16.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomTab"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-01T20:21:49.000Z",
+        "fileName": "unpackaged/classes/LeadPreApprovalLetterTest.cls",
+        "fullName": "LeadPreApprovalLetterTest",
+        "id": "01pQi000003CtINIA0",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:54:37.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T13:48:25.000Z",
+        "fileName": "unpackaged/classes/ZoomMeetingController.cls",
+        "fullName": "ZoomMeetingController",
+        "id": "01pQi0000037mxRIAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T19:50:54.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-17T19:56:59.000Z",
+        "fileName": "unpackaged/classes/ApplicationSummaryService.cls",
+        "fullName": "ApplicationSummaryService",
+        "id": "01pQi0000039zFRIAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-25T20:13:57.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-01T20:21:49.000Z",
+        "fileName": "unpackaged/classes/LeadPreApprovalLetterController.cls",
+        "fullName": "LeadPreApprovalLetterController",
+        "id": "01pQi000003CtILIA0",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:54:37.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:54.000Z",
+        "fileName": "unpackaged/permissionsetgroups/External_Loan_Officer.permissionsetgroup",
+        "fullName": "External_Loan_Officer",
+        "id": "0PGQi00000037jJOAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:38:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "PermissionSetGroup"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T16:35:15.743Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T16:35:15.743Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxOJpMAN",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "leadPreApprovalLetter",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadPreApprovalLetter\\leadPreApprovalLetter.css"
+      },
+      {
+        "fullName": "leadPreApprovalLetter",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadPreApprovalLetter\\leadPreApprovalLetter.html"
+      },
+      {
+        "fullName": "leadPreApprovalLetter",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadPreApprovalLetter\\leadPreApprovalLetter.js"
+      },
+      {
+        "fullName": "leadPreApprovalLetter",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadPreApprovalLetter\\leadPreApprovalLetter.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoLeads\\externalLoLeads.css"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoLeads\\externalLoLeads.html"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoLeads\\externalLoLeads.js"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoLeads\\externalLoLeads.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.css"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.html"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.js"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\externalLoRealtors\\externalLoRealtors.js-meta.xml"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsPastClientDetail\\loWsPastClientDetail.css"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsPastClientDetail\\loWsPastClientDetail.html"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsPastClientDetail\\loWsPastClientDetail.js"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsPastClientDetail\\loWsPastClientDetail.js-meta.xml"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.css"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.html"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.js"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.js-meta.xml"
+      },
+      {
+        "fullName": "zoomMeetingAssistant",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\zoomMeetingAssistant\\zoomMeetingAssistant.css"
+      },
+      {
+        "fullName": "zoomMeetingAssistant",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\zoomMeetingAssistant\\zoomMeetingAssistant.html"
+      },
+      {
+        "fullName": "zoomMeetingAssistant",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\zoomMeetingAssistant\\zoomMeetingAssistant.js"
+      },
+      {
+        "fullName": "zoomMeetingAssistant",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\zoomMeetingAssistant\\zoomMeetingAssistant.js-meta.xml"
+      },
+      {
+        "fullName": "loWsFollowUpPicker",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsFollowUpPicker\\loWsFollowUpPicker.css"
+      },
+      {
+        "fullName": "loWsFollowUpPicker",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsFollowUpPicker\\loWsFollowUpPicker.html"
+      },
+      {
+        "fullName": "loWsFollowUpPicker",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsFollowUpPicker\\loWsFollowUpPicker.js"
+      },
+      {
+        "fullName": "loWsFollowUpPicker",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsFollowUpPicker\\loWsFollowUpPicker.js-meta.xml"
+      },
+      {
+        "fullName": "Lead.Leads_Notes_Form",
+        "type": "QuickAction",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\quickActions\\Lead.Leads_Notes_Form.quickAction-meta.xml"
+      },
+      {
+        "fullName": "LO_Workspace",
+        "type": "CustomTab",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\tabs\\LO_Workspace.tab-meta.xml"
+      },
+      {
+        "fullName": "LeadPreApprovalLetterTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\LeadPreApprovalLetterTest.cls"
+      },
+      {
+        "fullName": "LeadPreApprovalLetterTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\LeadPreApprovalLetterTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ZoomMeetingController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\ZoomMeetingController.cls"
+      },
+      {
+        "fullName": "ZoomMeetingController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\ZoomMeetingController.cls-meta.xml"
+      },
+      {
+        "fullName": "ApplicationSummaryService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\ApplicationSummaryService.cls"
+      },
+      {
+        "fullName": "ApplicationSummaryService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\ApplicationSummaryService.cls-meta.xml"
+      },
+      {
+        "fullName": "LeadPreApprovalLetterController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\LeadPreApprovalLetterController.cls"
+      },
+      {
+        "fullName": "LeadPreApprovalLetterController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\classes\\LeadPreApprovalLetterController.cls-meta.xml"
+      },
+      {
+        "fullName": "External_Loan_Officer",
+        "type": "PermissionSetGroup",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\permissionsetgroups\\External_Loan_Officer.permissionsetgroup-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

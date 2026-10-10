@@ -1,0 +1,188 @@
+<template>
+    <div class="shell">
+        <template lwc:if={loading}><div class="card pad"><lightning-spinner alternative-text="Loading" size="small"></lightning-spinner></div></template>
+        <template lwc:if={error}><div class="card pad err" role="alert">{error}</div></template>
+
+        <template lwc:if={home}>
+            <header class="head">
+                <div>
+                    <div class="lbl">LO Recruiting · {todayLabel}</div>
+                    <h1 class="hello">{greeting}</h1>
+                </div>
+                <div class="head-actions">
+                    <lightning-combobox class="rep" label="Recruiter" variant="label-hidden" options={recruiterOptions}
+                        value={recruiter} onchange={changeRecruiter}></lightning-combobox>
+                </div>
+            </header>
+
+            <nav class="navbar" aria-label="LO Recruiting">
+                <template for:each={navItems} for:item="n">
+                    <button key={n.value} class={n.cls} data-value={n.value} onclick={pickView}>{n.label}</button>
+                </template>
+            </nav>
+
+            <section class="stats" aria-label="Pipeline">
+                <div class="card stat"><div class="lbl">Recruits</div><div class="num">{statRecruits}</div><div class="muted sm">{queueCount} not yet contacted</div></div>
+                <div class="card stat"><div class="lbl">Touched this week</div><div class="num">{statTouched}</div><div class="muted sm">{statCalls} calls logged</div></div>
+                <div class="card stat"><div class="lbl">Due today</div><div class="num">{dueCount}</div><div class="muted sm">next touch today or overdue</div></div>
+                <div class="card stat"><div class="lbl">In conversation</div><div class="num">{statEngaged}</div><div class="muted sm">conversation → offer out</div></div>
+                <div class="card stat dark"><div class="lbl gold">Hired</div><div class="num">{statHired}</div><div class="sm light">onboarding started</div></div>
+            </section>
+
+            <!-- ============================== TODAY -->
+            <template lwc:if={isToday}>
+                <div class="grid2">
+                    <div class="colmain">
+                        <section class="card">
+                            <div class="sechead">
+                                <div class="inline"><h2 class="h2">Due today</h2><span class="chip wait">{dueCount}</span></div>
+                                <span class="muted sm">Next touch today or overdue</span>
+                            </div>
+                            <template lwc:if={hasDue}>
+                                <template for:each={dueList} for:item="r">
+                                    <div key={r.id} class="row">
+                                        <div class="av">{r.initials}</div>
+                                        <div class="grow clickable" data-id={r.id} onclick={openRecruit}>
+                                            <div class="strong">{r.name} <span class="muted normal sm">{r.stage}</span></div>
+                                            <div class="muted sm">{r.sub}</div>
+                                        </div>
+                                        <span class="chip oth">{r.volumeLabel}</span>
+                                        <span class={r.nextCls}>{r.nextLabel}</span>
+                                        <template lwc:if={r.dialPhone}><lightning-click-to-dial value={r.dialPhone} record-id={r.id}></lightning-click-to-dial></template>
+                                        <button class="btn btn-s" data-id={r.id} data-name={r.name} onclick={openTouch}>Log touch</button>
+                                        <button class="btn btn-s" data-id={r.id} onclick={openInvite}>In person</button>
+                                    </div>
+                                </template>
+                            </template>
+                            <template lwc:else><div class="empty muted">Nothing due. Work the call queue below.</div></template>
+                        </section>
+
+                        <section class="card">
+                            <div class="sechead">
+                                <div class="inline"><h2 class="h2">Call queue</h2><span class="chip oth">{queueCount} new</span></div>
+                                <span class="muted sm">Not contacted yet · highest volume first</span>
+                            </div>
+                            <template lwc:if={hasQueue}>
+                                <template for:each={queue} for:item="r">
+                                    <div key={r.id} class="row">
+                                        <div class="av">{r.initials}</div>
+                                        <div class="grow clickable" data-id={r.id} onclick={openRecruit}>
+                                            <div class="strong">{r.name}
+                                                <template lwc:if={r.branchManager}><span class="chip re tag">Branch Mgr</span></template>
+                                                <template lwc:if={r.inHouse}><span class="chip ti tag">Possible In House</span></template>
+                                            </div>
+                                            <div class="muted sm">{r.sub}</div>
+                                        </div>
+                                        <span class="chip oth">{r.volumeLabel}</span>
+                                        <template lwc:if={r.dialPhone}><lightning-click-to-dial value={r.dialPhone} record-id={r.id}></lightning-click-to-dial></template>
+                                        <button class="btn btn-s" data-id={r.id} data-name={r.name} onclick={openTouch}>Log touch</button>
+                                        <button class="btn btn-s" data-id={r.id} onclick={openInvite}>In person</button>
+                                    </div>
+                                </template>
+                                <template lwc:if={moreQueue}>
+                                    <div class="row"><button class="linkish" onclick={showMoreQueue}>Show more</button></div>
+                                </template>
+                            </template>
+                            <template lwc:else><div class="empty muted">Everyone has been contacted.</div></template>
+                        </section>
+                    </div>
+
+                    <aside class="colside">
+                        <section class="card">
+                            <div class="sechead"><h2 class="h2">Meetings this week</h2></div>
+                            <template lwc:if={hasMeetings}>
+                                <template for:each={meetings} for:item="m">
+                                    <div key={m.eventId} class="row clickable" data-id={m.leadId} onclick={openRecruit}>
+                                        <div class="grow"><div class="strong">{m.name}</div><div class="muted sm">{m.subject}</div></div>
+                                        <span class="muted sm">{m.when}</span>
+                                    </div>
+                                </template>
+                            </template>
+                            <template lwc:else><div class="empty muted">No meetings booked. Schedule one from a recruit's Zoom tab.</div></template>
+                        </section>
+                        <section class="card pad2">
+                            <h2 class="h2">Pipeline</h2>
+                            <template for:each={funnel} for:item="b">
+                                <div key={b.name} class="bar"><span class="bname">{b.name}</span><div class="track"><div class="fill" style={b.style}></div></div><b>{b.count}</b></div>
+                            </template>
+                        </section>
+                    </aside>
+                </div>
+            </template>
+
+            <!-- ============================== RECRUITS -->
+            <template lwc:if={isRecruits}>
+                <div class="toolbar">
+                    <div class="pills">
+                        <template for:each={filterPills} for:item="p">
+                            <button key={p.value} class={p.cls} data-value={p.value} onclick={pickFilter}>{p.label}</button>
+                        </template>
+                    </div>
+                    <div class="tools">
+                        <template lwc:if={hasSelection}>
+                            <button class="btn btn-s" onclick={closeRecruit}>Close</button>
+                        </template>
+                        <lightning-input type="search" variant="label-hidden" label="Search recruits" placeholder="Name, company, NMLS, city"
+                            value={search} onchange={handleSearch}></lightning-input>
+                        <div class="seg small-seg">
+                            <button class={listBtnCls} onclick={showList}>List</button>
+                            <button class={boardBtnCls} onclick={showBoard}>Board</button>
+                        </div>
+                    </div>
+                </div>
+
+                <template lwc:if={isBoard}>
+                    <div class="board">
+                        <template for:each={columns} for:item="col">
+                            <section key={col.stage} class={col.colCls} aria-label={col.stage} data-stage={col.stage}
+                                ondragover={allowDrop} ondragleave={leaveDrop} ondrop={dropOnStage}>
+                                <div class="colhead"><span class="lbl">{col.stage}</span><span class="chip oth">{col.count}</span></div>
+                                <template for:each={col.cards} for:item="r">
+                                    <button key={r.id} class="kcard" data-id={r.id} onclick={openRecruit} draggable="true" ondragstart={dragStart}>
+                                        <span class="strong">{r.name}</span>
+                                        <span class="muted sm">{r.company}</span>
+                                        <span class="kfoot"><span class="chip oth">{r.volumeLabel}</span><span class={r.nextCls}>{r.nextLabel}</span></span>
+                                    </button>
+                                </template>
+                                <template lwc:if={col.more}><div class="muted sm">{col.more}</div></template>
+                            </section>
+                        </template>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="split">
+                        <section class="card plist">
+                            <div class="sechead"><span class="muted sm">{filteredCount} recruits · by volume</span></div>
+                            <template lwc:if={hasFiltered}>
+                                <template for:each={filtered} for:item="r">
+                                    <div key={r.id} class={r.rowCls} data-id={r.id} onclick={openRecruit}>
+                                        <div class="av">{r.initials}</div>
+                                        <div class="grow"><div class="strong">{r.name}</div><div class="muted sm">{r.company}</div></div>
+                                        <div class="right"><div class="sm strong">{r.volumeLabel}</div><div class={r.nextCls}>{r.stage}</div></div>
+                                    </div>
+                                </template>
+                            </template>
+                            <template lwc:else><div class="empty muted pad">No recruits match.</div></template>
+                        </section>
+                        <div class="pdetail">
+                            <template lwc:if={hasSelection}>
+                                <c-lo-recruit-workspace recruit-id={selectedId} stages={home.stages} recruiters={home.recruiters} rep-first-name={home.firstName}
+                                    onchanged={reload} onback={closeRecruit}></c-lo-recruit-workspace>
+                            </template>
+                            <template lwc:else><div class="card pad muted">Pick a recruit to see their details, history and next step.</div></template>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </template>
+
+        <template lwc:if={inviteFor}>
+            <c-bd-invite-modal partners={inviteFor.partners} preselected-ids={inviteFor.ids} rep-first-name={home.firstName}
+                heading="In person meeting" scope="recruit" onclose={closeInvite} onsent={inviteSent}></c-bd-invite-modal>
+        </template>
+        <template lwc:if={touchFor}>
+            <c-lo-recruit-touch-modal recruit-id={touchFor.id} recruit-name={touchFor.name}
+                onlogged={touchLogged} onclose={closeTouch}></c-lo-recruit-touch-modal>
+        </template>
+    </div>
+</template>

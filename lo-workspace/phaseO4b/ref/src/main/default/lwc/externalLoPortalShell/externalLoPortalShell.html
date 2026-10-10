@@ -1,0 +1,185 @@
+<template>
+    <div class="portal-shell">
+        <template lwc:if={loadError}>
+            <div class="onboarding-error" role="alert">
+                <p>{loadError}</p>
+            </div>
+        </template>
+        <template lwc:elseif={isOnboardingLoading}>
+            <div class="onboarding-loading" role="status">{labels.loading}</div>
+        </template>
+        <template lwc:elseif={showGate}>
+            <main class="portal-content gate-host">
+                <c-lo-ws-connect-gate state={gateState} onpassed={handleGatePassed}></c-lo-ws-connect-gate>
+            </main>
+        </template>
+        <template lwc:elseif={showWorkspace}>
+            <nav class="portal-sidebar" aria-label={labels.navAria}>
+                <div class="sidebar-brand">
+                    <p class="sidebar-title">{labels.brandTitle}</p>
+                    <p class="sidebar-subtitle">{labels.brandSubtitle}</p>
+                </div>
+                <div class="sidebar-nav-wrap">
+                    <c-portal-nav-list groups={navGroups} onnavselect={handleNavSelect}></c-portal-nav-list>
+                </div>
+                <div class="sidebar-user">
+                    <span class="user-avatar">{userInitials}</span>
+                    <div class="user-copy">
+                        <p class="user-name">{userDisplayName}</p>
+                        <p class="user-role">{labels.userRole}</p>
+                    </div>
+                    <template lwc:if={showLogout}>
+                        <button type="button" class="logout-btn" title={labels.logOut} aria-label={labels.logOut} onclick={handleLogout}><c-portal-icon name="log-out" size="18"></c-portal-icon><span class="logout-label">{labels.logOut}</span></button>
+                    </template>
+                </div>
+            </nav>
+
+            <div class="portal-main">
+                <div class="mobile-header">
+                    <button type="button" class="mobile-menu-btn" aria-label={labels.openNav} aria-expanded={mobileNavOpen} onclick={openMobileNav}><c-portal-icon name="menu" size="20"></c-portal-icon></button>
+                    <p class="mobile-title">{labels.brandTitle}</p>
+                    <span class="user-avatar user-avatar-sm">{userInitials}</span>
+                </div>
+
+                <template lwc:if={mobileNavOpen}>
+                    <div class="mobile-drawer-backdrop" onclick={closeMobileNav}></div>
+                    <nav class="mobile-drawer" aria-label={labels.navAria}>
+                        <div class="mobile-drawer-header">
+                            <div>
+                                <p class="sidebar-title">{labels.brandTitle}</p>
+                                <p class="sidebar-subtitle">{labels.brandSubtitle}</p>
+                            </div>
+                            <button type="button" class="mobile-close-btn" aria-label={labels.closeNav} onclick={closeMobileNav}><c-portal-icon name="x" size="20"></c-portal-icon></button>
+                        </div>
+                        <div class="sidebar-nav-wrap">
+                            <c-portal-nav-list groups={navGroups} onnavselect={handleNavSelect}></c-portal-nav-list>
+                        </div>
+                        <div class="sidebar-user">
+                            <span class="user-avatar">{userInitials}</span>
+                            <div class="user-copy">
+                                <p class="user-name">{userDisplayName}</p>
+                                <p class="user-role">{labels.userRole}</p>
+                            </div>
+                            <template lwc:if={showLogout}>
+                                <button type="button" class="logout-btn" title={labels.logOut} aria-label={labels.logOut} onclick={handleLogout}><c-portal-icon name="log-out" size="18"></c-portal-icon><span class="logout-label">{labels.logOut}</span></button>
+                            </template>
+                        </div>
+                    </nav>
+                </template>
+
+                <main class="portal-content">
+                    <template lwc:if={showConnectionBanner}>
+                        <div class="connection-banner" role="alert">
+                            <div class="connection-banner-copy">
+                                <p class="connection-banner-title">Quick fix needed: a connection dropped</p>
+                                <template for:each={connectionIssues} for:item="issue">
+                                    <p key={issue.key} class="connection-banner-item">
+                                        <strong>{issue.label}:</strong> {issue.fix}
+                                        <template lwc:if={issue.actionUrl}>
+                                            <a href={issue.actionUrl} target="_blank" rel="noopener"> Reconnect</a>
+                                        </template>
+                                    </p>
+                                </template>
+                            </div>
+                            <button type="button" class="connection-banner-close" aria-label="Dismiss" title="Dismiss" onclick={dismissConnectionBanner}><c-portal-icon name="x" size="18"></c-portal-icon></button>
+                        </div>
+                    </template>
+                    <template lwc:if={isPerfectDay}>
+                        <c-perfect-day-home
+                            embedded-in-shell
+                            setup-complete={isSetupComplete}
+                            refresh-key={homeRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-perfect-day-home>
+                    </template>
+                    <template lwc:if={isProgress}>
+                        <c-external-lo-progress refresh-key={dataRefreshKey}></c-external-lo-progress>
+                    </template>
+                    <template lwc:if={isPerfectWeek}>
+                        <c-external-lo-perfect-week
+                            setup-state={onboardingState}
+                            refresh-key={dataRefreshKey}
+                            oncompleted={handleOnboardingCompleted}
+                        ></c-external-lo-perfect-week>
+                    </template>
+                    <template lwc:if={isRealtorProspects}>
+                        <c-external-lo-realtor-prospects
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-realtor-prospects>
+                    </template>
+                    <template lwc:if={isRealtors}>
+                        <c-external-lo-realtors
+                            embedded-in-shell
+                            filter-key={realtorsFilter}
+                            record-id={realtorsRecordId}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-realtors>
+                    </template>
+                    <template lwc:if={isOtherContacts}>
+                        <c-external-lo-realtors
+                            embedded-in-shell
+                            contact-kind="other"
+                            filter-key={otherContactsFilter}
+                            record-id={otherContactsRecordId}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-realtors>
+                    </template>
+                    <template lwc:if={isPastClients}>
+                        <c-external-lo-past-clients
+                            record-id={pastClientsRecordId}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-past-clients>
+                    </template>
+                    <template lwc:if={isImportData}>
+                        <c-external-lo-import-data onimportdone={handleImportDone}></c-external-lo-import-data>
+                    </template>
+                    <template lwc:if={isLeads}>
+                        <c-external-lo-leads
+                            embedded-in-shell
+                            filter-key={leadsFilter}
+                            record-id={leadsRecordId}
+                            initial-tab={leadsTab}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-leads>
+                    </template>
+                    <template lwc:if={isNurtured}>
+                        <c-external-lo-leads
+                            embedded-in-shell
+                            mode="nurtured"
+                            filter-key="nurture"
+                            record-id={nurturedRecordId}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-leads>
+                    </template>
+                    <template lwc:if={isPreApprovals}>
+                        <c-external-lo-pre-approvals
+                            embedded-in-shell
+                            filter-key={preApprovalsFilter}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-pre-approvals>
+                    </template>
+                    <template lwc:if={isLoans}>
+                        <c-external-lo-loans
+                            embedded-in-shell
+                            filter-key={loansFilter}
+                            record-id={loansRecordId}
+                            refresh-key={dataRefreshKey}
+                            onportalnavigate={handlePortalNavigate}
+                        ></c-external-lo-loans>
+                    </template>
+                </main>
+                <!-- LO Workspace only: Volume drawer on the main screens (2026-10-08). -->
+                <template lwc:if={showVolumeDrawer}>
+                    <c-lo-ws-volume-drawer></c-lo-ws-volume-drawer>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

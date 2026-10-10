@@ -1,0 +1,14 @@
+│ DEVELOPERNAME                                                │ ACTIVEVERSION.VERSIONNUMBER │ LATESTVERSION.VERSIONNUMBER │
+│ Lead_to_Event_for_Appointments                               │ 3                           │ 3                           │
+│ Lead_Automation                                              │ 72                          │ 72                          │
+│ Lead_Status_Change_Message_Sends                             │ 8                           │ 8                           │
+│ Convert_Lead_to_Person_Account_on_TRID_Date                  │ 24                          │ 24                          │
+│ Stamp_Last_Referral_Date_on_Account                          │ 3                           │ 3                           │
+│ Stamp_Pre_Approval_Date_when_Status_is_Pre_Approval          │ 2                           │ 2                           │
+│ New_Lead_from_Realtor_Intake_Form                            │ 20                          │ 20                          │
+│ Update_Lead_Information_on_New_Referral                      │ 39                          │ 39                          │
+│ Website_Lead_Internal_Notification                           │ 6                           │ 6                           │
+│ New_Referral_Lead_Send_Notification_When_It_s_Still_In_Queue │ 5                           │ 5                           │
+│ Assign_Loan_Partner_on_Lead                                  │ 4                           │ 4                           │
+│ Lead_Assign_Follow_Up_Lead_to_Transactions                   │ 2                           │ 2                           │
+│ Lead_Notify_Buyers_Agent_Docs_Requested                      │ 3                           │ 3                           │

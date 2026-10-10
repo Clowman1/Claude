@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>External_LO_Onboarding_Complete__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Set by Partner Workspace onboarding. External loan officers cannot clear this from the portal.</description>
+    <inlineHelpText>Marks that this loan officer finished workspace setup. Only an admin should change this later.</inlineHelpText>
+    <label>Workspace Setup Complete</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,346 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-09T15:26:22.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-09T15:25:40.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_Gate_Passed_At__c",
+          "id": "00NQi00000BmLjlMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_Outlook_Attested_At__c",
+          "id": "00NQi00000BmLjmMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_RingCentral_Required__c",
+          "id": "00NQi00000BmLjnMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_Tour_Chapters_Seen__c",
+          "id": "00NQi00000BmLjoMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_Tour_Completed_At__c",
+          "id": "00NQi00000BmLjpMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_Waived_Connections__c",
+          "id": "00NQi00000BmLjqMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:51.000Z",
+          "deleted": false,
+          "fileName": "objects/User.object",
+          "fullName": "User.LoWs_Zoom_Verified_At__c",
+          "id": "00NQi00000BmLjrMAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T15:25:53.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoWorkspaceController.cls",
+          "fullName": "ExternalLoWorkspaceController",
+          "id": "01pQi000003FNW7IAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsOnboardingGateService.cls",
+          "fullName": "LoWsOnboardingGateService",
+          "id": "01pQi000003KDKLIA4",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": true,
+          "createdDate": "2026-10-09T15:25:53.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsOnboardingGateServiceTest.cls",
+          "fullName": "LoWsOnboardingGateServiceTest",
+          "id": "01pQi000003KDKMIA4",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T15:25:53.000Z",
+          "deleted": false,
+          "fileName": "classes/UserTriggerHandler.cls",
+          "fullName": "UserTriggerHandler",
+          "id": "01pQi000000a07yIAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPortalShell",
+          "fullName": "externalLoPortalShell",
+          "id": "0RbQi0000004SP9KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsConnectGate",
+          "fullName": "loWsConnectGate",
+          "id": "0RbQi0000004iGzKAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsOversight",
+          "fullName": "loWsOversight",
+          "id": "0RbQi0000004coHKAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomPermission",
+          "created": true,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "customPermissions/LO_Workspace_Onboarding_Admin.customPermission",
+          "fullName": "LO_Workspace_Onboarding_Admin",
+          "id": "0CPQi0000001gbVOAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "PermissionSet",
+          "created": true,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "permissionsets/LO_Workspace_Onboarding_Admin.permissionset",
+          "fullName": "LO_Workspace_Onboarding_Admin",
+          "id": "0PSQi000000LHibOAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "PermissionSet",
+          "created": false,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "permissionsets/LO_Workspace_Oversight.permissionset",
+          "fullName": "LO_Workspace_Oversight",
+          "id": "0PSQi000000LA2oOAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-09T15:26:06.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UOPJKA4",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-09T15:26:22.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 17,
+    "numberComponentsTotal": 17,
+    "numberFiles": "33",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-09T15:25:47.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "118240",
+    "files": [
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoWorkspaceController.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsOnboardingGateService.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "classes/LoWsOnboardingGateServiceTest.cls"
+      },
+      {
+        "fullName": "UserTriggerHandler",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/UserTriggerHandler.cls"
+      },
+      {
+        "fullName": "User.LoWs_Gate_Passed_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "User.LoWs_Outlook_Attested_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "User.LoWs_RingCentral_Required__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "User.LoWs_Tour_Chapters_Seen__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "User.LoWs_Tour_Completed_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "User.LoWs_Waived_Connections__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "User.LoWs_Zoom_Verified_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "objects/User.object"
+      },
+      {
+        "fullName": "LO_Workspace_Onboarding_Admin",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "customPermissions/LO_Workspace_Onboarding_Admin.customPermission"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPortalShell"
+      },
+      {
+        "fullName": "loWsConnectGate",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsConnectGate"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsOversight"
+      },
+      {
+        "fullName": "LO_Workspace_Onboarding_Admin",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "permissionsets/LO_Workspace_Onboarding_Admin.permissionset"
+      },
+      {
+        "fullName": "LO_Workspace_Oversight",
+        "type": "PermissionSet",
+        "state": "Changed",
+        "filePath": "permissionsets/LO_Workspace_Oversight.permissionset"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UOPJKA4%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

@@ -1,0 +1,16 @@
+@import 'c/bdStyles';
+
+.title { margin: 0; font-size: 20px; font-weight: 800; color: #17233f; }
+.err { background: #fde7e7; color: #9f1d1d; border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.toks { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.hits { display: flex; flex-direction: column; margin-top: 4px; }
+.hit { text-align: left; border: 0; background: #f6f9fd; padding: 8px 10px; border-radius: 8px; margin-top: 2px; cursor: pointer; font-weight: 600; font-size: 13.5px; color: #17233f; }
+.hit:hover { background: #e6eefb; }
+.sent { background: #f3f6fb; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+/* Fit the viewport: header and the Cancel / Send footer stay put, only the form scrolls. */
+.backdrop { padding: 3vh 16px; align-items: center; }
+.modal { max-height: 94vh; }
+.mh { flex-shrink: 0; padding-bottom: 12px; }
+.mb { overflow-y: auto; min-height: 0; }
+.mf { flex-shrink: 0; }

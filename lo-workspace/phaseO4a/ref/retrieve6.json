@@ -1,0 +1,46 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T17:03:02.737Z",
+        "fileName": "unpackaged/standardValueSets/LeadStatus.standardValueSet",
+        "fullName": "LeadStatus",
+        "id": "000000000000000AAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T17:03:02.737Z",
+        "type": "StandardValueSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T17:03:02.739Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T17:03:02.739Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxSdZMAV",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "LeadStatus",
+        "type": "StandardValueSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\standardValueSets\\LeadStatus.standardValueSet-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

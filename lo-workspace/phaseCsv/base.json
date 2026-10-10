@@ -1,0 +1,634 @@
+{
+  "status": 100,
+  "result": {
+    "summary": {
+      "failRate": "38%",
+      "failing": 16,
+      "hostname": "https://reachhomeloans.my.salesforce.com",
+      "orgId": "00Df2000000BonwEAC",
+      "outcome": "Failed",
+      "passRate": "62%",
+      "passing": 26,
+      "skipped": 0,
+      "testRunId": "707Qi00003G7oik",
+      "testStartTime": "2026-10-09T16:48:19.000Z",
+      "testsRan": 42,
+      "userId": "005f2000009OtLnAAK",
+      "username": "clowman@reachhomeloans.com",
+      "commandTime": "160 ms",
+      "testExecutionTime": "44227 ms",
+      "testTotalTime": "62391 ms"
+    },
+    "tests": [
+      {
+        "Id": "07MQi00000BFUh0MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "mapPartnerGroup_coversTypeAliases",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 22,
+        "FullName": "ExternalLoPartnerCsvImporterTest.mapPartnerGroup_coversTypeAliases"
+      },
+      {
+        "Id": "07MQi00000BFUh1MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_existingManualShareStillLinks",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 2220,
+        "FullName": "ExternalLoPartnerCsvImporterTest.partnerImport_existingManualShareStillLinks"
+      },
+      {
+        "Id": "07MQi00000BFUh2MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": "Class.ExternalLoPartnerCsvImporterTest.partnerImport_firstNameOnlyDoesNotWriteNullLiteral: line 116, column 1",
+        "Message": "System.AssertException: Assertion Failed: Expected: Pat, Actual: null",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_firstNameOnlyDoesNotWriteNullLiteral",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 448,
+        "FullName": "ExternalLoPartnerCsvImporterTest.partnerImport_firstNameOnlyDoesNotWriteNullLiteral"
+      },
+      {
+        "Id": "07MQi00000BFUh3MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": "Class.ExternalLoPartnerCsvImporterTest.partnerImport_houseLockedMatchIsNotLinked: line 68, column 1",
+        "Message": "System.AssertException: Assertion Failed: {\"userMessage\":\"1 added.\",\"successes\":[{\"rowNumber\":2,\"rowKey\":\"a-2\",\"name\":\"House Locked\",\"message\":\"Already at Reach. Added to your list.\"}],\"successCount\":1,\"links\":[],\"linkedCount\":0,\"errors\":[],\"errorCount\":0}: Expected: 0, Actual: 1",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_houseLockedMatchIsNotLinked",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 820,
+        "FullName": "ExternalLoPartnerCsvImporterTest.partnerImport_houseLockedMatchIsNotLinked"
+      },
+      {
+        "Id": "07MQi00000BFUh4MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": "Class.ExternalLoPartnerCsvImporterTest.partnerImport_mapsTypesRejectsBlankNameAndDedupesByPhone: line 136, column 1",
+        "Message": "System.AssertException: Assertion Failed: [{\"rowNumber\":2,\"rowKey\":\"e-2\",\"name\":\"Row 2\",\"message\":\"Add a first and last name.\"},{\"rowNumber\":5,\"rowKey\":\"e-5\",\"name\":\"Phone Twin\",\"message\":\"Same person as row 4. Imported once.\"}]: Expected: 1, Actual: 2",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_mapsTypesRejectsBlankNameAndDedupesByPhone",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 443,
+        "FullName": "ExternalLoPartnerCsvImporterTest.partnerImport_mapsTypesRejectsBlankNameAndDedupesByPhone"
+      },
+      {
+        "Id": "07MQi00000BFUh5MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": "Class.ExternalLoPartnerCsvImporterTest.partnerImport_matchesExistingByPhoneOnly: line 195, column 1",
+        "Message": "System.AssertException: Assertion Failed: {\"userMessage\":\"1 added.\",\"successes\":[{\"rowNumber\":2,\"rowKey\":\"a-2\",\"name\":\"Phone Match\",\"message\":\"Already at Reach. Added to your list.\"}],\"successCount\":1,\"links\":[],\"linkedCount\":0,\"errors\":[],\"errorCount\":0}: Expected: 1, Actual: 0",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_matchesExistingByPhoneOnly",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 619,
+        "FullName": "ExternalLoPartnerCsvImporterTest.partnerImport_matchesExistingByPhoneOnly"
+      },
+      {
+        "Id": "07MQi00000BFUh6MAH",
+        "QueueItemId": "709Qi00000eEu6YIAS",
+        "StackTrace": "Class.ExternalLoPartnerCsvImporterTest.partnerImport_sameFileDuplicateDoesNotCreateSecondAccount: line 23, column 1",
+        "Message": "System.AssertException: Assertion Failed: {\"userMessage\":\"1 added. 1 need attention.\",\"successes\":[{\"rowNumber\":2,\"rowKey\":\"a-2\",\"name\":\"Dup Realtor\",\"message\":\"Added to your list.\"}],\"successCount\":1,\"links\":[],\"linkedCount\":0,\"errors\":[{\"rowNumber\":3,\"rowKey\":\"e-3\",\"name\":\"Dup Realtor\",\"message\":\"Same person as row 2. Imported once.\"}],\"errorCount\":1}: Expected: 2, Actual: 1",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_sameFileDuplicateDoesNotCreateSecondAccount",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003FNVzIAO",
+          "Name": "ExternalLoPartnerCsvImporterTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 422,
+        "FullName": "ExternalLoPartnerCsvImporterTest.partnerImport_sameFileDuplicateDoesNotCreateSecondAccount"
+      },
+      {
+        "Id": "07MQi00000BFUkEMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "consumerCsvRefusesSomeoneElsesPeople",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 4721,
+        "FullName": "LoWsPartnerTagServiceTest.consumerCsvRefusesSomeoneElsesPeople"
+      },
+      {
+        "Id": "07MQi00000BFUkFMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "deletingATaggedPartnerIsNotBlocked",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 3133,
+        "FullName": "LoWsPartnerTagServiceTest.deletingATaggedPartnerIsNotBlocked"
+      },
+      {
+        "Id": "07MQi00000BFUkGMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "lineCountIgnoresQuotedNewlines",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 20,
+        "FullName": "LoWsPartnerTagServiceTest.lineCountIgnoresQuotedNewlines"
+      },
+      {
+        "Id": "07MQi00000BFUkHMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "newPartnerIsCreatedOwnedAndTagged",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 1072,
+        "FullName": "LoWsPartnerTagServiceTest.newPartnerIsCreatedOwnedAndTagged"
+      },
+      {
+        "Id": "07MQi00000BFUkIMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "nonPartnerMatchIsRefusedWithAdminMessage",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 239,
+        "FullName": "LoWsPartnerTagServiceTest.nonPartnerMatchIsRefusedWithAdminMessage"
+      },
+      {
+        "Id": "07MQi00000BFUkJMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerCsvFollowsTheSameRules",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 725,
+        "FullName": "LoWsPartnerTagServiceTest.partnerCsvFollowsTheSameRules"
+      },
+      {
+        "Id": "07MQi00000BFUkKMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerMatchIsTaggedWithoutDuplicateAndIsolatedPerLo",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 1609,
+        "FullName": "LoWsPartnerTagServiceTest.partnerMatchIsTaggedWithoutDuplicateAndIsolatedPerLo"
+      },
+      {
+        "Id": "07MQi00000BFUkLMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "pastClientCsvKeepsLoanHistory",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 706,
+        "FullName": "LoWsPartnerTagServiceTest.pastClientCsvKeepsLoanHistory"
+      },
+      {
+        "Id": "07MQi00000BFUkMMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "pastClientsAreMyClosedLoans",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 4125,
+        "FullName": "LoWsPartnerTagServiceTest.pastClientsAreMyClosedLoans"
+      },
+      {
+        "Id": "07MQi00000BFUkNMAX",
+        "QueueItemId": "709Qi00000eEu6ZIAS",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "untagNeverRemovesAccessGrantedAnotherWay",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003IdfWIAS",
+          "Name": "LoWsPartnerTagServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 484,
+        "FullName": "LoWsPartnerTagServiceTest.untagNeverRemovesAccessGrantedAnotherWay"
+      },
+      {
+        "Id": "07MQi00000BFUicMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "consumerImport_addsRowsAndSilentlySkipsLeadMatches",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 1134,
+        "FullName": "ExternalLoCsvImportServiceTest.consumerImport_addsRowsAndSilentlySkipsLeadMatches"
+      },
+      {
+        "Id": "07MQi00000BFUidMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "consumerImport_firstNameOnlyDoesNotWriteNullLiteral",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 871,
+        "FullName": "ExternalLoCsvImportServiceTest.consumerImport_firstNameOnlyDoesNotWriteNullLiteral"
+      },
+      {
+        "Id": "07MQi00000BFUieMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "consumerImport_handlesTwoHundredRows",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 15347,
+        "FullName": "ExternalLoCsvImportServiceTest.consumerImport_handlesTwoHundredRows"
+      },
+      {
+        "Id": "07MQi00000BFUifMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "consumerImport_skipOnlyFileExplainsMatchesWereSkipped",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 134,
+        "FullName": "ExternalLoCsvImportServiceTest.consumerImport_skipOnlyFileExplainsMatchesWereSkipped"
+      },
+      {
+        "Id": "07MQi00000BFUigMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "controllerAndRepository_coverErrorAndEmptyPaths",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 425,
+        "FullName": "ExternalLoCsvImportServiceTest.controllerAndRepository_coverErrorAndEmptyPaths"
+      },
+      {
+        "Id": "07MQi00000BFUihMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "importCsv_negativeAndParserCases",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 151,
+        "FullName": "ExternalLoCsvImportServiceTest.importCsv_negativeAndParserCases"
+      },
+      {
+        "Id": "07MQi00000BFUiiMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_doesNotMatchOnNameAlone",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 991,
+        "FullName": "ExternalLoCsvImportServiceTest.partnerImport_doesNotMatchOnNameAlone"
+      },
+      {
+        "Id": "07MQi00000BFUijMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_linkedRealtorIsVisibleToNonOwner",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 2006,
+        "FullName": "ExternalLoCsvImportServiceTest.partnerImport_linkedRealtorIsVisibleToNonOwner"
+      },
+      {
+        "Id": "07MQi00000BFUikMAH",
+        "QueueItemId": "709Qi00000eEu6aIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "partnerImport_linksSharedContactInsteadOfDuplicating",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVsIAO",
+          "Name": "ExternalLoCsvImportServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 1265,
+        "FullName": "ExternalLoCsvImportServiceTest.partnerImport_linksSharedContactInsteadOfDuplicating"
+      },
+      {
+        "Id": "07MQi00000BFUfNMAX",
+        "QueueItemId": "709Qi00000eEu6bIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "fromSaveResult_mapsKnownCodesAndFallsBack",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVqIAO",
+          "Name": "ExternalLoCsvDmlMessageTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 68,
+        "FullName": "ExternalLoCsvDmlMessageTest.fromSaveResult_mapsKnownCodesAndFallsBack"
+      },
+      {
+        "Id": "07MQi00000BFUfOMAX",
+        "QueueItemId": "709Qi00000eEu6bIAC",
+        "StackTrace": null,
+        "Message": null,
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "fromStatus_mapsEachRequestedCode",
+        "Outcome": "Pass",
+        "ApexClass": {
+          "Id": "01pQi000003FNVqIAO",
+          "Name": "ExternalLoCsvDmlMessageTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 7,
+        "FullName": "ExternalLoCsvDmlMessageTest.fromStatus_mapsEachRequestedCode"
+      },
+      {
+        "Id": "07MQi00000BFUlqMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "addLeadRefusesWorkedLeadsAndClientsAndAlertsAdmins",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.addLeadRefusesWorkedLeadsAndClientsAndAlertsAdmins"
+      },
+      {
+        "Id": "07MQi00000BFUlrMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "addLeadTakesOverSomeoneElsesNurturingLead",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.addLeadTakesOverSomeoneElsesNurturingLead"
+      },
+      {
+        "Id": "07MQi00000BFUlsMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "alertsGoOnlyToOversightHolders",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.alertsGoOnlyToOversightHolders"
+      },
+      {
+        "Id": "07MQi00000BFUltMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "csvTakesOverAndRefusesInOnePass",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.csvTakesOverAndRefusesInOnePass"
+      },
+      {
+        "Id": "07MQi00000BFUluMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "leadSourceLockStillBlocksEveryoneElse",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.leadSourceLockStillBlocksEveryoneElse"
+      },
+      {
+        "Id": "07MQi00000BFUlvMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "placeholderEmailNeverMatches",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.placeholderEmailNeverMatches"
+      },
+      {
+        "Id": "07MQi00000BFUlwMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "webhookBlocksWorkedLeadAndUnknownLo",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.webhookBlocksWorkedLeadAndUnknownLo"
+      },
+      {
+        "Id": "07MQi00000BFUlxMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "webhookCreatesLeadNotifiesAndLeadsPerfectDay",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.webhookCreatesLeadNotifiesAndLeadsPerfectDay"
+      },
+      {
+        "Id": "07MQi00000BFUlyMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "webhookRejectsBadCalls",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.webhookRejectsBadCalls"
+      },
+      {
+        "Id": "07MQi00000BFUlzMAH",
+        "QueueItemId": "709Qi00000eEu6cIAC",
+        "StackTrace": "Class.LoWsLeadIntakeServiceTest.setup: line 25, column 1",
+        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record: []",
+        "AsyncApexJobId": "707Qi00003G7oikIAB",
+        "MethodName": "webhookTakeoverRunsPastTheLockAsAutomatedProcess",
+        "Outcome": "Fail",
+        "ApexClass": {
+          "Id": "01pQi000003IfcVIAS",
+          "Name": "LoWsLeadIntakeServiceTest",
+          "NamespacePrefix": null
+        },
+        "RunTime": 0,
+        "FullName": "LoWsLeadIntakeServiceTest.webhookTakeoverRunsPastTheLockAsAutomatedProcess"
+      }
+    ]
+  },
+  "warnings": []
+}

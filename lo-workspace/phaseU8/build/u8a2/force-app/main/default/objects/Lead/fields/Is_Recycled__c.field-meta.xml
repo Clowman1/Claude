@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Recycled__c</fullName>
+    <description>U8: true when Recycled_From_Transaction__c is set. Exists so Zapier filters can see it (Zapier samples omit blank lookups but always include checkboxes).</description>
+    <externalId>false</externalId>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <formula>NOT(ISBLANK(Recycled_From_Transaction__c))</formula>
+    <label>Is Recycled</label>
+    <type>Checkbox</type>
+</CustomField>

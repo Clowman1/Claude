@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_RingCentral_Required__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>LO Workspace first-login gate (O2): the manager chose RingCentral at hire, so RingCentral is a required gate row. Set by provision-external-lo.js or an admin.</description>
+    <externalId>false</externalId>
+    <label>LO Workspace RingCentral Required</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

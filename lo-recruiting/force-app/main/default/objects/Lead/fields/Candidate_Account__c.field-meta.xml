@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Candidate_Account__c</fullName>
+    <label>Candidate Account</label>
+    <description>LO Recruiting: the Candidate Person Account created when the recruit is marked Hired.</description>
+    <type>Lookup</type>
+    <referenceTo>Account</referenceTo>
+    <relationshipName>Recruit_Leads</relationshipName>
+    <relationshipLabel>Recruit Leads</relationshipLabel>
+    <deleteConstraint>SetNull</deleteConstraint>
+</CustomField>

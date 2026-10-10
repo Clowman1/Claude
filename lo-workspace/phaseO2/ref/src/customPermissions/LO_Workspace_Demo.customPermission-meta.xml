@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Internal demo users (Brandon) get the outside-LO workspace behaviour (partner tags, past clients, intake rules) without External_LO, so no restriction rules apply.</description>
+    <isLicensed>false</isLicensed>
+    <label>LO Workspace Demo</label>
+</CustomPermission>

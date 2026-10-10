@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Bypasses the No_Owner_Change_on_transactions validation rule. Granted through the Transaction Owner Reassignment permission set, alongside the Transfer Record user permission that set already carries.</description>
+    <isLicensed>false</isLicensed>
+    <label>Transaction Owner Reassignment</label>
+</CustomPermission>

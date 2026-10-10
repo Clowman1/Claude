@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recruit_List__c</fullName>
+    <label>Recruit List</label>
+    <description>LO Recruiting.</description>
+    <type>Text</type>
+    <length>80</length>
+</CustomField>

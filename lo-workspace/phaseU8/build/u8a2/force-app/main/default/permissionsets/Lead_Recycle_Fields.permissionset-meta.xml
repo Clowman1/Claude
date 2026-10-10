@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Read access to the U8 recycled-lead fields (LOs, admins, and the Zapier connection user so Zap filters can see them).</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Is_Recycled__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Recycle_Reactivated_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Recycled_From_Transaction__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Lead Recycle Fields</label>
+</PermissionSet>

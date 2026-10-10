@@ -1,0 +1,178 @@
+@import 'c/portalSharedStyles';
+
+:host {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 31, 54, 0.45);
+}
+
+.modal-card {
+    width: min(560px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 16px -4px rgba(15, 31, 54, 0.12);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #dfe8f3;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f1f36;
+}
+
+.modal-subtitle {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #5f83b3;
+}
+
+.modal-close {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    color: #5f83b3;
+}
+
+.modal-body {
+    padding: 16px 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 20px;
+    border-top: 1px solid #dfe8f3;
+}
+
+.contact-strip {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f1f5fa;
+    font-size: 12px;
+    color: #2c4a76;
+}
+
+.field-block {
+    display: block;
+    margin-bottom: 16px;
+    border: none;
+    padding: 0;
+}
+
+.field-block legend,
+.field-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #243c60;
+}
+
+.field-input,
+.field-textarea {
+    width: 100%;
+    border: 1px solid #c0d1e6;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #0f1f36;
+}
+
+.channel-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.channel-btn,
+.followup-btn {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #c0d1e6;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    color: #243c60;
+    cursor: pointer;
+}
+
+.channel-btn-active {
+    border-color: #2f7ce0;
+    background: #eff6ff;
+    color: #1d63c4;
+}
+
+.followup-btn-active {
+    border-color: #189fa4;
+    background: #effcfb;
+    color: #0e666b;
+}
+
+.field-error {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #b91c1c;
+}
+
+.goal-note {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #effcfb;
+    font-size: 12px;
+    color: #0e666b;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #1d63c4;
+    color: #ffffff;
+}
+
+.btn-secondary {
+    background: #ffffff;
+    border-color: #c0d1e6;
+    color: #243c60;
+}

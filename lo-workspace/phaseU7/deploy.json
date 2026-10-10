@@ -1,0 +1,329 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-08T22:40:07.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-08T22:39:34.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "CustomField",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:39.000Z",
+          "deleted": false,
+          "fileName": "objects/Account.object",
+          "fullName": "Account.BD_Industry__c",
+          "id": "00NQi00000BhLu5MAF",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalController.cls",
+          "fullName": "ExternalLoPortalController",
+          "id": "01pQi000003CdX1IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalService.cls",
+          "fullName": "ExternalLoPortalService",
+          "id": "01pQi000003CdX3IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalServiceTest.cls",
+          "fullName": "ExternalLoPortalServiceTest",
+          "id": "01pQi000003CdX4IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsPartnerTagServiceTest.cls",
+          "fullName": "LoWsPartnerTagServiceTest",
+          "id": "01pQi000003IdfWIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsVolumeService.cls",
+          "fullName": "LoWsVolumeService",
+          "id": "01pQi000003K5EjIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsVolumeServiceTest.cls",
+          "fullName": "LoWsVolumeServiceTest",
+          "id": "01pQi000003K5EkIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPortalShell",
+          "fullName": "externalLoPortalShell",
+          "id": "0RbQi0000004SP9KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoRealtors",
+          "fullName": "externalLoRealtors",
+          "id": "0RbQi0000004SPBKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsVolumeDrawer",
+          "fullName": "loWsVolumeDrawer",
+          "id": "0RbQi0000004hw1KAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "lwc/portalUtils",
+          "fullName": "portalUtils",
+          "id": "0RbQi0000004SPHKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "RecordType",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "objects/Account.object",
+          "fullName": "Account.Business_Account",
+          "id": "012f20000010ZywAAE",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "RecordType",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "objects/PersonAccount.object",
+          "fullName": "PersonAccount.BizDev_Expansion",
+          "id": "012Qi000003MbQbIAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "RecordType",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "objects/PersonAccount.object",
+          "fullName": "PersonAccount.Candidate",
+          "id": "012AJ0000004K7BYAU",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "RecordType",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "objects/PersonAccount.object",
+          "fullName": "PersonAccount.PersonAccount",
+          "id": "012f20000010aScAAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "RecordType",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "objects/PersonAccount.object",
+          "fullName": "PersonAccount.Recruit_Account",
+          "id": "012f20000010xEJAAY",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-08T22:39:47.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UMAbKAO",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-08T22:40:07.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 16,
+    "numberComponentsTotal": 16,
+    "numberFiles": "36",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-08T22:39:35.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "301914",
+    "files": [
+      {
+        "fullName": "ExternalLoPortalController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalController.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalService.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsPartnerTagServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsPartnerTagServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsVolumeService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsVolumeService.cls"
+      },
+      {
+        "fullName": "LoWsVolumeServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsVolumeServiceTest.cls"
+      },
+      {
+        "fullName": "Account.BD_Industry__c",
+        "type": "CustomField",
+        "state": "Changed",
+        "filePath": "objects/Account.object"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPortalShell"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoRealtors"
+      },
+      {
+        "fullName": "loWsVolumeDrawer",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsVolumeDrawer"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/portalUtils"
+      },
+      {
+        "fullName": "Account.Business_Account",
+        "type": "RecordType",
+        "state": "Changed",
+        "filePath": "objects/Account.object"
+      },
+      {
+        "fullName": "PersonAccount.BizDev_Expansion",
+        "type": "RecordType",
+        "state": "Changed",
+        "filePath": "objects/PersonAccount.object"
+      },
+      {
+        "fullName": "PersonAccount.Candidate",
+        "type": "RecordType",
+        "state": "Changed",
+        "filePath": "objects/PersonAccount.object"
+      },
+      {
+        "fullName": "PersonAccount.PersonAccount",
+        "type": "RecordType",
+        "state": "Changed",
+        "filePath": "objects/PersonAccount.object"
+      },
+      {
+        "fullName": "PersonAccount.Recruit_Account",
+        "type": "RecordType",
+        "state": "Changed",
+        "filePath": "objects/PersonAccount.object"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UMAbKAO%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

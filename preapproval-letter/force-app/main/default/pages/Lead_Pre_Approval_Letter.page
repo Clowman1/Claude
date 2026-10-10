@@ -1,0 +1,29 @@
+<apex:page standardController="Lead"
+           extensions="LeadPreApprovalLetterPdfExtension"
+           showHeader="false"
+           sidebar="false"
+           standardStylesheets="false"
+           applyHtmlTag="false"
+           applyBodyTag="false"
+           cache="false"
+           renderAs="pdf">
+<html>
+<head>
+    <style type="text/css">
+        @page {
+            size: letter;
+            margin: 0.55in 0.6in 0.5in 0.6in;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            color: #1b2f5c;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <apex:outputText value="{!letterHtml}" escape="false"/>
+</body>
+</html>
+</apex:page>

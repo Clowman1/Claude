@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Transaction__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>LO Workspace (O3): the loan that sent this text (from TwilioSF__SF_Parent_Record_Id__c), or for a reply, the loan of the last outbound text to that number. Set once by LoWsTextsService; never overwritten.</description>
+    <externalId>false</externalId>
+    <label>Origin Loan</label>
+    <referenceTo>Transaction__c</referenceTo>
+    <relationshipName>LoWs_Texts</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

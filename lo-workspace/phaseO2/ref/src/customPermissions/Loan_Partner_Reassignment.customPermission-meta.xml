@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Bypasses the Loan Partner Reassignment Restricted validation rules on Lead and Transaction. Grant only to Admins and to integration users that legitimately reassign Loan Partner.</description>
+    <isLicensed>false</isLicensed>
+    <label>Loan Partner Reassignment</label>
+</CustomPermission>

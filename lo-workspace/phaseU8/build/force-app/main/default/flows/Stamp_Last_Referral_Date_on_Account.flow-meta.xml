@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <decisions>
+        <description>U8 (2026-10): stop on the system's own recycled-lead writes (the recycle insert, or the reactivation stamp). Everything else proceeds unchanged.</description>
+        <name>Recycle_Silent_Check</name>
+        <label>Recycle Silent Check</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Update_Account</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Proceed</defaultConnectorLabel>
+        <rules>
+            <name>Silent_Recycle_Write</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Recycle_Silent_Write</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Silent recycle write</label>
+        </rules>
+    </decisions>
+    <description>This flow will stamp the date of the most recent referral that the Buyer&apos;s Agent has given.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>U8: true on the recycle insert or the reactivation stamp.</description>
+        <name>Recycle_Silent_Write</name>
+        <dataType>Boolean</dataType>
+        <expression>OR(AND(ISNEW(), NOT(ISBLANK({!$Record.Recycled_From_Transaction__c}))), ISCHANGED({!$Record.Recycle_Reactivated_At__c}))</expression>
+    </formulas>
+    <interviewLabel>Stamp Last Referral Date on Account {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Stamp Last Referral Date on Account</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Account</name>
+        <label>Update Account</label>
+        <locationX>176</locationX>
+        <locationY>335</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Realtor_Buying_Agent__r.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Last_Referral_Date__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Recycle_Silent_Check</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Realtor_Buying_Agent__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Lead</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>1200</triggerOrder>
+</Flow>

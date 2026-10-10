@@ -1,0 +1,165 @@
+<title>LO Workspace Onboarding Guide</title>
+<style>
+/* Layout: single reading column; a four-stage timeline down the left on wide screens, stacked on phones. */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap');
+:root {
+  --bg: #f6f7f9; --surface: #ffffff; --fg: #1b2433; --muted: #5b6678; --line: #dde2ea;
+  --accent: #1d5fbf; --accent-soft: #e6eefb; --ok: #1f7a4d;
+  --display: 'Fraunces', Georgia, serif; --body: 'Source Sans 3', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161f; --surface: #182030; --fg: #e6ebf3; --muted: #9aa6b8; --line: #2a3446;
+  --accent: #7fb0ff; --accent-soft: #1f2d46; --ok: #6fd3a0; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11161f; --surface: #182030; --fg: #e6ebf3; --muted: #9aa6b8; --line: #2a3446;
+  --accent: #7fb0ff; --accent-soft: #1f2d46; --ok: #6fd3a0; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--body); padding-inline: 16px; padding-block: 40px 64px }
+main { max-width: 760px; margin: 0 auto; display: grid; gap: 36px }
+h1, h2 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0 }
+h1 { font-size: clamp(28px, 5vw, 38px); line-height: 1.15 }
+h2 { font-size: 22px }
+p { margin: 0; max-width: 65ch }
+.lede { color: var(--muted); font-size: 17px }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600 }
+header { display: grid; gap: 10px }
+.stages { display: grid; gap: 0; border-left: 2px solid var(--line); padding-left: 20px }
+.stage { position: relative; display: grid; gap: 8px; padding-block: 14px }
+.stage::before { content: ''; position: absolute; left: -27px; top: 22px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent) }
+.stage h3 { margin: 0; font-size: 17px }
+.who { font-size: 13px; color: var(--muted) }
+.stage ul { margin: 0; padding-left: 18px; display: grid; gap: 4px }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 14px }
+pre { margin: 0; overflow-x: auto; font: 14px/1.7 var(--mono); background: var(--accent-soft); border-radius: 8px; padding: 14px 16px; color: var(--fg) }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between }
+button { font: 600 14px var(--body); color: #fff; background: var(--accent); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer }
+:root[data-theme="dark"] button { color: #0d1420 }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) button { color: #0d1420 } }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+.copied { font-size: 13px; color: var(--ok) }
+.never { border-left: 3px solid #c2410c; padding: 10px 14px; background: var(--surface); border-radius: 0 8px 8px 0; display: grid; gap: 4px }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+.checks label { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; cursor: pointer }
+.checks input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--accent) }
+.checks input:checked + span { color: var(--muted); text-decoration: line-through }
+.note { font-size: 14px; color: var(--muted) }
+.status { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { font-size: 13px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line) }
+.chip.done { color: var(--ok); border-color: currentColor }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">For managers · Brandon &amp; Adam</p>
+    <h1>Bringing a new loan officer into LO Workspace</h1>
+    <p class="lede">Send the hire details, and Chris handles the accounts and Salesforce setup. The LO connects their tools and takes Bran's tour on day one. You run the first-week checks.</p>
+  </header>
+
+  <section class="panel" aria-labelledby="hire">
+    <div class="row">
+      <h2 id="hire">1. Send Chris the hire details</h2>
+      <span><button id="copy" type="button">Copy template</button> <span class="copied" id="copied" hidden>Copied</span></span>
+    </div>
+    <p>Paste this into an email or Teams message to Chris, filled in.</p>
+<pre id="tpl">First name:
+Last name:
+RHL email (from IT, once created):
+NMLS #:
+Licensed states (2-letter codes):
+Mobile:
+Office phone (optional):
+Start date:
+Uses Reach's RingCentral? (yes/no)
+Needs the Twilio texting window? (almost always no)
+Headshot URL (optional):
+Email signature (optional):</pre>
+    <div class="never">
+      <strong>Never ask for</strong>
+      <span>A Loan Partner, or adding the LO to internal groups or queues. Outside LOs never get these, and setup refuses them.</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="flow" style="display:grid;gap:14px">
+    <h2 id="flow">2. What happens next</h2>
+    <div class="stages">
+      <div class="stage">
+        <h3>Before the hire</h3>
+        <p class="who">Bianca + IT · Chris · you</p>
+        <ul>
+          <li>IT creates their <strong>@reachhomeloans.com</strong> mailbox.</li>
+          <li>Chris adds them to <strong>Reach's Zoom account</strong>. It's required: only meetings on Reach's account bring recordings and summaries into Salesforce.</li>
+          <li>Chris sets up RingCentral if you said yes.</li>
+          <li>You confirm their NMLS and licensed states.</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <h3>Day 0</h3>
+        <p class="who">Chris</p>
+        <ul>
+          <li>Creates the Salesforce user with the right access and their NMLS on letters.</li>
+          <li>Sends marketing what they need for the LO's landing page.</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <h3>Day 1</h3>
+        <p class="who">The new LO</p>
+        <ul>
+          <li>Signs in and sets up two-step verification.</li>
+          <li><strong>Get connected</strong>: Zoom and Outlook (and RingCentral if used) must be connected before LO Workspace opens. The mobile app is recommended.</li>
+          <li>Answers the goal-setting questions.</li>
+          <li>Takes Bran's 17-stop Perfect Day tour, which can be replayed any time from <em>Take the tour</em>.</li>
+          <li>You get <strong>“&lt;Name&gt; is live in LO Workspace”</strong>. That's your cue to start week 1.</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <h3>Week 1</h3>
+        <p class="who">You</p>
+        <ul><li>Work through the checklist below together.</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="week">
+    <h2 id="week">3. First-week checks</h2>
+    <p class="note">These ticks are saved only in your browser, for working through one LO at a time. Each LO's live status is on <strong>LO Oversight → Onboarding</strong>.</p>
+    <div class="status" aria-label="Onboarding status values">
+      <span class="chip done">Done</span><span class="chip">Skipped</span><span class="chip">Not yet</span>
+    </div>
+    <ul class="checks" id="checks">
+      <li><label><input type="checkbox" id="c1"><span>A test lead from their landing page arrives under them, with no Loan Partner, at the top of Perfect Day.</span></label></li>
+      <li><label><input type="checkbox" id="c2"><span>They log a call. It shows in Recent activity and counts toward today's goals.</span></label></li>
+      <li><label><input type="checkbox" id="c3"><span>They schedule a Zoom from <em>Schedule a Zoom</em> on a lead, and it lands on their calendar.</span></label></li>
+      <li><label><input type="checkbox" id="c4"><span>They send a document request. A borrower upload shows as the red <em>High alert</em> in Up Next.</span></label></li>
+      <li><label><input type="checkbox" id="c5"><span>They issue a Pre-Approval Letter on a lead at Pre-Approval or later.</span></label></li>
+      <li><label><input type="checkbox" id="c6"><span>They add a realtor with <em>Add partner</em> and set the stage.</span></label></li>
+      <li><label><input type="checkbox" id="c7"><span>You review My Perfect Week and My Progress together.</span></label></li>
+      <li><label><input type="checkbox" id="c8"><span>Oversight shows the tour as <strong>Done</strong>. If it shows Skipped, walk them through the chapters.</span></label></li>
+      <li><label><input type="checkbox" id="c9"><span>Their emails show on a lead, so Outlook capture is working.</span></label></li>
+    </ul>
+  </section>
+
+  <section class="panel" aria-labelledby="stuck">
+    <h2 id="stuck">If something's stuck</h2>
+    <p>If an LO can't get past <em>Get connected</em>, send them to Chris. Only Chris can waive a connection or reset someone's setup, and every waiver is logged with a reason. If a connection breaks later, the LO sees a red banner on Perfect Day; they're never locked out.</p>
+  </section>
+</main>
+
+<script>
+document.getElementById('copy').addEventListener('click', async () => {
+  const text = document.getElementById('tpl').textContent;
+  const done = document.getElementById('copied');
+  try { await navigator.clipboard.writeText(text); done.hidden = false; setTimeout(() => { done.hidden = true; }, 2000); }
+  catch (e) { const r = document.createRange(); r.selectNodeContents(document.getElementById('tpl')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+});
+const KEY = 'lows-week1-checks';
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+document.querySelectorAll('#checks input').forEach((box) => {
+  box.checked = !!saved[box.id];
+  box.addEventListener('change', () => {
+    saved[box.id] = box.checked;
+    try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+  });
+});
+</script>

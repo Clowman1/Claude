@@ -1,0 +1,116 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalUtils/portalUtils.js",
+        "fullName": "portalUtils/portalUtils.js",
+        "id": "0RdQi0000007QZ4KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:45.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsContactCard/loWsContactCard.js",
+        "fullName": "loWsContactCard/loWsContactCard.js",
+        "id": "0RdQi0000007eK5KAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T22:23:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsContactCard/loWsContactCard.css",
+        "fullName": "loWsContactCard/loWsContactCard.css",
+        "id": "0RdQi0000007eK6KAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T22:23:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-02T19:01:51.000Z",
+        "fileName": "unpackaged/lwc/loWsContactCard/loWsContactCard.html",
+        "fullName": "loWsContactCard/loWsContactCard.html",
+        "id": "0RdQi0000007eK8KAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-02T22:23:04.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T16:42:21.090Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T16:42:21.090Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxPB3MAN",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\portalUtils\\portalUtils.js"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\portalUtils\\portalUtils.js-meta.xml"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.css"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.html"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.js"
+      },
+      {
+        "fullName": "loWsContactCard",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\lwc\\loWsContactCard\\loWsContactCard.js-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

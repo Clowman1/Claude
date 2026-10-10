@@ -1,0 +1,16 @@
+@import 'c/bdStyles';
+
+.pad2 { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.sechead { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.grow { flex-grow: 1; min-width: 0; }
+.left { text-align: left; }
+.strong { font-weight: 700; }
+.sm { font-size: 12.5px; }
+.ev { display: flex; gap: 12px; padding: 12px; border-radius: 12px; border: 0; width: 100%; cursor: pointer; font: inherit; color: inherit; }
+.ev-ok { background: #eef8f1; }
+.ev-wait { background: #fff7ec; }
+.ev:hover { filter: brightness(0.98); }
+.date { width: 44px; text-align: center; flex-shrink: 0; }
+.dnum { font-size: 22px; font-weight: 800; }
+.rsvp { margin-top: 4px; font-weight: 700; color: #44516a; }
+.card { overflow: hidden; }

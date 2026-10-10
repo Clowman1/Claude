@@ -1,0 +1,13 @@
+{
+  "firstName": "Jane",
+  "lastName": "Example",
+  "email": "jane.example@reachhomeloans.com",
+  "nmls": "1234567",
+  "licensedStates": ["FL", "GA"],
+  "phone": "407-555-0100",
+  "mobile": "407-555-0101",
+  "headshotUrl": "",
+  "emailSignature": "",
+  "ringCentral": false,
+  "twilioSeat": false
+}

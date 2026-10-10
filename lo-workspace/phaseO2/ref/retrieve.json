@@ -1,0 +1,813 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalUtils/portalUtils.js",
+        "fullName": "portalUtils/portalUtils.js",
+        "id": "0RdQi0000007QZ4KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:45.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalShell/externalLoPortalShell.css",
+        "fullName": "externalLoPortalShell/externalLoPortalShell.css",
+        "id": "0RdQi0000007QYrKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalShell/externalLoPortalShell.js",
+        "fullName": "externalLoPortalShell/externalLoPortalShell.js",
+        "id": "0RdQi0000007QYtKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalShell/externalLoPortalShell.html",
+        "fullName": "externalLoPortalShell/externalLoPortalShell.html",
+        "id": "0RdQi0000007QYuKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:46.000Z",
+        "fileName": "unpackaged/lwc/loWsOversight/loWsOversight.js",
+        "fullName": "loWsOversight/loWsOversight.js",
+        "id": "0RdQi0000007dZJKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T18:27:02.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:46.000Z",
+        "fileName": "unpackaged/lwc/loWsOversight/loWsOversight.css",
+        "fullName": "loWsOversight/loWsOversight.css",
+        "id": "0RdQi0000007dZLKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T18:26:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:46.000Z",
+        "fileName": "unpackaged/lwc/loWsOversight/loWsOversight.html",
+        "fullName": "loWsOversight/loWsOversight.html",
+        "id": "0RdQi0000007dZMKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T18:26:46.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-14T14:38:26.000Z",
+        "fileName": "unpackaged/customPermissions/Transaction_Owner_Reassignment.customPermission",
+        "fullName": "Transaction_Owner_Reassignment",
+        "id": "0CPQi0000001bDdOAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T14:38:26.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:08.000Z",
+        "fileName": "unpackaged/customPermissions/LO_Workspace_Oversight.customPermission",
+        "fullName": "LO_Workspace_Oversight",
+        "id": "0CPQi0000001dc1OAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-29T17:49:26.000Z",
+        "fileName": "unpackaged/customPermissions/BD_Manager.customPermission",
+        "fullName": "BD_Manager",
+        "id": "0CPQi0000001dIgOAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T17:49:26.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-07-20T00:56:41.000Z",
+        "fileName": "unpackaged/customPermissions/Lead_Owner_Reassignment.customPermission",
+        "fullName": "Lead_Owner_Reassignment",
+        "id": "0CPQi0000001PE5OAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-07-20T00:56:41.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-29T17:49:26.000Z",
+        "fileName": "unpackaged/customPermissions/BD_Command_Center.customPermission",
+        "fullName": "BD_Command_Center",
+        "id": "0CPQi0000001dIfOAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T17:49:26.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-10T18:58:52.000Z",
+        "fileName": "unpackaged/customPermissions/Loan_Partner_Reassignment.customPermission",
+        "fullName": "Loan_Partner_Reassignment",
+        "id": "0CPQi0000001b0jOAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-10T18:58:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-14T15:04:31.000Z",
+        "fileName": "unpackaged/customPermissions/Lead_Source_Change.customPermission",
+        "fullName": "Lead_Source_Change",
+        "id": "0CPQi0000001bK5OAI",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-14T15:04:31.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:52.000Z",
+        "fileName": "unpackaged/customPermissions/External_LO.customPermission",
+        "fullName": "External_LO",
+        "id": "0CPQi0000001dSLOAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-30T15:35:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-04-08T07:27:16.000Z",
+        "fileName": "unpackaged/customPermissions/Can_Update_Conditions_Label.customPermission",
+        "fullName": "Can_Update_Conditions_Label",
+        "id": "0CPQi00000018tBOAQ",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-04-08T07:27:16.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:59:38.000Z",
+        "fileName": "unpackaged/customPermissions/LO_Workspace_Demo.customPermission",
+        "fullName": "LO_Workspace_Demo",
+        "id": "0CPQi0000001dddOAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:59:38.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-16T01:44:52.000Z",
+        "fileName": "unpackaged/customPermissions/CEO_Intelligence_Access.customPermission",
+        "fullName": "CEO_Intelligence_Access",
+        "id": "0CPQi0000001JYTOA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-16T01:44:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomPermission"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2025-10-06T09:31:13.000Z",
+        "fileName": "unpackaged/classes/RingCentralAuthCallbackController.cls",
+        "fullName": "RingCentralAuthCallbackController",
+        "id": "01pQi000002Hq2fIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T18:04:09.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:48.000Z",
+        "fileName": "unpackaged/classes/ExternalLoWorkspaceController.cls",
+        "fullName": "ExternalLoWorkspaceController",
+        "id": "01pQi000003FNW7IAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T11:38:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:48.000Z",
+        "fileName": "unpackaged/classes/ExternalLoOnboardingService.cls",
+        "fullName": "ExternalLoOnboardingService",
+        "id": "01pQi000003FNVwIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T11:38:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2025-10-06T09:31:13.000Z",
+        "fileName": "unpackaged/classes/RingCentralAuthService.cls",
+        "fullName": "RingCentralAuthService",
+        "id": "01pQi000002Hq2gIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-06-02T21:44:30.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:48.000Z",
+        "fileName": "unpackaged/classes/ExternalLoOnboardingServiceTest.cls",
+        "fullName": "ExternalLoOnboardingServiceTest",
+        "id": "01pQi000003FNVxIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T11:38:08.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-08-07T13:48:25.000Z",
+        "fileName": "unpackaged/classes/ZoomMeetingController.cls",
+        "fullName": "ZoomMeetingController",
+        "id": "01pQi0000037mxRIAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-29T19:50:54.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:56.000Z",
+        "fileName": "unpackaged/classes/LoWsOversightController.cls",
+        "fullName": "LoWsOversightController",
+        "id": "01pQi000003IhpZIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T18:26:56.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-04-26T18:36:52.000Z",
+        "fileName": "unpackaged/classes/UserTriggerHandler.cls",
+        "fullName": "UserTriggerHandler",
+        "id": "01pQi000000a07yIAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T17:39:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-04-26T18:36:52.000Z",
+        "fileName": "unpackaged/classes/UserTriggerHandlerTest.cls",
+        "fullName": "UserTriggerHandlerTest",
+        "id": "01pQi000000a07zIAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T17:39:53.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:56.000Z",
+        "fileName": "unpackaged/classes/LoWsOversightControllerTest.cls",
+        "fullName": "LoWsOversightControllerTest",
+        "id": "01pQi000003IhpaIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T18:26:56.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-04-26T18:36:54.000Z",
+        "fileName": "unpackaged/triggers/UserTrigger.trigger",
+        "fullName": "UserTrigger",
+        "id": "01qQi000001nUKYIA2",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-03-24T14:34:44.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexTrigger"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:17.000Z",
+        "fileName": "unpackaged/permissionsets/LO_Workspace_Oversight.permissionset",
+        "fullName": "LO_Workspace_Oversight",
+        "id": "0PSQi000000LA2oOAG",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T18:26:58.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:53.000Z",
+        "fileName": "unpackaged/permissionsets/External_LO_Access.permissionset",
+        "fullName": "External_LO_Access",
+        "id": "0PSQi000000L8ozOAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-05T20:44:10.000Z",
+        "type": "PermissionSet"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-30T15:35:54.000Z",
+        "fileName": "unpackaged/permissionsetgroups/External_Loan_Officer.permissionsetgroup",
+        "fullName": "External_Loan_Officer",
+        "id": "0PGQi00000037jJOAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T21:38:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "PermissionSetGroup"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2025-02-17T13:39:58.000Z",
+        "fileName": "unpackaged/notificationtypes/Case_Notification.notiftype",
+        "fullName": "Case_Notification",
+        "id": "0MLQi00000376OjOAI",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2025-02-17T13:39:58.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomNotificationType"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T14:01:55.000Z",
+        "fileName": "unpackaged/notificationtypes/Lead_Recycled.notiftype",
+        "fullName": "Lead_Recycled",
+        "id": "0MLQi00000Kr7uIOAR",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:01:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomNotificationType"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T16:45:18.000Z",
+        "fileName": "unpackaged/notificationtypes/LO_Workspace_Lead.notiftype",
+        "fullName": "LO_Workspace_Lead",
+        "id": "0MLQi00000KUKH7OAP",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-01T16:45:18.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomNotificationType"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-09-15T20:47:10.000Z",
+        "fileName": "unpackaged/notificationtypes/Lead_Documents_Submitted.notiftype",
+        "fullName": "Lead_Documents_Submitted",
+        "id": "0MLQi00000Ji1QTOAZ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-09-15T20:47:10.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomNotificationType"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2025-01-06T09:42:11.000Z",
+        "fileName": "unpackaged/notificationtypes/Case_Owner_Change_Notiication.notiftype",
+        "fullName": "Case_Owner_Change_Notiication",
+        "id": "0MLQi000002vOFlOAM",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2025-01-06T09:42:11.000Z",
+        "manageableState": "unmanaged",
+        "type": "CustomNotificationType"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T14:42:19.539Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T14:42:19.539Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxCDpMAN",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\portalUtils\\portalUtils.js"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\portalUtils\\portalUtils.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\externalLoPortalShell\\externalLoPortalShell.css"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\externalLoPortalShell\\externalLoPortalShell.html"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\externalLoPortalShell\\externalLoPortalShell.js"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\externalLoPortalShell\\externalLoPortalShell.js-meta.xml"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\loWsOversight\\loWsOversight.css"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\loWsOversight\\loWsOversight.html"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\loWsOversight\\loWsOversight.js"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\lwc\\loWsOversight\\loWsOversight.js-meta.xml"
+      },
+      {
+        "fullName": "Transaction_Owner_Reassignment",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\Transaction_Owner_Reassignment.customPermission-meta.xml"
+      },
+      {
+        "fullName": "LO_Workspace_Oversight",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\LO_Workspace_Oversight.customPermission-meta.xml"
+      },
+      {
+        "fullName": "BD_Manager",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\BD_Manager.customPermission-meta.xml"
+      },
+      {
+        "fullName": "Lead_Owner_Reassignment",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\Lead_Owner_Reassignment.customPermission-meta.xml"
+      },
+      {
+        "fullName": "BD_Command_Center",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\BD_Command_Center.customPermission-meta.xml"
+      },
+      {
+        "fullName": "Loan_Partner_Reassignment",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\Loan_Partner_Reassignment.customPermission-meta.xml"
+      },
+      {
+        "fullName": "Lead_Source_Change",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\Lead_Source_Change.customPermission-meta.xml"
+      },
+      {
+        "fullName": "External_LO",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\External_LO.customPermission-meta.xml"
+      },
+      {
+        "fullName": "Can_Update_Conditions_Label",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\Can_Update_Conditions_Label.customPermission-meta.xml"
+      },
+      {
+        "fullName": "LO_Workspace_Demo",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\LO_Workspace_Demo.customPermission-meta.xml"
+      },
+      {
+        "fullName": "CEO_Intelligence_Access",
+        "type": "CustomPermission",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\customPermissions\\CEO_Intelligence_Access.customPermission-meta.xml"
+      },
+      {
+        "fullName": "RingCentralAuthCallbackController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\RingCentralAuthCallbackController.cls"
+      },
+      {
+        "fullName": "RingCentralAuthCallbackController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\RingCentralAuthCallbackController.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ExternalLoWorkspaceController.cls"
+      },
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ExternalLoWorkspaceController.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoOnboardingService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ExternalLoOnboardingService.cls"
+      },
+      {
+        "fullName": "ExternalLoOnboardingService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ExternalLoOnboardingService.cls-meta.xml"
+      },
+      {
+        "fullName": "RingCentralAuthService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\RingCentralAuthService.cls"
+      },
+      {
+        "fullName": "RingCentralAuthService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\RingCentralAuthService.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoOnboardingServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ExternalLoOnboardingServiceTest.cls"
+      },
+      {
+        "fullName": "ExternalLoOnboardingServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ExternalLoOnboardingServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ZoomMeetingController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ZoomMeetingController.cls"
+      },
+      {
+        "fullName": "ZoomMeetingController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\ZoomMeetingController.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsOversightController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\LoWsOversightController.cls"
+      },
+      {
+        "fullName": "LoWsOversightController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\LoWsOversightController.cls-meta.xml"
+      },
+      {
+        "fullName": "UserTriggerHandler",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\UserTriggerHandler.cls"
+      },
+      {
+        "fullName": "UserTriggerHandler",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\UserTriggerHandler.cls-meta.xml"
+      },
+      {
+        "fullName": "UserTriggerHandlerTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\UserTriggerHandlerTest.cls"
+      },
+      {
+        "fullName": "UserTriggerHandlerTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\UserTriggerHandlerTest.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsOversightControllerTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\LoWsOversightControllerTest.cls"
+      },
+      {
+        "fullName": "LoWsOversightControllerTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\classes\\LoWsOversightControllerTest.cls-meta.xml"
+      },
+      {
+        "fullName": "UserTrigger",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\triggers\\UserTrigger.trigger"
+      },
+      {
+        "fullName": "UserTrigger",
+        "type": "ApexTrigger",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\triggers\\UserTrigger.trigger-meta.xml"
+      },
+      {
+        "fullName": "LO_Workspace_Oversight",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\permissionsets\\LO_Workspace_Oversight.permissionset-meta.xml"
+      },
+      {
+        "fullName": "External_LO_Access",
+        "type": "PermissionSet",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\permissionsets\\External_LO_Access.permissionset-meta.xml"
+      },
+      {
+        "fullName": "External_Loan_Officer",
+        "type": "PermissionSetGroup",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\permissionsetgroups\\External_Loan_Officer.permissionsetgroup-meta.xml"
+      },
+      {
+        "fullName": "Case_Notification",
+        "type": "CustomNotificationType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\notificationtypes\\Case_Notification.notiftype-meta.xml"
+      },
+      {
+        "fullName": "Lead_Recycled",
+        "type": "CustomNotificationType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\notificationtypes\\Lead_Recycled.notiftype-meta.xml"
+      },
+      {
+        "fullName": "LO_Workspace_Lead",
+        "type": "CustomNotificationType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\notificationtypes\\LO_Workspace_Lead.notiftype-meta.xml"
+      },
+      {
+        "fullName": "Lead_Documents_Submitted",
+        "type": "CustomNotificationType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\notificationtypes\\Lead_Documents_Submitted.notiftype-meta.xml"
+      },
+      {
+        "fullName": "Case_Owner_Change_Notiication",
+        "type": "CustomNotificationType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO2\\ref\\src\\notificationtypes\\Case_Owner_Change_Notiication.notiftype-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

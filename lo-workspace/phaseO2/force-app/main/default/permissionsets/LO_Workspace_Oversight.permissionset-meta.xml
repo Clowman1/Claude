@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>LoWsOnboardingGateService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LoWsOversightController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>LO_Workspace_Oversight</name>
+    </customPermissions>
+    <description>LO Workspace managers (Christopher Lowman, Brandon Brotsky, Adam Stephens): duplicate-blocked alerts and the LO Oversight tab (Phase 8).</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LO Workspace Oversight</label>
+    <tabSettings>
+        <tab>LO_Workspace_Oversight</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

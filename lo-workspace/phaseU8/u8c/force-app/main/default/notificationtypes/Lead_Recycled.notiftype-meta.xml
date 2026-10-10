@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomNotificationType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customNotifTypeName>Lead Recycled</customNotifTypeName>
+    <description>U8: a cancelled purchase loan's borrower is back in the LO's pre-approvals.</description>
+    <desktop>true</desktop>
+    <masterLabel>Lead Recycled</masterLabel>
+    <mobile>true</mobile>
+</CustomNotificationType>

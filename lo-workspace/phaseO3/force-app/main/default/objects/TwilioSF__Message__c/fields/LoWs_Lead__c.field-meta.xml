@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Lead__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>LO Workspace (O3): the lead that sent this text (TwilioSF__SF_Parent_Record_Id__c, else TwilioSF__Lead__c when there is no parent), or for a reply, the lead of the last outbound text to that number. Set once by LoWsTextsService.</description>
+    <externalId>false</externalId>
+    <label>Origin Lead</label>
+    <referenceTo>Lead</referenceTo>
+    <relationshipName>LoWs_Texts</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

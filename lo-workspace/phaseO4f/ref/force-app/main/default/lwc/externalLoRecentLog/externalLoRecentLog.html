@@ -1,0 +1,23 @@
+<template>
+    <section class="panel" aria-labelledby="recent-log-heading">
+        <h2 id="recent-log-heading" class="panel-title">Recent activity</h2>
+        <template lwc:if={isEmpty}>
+            <p class="empty">Nothing logged yet today. Your first touch lands here.</p>
+        </template>
+        <ul class="log-list" lwc:else>
+            <template for:each={items} for:item="entry">
+                <li key={entry.taskId} class="log-row">
+                    <div>
+                        <p class="log-title">{entry.shortLabel}</p>
+                        <p class="log-meta">{entry.contactName} · {entry.activityDateLabel}</p>
+                        <template lwc:if={entry.isReply}>
+                            <p class="log-reply" data-tour="recent-reply">{entry.notes}</p>
+                            <p class="log-meta">{entry.subject}</p>
+                        </template>
+                    </div>
+                    <span lwc:if={entry.showCount} class="count">×{entry.activityCount}</span>
+                </li>
+            </template>
+        </ul>
+    </section>
+</template>

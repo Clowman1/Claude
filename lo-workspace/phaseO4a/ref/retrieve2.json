@@ -1,0 +1,129 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:02:56.000Z",
+        "fileName": "unpackaged/aura/LeadNotesForm/LeadNotesFormRenderer.js",
+        "fullName": "LeadNotesForm/LeadNotesFormRenderer.js",
+        "id": "0AdQi0000001VBVKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-18T17:36:21.000Z",
+        "manageableState": "unmanaged",
+        "type": "AuraDefinitionBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:02:56.000Z",
+        "fileName": "unpackaged/aura/LeadNotesForm/LeadNotesForm.css",
+        "fullName": "LeadNotesForm/LeadNotesForm.css",
+        "id": "0AdQi0000001VBUKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-18T17:36:21.000Z",
+        "manageableState": "unmanaged",
+        "type": "AuraDefinitionBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:02:56.000Z",
+        "fileName": "unpackaged/aura/LeadNotesForm/LeadNotesFormHelper.js",
+        "fullName": "LeadNotesForm/LeadNotesFormHelper.js",
+        "id": "0AdQi0000001VBTKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-18T17:36:21.000Z",
+        "manageableState": "unmanaged",
+        "type": "AuraDefinitionBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:02:56.000Z",
+        "fileName": "unpackaged/aura/LeadNotesForm/LeadNotesFormController.js",
+        "fullName": "LeadNotesForm/LeadNotesFormController.js",
+        "id": "0AdQi0000001VBSKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-18T17:36:21.000Z",
+        "manageableState": "unmanaged",
+        "type": "AuraDefinitionBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2024-06-19T08:02:56.000Z",
+        "fileName": "unpackaged/aura/LeadNotesForm/LeadNotesForm.cmp",
+        "fullName": "LeadNotesForm/LeadNotesForm.cmp",
+        "id": "0AdQi0000001VBRKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-08-18T17:36:27.000Z",
+        "manageableState": "unmanaged",
+        "type": "AuraDefinitionBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T16:35:51.130Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T16:35:51.130Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxOQHMA3",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "LeadNotesForm",
+        "type": "AuraDefinitionBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\aura\\LeadNotesForm\\LeadNotesForm.cmp"
+      },
+      {
+        "fullName": "LeadNotesForm",
+        "type": "AuraDefinitionBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\aura\\LeadNotesForm\\LeadNotesForm.css"
+      },
+      {
+        "fullName": "LeadNotesForm",
+        "type": "AuraDefinitionBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\aura\\LeadNotesForm\\LeadNotesFormController.js"
+      },
+      {
+        "fullName": "LeadNotesForm",
+        "type": "AuraDefinitionBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\aura\\LeadNotesForm\\LeadNotesFormHelper.js"
+      },
+      {
+        "fullName": "LeadNotesForm",
+        "type": "AuraDefinitionBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\aura\\LeadNotesForm\\LeadNotesFormRenderer.js"
+      },
+      {
+        "fullName": "LeadNotesForm",
+        "type": "AuraDefinitionBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4a\\ref\\src\\main\\default\\aura\\LeadNotesForm\\LeadNotesForm.cmp-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

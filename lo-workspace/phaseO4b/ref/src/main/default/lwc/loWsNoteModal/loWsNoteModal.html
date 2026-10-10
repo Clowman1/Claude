@@ -1,0 +1,36 @@
+<template>
+    <div class="backdrop" onclick={handleBackdrop}>
+        <section class="card" role="dialog" aria-modal="true" aria-labelledby="note-modal-title" aria-busy={saving}>
+            <header class="head">
+                <h2 id="note-modal-title">New note</h2>
+                <template lwc:if={recordName}>
+                    <span class="sub">{recordName}</span>
+                </template>
+                <button type="button" class="x" aria-label="Close" onclick={close}>×</button>
+            </header>
+            <div class="body">
+                <div class="chips" role="group" aria-label="Note type">
+                    <template for:each={typeChips} for:item="chip">
+                        <button key={chip.label} type="button" class={chip.className} data-type={chip.label} aria-pressed={chip.pressed} onclick={handleType}>{chip.label}</button>
+                    </template>
+                </div>
+                <label class="sr-only" for="note-body">Note</label>
+                <textarea id="note-body" class="text" placeholder="What happened?" maxlength="32000" oninput={handleBody}></textarea>
+                <label class="pin">
+                    <input type="checkbox" onchange={handlePin} />
+                    Pin to top of notes
+                </label>
+                <template lwc:if={isLeadNote}>
+                    <p class="hint">The Lead Owner and Loan Partner are emailed this note. Type <b>@Byron</b> to also email the Scenario Manager.</p>
+                </template>
+                <template lwc:if={error}>
+                    <p class="error" role="alert">{error}</p>
+                </template>
+            </div>
+            <footer class="foot">
+                <button type="button" class="btn" onclick={close}>Cancel</button>
+                <button type="button" class="btn btn-primary" disabled={saveDisabled} onclick={handleSave}>{saveLabel}</button>
+            </footer>
+        </section>
+    </div>
+</template>

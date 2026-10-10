@@ -1,0 +1,185 @@
+<template>
+    <lightning-card title="LO Workspace Oversight" icon-name="standard:team_member">
+        <div slot="actions" class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+            <div class="slds-col">
+                <lightning-input type="toggle" label="Include internal LOs" checked={includeInternal}
+                    message-toggle-active="" message-toggle-inactive="" onchange={handleToggle}></lightning-input>
+            </div>
+            <div class="slds-col">
+                <lightning-combobox label="Loan officer" variant="label-hidden" value={selectedLo}
+                    options={loOptions} onchange={handleLoChange}></lightning-combobox>
+            </div>
+            <div class="slds-col">
+                <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" onclick={load}></lightning-button-icon>
+            </div>
+        </div>
+
+        <div class="slds-p-horizontal_medium">
+            <template lwc:if={loading}><lightning-spinner alternative-text="Loading"></lightning-spinner></template>
+            <template lwc:if={error}>
+                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">{error}</div>
+            </template>
+
+            <template lwc:if={data}>
+                <template lwc:if={hasLos}>
+                    <h2 class="slds-text-heading_small slds-m-top_small">Goals vs activity</h2>
+                    <p class="slds-text-color_weak slds-text-body_small">Week {data.weekLabel} and {data.monthLabel}, scored with the Perfect Week math. Click a row to focus one LO.</p>
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_x-small">
+                            <thead><tr>
+                                <th>Loan officer</th><th>Setup</th><th>This week</th><th>This month</th>
+                                <th>Loans closed / goal</th><th>Volume closed / goal</th><th>Active partners / target</th>
+                            </tr></thead>
+                            <tbody>
+                                <template for:each={rows} for:item="r">
+                                    <tr key={r.userId} class={r.rowClass} data-id={r.userId} onclick={handleRowClick}>
+                                        <td>{r.label}</td>
+                                        <td>{r.setupLabel}</td>
+                                        <td><span class={r.weekClass}>{r.weekLabel}</span></td>
+                                        <td><span class={r.monthClass}>{r.monthLabel}</span></td>
+                                        <td>{r.unitsLabel}</td>
+                                        <td>{r.volumeLabel}</td>
+                                        <td>{r.partnersLabel}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <template lwc:if={selectedRow}>
+                        <div class="slds-box slds-m-top_small">
+                            <p class="slds-text-title_bold">{selectedRow.name}: this week by activity ({selectedRow.workdaysPerWeek} workdays, focus {selectedRow.businessFocus})</p>
+                            <div class="slds-m-top_x-small">
+                                <template for:each={selectedRow.weekCategories} for:item="c">
+                                    <span key={c.key} class={c.cls} style="margin:0 .25rem .25rem 0">{c.label}: {c.value}</span>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+
+                    <h2 class="slds-text-heading_small slds-m-top_medium">Pipeline</h2>
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_x-small">
+                            <thead><tr>
+                                <th>Loan officer</th>
+                                <template for:each={data.leadStageLabels} for:item="s"><th key={s}>{s} leads</th></template>
+                                <th>Active loans</th><th>Active volume</th><th>Loans by status</th>
+                            </tr></thead>
+                            <tbody>
+                                <template for:each={rows} for:item="r">
+                                    <tr key={r.userId}>
+                                        <td>{r.label}</td>
+                                        <template for:each={r.leadCells} for:item="c"><td key={c.key}>{c.value}</td></template>
+                                        <td>{r.activeLoans}</td>
+                                        <td>{r.activeVolumeLabel}</td>
+                                        <td>
+                                            <template for:each={r.statusChips} for:item="c">
+                                                <span key={c.key} class="slds-badge">{c.label}</span>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 class="slds-text-heading_small slds-m-top_medium">Realtor tags by stage</h2>
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_x-small">
+                            <thead><tr>
+                                <th>Loan officer</th>
+                                <template for:each={data.tagStageLabels} for:item="s"><th key={s}>{s}</th></template>
+                            </tr></thead>
+                            <tbody>
+                                <template for:each={rows} for:item="r">
+                                    <tr key={r.userId}>
+                                        <td>{r.label}</td>
+                                        <template for:each={r.tagCells} for:item="c"><td key={c.key}>{c.value}</td></template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <p class="slds-m-vertical_medium slds-text-color_weak">No active LO Workspace loan officers yet.</p>
+                </template>
+
+                <h2 class="slds-text-heading_small slds-m-top_medium">Onboarding</h2>
+                <p class="slds-text-color_weak slds-text-body_small">First-login status per LO. Zoom is the last successful live check; Outlook is the LO's own confirmation.</p>
+                <template lwc:if={rosterError}>
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">{rosterError}</div>
+                </template>
+                <template lwc:if={hasRoster}>
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_x-small">
+                            <thead><tr>
+                                <th>Loan officer</th><th>Setup</th><th>Zoom</th><th>Outlook</th><th>RingCentral</th><th>Mobile app</th><th>Tour</th>
+                                <template lwc:if={isOnboardingAdmin}><th>Admin</th></template>
+                            </tr></thead>
+                            <tbody>
+                                <template for:each={rosterRows} for:item="r">
+                                    <tr key={r.userId}>
+                                        <td>{r.name}</td>
+                                        <td>{r.setupLabel}</td>
+                                        <template for:each={r.cells} for:item="c">
+                                            <td key={c.key}>
+                                                <span class={c.cls}>{c.text}</span>
+                                                <template lwc:if={c.canWaive}>
+                                                    <lightning-button variant="base" label="Waive" class="slds-m-left_x-small"
+                                                        data-id={r.userId} data-name={r.name} data-connection={c.connection} onclick={handleWaive}></lightning-button>
+                                                </template>
+                                            </td>
+                                        </template>
+                                        <td>{r.tourLabel}</td>
+                                        <template lwc:if={isOnboardingAdmin}>
+                                            <td><lightning-button variant="destructive-text" label="Reset onboarding"
+                                                data-id={r.userId} data-name={r.name} onclick={handleReset}></lightning-button></td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+
+                <h2 class="slds-text-heading_small slds-m-top_medium">New landing-page leads (last 30 days)</h2>
+                <template lwc:if={hasLandingLeads}>
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_x-small">
+                        <thead><tr><th>Arrived</th><th>Lead</th><th>Loan officer</th><th>How</th><th>Stage</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <template for:each={landingLeads} for:item="l">
+                                <tr key={l.id}>
+                                    <td>{l.arrivedLabel}</td>
+                                    <td><a href={l.url}>{l.name}</a></td>
+                                    <td>{l.loName}</td>
+                                    <td>{l.howLabel}</td>
+                                    <td>{l.stage}</td>
+                                    <td>{l.status}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template lwc:else><p class="slds-text-color_weak">None.</p></template>
+
+                <h2 class="slds-text-heading_small slds-m-top_medium">Setup changes</h2>
+                <template lwc:if={hasPlanChanges}>
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-m-top_x-small slds-m-bottom_medium">
+                        <thead><tr><th>When</th><th>Loan officer</th><th>Plan after the change</th></tr></thead>
+                        <tbody>
+                            <template for:each={planChanges} for:item="p">
+                                <tr key={p.id}>
+                                    <td>{p.whenLabel}</td>
+                                    <td>{p.loName}</td>
+                                    <td class="slds-cell-wrap"><lightning-formatted-text value={p.summary}></lightning-formatted-text></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template lwc:else><p class="slds-text-color_weak slds-m-bottom_medium">None.</p></template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

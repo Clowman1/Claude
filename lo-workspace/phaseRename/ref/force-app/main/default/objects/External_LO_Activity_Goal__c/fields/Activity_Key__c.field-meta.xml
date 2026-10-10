@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Activity_Key__c</fullName>
+    <description>Catalog key for this goal, matching External_LO_Activity__mdt Activity_Key__c (prototype id).</description>
+    <externalId>false</externalId>
+    <label>Activity Key</label>
+    <length>64</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

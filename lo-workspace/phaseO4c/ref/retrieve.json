@@ -1,0 +1,229 @@
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T18:07:52.000Z",
+        "fileName": "unpackaged/lwc/loWsTour/loWsTour.js",
+        "fullName": "loWsTour/loWsTour.js",
+        "id": "0RdQi0000007joPKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:08:09.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T18:07:52.000Z",
+        "fileName": "unpackaged/lwc/loWsTour/loWsTour.css",
+        "fullName": "loWsTour/loWsTour.css",
+        "id": "0RdQi0000007joRKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:07:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T18:07:52.000Z",
+        "fileName": "unpackaged/lwc/loWsTour/loWsTour.html",
+        "fullName": "loWsTour/loWsTour.html",
+        "id": "0RdQi0000007joSKAQ",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:07:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:46.000Z",
+        "fileName": "unpackaged/lwc/loWsOversight/loWsOversight.js",
+        "fullName": "loWsOversight/loWsOversight.js",
+        "id": "0RdQi0000007dZJKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:26:06.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:46.000Z",
+        "fileName": "unpackaged/lwc/loWsOversight/loWsOversight.css",
+        "fullName": "loWsOversight/loWsOversight.css",
+        "id": "0RdQi0000007dZLKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:25:49.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-01T18:26:46.000Z",
+        "fileName": "unpackaged/lwc/loWsOversight/loWsOversight.html",
+        "fullName": "loWsOversight/loWsOversight.html",
+        "id": "0RdQi0000007dZMKAY",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T15:25:49.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:48.000Z",
+        "fileName": "unpackaged/classes/ExternalLoWorkspaceController.cls",
+        "fullName": "ExternalLoWorkspaceController",
+        "id": "01pQi000003FNW7IAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:07:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T15:25:52.000Z",
+        "fileName": "unpackaged/classes/LoWsOnboardingGateService.cls",
+        "fullName": "LoWsOnboardingGateService",
+        "id": "01pQi000003KDKLIA4",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:07:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T15:25:52.000Z",
+        "fileName": "unpackaged/classes/LoWsOnboardingGateServiceTest.cls",
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "id": "01pQi000003KDKMIA4",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:07:55.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-09T18:09:18.032Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-09T18:09:18.032Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000OxaBJMAZ",
+    "status": "Succeeded",
+    "success": true,
+    "messages": [],
+    "files": [
+      {
+        "fullName": "loWsTour",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsTour\\loWsTour.css"
+      },
+      {
+        "fullName": "loWsTour",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsTour\\loWsTour.html"
+      },
+      {
+        "fullName": "loWsTour",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsTour\\loWsTour.js"
+      },
+      {
+        "fullName": "loWsTour",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsTour\\loWsTour.js-meta.xml"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsOversight\\loWsOversight.css"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsOversight\\loWsOversight.html"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsOversight\\loWsOversight.js"
+      },
+      {
+        "fullName": "loWsOversight",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\lwc\\loWsOversight\\loWsOversight.js-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\classes\\ExternalLoWorkspaceController.cls"
+      },
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\classes\\ExternalLoWorkspaceController.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsOnboardingGateService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateService.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateService.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\phaseO4c\\ref\\src\\main\\default\\classes\\LoWsOnboardingGateServiceTest.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

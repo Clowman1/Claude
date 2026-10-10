@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Marks an External (outside) Loan Officer. Code checks it wherever their behavior differs from internal LOs: own-signature-only pre-approval letters, Nurturing-lead takeover, landing-page routing, hidden realtor tags.</description>
+    <isLicensed>false</isLicensed>
+    <label>External Loan Officer</label>
+</CustomPermission>

@@ -1,0 +1,499 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-09T18:08:26.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-09T18:07:46.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T18:07:55.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoWorkspaceController.cls",
+          "fullName": "ExternalLoWorkspaceController",
+          "id": "01pQi000003FNW7IAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsOnboardingGateService.cls",
+          "fullName": "LoWsOnboardingGateService",
+          "id": "01pQi000003KDKLIA4",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsOnboardingGateServiceTest.cls",
+          "fullName": "LoWsOnboardingGateServiceTest",
+          "id": "01pQi000003KDKMIA4",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "StaticResource",
+          "created": true,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "staticresources/LoWsTourAssets.resource",
+          "fullName": "LoWsTourAssets",
+          "id": "081Qi0000005j4XIAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoActivityPrompts",
+          "fullName": "externalLoActivityPrompts",
+          "id": "0RbQi0000004WNtKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoCsvImport",
+          "fullName": "externalLoCsvImport",
+          "id": "0RbQi0000004WNuKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoLeads",
+          "fullName": "externalLoLeads",
+          "id": "0RbQi0000004SP7KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoLoans",
+          "fullName": "externalLoLoans",
+          "id": "0RbQi0000004SP8KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPerfectWeek",
+          "fullName": "externalLoPerfectWeek",
+          "id": "0RbQi0000004WNyKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPortalShell",
+          "fullName": "externalLoPortalShell",
+          "id": "0RbQi0000004SP9KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoProgress",
+          "fullName": "externalLoProgress",
+          "id": "0RbQi0000004WNzKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoRealtors",
+          "fullName": "externalLoRealtors",
+          "id": "0RbQi0000004SPBKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoRecentLog",
+          "fullName": "externalLoRecentLog",
+          "id": "0RbQi0000004WO1KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/leadPortalDocumentRequestManager",
+          "fullName": "leadPortalDocumentRequestManager",
+          "id": "0RbQi0000004YCnKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsAppointments",
+          "fullName": "loWsAppointments",
+          "id": "0RbQi0000004dPNKAY",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsAppraisalPanel",
+          "fullName": "loWsAppraisalPanel",
+          "id": "0RbQi0000004cgDKAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsCommunications",
+          "fullName": "loWsCommunications",
+          "id": "0RbQi0000004hsnKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsPastClientDetail",
+          "fullName": "loWsPastClientDetail",
+          "id": "0RbQi0000004fnlKAA",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsTour",
+          "fullName": "loWsTour",
+          "id": "0RbQi0000004iTtKAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsTourHooks",
+          "fullName": "loWsTourHooks",
+          "id": "0RbQi0000004iTuKAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": true,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/loWsTourSteps",
+          "fullName": "loWsTourSteps",
+          "id": "0RbQi0000004iTvKAI",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/perfectDayHome",
+          "fullName": "perfectDayHome",
+          "id": "0RbQi0000004SPCKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/portalActivityModal",
+          "fullName": "portalActivityModal",
+          "id": "0RbQi0000004WO3KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/portalCommunicationModal",
+          "fullName": "portalCommunicationModal",
+          "id": "0RbQi0000004SPDKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/portalListLayout",
+          "fullName": "portalListLayout",
+          "id": "0RbQi0000004SPEKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "lwc/portalNavList",
+          "fullName": "portalNavList",
+          "id": "0RbQi0000004WO6KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-09T18:08:12.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UPQDKA4",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-09T18:08:26.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 26,
+    "numberComponentsTotal": 26,
+    "numberFiles": "118",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-09T18:07:47.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "2429291",
+    "files": [
+      {
+        "fullName": "ExternalLoWorkspaceController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoWorkspaceController.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsOnboardingGateService.cls"
+      },
+      {
+        "fullName": "LoWsOnboardingGateServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsOnboardingGateServiceTest.cls"
+      },
+      {
+        "fullName": "externalLoActivityPrompts",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoActivityPrompts"
+      },
+      {
+        "fullName": "externalLoCsvImport",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoCsvImport"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoLeads"
+      },
+      {
+        "fullName": "externalLoLoans",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoLoans"
+      },
+      {
+        "fullName": "externalLoPerfectWeek",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPerfectWeek"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPortalShell"
+      },
+      {
+        "fullName": "externalLoProgress",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoProgress"
+      },
+      {
+        "fullName": "externalLoRealtors",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoRealtors"
+      },
+      {
+        "fullName": "externalLoRecentLog",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoRecentLog"
+      },
+      {
+        "fullName": "leadPortalDocumentRequestManager",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/leadPortalDocumentRequestManager"
+      },
+      {
+        "fullName": "loWsAppointments",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsAppointments"
+      },
+      {
+        "fullName": "loWsAppraisalPanel",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsAppraisalPanel"
+      },
+      {
+        "fullName": "loWsCommunications",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsCommunications"
+      },
+      {
+        "fullName": "loWsPastClientDetail",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/loWsPastClientDetail"
+      },
+      {
+        "fullName": "loWsTour",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsTour"
+      },
+      {
+        "fullName": "loWsTourHooks",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsTourHooks"
+      },
+      {
+        "fullName": "loWsTourSteps",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "lwc/loWsTourSteps"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/perfectDayHome"
+      },
+      {
+        "fullName": "portalActivityModal",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/portalActivityModal"
+      },
+      {
+        "fullName": "portalCommunicationModal",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/portalCommunicationModal"
+      },
+      {
+        "fullName": "portalListLayout",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/portalListLayout"
+      },
+      {
+        "fullName": "portalNavList",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/portalNavList"
+      },
+      {
+        "fullName": "LoWsTourAssets",
+        "type": "StaticResource",
+        "state": "Created",
+        "filePath": "staticresources/LoWsTourAssets.resource"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UPQDKA4%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Tour_Completed_At__c</fullName>
+    <description>LO Workspace guided tour (O4): when the first-login tour was finished or skipped.</description>
+    <label>LO Workspace Tour Completed At</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

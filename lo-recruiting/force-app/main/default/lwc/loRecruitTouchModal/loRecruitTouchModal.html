@@ -1,0 +1,35 @@
+<template>
+    <div class="backdrop">
+        <section class="modal" role="dialog" aria-modal="true" aria-label={title}>
+            <div class="mh">
+                <h2 class="title">{title}</h2>
+            </div>
+            <div class="mb">
+                <template lwc:if={error}><div class="err" role="alert">{error}</div></template>
+                <div>
+                    <div class="lbl">What happened</div>
+                    <div class="pills">
+                        <template for:each={kindButtons} for:item="k">
+                            <button key={k.value} class={k.cls} data-value={k.value} onclick={pickKind}>{k.value}</button>
+                        </template>
+                    </div>
+                </div>
+                <lightning-textarea label="Notes" value={notes} onchange={handleNotes}
+                    placeholder="What did you talk about? Any next step? (Also saved to Recruiting Notes)"></lightning-textarea>
+                <template lwc:if={isNote}>
+                    <div class="muted sm">A note goes to Recruiting Notes only: it doesn't change the stage or the next touch.</div>
+                </template>
+                <template lwc:else>
+                    <lightning-input type="checkbox" label="We had a real conversation (moves them to Conversation)"
+                        checked={conversation} onchange={handleConversation}></lightning-input>
+                    <lightning-input type="date" label="Next touch" value={nextTouch} onchange={handleNext}
+                        field-level-help="Suggested from the stage cadence. Clear it for no follow-up."></lightning-input>
+                </template>
+            </div>
+            <div class="mf">
+                <button class="btn" disabled={busy} onclick={close}>Cancel</button>
+                <button class="btn btn-p" disabled={busy} onclick={save}>Save</button>
+            </div>
+        </section>
+    </div>
+</template>
