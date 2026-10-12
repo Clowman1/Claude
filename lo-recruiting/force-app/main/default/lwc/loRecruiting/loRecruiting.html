@@ -43,7 +43,7 @@
                                     <div key={r.id} class="row">
                                         <div class="av">{r.initials}</div>
                                         <div class="grow clickable" data-id={r.id} onclick={openRecruit}>
-                                            <div class="strong">{r.name} <span class="muted normal sm">{r.stage}</span></div>
+                                            <div class="strong">{r.name} <span class="muted normal sm">{r.stage}</span> <template lwc:if={r.followsBrandon}><span class="chip ig tag" title="Follows Brandon Brotsky on Instagram">Follows Brandon on IG</span></template></div>
                                             <div class="muted sm">{r.sub}</div>
                                         </div>
                                         <span class="chip oth">{r.volumeLabel}</span>
@@ -69,6 +69,7 @@
                                         <div class="grow clickable" data-id={r.id} onclick={openRecruit}>
                                             <div class="strong">{r.name}
                                                 <template lwc:if={r.branchManager}><span class="chip re tag">Branch Mgr</span></template>
+                                                <template lwc:if={r.followsBrandon}><span class="chip ig tag" title="Follows Brandon Brotsky on Instagram">Follows Brandon on IG</span></template>
                                                 <template lwc:if={r.inHouse}><span class="chip ti tag">Possible In House</span></template>
                                             </div>
                                             <div class="muted sm">{r.sub}</div>
@@ -140,6 +141,7 @@
                                 <template for:each={col.cards} for:item="r">
                                     <button key={r.id} class="kcard" data-id={r.id} onclick={openRecruit} draggable="true" ondragstart={dragStart}>
                                         <span class="strong">{r.name}</span>
+                                        <template lwc:if={r.followsBrandon}><span class="chip ig" title="Follows Brandon Brotsky on Instagram">Follows Brandon on IG</span></template>
                                         <span class="muted sm">{r.company}</span>
                                         <span class="kfoot"><span class="chip oth">{r.volumeLabel}</span><span class={r.nextCls}>{r.nextLabel}</span></span>
                                     </button>
@@ -157,7 +159,7 @@
                                 <template for:each={filtered} for:item="r">
                                     <div key={r.id} class={r.rowCls} data-id={r.id} onclick={openRecruit}>
                                         <div class="av">{r.initials}</div>
-                                        <div class="grow"><div class="strong">{r.name}</div><div class="muted sm">{r.company}</div></div>
+                                        <div class="grow"><div class="strong">{r.name}</div><div class="muted sm">{r.company}</div><template lwc:if={r.followsBrandon}><span class="chip ig tag0" title="Follows Brandon Brotsky on Instagram">Follows Brandon on IG</span></template></div>
                                         <div class="right"><div class="sm strong">{r.volumeLabel}</div><div class={r.nextCls}>{r.stage}</div></div>
                                     </div>
                                 </template>

@@ -64,3 +64,4 @@ a.btn { text-decoration: none; }
 .plink:hover { text-decoration: underline; }
 .composer { display: flex; flex-direction: column; gap: 8px; padding: 12px 0; border-bottom: 1px solid #eef2f7; }
 .notebody { margin: 4px 0; color: #17233f; }
+.ig { background: #fce7f3; color: #9d174d; }

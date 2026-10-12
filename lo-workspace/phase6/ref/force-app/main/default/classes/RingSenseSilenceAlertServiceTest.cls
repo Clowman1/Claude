@@ -25,6 +25,7 @@ private class RingSenseSilenceAlertServiceTest {
 
     @IsTest
     static void run_alerts_when_no_insights() {
+        RingSenseSilenceAlertService.minCallsForAlert = 0;
         Test.startTest();
         RingSenseSilenceAlertService.RunResult result = RingSenseSilenceAlertService.run();
         Test.stopTest();
@@ -37,6 +38,15 @@ private class RingSenseSilenceAlertServiceTest {
         ];
         System.assertEquals(1, logs.size());
         System.assert(logs[0].Data__c.contains('never'));
+    }
+
+    @IsTest
+    static void run_skips_email_when_no_calls_happened() {
+        Test.startTest();
+        RingSenseSilenceAlertService.RunResult result = RingSenseSilenceAlertService.run();
+        Test.stopTest();
+        System.assertEquals(false, result.alerted);
+        System.assert(result.message.contains('Quiet period'));
     }
 
     @IsTest

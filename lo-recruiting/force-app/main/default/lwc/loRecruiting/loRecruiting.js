@@ -16,6 +16,7 @@ const FILTERS = [
     { value: 'due', label: 'Due' },
     { value: 'bm', label: 'Branch Mgr' },
     { value: 'inhouse', label: 'Possible In House' },
+    { value: 'brandon', label: 'Follows Brandon' },
     { value: 'switch', label: 'Company switch' }
 ];
 
@@ -149,6 +150,7 @@ export default class LoRecruiting extends LightningElement {
                 || (this.filter === 'due' && r.due)
                 || (this.filter === 'bm' && r.branchManager)
                 || (this.filter === 'inhouse' && r.inHouse)
+                || (this.filter === 'brandon' && r.followsBrandon)
                 || (this.filter === 'switch' && r.companySwitch))
             && (!t || [r.name, r.company, r.nmls, r.city, r.county, r.phone, r.mobile, r.email].some((v) => v && v.toLowerCase().includes(t))));
     }

@@ -545,8 +545,37 @@ public with sharing class LeadDocumentRequestService {
         if (requestRecord == null) {
             return;
         }
-        ensureLeadIsOpenForDocumentRequests(getLeadOrThrow(requestRecord.Lead__c));
-        Database.delete(new Lead_Document_Request__c(Id = requestId), false, AccessLevel.SYSTEM_MODE);
+        Lead leadRecord = getLeadOrThrow(requestRecord.Lead__c);
+        ensureLeadIsOpenForDocumentRequests(leadRecord);
+        // The object is Public Read/Write, which still doesn't allow delete: only the row's owner can.
+        // Requests are often created by someone else (a processor, an admin, a preset), so the Lead's
+        // Loan Officer / Loan Partner (or an admin) deletes without sharing. Anyone else keeps the
+        // normal rules, and a refused delete now says so instead of failing silently.
+        // Never on a Lead the user cannot see (outside LOs see only their own).
+        RecordAccessGuard.requireRead(leadRecord.Id);
+        if (canManageLeadRequests(leadRecord)) {
+            new ElevatedDelete().run(requestId);
+            return;
+        }
+        Database.DeleteResult result = Database.delete(new Lead_Document_Request__c(Id = requestId), false, AccessLevel.SYSTEM_MODE);
+        if (!result.isSuccess()) {
+            throw new LeadDocumentRequestException(
+                'Only the Loan Officer or Loan Partner on this Lead can remove this request.'
+            );
+        }
+    }
+
+    private static Boolean canManageLeadRequests(Lead leadRecord) {
+        Id runningUserId = UserInfo.getUserId();
+        return leadRecord.OwnerId == runningUserId
+            || resolveLoanPartnerId(leadRecord) == runningUserId
+            || isSystemAdministrator();
+    }
+
+    private without sharing class ElevatedDelete {
+        private void run(Id requestId) {
+            Database.delete(new Lead_Document_Request__c(Id = requestId), true);
+        }
     }
 
     // General notes live on the Lead itself, so a request carries only the borrower-facing
@@ -579,6 +608,19 @@ public with sharing class LeadDocumentRequestService {
             throw new LeadDocumentRequestException('Unable to locate the document request for upload.');
         }
         ensureLeadIsOpenForDocumentRequests(getLeadOrThrow(requestRecord.Lead__c));
+
+        // Phase 1b: getLeadOrThrow (USER_MODE) already refuses a Lead the user cannot open. The
+        // writes below run without sharing, so also file only versions the running user just
+        // uploaded, never an arbitrary ContentVersion Id. Not ensureCanActOnRequest: anyone who
+        // can open the Lead may upload to it today.
+        versionIds = new Map<Id, ContentVersion>([
+            SELECT Id FROM ContentVersion
+            WHERE Id IN :versionIds AND CreatedById = :UserInfo.getUserId()
+            WITH SYSTEM_MODE
+        ]).keySet();
+        if (versionIds.isEmpty()) {
+            throw new LeadDocumentRequestException('At least one uploaded document is required.');
+        }
 
         associateContentVersions(versionIds, requestId, requestRecord.Lead__c);
         // Left unfiled on purpose. The document lands in the folder matching its condition only
@@ -876,6 +918,7 @@ public with sharing class LeadDocumentRequestService {
         }
 
         List<String> outcomes = new List<String>();
+        Map<Id, Lead_Document_Request__c> sentRequests = new Map<Id, Lead_Document_Request__c>();
         for (BorrowerSendTarget target : targets) {
             List<Lead_Document_Request__c> theirs = new List<Lead_Document_Request__c>();
             for (Lead_Document_Request__c request : allRequests) {
@@ -915,9 +958,47 @@ public with sharing class LeadDocumentRequestService {
                     }
                 }
             }
+            sentRequests.putAll(theirs);
             outcomes.add(target.name + ': sent to ' + target.email + ' (' + theirs.size() + ' items)');
         }
+        // Same post-send steps as the single-email path: requests become Requested and the first
+        // initial request moves the Lead to Documents Requested.
+        if (!sentRequests.isEmpty()) {
+            markIncludedRequestsAsRequested(sentRequests.values());
+            stampInitialDocsRequested(leadRecord);
+        }
+        outcomes.addAll(noEmailOutcomes(leadId, allRequests));
         return outcomes;
+    }
+
+    public static final String NO_EMAIL_OUTCOME =
+        ': not emailed, no email address. Add an email to include them in document requests and condition lists.';
+
+    /**
+     * Items assigned to a co-borrower who has no email would otherwise be skipped without a word
+     * (buildSendTargets only takes rows with an email). Say so in the outcome list instead.
+     */
+    private static List<String> noEmailOutcomes(Id leadId, List<Lead_Document_Request__c> requests) {
+        Map<Id, Integer> countByBorrower = new Map<Id, Integer>();
+        for (Lead_Document_Request__c request : requests) {
+            if (request.Borrower__c != null) {
+                countByBorrower.put(request.Borrower__c, (countByBorrower.get(request.Borrower__c) ?? 0) + 1);
+            }
+        }
+        List<String> out = new List<String>();
+        if (countByBorrower.isEmpty()) {
+            return out;
+        }
+        Set<Id> borrowerIds = countByBorrower.keySet();
+        for (Borrower__c row : [
+            SELECT Id, Name FROM Borrower__c
+            WHERE Id IN :borrowerIds AND Lead__c = :leadId AND Email__c = NULL
+            WITH SYSTEM_MODE
+            ORDER BY CreatedDate
+        ]) {
+            out.add(row.Name + NO_EMAIL_OUTCOME + ' (' + countByBorrower.get(row.Id) + ' items)');
+        }
+        return out;
     }
 
     private static Boolean isRequestForBorrower(Lead_Document_Request__c request, BorrowerSendTarget target) {
@@ -1200,7 +1281,7 @@ public with sharing class LeadDocumentRequestService {
         }
 
         markIncludedRequestsAsRequested(requestRecords);
-        stampInitialDocsRequested(leadRecord, templateDeveloperName);
+        stampInitialDocsRequested(leadRecord);
         return warning;
     }
 
@@ -1255,21 +1336,14 @@ public with sharing class LeadDocumentRequestService {
         return recentSends.isEmpty() ? null : recentSends[0].CreatedDate;
     }
 
-    // The first request for documents moves the Lead to Documents Requested, whether it went out
-    // as the purchase template or the refinance one: both are the moment the borrower was first
-    // asked for anything. Only the first: a Lead that has since reached Pre-Approval must not be
-    // dragged back a stage because someone resent the request, and the follow-up template never
-    // touches status at all. Initial_Docs_Requested_Date__c exists purely to make "first"
-    // detectable, rather than inferring it from a status the Lead may have already moved past.
+    // Any send that requests conditions moves an early Lead to Documents Requested, whatever the
+    // template (owner rule 2026-10-12). Forward-only: Pre-Approval and later, Nurture* and converted
+    // Leads never move. Initial_Docs_Requested_Date__c still records the first request.
     private static final String DOCS_REQUESTED_STATUS = 'Documents Requested';
-    private static final Set<String> INITIAL_REQUEST_TEMPLATES = new Set<String>{
-        EMAIL_TEMPLATE_DEVELOPER_NAME,
-        REFINANCE_TEMPLATE_DEVELOPER_NAME
-    };
 
     @TestVisible
-    private static void stampInitialDocsRequested(Lead leadRecord, String templateDeveloperName) {
-        if (leadRecord == null || !INITIAL_REQUEST_TEMPLATES.contains(templateDeveloperName)) {
+    private static void stampInitialDocsRequested(Lead leadRecord) {
+        if (leadRecord == null) {
             return;
         }
         if (!hasLeadField('Initial_Docs_Requested_Date__c')) {
@@ -1277,13 +1351,22 @@ public with sharing class LeadDocumentRequestService {
         }
 
         Lead currentLead = getLeadWithInitialDocsStamp(leadRecord.Id);
-        if (currentLead == null || currentLead.get('Initial_Docs_Requested_Date__c') != null) {
+        if (currentLead == null) {
+            return;
+        }
+        Boolean firstSend = currentLead.get('Initial_Docs_Requested_Date__c') == null;
+        Boolean moveStatus = isBeforeDocsRequested(currentLead);
+        if (!firstSend && !moveStatus) {
             return;
         }
 
         Lead leadUpdate = new Lead(Id = leadRecord.Id);
-        leadUpdate.put('Initial_Docs_Requested_Date__c', Datetime.now());
-        leadUpdate.Status = DOCS_REQUESTED_STATUS;
+        if (firstSend) {
+            leadUpdate.put('Initial_Docs_Requested_Date__c', Datetime.now());
+        }
+        if (moveStatus) {
+            leadUpdate.Status = DOCS_REQUESTED_STATUS;
+        }
 
         try {
             Database.update(leadUpdate, true, AccessLevel.SYSTEM_MODE);
@@ -1299,9 +1382,21 @@ public with sharing class LeadDocumentRequestService {
         }
     }
 
+    /** Statuses before Documents Requested in the Lead path. Pre-Approval and later, Nurture*, converted never move. */
+    private static final Set<String> BEFORE_DOCS_REQUESTED = new Set<String>{
+        'New', 'Contacted/Call Back', 'Working', 'Application Link Out', 'Application'
+    };
+
+    @TestVisible
+    private static Boolean isBeforeDocsRequested(Lead leadRecord) {
+        String status = leadRecord.Status == null ? '' : leadRecord.Status;
+        return !leadRecord.IsConverted
+            && (BEFORE_DOCS_REQUESTED.contains(status) || status.startsWith('Contact Attempt'));
+    }
+
     private static Lead getLeadWithInitialDocsStamp(Id leadId) {
         List<Lead> leads = Database.query(
-            'SELECT Id, Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1'
+            'SELECT Id, Status, IsConverted, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1'
         );
         return leads.isEmpty() ? null : leads[0];
     }

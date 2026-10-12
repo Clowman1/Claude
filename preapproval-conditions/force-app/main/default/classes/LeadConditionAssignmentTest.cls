@@ -221,6 +221,10 @@ private class LeadConditionAssignmentTest {
             [SELECT Account__c FROM Borrower__c WHERE Id = :wilbur.Id].Account__c,
             'Sending mints the Person Account, because Messaging needs a real target object'
         );
+        // Same post-send steps as the single email: items become Requested, the request is stamped.
+        Assert.areEqual(0, [SELECT COUNT() FROM Lead_Document_Request__c WHERE Lead__c = :theLead.Id AND Status__c = 'New'],
+            'Every emailed item is Requested');
+        Assert.isNotNull([SELECT Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :theLead.Id].Initial_Docs_Requested_Date__c);
     }
 
     @IsTest

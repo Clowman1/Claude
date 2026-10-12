@@ -4,6 +4,9 @@
 public without sharing class RingSenseSilenceAlertService {
     private static final String LOG_SOURCE = 'RingSense Silence Alert';
     private static final Integer SILENCE_HOURS = 24;
+    // ~30% of calls produce an insight, so 10 calls with none is a real outage, not a quiet weekend.
+    @TestVisible
+    private static Integer minCallsForAlert = 10;
 
     public class RunResult {
         public Boolean alerted;
@@ -26,13 +29,24 @@ public without sharing class RingSenseSilenceAlertService {
             return result;
         }
 
+        Integer callsSince = countCallsSince(result.latestCreatedDate == null ? cutoff : result.latestCreatedDate);
+        if (callsSince < minCallsForAlert) {
+            result.message =
+                'Quiet period, no alert. Only ' + callsSince + ' RingCentral calls since the latest Call Insight at ' +
+                String.valueOf(result.latestCreatedDate);
+            insertLog(result.message);
+            return result;
+        }
+
         String lastSeen = result.latestCreatedDate == null
             ? 'never'
             : String.valueOf(result.latestCreatedDate);
         result.message =
             'No Call_Insight__c created in the last ' +
             SILENCE_HOURS +
-            ' hours. Last created: ' +
+            ' hours, despite ' +
+            callsSince +
+            ' RingCentral calls since. Last created: ' +
             lastSeen +
             '. Org: ' +
             UserInfo.getOrganizationName() +
@@ -42,6 +56,18 @@ public without sharing class RingSenseSilenceAlertService {
         result.alerted = true;
         insertLog(result.message);
         return result;
+    }
+
+    // RingCentral logs texts as Tasks too; only calls can produce an insight.
+    private static Integer countCallsSince(Datetime since) {
+        return [
+            SELECT COUNT()
+            FROM Task
+            WHERE CreatedDate > :since
+                AND rcsfl__from_number__c != NULL
+                AND (NOT Subject LIKE '%SMS%')
+                AND (NOT Subject LIKE '%texted%')
+        ];
     }
 
     private static void sendAlert(String body) {

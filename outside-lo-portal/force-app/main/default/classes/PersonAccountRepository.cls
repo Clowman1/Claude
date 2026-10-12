@@ -129,7 +129,7 @@ public with sharing class PersonAccountRepository {
         Integer safeLimit = rowLimit == null || rowLimit <= 0 ? 20 : Math.min(rowLimit, 50);
         String term = '%' + String.escapeSingleQuotes(searchTerm.trim()) + '%';
         return [
-            SELECT Id, Name, PersonEmail, Phone, PersonContactId, OwnerId, Follow_Up_LO__c, Group__pc,
+            SELECT Id, Name, PersonEmail, Phone, PersonContactId, OwnerId, Follow_Up_LO__c, Preferred_LO__c, Group__pc,
                    Company__c, BillingCity, Biz_Dev_Designation__c
             FROM Account
             WHERE IsPersonAccount = true

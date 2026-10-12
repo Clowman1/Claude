@@ -44,6 +44,7 @@ public without sharing class LoRecruitingController {
         @AuraEnabled public Boolean inHouse;
         @AuraEnabled public Boolean companySwitch;
         @AuraEnabled public Boolean remote;
+        @AuraEnabled public Boolean followsBrandon;   // follows Brandon Brotsky on Instagram
         @AuraEnabled public Date nextTouch;
         @AuraEnabled public Date lastActivity;
         @AuraEnabled public Id ownerId;
@@ -141,7 +142,7 @@ public without sharing class LoRecruitingController {
 
     static final String LEAD_FIELDS = 'Id, Name, FirstName, LastName, Company, NMLS__c, Recruit_Stage__c, Phone, MobilePhone, Email, '
         + 'County_of_Operation__c, City, Loan_Volume__c, Volume_Period__c, Branch_Manager__c, Possible_In_House__c, '
-        + 'Possible_Company_Switch__c, Remote_LO__c, Next_Touch_Date__c, LastActivityDate, OwnerId, Owner.Name, CreatedDate';
+        + 'Possible_Company_Switch__c, Remote_LO__c, Follows_Brandon_IG__c, Next_Touch_Date__c, LastActivityDate, OwnerId, Owner.Name, CreatedDate';
 
     @AuraEnabled
     public static Home getHome() {
@@ -220,7 +221,7 @@ public without sharing class LoRecruitingController {
         r.county = l.County_of_Operation__c; r.city = l.City;
         r.volume = l.Loan_Volume__c; r.volumePeriod = l.Volume_Period__c;
         r.branchManager = l.Branch_Manager__c; r.inHouse = l.Possible_In_House__c;
-        r.companySwitch = l.Possible_Company_Switch__c; r.remote = l.Remote_LO__c;
+        r.companySwitch = l.Possible_Company_Switch__c; r.remote = l.Remote_LO__c; r.followsBrandon = l.Follows_Brandon_IG__c;
         r.nextTouch = l.Next_Touch_Date__c; r.lastActivity = l.LastActivityDate;
         r.ownerId = l.OwnerId; r.ownerName = l.Owner.Name;
         return r;

@@ -13,6 +13,7 @@
                             <span class={stageChipCls}>{r.stage}</span>
                             <template lwc:if={r.branchManager}><span class="chip re">Branch Mgr</span></template>
                             <template lwc:if={r.inHouse}><span class="chip ti">Possible In House</span></template>
+                            <template lwc:if={r.followsBrandon}><span class="chip ig" title="Follows Brandon Brotsky on Instagram">Follows Brandon on IG</span></template>
                             <template lwc:if={r.remote}><span class="chip oth">Remote LO</span></template>
                         </div>
                         <div class="muted sub">{subLine}</div>

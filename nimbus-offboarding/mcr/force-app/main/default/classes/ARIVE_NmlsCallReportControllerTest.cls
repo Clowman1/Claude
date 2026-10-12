@@ -117,6 +117,17 @@ private class ARIVE_NmlsCallReportControllerTest {
                 Loan_Type_1st_TD__c = 'FHA',
                 Property_Type__c = 'Single Family',
                 Lien_Position__c = '2nd'
+            ),
+            new Transaction__c(
+                Funding_Date__c = fundedDate,
+                Status__c = 'Post-Closed',
+                Exclude_From_MCR__c = false,
+                Property_State__c = 'CA',
+                Channel__c = 'Broker',
+                Loan_Amount_1st__c = 10000,
+                Loan_Type_1st_TD__c = 'DPA 2nd',
+                Property_Type__c = 'Single Family',
+                Lien_Position__c = '2nd'
             )
         };
         insert transactions;
@@ -130,7 +141,7 @@ private class ARIVE_NmlsCallReportControllerTest {
         System.assertEquals(5, closedData.AC200_2, 'AC200 should include Single Family, Condo, PUD, and Condominium, but not Mobile Home.');
         System.assertEquals(1, closedData.AC210_2, 'AC210 should count Mobile Home as manufactured housing.');
         System.assertEquals(5, closedData.AC500_2, 'AC500 should only count loans marked as first lien.');
-        System.assertEquals(1, closedData.AC510_2, 'AC510 should continue to count loans marked as second lien.');
+        System.assertEquals(1, closedData.AC510_2, 'AC510 should continue to count loans marked as second lien, but never DPA 2nd.');
     }
 
     @isTest

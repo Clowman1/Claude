@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Owner_License_Context__c</fullName>
+    <description>Read-only input for the Transaction Owner Licensing Alert: subject property state, a pipe separator, and license codes from the actual record owner User settings. Empty codes mean no recorded licenses, including queue owners. Does not grant permission to edit users or change ownership.</description>
+    <externalId>false</externalId>
+    <formula>SUBSTITUTE(Property_State__c,&quot;|&quot;,&quot;?&quot;)&amp;&quot;|&quot;&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;AL&quot;),&quot;AL;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;AK&quot;),&quot;AK;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;AZ&quot;),&quot;AZ;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;AR&quot;),&quot;AR;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;CA&quot;),&quot;CA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;CO&quot;),&quot;CO;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;CT&quot;),&quot;CT;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;DE&quot;),&quot;DE;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;DC&quot;),&quot;DC;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;FL&quot;),&quot;FL;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;GA&quot;),&quot;GA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;HI&quot;),&quot;HI;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;ID&quot;),&quot;ID;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;IL&quot;),&quot;IL;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;IN&quot;),&quot;IN;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;IA&quot;),&quot;IA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;KS&quot;),&quot;KS;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;KY&quot;),&quot;KY;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;LA&quot;),&quot;LA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;ME&quot;),&quot;ME;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MD&quot;),&quot;MD;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MA&quot;),&quot;MA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MI&quot;),&quot;MI;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MN&quot;),&quot;MN;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MS&quot;),&quot;MS;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MO&quot;),&quot;MO;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;MT&quot;),&quot;MT;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NE&quot;),&quot;NE;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NV&quot;),&quot;NV;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NH&quot;),&quot;NH;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NJ&quot;),&quot;NJ;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NM&quot;),&quot;NM;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NY&quot;),&quot;NY;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;NC&quot;),&quot;NC;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;ND&quot;),&quot;ND;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;OH&quot;),&quot;OH;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;OK&quot;),&quot;OK;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;OR&quot;),&quot;OR;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;PA&quot;),&quot;PA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;PR&quot;),&quot;PR;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;RI&quot;),&quot;RI;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;SC&quot;),&quot;SC;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;SD&quot;),&quot;SD;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;TN&quot;),&quot;TN;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;TX&quot;),&quot;TX;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;UT&quot;),&quot;UT;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;VT&quot;),&quot;VT;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;VA&quot;),&quot;VA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;WA&quot;),&quot;WA;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;WV&quot;),&quot;WV;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;WI&quot;),&quot;WI;&quot;,&quot;&quot;)&amp;
+IF(INCLUDES(Owner:User.Licensed_States__c,&quot;WY&quot;),&quot;WY;&quot;,&quot;&quot;)</formula>
+    <label>Owner License Context</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,6 +1,20 @@
 public with sharing class ExternalLoPartnerService {
 
     public static List<ExternalLoPortalService.PartnerRow> searchPartners(String searchTerm) {
+        if (LoWsPartnerTagService.isTagMode()) {
+            // LO Workspace: every taggable partner, but only name / company / city until I tag them.
+            List<ExternalLoPortalService.PartnerRow> found = new List<ExternalLoPortalService.PartnerRow>();
+            for (Account a : LoWsPartnerTagService.searchTaggable(searchTerm, 20)) {
+                ExternalLoPortalService.PartnerRow row = new ExternalLoPortalService.PartnerRow();
+                row.id = a.Id;
+                row.name = a.Name;
+                row.company = a.Company__c;
+                row.market = a.BillingCity;
+                row.partnerType = a.Group__pc;
+                found.add(row);
+            }
+            return found;
+        }
         PersonAccountRepository repository = new PersonAccountRepository();
         Id userId = UserInfo.getUserId();
         List<Account> matches = repository.searchSharedPartners(searchTerm, 20);
@@ -15,6 +29,11 @@ public with sharing class ExternalLoPartnerService {
         if (accountId == null) {
             throw new DomainException('Select a partner record.');
         }
+        if (LoWsPartnerTagService.isTagMode()) {
+            // LO Workspace: Link = tag me on any taggable partner found by name search.
+            LoWsPartnerTagService.tagFromSearch(accountId);
+            return ExternalLoPortalService.getPartnerDetail(accountId).summary;
+        }
         PersonAccountRepository repository = new PersonAccountRepository();
         Account accountRecord = repository.selectPortalPartnerDetail(accountId, UserInfo.getUserId());
         if (accountRecord == null) {
@@ -28,6 +47,9 @@ public with sharing class ExternalLoPartnerService {
 
     public static CreatePartnerResult createPartner(CreatePartnerRequest request) {
         validateCreateRequest(request);
+        if (LoWsPartnerTagService.isTagMode()) {
+            return createTaggedPartner(request);
+        }
         PersonAccountRepository repository = new PersonAccountRepository();
         List<Account> matches = repository.searchSharedPartners(request.name, 5);
         if (!matches.isEmpty()) {
@@ -77,6 +99,32 @@ public with sharing class ExternalLoPartnerService {
         return result;
     }
 
+    /**
+     * LO Workspace: org-wide email/phone duplicate check. A partner-type match comes back as
+     * status 'match' (the UI offers Tag me); any other match is refused; otherwise create + tag.
+     * partnerType carries the BD industry (or the portal's Realtor / Title / Insurance).
+     */
+    private static CreatePartnerResult createTaggedPartner(CreatePartnerRequest request) {
+        LoWsPartnerTagService.AddResult added = LoWsPartnerTagService.addPartner(
+            request.name, request.phone, request.email, request.company, request.market, request.partnerType
+        );
+        CreatePartnerResult result = new CreatePartnerResult();
+        result.status = added.status;
+        result.accountId = added.accountId;
+        result.matches = new List<ExternalLoPortalService.PartnerRow>();
+        for (Account match : added.matches) {
+            ExternalLoPortalService.PartnerRow row = new ExternalLoPortalService.PartnerRow();
+            row.id = match.Id;
+            row.name = match.Name;
+            row.company = match.Company__c;
+            result.matches.add(row);
+        }
+        result.userMessage = added.status == 'match'
+            ? 'This partner is already at Reach. Tag yourself to add them to your list.'
+            : request.name.trim() + ' added to your partners.';
+        return result;
+    }
+
     private static void validateCreateRequest(CreatePartnerRequest request) {
         if (request == null || String.isBlank(request.name)) {
             throw new DomainException('Enter the partner name.');
@@ -108,5 +156,8 @@ public with sharing class ExternalLoPartnerService {
     public class CreatePartnerResult {
         @AuraEnabled public Id accountId;
         @AuraEnabled public String userMessage;
+        // LO Workspace only: created | match, and the partner-type matches to offer Tag me on.
+        @AuraEnabled public String status;
+        @AuraEnabled public List<ExternalLoPortalService.PartnerRow> matches;
     }
 }

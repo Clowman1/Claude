@@ -7,6 +7,11 @@
     <description>LO Recruiting tab: Fred, Adam, Chris.</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Follows_Brandon_IG__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Branch_Manager__c</field>
         <readable>true</readable>
     </fieldPermissions>

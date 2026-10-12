@@ -152,14 +152,14 @@ private class LeadDocumentCollectionServiceTest {
 
         // The Lead moves on, then someone resends. It must not be dragged back a stage.
         // Any later status proves the point; Pre-Approval trips a Loan Amount validation rule.
-        update new Lead(Id = leadRecord.Id, Status = 'Working');
+        update new Lead(Id = leadRecord.Id, Status = 'Nurturing');
         LeadDocumentRequestService.sendRequestEmail(leadRecord.Id);
 
         Lead afterResend = [
             SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
         ];
         System.assertEquals(
-            'Working',
+            'Nurturing',
             afterResend.Status,
             'A resend must not pull the Lead back to Documents Requested.'
         );
@@ -222,7 +222,7 @@ private class LeadDocumentCollectionServiceTest {
         System.assertNotEquals(null, afterSend.Initial_Docs_Requested_Date__c);
 
         // Same guarantee the purchase template has: a resend must not drag a Lead back a stage.
-        update new Lead(Id = leadRecord.Id, Status = 'Working');
+        update new Lead(Id = leadRecord.Id, Status = 'Nurturing');
         LeadDocumentRequestService.sendEditedRequestEmail(
             leadRecord.Id,
             'Items Needed for your Refinance',
@@ -236,7 +236,7 @@ private class LeadDocumentCollectionServiceTest {
             SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
         ];
         System.assertEquals(
-            'Working',
+            'Nurturing',
             afterResend.Status,
             'A resend leaves the Lead where the team has since moved it.'
         );
@@ -248,10 +248,10 @@ private class LeadDocumentCollectionServiceTest {
     }
 
     @IsTest
-    static void followUpTemplateLeavesTheLeadStatusAlone() {
+    static void anyTemplateMovesAnEarlyLeadStatus() {
+        // Owner rule 2026-10-12: requesting conditions moves the status, whatever the template.
         Lead leadRecord = createLead('status-followup@example.com');
         createRequest(leadRecord.Id, 'Recent Paystubs');
-        String startingStatus = [SELECT Status FROM Lead WHERE Id = :leadRecord.Id].Status;
 
         Test.startTest();
         LeadDocumentRequestService.sendEditedRequestEmail(
@@ -267,12 +267,8 @@ private class LeadDocumentCollectionServiceTest {
         Lead afterSend = [
             SELECT Status, Initial_Docs_Requested_Date__c FROM Lead WHERE Id = :leadRecord.Id
         ];
-        System.assertEquals(startingStatus, afterSend.Status, 'A follow-up never changes status.');
-        System.assertEquals(
-            null,
-            afterSend.Initial_Docs_Requested_Date__c,
-            'Only the initial template stamps the first-send date.'
-        );
+        System.assertEquals('Documents Requested', afterSend.Status, 'A follow-up send moves an early lead too.');
+        System.assertNotEquals(null, afterSend.Initial_Docs_Requested_Date__c, 'Any first request is stamped.');
     }
 
     @IsTest

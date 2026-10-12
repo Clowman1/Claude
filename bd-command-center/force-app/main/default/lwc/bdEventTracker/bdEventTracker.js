@@ -10,6 +10,8 @@ const STATUS_CLASS = { 'Yes - Attending': 'chip yes', 'No - Unable to Attend': '
 export default class BdEventTracker extends NavigationMixin(LightningElement) {
     @api campaignId;
     @api canEdit = false;
+    // LO Workspace: the Campaign record page needs the BD-only RealtorEventWorkspaceController.
+    @api hideOpen = false;
     data;
     error;
     busyId;
@@ -24,6 +26,7 @@ export default class BdEventTracker extends NavigationMixin(LightningElement) {
         }
     }
 
+    get showOpen() { return !this.hideOpen; }
     get ev() { return this.data && this.data.event; }
     get header() {
         const e = this.ev;

@@ -55,6 +55,12 @@ public with sharing class ExternalLoPortalController {
         return ExternalLoPortalService.getRealtors(filterKey, searchTerm);
     }
 
+    /** My Realtors (kind realtor) and Other Contacts (kind other) in LO Workspace. */
+    @AuraEnabled(cacheable=true)
+    public static List<ExternalLoPortalService.PartnerRow> getPartnersByKind(String filterKey, String searchTerm, String kind) {
+        return ExternalLoPortalService.getPartners(filterKey, searchTerm, kind);
+    }
+
     @AuraEnabled(cacheable=true)
     public static ExternalLoPortalService.PartnerDetail getPartnerDetail(Id accountId) {
         return ExternalLoPortalService.getPartnerDetail(accountId);
@@ -62,7 +68,11 @@ public with sharing class ExternalLoPortalController {
 
     @AuraEnabled(cacheable=true)
     public static List<ExternalLoPortalService.PartnerRow> searchPartners(String searchTerm) {
-        return ExternalLoPartnerService.searchPartners(searchTerm);
+        try {
+            return ExternalLoPartnerService.searchPartners(searchTerm);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
     }
 
     @AuraEnabled
@@ -97,6 +107,169 @@ public with sharing class ExternalLoPortalController {
         }
     }
 
+    // ---- LO Workspace partner tags (outside LOs only; see LoWsPartnerTagService) ----
+
+    /** Tag me on an existing partner: after a duplicate hit (email/phone) or from search. */
+    @AuraEnabled
+    public static void tagPartner(Id accountId, String email, String phone) {
+        try {
+            requireTagMode();
+            LoWsPartnerTagService.tagExisting(accountId, email, phone);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static void untagPartner(Id accountId) {
+        try {
+            requireTagMode();
+            LoWsPartnerTagService.untag(accountId);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static void setPartnerStage(Id accountId, String stage) {
+        try {
+            requireTagMode();
+            LoWsPartnerTagService.setStage(accountId, stage);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    // ---- LO Workspace lead / partner / client Overview (LoWsContactService, LoWsLeadDetailsService) ----
+    // Not cacheable on purpose: the cards re-read after every save.
+
+    @AuraEnabled
+    public static LoWsContactService.ContactInfo getContactInfo(Id recordId) {
+        try {
+            return LoWsContactService.getContact(recordId);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<String> getLeadStatusOptions() {
+        try {
+            return LoWsContactService.leadStatusOptions();
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    /** Status dropdown on the lead header and Board drag-and-drop (LO Workspace, owner only). */
+    @AuraEnabled
+    public static String updateLeadStatus(Id leadId, String status) {
+        try {
+            return LoWsContactService.updateLeadStatus(leadId, status);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static LoWsContactService.ContactInfo updateContactInfo(
+        Id recordId, String firstName, String lastName, String phone, String email,
+        String street, String city, String state, String postalCode, String relationship
+    ) {
+        try {
+            return LoWsContactService.updateContact(recordId, firstName, lastName, phone, email, street, city, state, postalCode, relationship);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static LoWsBorrowerService.BorrowerList getLeadBorrowers(Id leadId) {
+        try {
+            return LoWsBorrowerService.listBorrowers(leadId);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static Id addLeadBorrower(Id leadId, String firstName, String lastName, String phone, String email, String relationship) {
+        try {
+            return LoWsBorrowerService.addBorrower(leadId, firstName, lastName, phone, email, relationship);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static void removeLeadBorrower(Id borrowerId) {
+        try {
+            LoWsBorrowerService.removeBorrower(borrowerId);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled
+    public static LoWsLeadDetailsService.Details getPreApprovalDetails(Id leadId) {
+        try {
+            return LoWsLeadDetailsService.getDetails(leadId);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    /** detailsJson: a JSON Details (a nested DTO parameter would bind empty, see logActivity). */
+    @AuraEnabled
+    public static LoWsLeadDetailsService.Details savePreApprovalDetails(Id leadId, String detailsJson) {
+        try {
+            return LoWsLeadDetailsService.saveDetails(leadId, detailsJson);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static LoWsLeadDetailsService.FormOptions getAddLeadOptions() {
+        try {
+            requireTagMode();
+            return LoWsLeadDetailsService.formOptions();
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    /** LO Workspace Add lead (My Leads, a My Realtors row, a realtor page). Phase 6 duplicate rules apply. */
+    @AuraEnabled
+    public static ExternalLoLeadService.CreateLeadResult createLoWorkspaceLead(
+        String firstName, String lastName, String phone, String email, String purpose, Id realtorId,
+        String newRealtorName, String newRealtorPhone, String newRealtorEmail, String newRealtorCompany, String newRealtorMarket,
+        String leadSource
+    ) {
+        try {
+            requireTagMode();
+            ExternalLoLeadService.CreateLeadRequest request = new ExternalLoLeadService.CreateLeadRequest();
+            request.firstName = firstName;
+            request.lastName = lastName;
+            request.phone = phone;
+            request.email = email;
+            request.purpose = purpose;
+            request.realtorId = realtorId;
+            request.leadSource = leadSource; // ignored when a realtor is set (Realtor Referral)
+            request.forceCreate = true;
+            return LoWsLeadDetailsService.createLead(request,
+                newRealtorName, newRealtorPhone, newRealtorEmail, newRealtorCompany, newRealtorMarket);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    private static void requireTagMode() {
+        if (!LoWsPartnerTagService.isTagMode()) {
+            throw new DomainException('Partner tags are available in LO Workspace only.');
+        }
+    }
+
     @AuraEnabled(cacheable=true)
     public static List<ExternalLoPortalService.PreApprovalRow> getPreApprovals(
         String filterKey,
@@ -108,6 +281,11 @@ public with sharing class ExternalLoPortalController {
     @AuraEnabled(cacheable=true)
     public static List<ExternalLoPortalService.LoanRow> getLoans(String filterKey, String searchTerm) {
         return ExternalLoPortalService.getLoans(filterKey, searchTerm);
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Map<String, Integer> getLoanTabCounts() {
+        return ExternalLoPortalService.getLoanTabCounts();
     }
 
     @AuraEnabled(cacheable=true)
@@ -158,7 +336,9 @@ public with sharing class ExternalLoPortalController {
         Id recordId,
         String objectApiName,
         String notes,
-        String promptKey
+        String promptKey,
+        String followUpOption,
+        String callOutcome
     ) {
         try {
             // Aura binds a nested @AuraEnabled DTO parameter as an *empty*
@@ -173,6 +353,8 @@ public with sharing class ExternalLoPortalController {
             request.objectApiName = objectApiName;
             request.notes = notes;
             request.promptKey = promptKey;
+            request.followUpOption = followUpOption;
+            request.callOutcome = callOutcome;
             return ExternalLoActivityLogService.logActivity(request);
         } catch (Exception error) {
             throw toAura(error);
@@ -210,6 +392,26 @@ public with sharing class ExternalLoPortalController {
     public static List<ExternalLoPortalService.LeadRow> getPastClientRows(String searchTerm) {
         try {
             return ExternalLoPortalService.getPastClients(searchTerm == null ? '' : searchTerm);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    /** LO Workspace past client page (Person Account). Owner or read access is checked in the service. */
+    @AuraEnabled
+    public static ExternalLoPortalService.PastClientDetail getPastClientDetail(Id accountId) {
+        try {
+            return ExternalLoPortalService.getPastClientDetail(accountId);
+        } catch (Exception error) {
+            throw toAura(error);
+        }
+    }
+
+    /** LO Workspace routing for an Account: 'pastClients', 'realtors' or null. */
+    @AuraEnabled(cacheable=true)
+    public static String getAccountWorkspaceView(Id accountId) {
+        try {
+            return ExternalLoPortalService.accountWorkspaceView(accountId);
         } catch (Exception error) {
             throw toAura(error);
         }

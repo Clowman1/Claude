@@ -92,7 +92,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             (Funding_Date__c = NULL
                             AND Withdrawn__c = NULL)
                     )
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]);
@@ -111,7 +111,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE TRID_Date__c >= :startDate AND TRID_Date__c < :endDate.addDays(1)
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -132,7 +132,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
                     AND Withdrawn_Reason__c = 'Approved But Not Accepted'
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -153,7 +153,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
                     AND Withdrawn_Reason__c IN ('App Denied')
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -174,7 +174,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
                     AND Withdrawn_Reason__c IN ('App Withdrawn By Borrower', 'App Rescinded By Borrower')
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -195,7 +195,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
                     AND Withdrawn_Reason__c = 'File Closed For Incompleteness'
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -216,7 +216,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
                     AND Withdrawn_Reason__c = 'Pre-Approval Denied'
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -237,7 +237,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
                     AND Withdrawn_Reason__c = 'Pre-Approval Approved But Not Accepted'
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -257,7 +257,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Withdrawn__c = NULL
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != NULL
                     GROUP BY Property_State__c
             ]
@@ -279,7 +279,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE TRID_Date__c < :endDate.addDays(1) 
                 	AND (Funding_Date__c > :endDate OR Funding_Date__c = NULL) AND (Withdrawn__c > :endDateTime OR Withdrawn__c = NULL)
                 	AND (Post_Closed_Date__c > :endDate OR Post_Closed_Date__c = NULL)
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != NULL
                     GROUP BY Property_State__c
             ]
@@ -368,7 +368,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c IN :CONVENTIONAL_FORWARD_LOAN_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -393,7 +393,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c IN :CONVENTIONAL_FORWARD_LOAN_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -417,7 +417,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c= 'FHA' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -441,7 +441,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c = 'FHA' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -466,7 +466,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c= 'VA' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -491,7 +491,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c = 'VA' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -516,7 +516,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c = 'FSA/RHS' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -541,7 +541,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c = 'FSA/RHS' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -566,7 +566,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Property_Type__c IN :ONE_TO_FOUR_FAMILY_PROPERTY_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -591,7 +591,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Property_Type__c IN :ONE_TO_FOUR_FAMILY_PROPERTY_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -616,7 +616,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Property_Type__c IN :MANUFACTURED_PROPERTY_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -641,7 +641,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Property_Type__c IN :MANUFACTURED_PROPERTY_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -666,7 +666,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Property_Type__c IN ('4-10 Units', '10+ Units') AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -691,7 +691,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Property_Type__c IN ('4-10 Units', '10+ Units') AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -716,7 +716,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Purpose__c = 'Purchase' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -741,7 +741,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Purpose__c = 'Purchase' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -766,7 +766,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Refinance_Purpose__c = 'Home Improvement' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -791,7 +791,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Refinance_Purpose__c = 'Home Improvement' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -817,7 +817,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c != 'Home Improvement'
                     AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -843,7 +843,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c  != 'Home Improvement'
                     AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -868,7 +868,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = '1st' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -894,7 +894,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = '1st' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -919,7 +919,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = '2nd' AND Lien_Position__c != NULL AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -943,7 +943,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = '2nd' AND Lien_Position__c != NULL AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -967,7 +967,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = NULL AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -991,7 +991,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = NULL AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1013,7 +1013,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Broker_Compensation__c) BrokerFeesCollected
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1034,7 +1034,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Count(Id) countOfLoans
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1155,7 +1155,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c != :NON_QM_PRODUCT_NAME AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1180,7 +1180,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c != :NON_QM_PRODUCT_NAME AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1205,7 +1205,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c = :NON_QM_PRODUCT_NAME AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1230,7 +1230,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Program_1st__c = :NON_QM_PRODUCT_NAME AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1275,7 +1275,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1297,7 +1297,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1325,7 +1325,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Gross_Compensation__c) totalLoanRevenue
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -1350,7 +1350,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                	AND Exclude_From_MCR__c = FALSE
+                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     AND NMLS_ID__c != null
                     GROUP BY Property_State__c, NMLS_ID__c
@@ -1460,7 +1460,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c IN :GOVERNMENT_LOAN_TYPES
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%'))) AND Exclude_From_MCR__c = FALSE
+                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1489,7 +1489,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Type_1st_TD__c IN :GOVERNMENT_LOAN_TYPES
-                    AND Loan_Program_1st__c LIKE '%ARM%' AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Program_1st__c LIKE '%ARM%' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1515,7 +1515,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
                     AND Loan_Type_1st_TD__c IN :CONVENTIONAL_CONFORMING_LOAN_TYPES
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1541,7 +1541,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Program_1st__c LIKE '%ARM%'
                     AND Loan_Type_1st_TD__c IN :CONVENTIONAL_CONFORMING_LOAN_TYPES
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1566,7 +1566,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
-                    AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1591,7 +1591,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Program_1st__c LIKE '%ARM%'
-                    AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1617,7 +1617,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
                     AND Loan_Type_1st_TD__c NOT IN ('Jumbo', 'Conventional', 'CONV', 'FHA', 'VA', 'FarmersHomeAdministration', 'FSA/RHS', 'USDA')
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1643,7 +1643,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Program_1st__c LIKE '%ARM%'
                     AND Loan_Type_1st_TD__c NOT IN ('Jumbo', 'Conventional', 'CONV', 'FHA', 'VA', 'FarmersHomeAdministration', 'FSA/RHS', 'USDA')
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1669,7 +1669,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Lien_Position__c = '2nd'
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1695,7 +1695,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Purpose__c = 'HELOC'
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1720,7 +1720,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Program_1st__c = 'Reverse Mortgage'
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     GROUP BY Property_State__c
             ]
@@ -1744,7 +1744,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (Loan_Program_1st__c LIKE '%CONST%' OR Loan_Program_1st__c LIKE '%OTC%')
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1770,7 +1770,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (NOT(Loan_Program_1st__c LIKE '%Bank Statement%' OR Loan_Program_1st__c LIKE '%Investor Flex%'))
                     AND Lien_Position__c != '2nd' AND Loan_Purpose__c != 'HELOC'
-                    AND Loan_Program_1st__c != 'Reverse Mortgage' AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Program_1st__c != 'Reverse Mortgage' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     GROUP BY Property_State__c
             ]
@@ -1793,7 +1793,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c =:CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c =:CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1817,7 +1817,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c NOT IN ('Correspondent', 'Broker') AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c NOT IN ('Correspondent', 'Broker') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     GROUP BY Property_State__c
             ]
@@ -1840,7 +1840,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c = 'Broker' AND Exclude_From_MCR__c = FALSE
+                    AND Channel__c = 'Broker' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1865,7 +1865,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1890,7 +1890,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Program_1st__c LIKE '%ARM%'
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1914,7 +1914,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = 'Jumbo' AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Type_1st_TD__c = 'Jumbo' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1938,7 +1938,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c != 'Jumbo') AND Exclude_From_MCR__c = FALSE
+                    AND (Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c != 'Jumbo') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1962,7 +1962,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             SUM(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Doc_Type_1st_TD__c != NULL AND Doc_Type_1st_TD__c != 'Full' AND Exclude_From_MCR__c = FALSE
+                    AND Doc_Type_1st_TD__c != NULL AND Doc_Type_1st_TD__c != 'Full' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -1986,7 +1986,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             SUM(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Doc_Type_1st_TD__c = NULL OR Doc_Type_1st_TD__c = 'Full') AND Exclude_From_MCR__c = FALSE
+                    AND (Doc_Type_1st_TD__c = NULL OR Doc_Type_1st_TD__c = 'Full') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2011,7 +2011,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c LIKE '%Interest Only%' AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Program_1st__c LIKE '%Interest Only%' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2035,7 +2035,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%Interest Only%'))) AND Exclude_From_MCR__c = FALSE
+                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%Interest Only%'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2059,7 +2059,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c = 'Option ARM' AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Program_1st__c = 'Option ARM' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2084,7 +2084,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                       AND (Loan_Program_1st__c = NULL OR Loan_Program_1st__c != 'Option ARM')
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2109,7 +2109,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                       AND Prepayment_Penalty__c = 'Yes'
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2133,7 +2133,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Prepayment_Penalty__c = NULL OR Prepayment_Penalty__c != 'Yes') AND Exclude_From_MCR__c = FALSE
+                    AND (Prepayment_Penalty__c = NULL OR Prepayment_Penalty__c != 'Yes') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2157,7 +2157,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Purchase' AND Exclude_From_MCR__c = FALSE
+                    AND Loan_Purpose__c = 'Purchase' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2181,7 +2181,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND ((Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c IN :RATE_TERM_REFINANCE_PURPOSES) OR Loan_Purpose__c = 'Refinance Rate & Term') AND Exclude_From_MCR__c = FALSE
+                    AND ((Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c IN :RATE_TERM_REFINANCE_PURPOSES) OR Loan_Purpose__c = 'Refinance Rate & Term') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2205,7 +2205,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND ((Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c IN :CASH_OUT_REFINANCE_PURPOSES) OR Loan_Purpose__c = 'Refinance Cash-Out') AND Exclude_From_MCR__c = FALSE
+                    AND ((Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c IN :CASH_OUT_REFINANCE_PURPOSES) OR Loan_Purpose__c = 'Refinance Cash-Out') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2231,7 +2231,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                      AND Loan_Purpose__c = 'Refinance'
                     AND Refinance_Purpose__c LIKE '%RESTRUCTURE%'
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2257,7 +2257,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND Loan_Purpose__c = 'Refinance'
                     AND (Refinance_Purpose__c = NULL OR (Refinance_Purpose__c NOT IN :RATE_TERM_REFINANCE_PURPOSES AND Refinance_Purpose__c NOT IN :CASH_OUT_REFINANCE_PURPOSES))
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2283,7 +2283,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND LTV__c > 80
                     AND Loan_Type_1st_TD__c IN :MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2308,7 +2308,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     AND (LTV__c <= 80 OR LTV__c = NULL OR Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c NOT IN :MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES)
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2332,7 +2332,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             Sum(Loan_Amount_1st__c) totalAmount
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Has_Piggyback_Seconds__c = TRUE AND Exclude_From_MCR__c = FALSE
+                    AND Has_Piggyback_Seconds__c = TRUE AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2357,7 +2357,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                      AND Has_Piggyback_Seconds__c = FALSE
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2382,7 +2382,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                      AND LTV__c <= 60
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2408,7 +2408,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
                     AND LTV__c > 60 AND LTV__c <= 70
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2434,7 +2434,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
                     AND LTV__c > 70 AND LTV__c <= 80
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2460,7 +2460,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
                     AND LTV__c > 80 AND LTV__c <= 90
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2486,7 +2486,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
                     AND LTV__c > 90 AND LTV__c <= 100
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2511,7 +2511,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                      AND LTV__c > 100
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2534,7 +2534,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2557,7 +2557,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                             AVG(LTV__c) CLTVLoansCollected
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2581,7 +2581,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2608,7 +2608,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                      AND Channel__c =: CORRESPONDENT_CHANNEL_NAME
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
                     AND Status__c = 'Post-Closed'
                     GROUP BY Property_State__c
@@ -2630,7 +2630,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                     
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]
@@ -2656,7 +2656,7 @@ public with sharing class ARIVE_NmlsCallReportController {
                     FROM Transaction__c
                     WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
                      AND Days_Over_90__c = 1
-                    AND Exclude_From_MCR__c = FALSE
+                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
                     AND Property_State__c IN:this.states AND Property_State__c != null
                     GROUP BY Property_State__c
             ]

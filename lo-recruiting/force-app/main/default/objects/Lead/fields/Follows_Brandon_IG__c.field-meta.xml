@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Follows_Brandon_IG__c</fullName>
+    <label>Follows Brandon on Instagram</label>
+    <description>LO Recruiting: the recruit follows Brandon Brotsky on Instagram (warm-intro signal). Shown as a badge on the LO Recruiting tab.</description>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

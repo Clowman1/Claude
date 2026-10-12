@@ -32,7 +32,9 @@
             </template>
             <div class="mf">
                 <button class="btn" onclick={close}>Close</button>
-                <button class="btn btn-p" onclick={openCampaign}>Open event</button>
+                <template lwc:if={showOpen}>
+                    <button class="btn btn-p" onclick={openCampaign}>Open event</button>
+                </template>
             </div>
         </section>
     </div>

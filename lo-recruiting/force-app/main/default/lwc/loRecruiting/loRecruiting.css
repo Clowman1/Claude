@@ -76,3 +76,7 @@ section.card { overflow: hidden; }
 .tag { margin-left: 6px; height: 19px; font-size: 10.5px; vertical-align: middle; }
 .right { text-align: right; flex-shrink: 0; }
 .bname { width: 120px; }
+
+/* Follows Brandon Brotsky on Instagram: warm-intro signal */
+.ig { background: #fce7f3; color: #9d174d; }
+.tag0 { margin-top: 4px; height: 19px; font-size: 10.5px; align-self: flex-start; }
