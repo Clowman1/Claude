@@ -1,13 +1,28 @@
 import { LightningElement, api, track } from 'lwc';
 import FORM_FACTOR from '@salesforce/client/formFactor';
+import { loadScript } from 'lightning/platformResourceLoader';
+import PDF_LIB from '@salesforce/resourceUrl/pdfLib';
+import PDF_JS from '@salesforce/resourceUrl/pdfJs';
 import uploadBorrowerDocument from '@salesforce/apex/LeadDocumentPortalController.uploadBorrowerDocument';
 import removePendingDocument from '@salesforce/apex/LeadDocumentPortalController.removePendingDocument';
-import { t, uploadingOne, uploadingMany, tooLarge, tooSmall } from 'c/leadBorrowerPortalLabels';
+import { t, uploadingOne, uploadingMany, tooLarge, tooSmall, preparing, passwordProtected } from 'c/leadBorrowerPortalLabels';
+import { splitPdf, rasterizePages, partName, PdfPartsError } from './pdfParts';
 
 // Site guest users cannot upload through lightning-file-upload, so the borrower's browser reads
 // each file and sends it as base64 to Apex, which writes it in system mode. A plain input plus
 // drag-and-drop handlers replaces the component entirely.
+// Not an arbitrary number. The whole file reaches Apex as a base64 string, which costs about
+// 1.37 bytes of heap per byte of file - measured, not guessed - so 3.5 MB already uses 80% of
+// the 6 MB synchronous limit. Raising it much further makes uploads fail on the server instead
+// of in the browser, which is a worse failure.
 const MAX_FILE_BYTES = 3500000;
+// A PDF over the limit is cut into parts in the browser instead (see pdfParts.js), so the
+// ceiling above never reaches the borrower for a statement. This one keeps a phone from
+// grinding through something absurd: 50 MB is about fifteen parts.
+const MAX_SPLIT_PDF_BYTES = 50000000;
+// A document photograph is legible well below this. Phone cameras produce 3000-4000px images
+// that are mostly wasted detail on a paystub.
+const MAX_IMAGE_EDGE = 2400;
 // A phone that offers a size when sharing produces 320x240 on Small and 640x480 on Medium.
 // Either is unreadable as a paystub; Large is 1280x960 and is fine, so the line sits between.
 const MIN_READABLE_EDGE = 1000;
@@ -232,6 +247,26 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
         this.lowResWarning = '';
         this.justUploaded = false;
 
+        // Photographs are shrunk rather than refused: a phone camera routinely produces 8 MB of
+        // detail nobody needs to read a bank statement, and telling the borrower to go and
+        // resize it themselves is how a file stalls for two days.
+        // Long statements are cut into parts for the same reason.
+        const prepared = [];
+        for (const file of files) {
+            try {
+                // eslint-disable-next-line no-await-in-loop
+                const shrunk = await this.shrinkIfOversizedImage(file);
+                // eslint-disable-next-line no-await-in-loop
+                prepared.push(...(await this.splitIfOversizedPdf(shrunk)));
+            } catch (prepareError) {
+                this.localError = prepareError instanceof PdfPartsError && prepareError.reason === 'password'
+                    ? passwordProtected(file.name, this.spanish)
+                    : tooLarge(file.name, this.spanish);
+                return;
+            }
+        }
+        files = prepared;
+
         const oversized = files.filter(file => file.size > MAX_FILE_BYTES);
         if (oversized.length) {
             this.localError = tooLarge(oversized[0].name, this.spanish);
@@ -296,6 +331,106 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             this.isUploading = false;
             this.uploadProgress = '';
         }
+    }
+
+    /**
+     * Returns a smaller version of an oversized photograph, or the original file untouched.
+     *
+     * Only images, and only when they are over the limit - a file already small enough is never
+     * re-encoded, so nothing is degraded for no reason. A format the browser cannot decode
+     * comes back unchanged and is refused by the size check as before.
+     */
+    async shrinkIfOversizedImage(file) {
+        if (file.size <= MAX_FILE_BYTES || !String(file.type || '').startsWith('image/')) {
+            return file;
+        }
+        const smaller = await this.downscaleImage(file);
+        return smaller && smaller.size < file.size ? smaller : file;
+    }
+
+    /**
+     * Returns the file in parts that each fit under the limit, or the original file alone.
+     *
+     * Pages are copied as they are; only a page too big to fit by itself, or a PDF pdf-lib cannot
+     * open, is rendered to images (see pdfParts.js). Anything that goes wrong here throws, and the
+     * caller tells the borrower the file is too large, which is what they saw before this existed.
+     */
+    async splitIfOversizedPdf(file) {
+        const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
+        if (file.size <= MAX_FILE_BYTES || !isPdf) {
+            return [file];
+        }
+        if (file.size > MAX_SPLIT_PDF_BYTES) {
+            throw new PdfPartsError('too-large');
+        }
+        this.isUploading = true;
+        this.uploadProgress = preparing(file.name, this.spanish);
+        try {
+            const PDFLib = await this.loadPdfLib();
+            const bytes = new Uint8Array(await file.arrayBuffer());
+            const parts = await splitPdf(bytes, MAX_FILE_BYTES, {
+                PDFLib,
+                rasterize: async (source, pageNumbers) =>
+                    rasterizePages(source, pageNumbers, { PDFLib, pdfjsLib: await this.loadPdfJs() })
+            });
+            return parts.map((part, index) =>
+                new File([part], partName(file.name, index, parts.length), { type: 'application/pdf' })
+            );
+        } finally {
+            this.isUploading = false;
+            this.uploadProgress = '';
+        }
+    }
+
+    // Both loaded only when a borrower actually has an oversized PDF; nobody else downloads them.
+    async loadPdfLib() {
+        await loadScript(this, PDF_LIB);
+        return window.PDFLib;
+    }
+
+    async loadPdfJs() {
+        // The worker script goes first: with it already on the page, pdf.js runs in the page
+        // instead of starting a Web Worker, which the Lightning sandbox may not allow.
+        await loadScript(this, `${PDF_JS}/pdf.worker.min.js`);
+        await loadScript(this, `${PDF_JS}/pdf.min.js`);
+        return window.pdfjsLib;
+    }
+
+    downscaleImage(file) {
+        const objectUrl = URL.createObjectURL(file);
+        return new Promise(resolve => {
+            const source = new Image();
+            source.onload = () => {
+                try {
+                    const longest = Math.max(source.naturalWidth, source.naturalHeight);
+                    const scale = Math.min(1, MAX_IMAGE_EDGE / longest);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = Math.round(source.naturalWidth * scale);
+                    canvas.height = Math.round(source.naturalHeight * scale);
+                    canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(
+                        blob => {
+                            URL.revokeObjectURL(objectUrl);
+                            resolve(
+                                blob
+                                    ? new File([blob], file.name, { type: 'image/jpeg' })
+                                    : null
+                            );
+                        },
+                        'image/jpeg',
+                        0.85
+                    );
+                } catch (resizeFailure) {
+                    URL.revokeObjectURL(objectUrl);
+                    resolve(null);
+                }
+            };
+            source.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                resolve(null);
+            };
+            source.src = objectUrl;
+        });
     }
 
     /** Pixel size of an image the browser can decode, or null for anything else. */
