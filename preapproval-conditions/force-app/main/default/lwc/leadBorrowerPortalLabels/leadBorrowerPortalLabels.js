@@ -103,12 +103,24 @@ export function uploadingMany(index, total, spanish) {
     return spanish ? `Subiendo ${index} de ${total}...` : `Uploading ${index} of ${total}...`;
 }
 
+// Long PDFs are split automatically, so this now means a large non-PDF (a Word file, a video) or
+// a PDF that could not be split.
 export function tooLarge(fileName, spanish) {
     return spanish
-        ? `${fileName} es demasiado grande para subirlo aquí (el límite es 3.5 MB). Si es un PDF de muchas páginas, ` +
-          `envíelo en partes o por correo a su equipo hipotecario.`
-        : `${fileName} is too large to upload here (the limit is 3.5 MB). If it is a long PDF, please send it in ` +
-          `parts, or email it to your loan team.`;
+        ? `${fileName} es demasiado grande para subirlo aquí. Envíelo por correo a su equipo hipotecario.`
+        : `${fileName} is too large to upload here. Please email it to your loan team.`;
+}
+
+export function passwordProtected(fileName, spanish) {
+    return spanish
+        ? `${fileName} está protegido con contraseña, así que no podemos abrirlo. Guarde una copia sin contraseña ` +
+          `y agréguela de nuevo, o envíelo por correo a su equipo hipotecario.`
+        : `${fileName} is password-protected, so we cannot open it. Please save a copy without the password and ` +
+          `add it again, or email it to your loan team.`;
+}
+
+export function preparing(fileName, spanish) {
+    return spanish ? `Preparando ${fileName}...` : `Preparing ${fileName}...`;
 }
 
 export function tooSmall(fileName, width, height, spanish) {
