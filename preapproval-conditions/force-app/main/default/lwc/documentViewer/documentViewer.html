@@ -1,44 +1,179 @@
 <template>
-	<lightning-card variant="narrow" icon-name="standard:file" class="document-viewer-card slds-p-horizontal_x-small">
-		<h3 slot="title">Loan Documents</h3>
-
-		<template if:false={isCompactView}>
-			<div class="toolbar toolbar--desktop" slot="actions">
-				<div class="toolbar__search">
+	<template if:false={isCompactView}>
+		<div class="dv">
+			<header class="dv-head">
+				<div class="dv-head__title">
+					<span class="dv-head__icon">
+						<lightning-icon icon-name="utility:file" size="small" variant="inverse"></lightning-icon>
+					</span>
+					<div>
+						<h2 class="dv-head__heading">Loan documents</h2>
+						<p class="dv-head__sub">{docs.length} files in {allFolders.length} folders</p>
+					</div>
+				</div>
+				<div class="dv-head__actions">
 					<lightning-input
 						type="search"
 						variant="label-hidden"
+						label="Search documents"
 						placeholder="Search documents"
-						class="toolbar__search-input"
+						class="dv-search"
 						value={filter}
 						onchange={handleFilterChange}
 					></lightning-input>
-					<button class="pill pill--search" onclick={handleFilterFiles}>
-						<lightning-icon icon-name="utility:search" size="xx-small" variant="inverse"></lightning-icon>
-						<span>Search</span>
-					</button>
-				</div>
-
-				<div class="toolbar__actions">
 					<template if:true={canAddDocument}>
 						<button class="pill pill--primary" onclick={openAddDocumentModal} title="Add a document to this record">
 							<lightning-icon icon-name="utility:upload" size="xx-small"></lightning-icon>
-							<span>Add Document</span>
+							<span>Add document</span>
 						</button>
 					</template>
-
 					<button class="pill" onclick={downloadAllFiles} title="Download every document as a zip">
 						<lightning-icon icon-name="utility:download" size="xx-small"></lightning-icon>
-						<span>Download All</span>
+						<span>Download all</span>
 					</button>
-
-					<button class="pill" onclick={connectedCallback} title="Reload the document list">
-						<lightning-icon icon-name="utility:refresh" size="xx-small"></lightning-icon>
-						<span>Refresh</span>
+					<button class="pill pill--icon" onclick={connectedCallback} title="Refresh">
+						<lightning-icon icon-name="utility:refresh" size="xx-small" alternative-text="Refresh"></lightning-icon>
 					</button>
 				</div>
+			</header>
+
+			<div class="dv-body">
+				<nav class="dv-rail" aria-label="Folders">
+					<template for:each={railFolders} for:item="folder">
+						<button
+							key={folder.name}
+							type="button"
+							class={folder.cssClass}
+							data-name={folder.name}
+							aria-current={folder.ariaCurrent}
+							onclick={handleFolderSelect}
+							ondragover={handleFolderDragOver}
+							ondragleave={handleFolderDragLeave}
+							ondrop={handleFolderDrop}
+						>
+							<lightning-icon icon-name={folder.icon} size="x-small" class="dv-rail__icon"></lightning-icon>
+							<span class="dv-rail__name">{folder.name}</span>
+							<span class="dv-count">{folder.count}</span>
+						</button>
+					</template>
+				</nav>
+
+				<section class="dv-pane">
+					<div class="dv-pane__head">
+						<div class="dv-pane__title">
+							<template if:true={hasVisibleFiles}>
+								<input
+									type="checkbox"
+									class="dv-check"
+									aria-label="Select every document shown in this folder"
+									title="Select all"
+									checked={allVisibleSelected}
+									onchange={handleSelectAllVisible}
+								/>
+							</template>
+							<div>
+								<h3 class="dv-pane__heading">{selectedFolderName}</h3>
+								<p class="dv-pane__sub">Drag to reorder, or drop onto a folder on the left to move</p>
+							</div>
+						</div>
+						<template if:true={hasSelection}>
+							<div class="dv-selection" role="status">
+								<span class="dv-selection__count">{selectionLabel}</span>
+								<button class="pill pill--primary" onclick={downloadSelected} title="Download the selected documents as a zip">
+									<lightning-icon icon-name="utility:download" size="xx-small"></lightning-icon>
+									<span>Download selected</span>
+								</button>
+								<template if:true={canOfferMerge}>
+									<button class="pill" onclick={openMergeModal} disabled={mergeDisabled} title={mergeButtonTitle}>
+										<lightning-icon icon-name="utility:merge" size="xx-small"></lightning-icon>
+										<span>Merge into one PDF</span>
+									</button>
+								</template>
+								<button class="pill" onclick={handleClearSelection}>Clear</button>
+							</div>
+						</template>
+						<lightning-button-menu
+							alternative-text="Folder actions"
+							icon-size="small"
+							menu-alignment="right"
+							onselect={handleFolderMenu}
+						>
+							<lightning-menu-item value="rename" label="Rename folder"></lightning-menu-item>
+							<lightning-menu-item value="download" label="Download folder"></lightning-menu-item>
+						</lightning-button-menu>
+					</div>
+
+					<template if:true={hasVisibleFiles}>
+						<ul class="dv-grid" role="list" ondragover={handleGridDragOver} ondrop={handleGridDrop}>
+							<template for:each={visibleFiles} for:item="file">
+								<li
+									key={file.id}
+									class={file.cssClass}
+									draggable="true"
+									data-id={file.id}
+									ondragstart={handleDragStart}
+									ondragend={handleDragEnd}
+									ondragover={handleCardDragOver}
+									ondrop={handleCardDrop}
+								>
+									<input
+										type="checkbox"
+										class="dv-check dv-card__check"
+										data-id={file.id}
+										aria-label={file.selectLabel}
+										checked={file.isSelected}
+										onchange={handleToggleSelect}
+									/>
+									<template if:true={file.mergePosition}>
+										<span class="dv-card__order" title="Position in a merge: the order you ticked">{file.mergePosition}</span>
+									</template>
+									<button type="button" class="dv-card__thumb" data-file-id={file.id} onclick={handleMobilePreview} title="Preview">
+										<lightning-icon icon-name={file.displayIcon} size="large" class="dv-card__fallback"></lightning-icon>
+										<template if:true={file.thumbnailUrl}>
+											<img src={file.thumbnailUrl} alt={file.fileNameWithType} loading="lazy" draggable="false" onerror={handleThumbError} />
+										</template>
+									</button>
+									<div class="dv-card__body">
+										<div class="dv-card__name" title={file.fileNameWithType}>{file.fileNameWithType}</div>
+										<div class="dv-card__meta">{file.createdBy} · {file.shortDate}</div>
+										<template if:true={file.hasCondition}>
+											<span class="dv-chip" title={file.conditionName}>{file.conditionName}</span>
+										</template>
+									</div>
+									<lightning-button-menu
+										class="dv-card__menu"
+										alternative-text="File actions"
+										icon-size="x-small"
+										menu-alignment="auto"
+										data-file-id={file.id}
+										onselect={handleMobileFileAction}
+									>
+										<lightning-menu-item value="download" label="Download"></lightning-menu-item>
+										<lightning-menu-item value="renameFile" label="Rename file"></lightning-menu-item>
+										<lightning-menu-item value="changeFolder" label="Change folder"></lightning-menu-item>
+										<lightning-menu-item value="relateCondition" label="Relate to loan condition"></lightning-menu-item>
+										<lightning-menu-item value="delete" label="Delete"></lightning-menu-item>
+									</lightning-button-menu>
+								</li>
+							</template>
+						</ul>
+					</template>
+
+					<template if:false={hasVisibleFiles}>
+						<div class="dv-empty">
+							<lightning-icon icon-name="utility:open_folder" size="small"></lightning-icon>
+							<p>{emptyStateText}</p>
+						</div>
+					</template>
+				</section>
 			</div>
-		</template>
+		</div>
+	</template>
+	<!-- Phones: touch cannot drag, so the stacked card list and its menus stay as they were. -->
+	<template if:true={isCompactView}>
+	<lightning-card variant="narrow" icon-name="standard:file" class="document-viewer-card slds-p-horizontal_x-small">
+		<h3 slot="title">Loan Documents</h3>
+
 
 		<template if:true={isCompactView}>
 			<div class="toolbar toolbar--mobile">
@@ -99,18 +234,6 @@
 							data-index={folderIndex}
 						></lightning-menu-item>
 					</lightning-button-menu>
-
-					<template if:false={isCompactView}>
-						<c-document-thumbnail-datatable
-							key={folder}
-							key-field="id"
-							data={folder.data}
-							columns={fileTableColumns}
-							onrowaction={handleRowAction}
-							resize-column-disabled
-							hide-checkbox-column
-						></c-document-thumbnail-datatable>
-					</template>
 
 					<template if:true={isCompactView}>
 						<ul class="mobile-file-list" role="list">
@@ -193,6 +316,7 @@
 			</template>
 		</lightning-accordion>
 	</lightning-card>
+	</template>
 
 	<template if:true={renameFolderModalOpen}>
 		<section
@@ -532,6 +656,71 @@
 					<button class="slds-button slds-button_neutral" onclick={closeAddDocumentModal}>
 						Done
 					</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+	<template if:true={mergeModalOpen}>
+		<section
+			role="dialog"
+			tabindex="-1"
+			aria-labelledby="merge-heading"
+			aria-modal="true"
+			class="slds-modal slds-fade-in-open document-viewer-modal"
+		>
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button
+						class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+						title="Close"
+						onclick={closeMergeModal}
+						disabled={isMerging}
+					>
+						<lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+						<span class="slds-assistive-text">Close</span>
+					</button>
+					<h2 id="merge-heading" class="slds-text-heading_medium slds-hyphenate">Merge into one PDF</h2>
+				</header>
+
+				<div class="slds-modal__content slds-p-around_medium">
+					<lightning-input
+						type="text"
+						label="Name of the merged file"
+						value={mergeTitle}
+						onchange={handleMergeTitleChange}
+						disabled={isMerging}
+						required
+					></lightning-input>
+					<p class="dv-merge__hint">Pages go in the order you ticked the files:</p>
+					<ol class="dv-merge__list">
+						<template for:each={mergeList} for:item="item">
+							<li key={item.id}>
+								<span class="dv-merge__position">{item.position}</span>
+								<span class="dv-merge__name">{item.name}</span>
+								<template if:true={item.isPart}>
+									<span class="dv-chip">deleted after merge</span>
+								</template>
+							</li>
+						</template>
+					</ol>
+					<template if:true={mergePartNote}>
+						<p class="dv-merge__hint">{mergePartNote} Every other file is kept.</p>
+					</template>
+					<template if:true={isMerging}>
+						<div class="dv-merge__working">
+							<div class="dv-merge__spin"><lightning-spinner alternative-text="Merging" size="small"></lightning-spinner></div>
+							<span>Merging and saving. Long statements can take a minute.</span>
+						</div>
+					</template>
+					<!-- Does the work: see DocumentMergeBridge.page for why it is not Apex. -->
+					<iframe class="dv-merge-bridge" src="/apex/DocumentMergeBridge" title="Merge helper" tabindex="-1"></iframe>
+				</div>
+
+				<footer class="slds-modal__footer document-viewer-modal__footer">
+					<button class="slds-button slds-button_neutral" onclick={closeMergeModal} disabled={isMerging}>Cancel</button>
+					<button class="slds-button slds-button_brand" onclick={handleMerge} disabled={mergeConfirmDisabled}>Merge</button>
 				</footer>
 			</div>
 		</section>

@@ -111,6 +111,122 @@ private class DocumentViewerControllerTest {
     }
 
     @IsTest
+    static void moveFilesRefilesAndOrdersTheDestinationFolder() {
+        Lead leadRecord = buildLead();
+        Id first = linkedDocument('first.pdf', 'Asset', leadRecord.Id);
+        Id second = linkedDocument('second.pdf', 'Income', leadRecord.Id);
+        Id notOnLead = [
+            SELECT ContentDocumentId FROM ContentVersion
+            WHERE Id = :buildContentVersion('stray.pdf', null, 'Asset').Id
+        ].ContentDocumentId;
+
+        Test.startTest();
+        // Drop "first" into Income, ahead of the file already there.
+        DocumentViewerController.moveFiles(leadRecord.Id, 'Income', new List<Id>{ first, second });
+        Boolean refused = false;
+        try {
+            DocumentViewerController.moveFiles(leadRecord.Id, 'Income', new List<Id>{ notOnLead });
+        } catch (AuraHandledException e) {
+            refused = true;
+        }
+        List<DocumentViewerController.DocumentWrapper> wrappers = DocumentViewerController.getDocs(leadRecord.Id);
+        Test.stopTest();
+
+        System.assert(refused, 'A file that is not on the record must not be moved.');
+        Map<Id, DocumentViewerController.DocumentWrapper> byId = new Map<Id, DocumentViewerController.DocumentWrapper>();
+        for (DocumentViewerController.DocumentWrapper wrapper : wrappers) {
+            byId.put(wrapper.id, wrapper);
+        }
+        System.assertEquals('Income', byId.get(first).folderName);
+        System.assertEquals(0, byId.get(first).sortOrder);
+        System.assertEquals(1, byId.get(second).sortOrder);
+        System.assertEquals('Asset', [
+            SELECT Folder__c FROM ContentVersion WHERE ContentDocumentId = :notOnLead
+        ].Folder__c);
+    }
+
+    @IsTest
+    static void finishMergeFilesTheMergedPdfAndDeletesOnlyTheParts() {
+        Lead leadRecord = buildLead();
+        Lead_Document_Request__c requestRecord = buildRequest(leadRecord.Id, 'Bank Statements', 'Asset');
+        Id partTwo = linkedDocument('May Statement (part 2 of 2)', 'Asset', leadRecord.Id);
+        Id partOne = linkedDocument('May Statement (part 1 of 2)', 'Asset', leadRecord.Id);
+        Id letter = linkedDocument('Explanation letter', 'Conditions', leadRecord.Id);
+        // The portal links its uploads to the request; the merged file must be counted there too.
+        insert new ContentDocumentLink(ContentDocumentId = partOne, LinkedEntityId = requestRecord.Id, ShareType = 'V', Visibility = 'AllUsers');
+        update new ContentVersion(Id = latestVersionId(partOne), Sort_Order__c = 3);
+        // Stands in for the file the bridge page creates through the REST API.
+        ContentVersion merged = new ContentVersion(
+            Title = 'May Statement', PathOnClient = 'May Statement.pdf',
+            VersionData = Blob.valueOf('merged'), FirstPublishLocationId = leadRecord.Id
+        );
+        insert merged;
+        Id strangerFile = [
+            SELECT ContentDocumentId FROM ContentVersion
+            WHERE Id = :buildContentVersion('stray.pdf', null, 'Asset').Id
+        ].ContentDocumentId;
+
+        Test.startTest();
+        // Clicked part 1 first, so its folder and position win.
+        Integer deleted = DocumentViewerController.finishMerge(
+            leadRecord.Id, merged.Id, new List<Id>{ partOne, partTwo, letter }
+        );
+        Boolean refused = false;
+        try {
+            DocumentViewerController.finishMerge(leadRecord.Id, merged.Id, new List<Id>{ strangerFile });
+        } catch (AuraHandledException e) {
+            refused = true;
+        }
+        Test.stopTest();
+
+        ContentVersion filed = [
+            SELECT Folder__c, Sort_Order__c, ContentDocumentId FROM ContentVersion WHERE Id = :merged.Id
+        ];
+        System.assertEquals(2, deleted, 'Both portal parts are replaced by the merged file.');
+        System.assertEquals(0, [SELECT COUNT() FROM ContentDocument WHERE Id IN (:partOne, :partTwo)]);
+        System.assertEquals(1, [SELECT COUNT() FROM ContentDocument WHERE Id = :letter], 'Other sources are kept.');
+        System.assertEquals('Asset', filed.Folder__c);
+        System.assertEquals(3, filed.Sort_Order__c);
+        System.assertEquals(1, [
+            SELECT COUNT() FROM ContentDocumentLink
+            WHERE ContentDocumentId = :filed.ContentDocumentId AND LinkedEntityId = :requestRecord.Id
+        ], 'The merged file inherits the request link.');
+        System.assert(refused, 'A file that is not on the record must not be touched.');
+    }
+
+    @IsTest
+    static void rotationReadsTheFileAndSavesANewVersionOfIt() {
+        ContentVersion original = buildContentVersion('licence.pdf', null, 'ID');
+        Id documentId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :original.Id].ContentDocumentId;
+
+        Test.startTest();
+        DocumentViewerController.DocumentContentDto content = DocumentViewerController.getDocumentContent(documentId);
+        Id rotatedId = DocumentViewerController.saveRotatedDocument(
+            documentId, EncodingUtil.base64Encode(Blob.valueOf('rotated')), null
+        );
+        Test.stopTest();
+
+        System.assertEquals('test file body', EncodingUtil.base64Decode(content.base64Data).toString());
+        ContentVersion rotated = [SELECT ContentDocumentId, Folder__c, IsLatest FROM ContentVersion WHERE Id = :rotatedId];
+        System.assertEquals(documentId, rotated.ContentDocumentId, 'A rotation is a new version of the same file.');
+        System.assertEquals('ID', rotated.Folder__c);
+        System.assert(rotated.IsLatest);
+    }
+
+    private static Id latestVersionId(Id documentId) {
+        return [SELECT LatestPublishedVersionId FROM ContentDocument WHERE Id = :documentId].LatestPublishedVersionId;
+    }
+
+    private static Id linkedDocument(String title, String folder, Id recordId) {
+        Id documentId = [
+            SELECT ContentDocumentId FROM ContentVersion
+            WHERE Id = :buildContentVersion(title, null, folder).Id
+        ].ContentDocumentId;
+        insert new ContentDocumentLink(ContentDocumentId = documentId, LinkedEntityId = recordId, ShareType = 'V');
+        return documentId;
+    }
+
+    @IsTest
     static void deleteFileRemovesTheDocument() {
         ContentVersion version = buildContentVersion('scrap.pdf', null, 'Income');
         Id contentDocumentId = [

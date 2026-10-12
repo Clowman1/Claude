@@ -11,11 +11,34 @@ import getLoanConditions from '@salesforce/apex/DocumentViewerController.getLoan
 import relateFileToCondition from '@salesforce/apex/DocumentViewerController.relateFileToCondition';
 import changeFolder from '@salesforce/apex/DocumentViewerController.changeFolder';
 import getDefaultFolders from '@salesforce/apex/FileUploaderController.getDefaultFolders';
+import moveFiles from '@salesforce/apex/DocumentViewerController.moveFiles';
 import applyUploadDetails from '@salesforce/apex/DocumentViewerController.applyUploadDetails';
+import finishMerge from '@salesforce/apex/DocumentViewerController.finishMerge';
+
+// What pdf-lib can put into a PDF: PDFs page by page, and photos as a page each.
+const MERGEABLE_TYPES = new Set(['pdf', 'jpg', 'jpeg', 'png']);
+// Must match SPLIT_PART_TITLE in DocumentViewerController: the borrower portal's split parts.
+const SPLIT_PART_TITLE = /\(part \d+ of \d+\)$/;
+const BRIDGE_READY_TIMEOUT_MS = 20000;
 
 
 export default class DocumentViewer extends NavigationMixin(LightningElement) {
+	_contextRecordKey;
 	@api recordId;
+
+	// Set by the Partner Workspace portal, which embeds this viewer outside a record page (Nimbus, 2026-09-30).
+	@api
+	get contextRecordKey() {
+		return this._contextRecordKey;
+	}
+
+	set contextRecordKey(value) {
+		this._contextRecordKey = value;
+	}
+
+	get resolvedRecordId() {
+		return this.contextRecordKey || this.recordId;
+	}
 	@track isLoading = true;
 	@track allFolders = [];
 	@track folders = [];
@@ -46,59 +69,32 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 	ERROR_TOAST_VARIANT = 'error';
 	SUCCESS_TOAST_VARIANT = 'success';
 
-	fileActions = [
-		{ label: 'Download', name: 'download' },
-		{ label: 'Rename File', name: 'renameFile' },
-		{ label: 'Change Folder', name: 'changeFolder' },
-		{ label: 'Delete', name: 'delete' },
-		{ label: 'Relate to Loan Condition', name: 'relateCondition'}
-	];
-
-	fileTableColumns = [
-		{label: 'Preview', type:'button-icon', fixedWidth: 65, 
-			typeAttributes: {
-				iconName: 'utility:preview',
-				name: 'preview',
-				variant:'bare',
-				alternativeText: 'preview',
-				disabled: false,
-				onclick: '{handlePreview}'
-			}
-		},
-		// A picture of the document beats an icon telling you it is a PDF.
-		{label: 'Document', type: 'thumbnail', fieldName: 'thumbnailUrl', hideDefaultActions: true,
-			fixedWidth: 100,
-			typeAttributes: {
-				alt: { fieldName: 'fileNameWithType' },
-				fallbackIcon: { fieldName: 'fileTypeIcon' }
-			}
-		},
-		{label: 'Name', fieldName:'fileNameWithType', hideDefaultActions: true}, 
-		{label: 'Condition Name', fieldName:'conditionName', hideDefaultActions: true}, 
-		{label: 'Created By', fieldName:'createdBy', hideDefaultActions: true}, 
-		{label: 'Created Date', fieldName:'createdDate', type:'date', hideDefaultActions: true,
-			typeAttributes: {  
-				day: 'numeric',  
-				month: 'short',  
-				year: 'numeric',  
-				hour: '2-digit',  
-				minute: '2-digit',  
-				second: '2-digit',
-				hour12: false
-			}
-		},
-		{label: 'Action', type:'action', fixedWidth: 65, typeAttributes: {
-			rowActions: this.fileActions,
-			menuAlignment: 'auto'
-		}},
-		
-	];
-
 	@track activeFolders = [];
+	selectedFolderName;
+	NO_FOLDER = 'No Folder';
+
+	// Drag state. Only the id travels; the file itself is looked up on drop.
+	dragFileId;
+	dragFromFolder;
+	dragOverFolder;
+	dropTargetId;
+	dropBefore = true;
+
+	// Ticked documents, kept across folders so a download can mix them. Replaced, never mutated,
+	// so the template re-renders. A Set keeps insertion order, which is the order they were
+	// clicked: that is the page order of a merge.
+	selectedIds = new Set();
+
+	mergeModalOpen = false;
+	mergeTitle = '';
+	isMerging = false;
+	bridgeOrigin;
+	bridgeReady;
+	pendingMerge;
 
 	connectedCallback() {
 		this.showSpinner();
-		getDocs({recordId: this.recordId})
+		getDocs({recordId: this.resolvedRecordId})
 			.then((result) => {
 				this.onGetDocsSuccess(result);
 				this.closeSpinner();
@@ -178,6 +174,11 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 				? `/sfc/servlet.shepherd/version/renditionDownload?rendition=THUMB240BY180&versionId=${doc.versionId}`
 				: null;
 			doc.formattedCreatedDate = this.formatCreatedDate(doc.createdDate);
+			doc.shortDate = doc.createdDate
+				? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(doc.createdDate))
+				: '';
+			doc.hasCondition = !!doc.conditionName && doc.conditionName !== 'None';
+			doc.displayIcon = doc.fileTypeIcon || 'doctype:unknown';
 			parsedDocs.push(doc);
 		}
 
@@ -288,6 +289,13 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 			foldersToFilesMap.set(folderName, docsByFolder);
 		}
 
+		// Files someone has dragged into place keep that order; the rest follow in the order Apex
+		// returned them. Array.sort is stable, so ties keep that order too.
+		const position = (doc) => (doc.sortOrder === null || doc.sortOrder === undefined ? Infinity : doc.sortOrder);
+		for (const folder of folders) {
+			folder.data.sort((a, b) => position(a) - position(b));
+		}
+
 		this.folders = folders;
 
 		this.folders.sort((a, b) => {
@@ -303,7 +311,8 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 	// own rules about placement. Written as "not a Transaction" rather than "is a Lead" so an
 	// unexpected or late-arriving recordId leaves the button visible rather than silently gone.
 	get canAddDocument() {
-		return !(typeof this.recordId === 'string' && this.recordId.startsWith(this.TRANSACTION_ID_PREFIX));
+		const id = this.resolvedRecordId;
+		return !(typeof id === 'string' && id.startsWith(this.TRANSACTION_ID_PREFIX));
 	}
 
 	get folderOptions() {
@@ -394,7 +403,15 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 
 		this.setFolders(this.docs);
 		this.allFolders = [...this.folders];
-		getLoanConditions({recordId: this.recordId})
+		// Forget ticks on documents that are gone after a reload (deleted, or unlinked elsewhere).
+		const present = new Set(this.docs.map((doc) => doc.id));
+		this.selectedIds = new Set([...this.selectedIds].filter((id) => present.has(id)));
+		const stillThere = this.allFolders.some((folder) => folder.name === this.selectedFolderName);
+		if (!stillThere) {
+			const firstWithFiles = this.allFolders.find((folder) => folder.data.length > 0);
+			this.selectedFolderName = (firstWithFiles || this.allFolders[0] || {}).name;
+		}
+		getLoanConditions({recordId: this.resolvedRecordId})
 			.then((conditions) => {
 				const conditionOptions = [{label:'None', value: 'None'}];
 				for (const condition of conditions) {
@@ -499,7 +516,7 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		const newFolderName = this.folderToRename.newName;
 
 		const params = {
-			recordId : this.recordId,
+			recordId : this.resolvedRecordId,
 			oldFolderName : oldFolderName,
 			newFolderName : newFolderName.trim()
 		};
@@ -545,32 +562,6 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 		downloadUrl += '?';
 
 		return downloadUrl;
-	}
-
-	handleRowAction(event) {
-		const action = event.detail.action;
-		const row = event.detail.row;
-
-		switch (action.name) {
-			case 'preview':
-				this.handlePreview(row);
-				break;
-			case 'download':
-				this.handleDownload(row);
-				break;
-			case 'renameFile':
-				this.openRenameFileModal(row);
-				break;
-			case 'changeFolder':
-				this.openChangeFolderModal(row);
-				break;
-			case 'delete':
-				this.openDeleteModal(row);
-				break;
-			case 'relateCondition':
-				this.openConditionPickModal(row);
-				break;
-		}
 	}
 
 	handlePreview(row) {
@@ -687,7 +678,7 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 
 	handleFolderChange(event) {
 		const params = {
-			recordId: this.recordId,
+			recordId: this.resolvedRecordId,
 			fileId: this.fileToChangeFolder.id,
 			newFolderName: this.newFolderForFile
 		};
@@ -793,4 +784,456 @@ export default class DocumentViewer extends NavigationMixin(LightningElement) {
 			console.log(e?.stack);
 		}
 	}
- }
+
+	// ---------- Desktop: folder rail and file grid ----------
+
+	matchesFilter(file) {
+		return !this.filter || file.fileNameWithType.toLowerCase().includes(this.filter.toLowerCase());
+	}
+
+	get railFolders() {
+		return this.allFolders.map((folder) => {
+			const isSelected = folder.name === this.selectedFolderName;
+			const count = folder.data.filter((file) => this.matchesFilter(file)).length;
+			let cssClass = 'dv-rail__item';
+			if (isSelected) cssClass += ' is-selected';
+			if (!count) cssClass += ' is-empty';
+			if (folder.name === this.dragOverFolder) cssClass += ' is-drop';
+			return {
+				name: folder.name,
+				count,
+				cssClass,
+				icon: isSelected ? 'utility:open_folder' : 'utility:folder',
+				ariaCurrent: isSelected ? 'true' : 'false'
+			};
+		});
+	}
+
+	get selectedFolder() {
+		return this.allFolders.find((folder) => folder.name === this.selectedFolderName);
+	}
+
+	get visibleFiles() {
+		const folder = this.selectedFolder;
+		if (!folder) {
+			return [];
+		}
+		const order = [...this.selectedIds];
+		return folder.data
+			.filter((file) => this.matchesFilter(file))
+			.map((file) => {
+				const isSelected = this.selectedIds.has(file.id);
+				let cssClass = 'dv-card';
+				if (isSelected) cssClass += ' is-selected';
+				if (this.hasSelection) cssClass += ' is-selecting';
+				if (file.id === this.dragFileId) cssClass += ' is-dragging';
+				if (file.id === this.dropTargetId) cssClass += this.dropBefore ? ' drop-before' : ' drop-after';
+				const mergePosition = this.selectedIds.size > 1 && isSelected ? order.indexOf(file.id) + 1 : null;
+				return { ...file, cssClass, isSelected, mergePosition, selectLabel: `Select ${file.fileNameWithType}` };
+			});
+	}
+
+	// ---------- Merge into one PDF ----------
+
+	get selectedInClickOrder() {
+		const byId = new Map(this.docs.map((doc) => [doc.id, doc]));
+		return [...this.selectedIds].map((id) => byId.get(id)).filter(Boolean);
+	}
+
+	// The bridge page runs on the org's Visualforce domain, which the Partner Workspace portal
+	// cannot reach, so merging is offered on internal record pages only.
+	get canOfferMerge() {
+		return this.selectedIds.size > 1 && !this.contextRecordKey;
+	}
+
+	get mergeBlockedReason() {
+		const other = this.selectedInClickOrder.find(
+			(doc) => !MERGEABLE_TYPES.has(String(doc.fileType || '').toLowerCase())
+		);
+		return other ? `${other.fileNameWithType} is not a PDF or image, so it cannot be merged.` : '';
+	}
+
+	get mergeDisabled() {
+		return Boolean(this.mergeBlockedReason);
+	}
+
+	get mergeButtonTitle() {
+		return this.mergeBlockedReason || 'Merge the selected files into one PDF, in the order you ticked them';
+	}
+
+	get mergeList() {
+		return this.selectedInClickOrder.map((doc, index) => ({
+			id: doc.id,
+			position: index + 1,
+			name: doc.fileNameWithType,
+			isPart: SPLIT_PART_TITLE.test(doc.fileName)
+		}));
+	}
+
+	get mergePartCount() {
+		return this.mergeList.filter((item) => item.isPart).length;
+	}
+
+	get mergePartNote() {
+		const count = this.mergePartCount;
+		if (!count) {
+			return '';
+		}
+		return count === 1
+			? 'The portal part marked below will be deleted once the merged file is saved.'
+			: `The ${count} portal parts marked below will be deleted once the merged file is saved.`;
+	}
+
+	get mergeConfirmDisabled() {
+		return this.isMerging || !this.mergeTitle.trim();
+	}
+
+	openMergeModal() {
+		const first = this.selectedInClickOrder[0];
+		const base = first.fileName.replace(SPLIT_PART_TITLE, '').trim();
+		this.mergeTitle = SPLIT_PART_TITLE.test(first.fileName) ? base : `${base} (merged)`;
+		this.bridgeOrigin = null;
+		// Created before the iframe exists, so a ready message that arrives quickly is not missed.
+		this.bridgeReady = new Promise((resolve) => {
+			this.resolveBridgeReady = resolve;
+		});
+		this.messageHandler = this.handleBridgeMessage.bind(this);
+		window.addEventListener('message', this.messageHandler);
+		this.mergeModalOpen = true;
+	}
+
+	closeMergeModal() {
+		if (this.isMerging) {
+			return;
+		}
+		window.removeEventListener('message', this.messageHandler);
+		this.mergeModalOpen = false;
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('message', this.messageHandler);
+	}
+
+	handleMergeTitleChange(event) {
+		this.mergeTitle = event.detail.value || '';
+	}
+
+	// Trusts only this org's Visualforce domain, derived from the Lightning one it is served beside.
+	isBridgeOrigin(origin) {
+		const myDomain = window.location.hostname.split('.')[0];
+		return origin === `https://${myDomain}--c.vf.force.com`
+			|| origin === `https://${myDomain}--c.sandbox.vf.force.com`;
+	}
+
+	handleBridgeMessage(event) {
+		if (!this.isBridgeOrigin(event.origin) || !event.data) {
+			return;
+		}
+		if (event.data.type === 'mergeBridgeReady') {
+			this.bridgeOrigin = event.origin;
+			this.resolveBridgeReady();
+		} else if (event.data.type === 'mergeResult' && this.pendingMerge?.requestId === event.data.requestId) {
+			const { resolve, reject } = this.pendingMerge;
+			this.pendingMerge = null;
+			if (event.data.ok) {
+				resolve(event.data.contentVersionId);
+			} else {
+				reject(new Error(event.data.message || 'The merge failed.'));
+			}
+		}
+	}
+
+	waitForBridge() {
+		let timer;
+		const timeout = new Promise((resolve, reject) => {
+			// eslint-disable-next-line @lwc/lwc/no-async-operation
+			timer = setTimeout(
+				() => reject(new Error(
+					'The merge helper did not load. Ask an admin to check you have access to the Document Merge Bridge page.'
+				)),
+				BRIDGE_READY_TIMEOUT_MS
+			);
+		});
+		return Promise.race([this.bridgeReady, timeout]).finally(() => clearTimeout(timer));
+	}
+
+	async handleMerge() {
+		const sources = this.selectedInClickOrder;
+		const title = this.mergeTitle.trim();
+		const partCount = this.mergePartCount;
+		this.isMerging = true;
+		try {
+			await this.waitForBridge();
+			const requestId = `${Date.now()}-${Math.random()}`;
+			// No timeout here: a long statement over a slow connection legitimately takes a while,
+			// and the dialog shows it is still working.
+			const mergedVersionId = await new Promise((resolve, reject) => {
+				this.pendingMerge = { requestId, resolve, reject };
+				this.template.querySelector('iframe.dv-merge-bridge').contentWindow.postMessage({
+					type: 'merge',
+					requestId,
+					recordId: this.resolvedRecordId,
+					title,
+					sources: sources.map((doc) => ({
+						versionId: doc.versionId,
+						extension: String(doc.fileType).toLowerCase(),
+						name: doc.fileNameWithType
+					}))
+				}, this.bridgeOrigin);
+			});
+
+			let deleted = 0;
+			try {
+				deleted = await finishMerge({
+					recordId: this.resolvedRecordId,
+					mergedVersionId,
+					sourceDocumentIds: sources.map((doc) => doc.id)
+				});
+			} catch (filingError) {
+				// The merged PDF is saved and on the record; only the filing and clean-up are missing.
+				this.showToast(
+					`${title}.pdf was saved, but it could not be filed: ${this.apexErrorMessage(filingError, 'unknown error')}. Nothing was deleted.`,
+					this.ERROR_TOAST_VARIANT
+				);
+				this.finishMergeUi();
+				return;
+			}
+			const leftOver = partCount - deleted;
+			this.showToast(
+				leftOver > 0
+					? `Merged into ${title}.pdf. ${leftOver} part file(s) could not be deleted; delete them by hand.`
+					: `Merged ${sources.length} files into ${title}.pdf.`,
+				leftOver > 0 ? this.ERROR_TOAST_VARIANT : this.SUCCESS_TOAST_VARIANT
+			);
+			this.selectedIds = new Set();
+			this.finishMergeUi();
+		} catch (error) {
+			this.isMerging = false;
+			this.showToast(this.apexErrorMessage(error, 'The merge failed.'), this.ERROR_TOAST_VARIANT);
+		}
+	}
+
+	finishMergeUi() {
+		this.isMerging = false;
+		this.closeMergeModal();
+		this.connectedCallback();
+	}
+
+	get hasSelection() {
+		return this.selectedIds.size > 0;
+	}
+
+	get selectionLabel() {
+		const count = this.selectedIds.size;
+		const inThisFolder = (this.selectedFolder?.data || []).filter((file) => this.selectedIds.has(file.id)).length;
+		const elsewhere = count - inThisFolder;
+		const base = `${count} selected`;
+		return elsewhere ? `${base} (${elsewhere} in other folders)` : base;
+	}
+
+	get allVisibleSelected() {
+		const files = this.visibleFiles;
+		return files.length > 0 && files.every((file) => this.selectedIds.has(file.id));
+	}
+
+	handleToggleSelect(event) {
+		const id = event.target.dataset.id;
+		const next = new Set(this.selectedIds);
+		if (event.target.checked) {
+			next.add(id);
+		} else {
+			next.delete(id);
+		}
+		this.selectedIds = next;
+	}
+
+	// Acts on what is on screen, so with a search typed it ticks only the matches.
+	handleSelectAllVisible(event) {
+		const next = new Set(this.selectedIds);
+		for (const file of this.visibleFiles) {
+			if (event.target.checked) {
+				next.add(file.id);
+			} else {
+				next.delete(file.id);
+			}
+		}
+		this.selectedIds = next;
+	}
+
+	handleClearSelection() {
+		this.selectedIds = new Set();
+	}
+
+	downloadSelected() {
+		const files = this.docs.filter((doc) => this.selectedIds.has(doc.id));
+		if (!files.length) {
+			return;
+		}
+		this[NavigationMixin.Navigate]({
+			type: 'standard__webPage',
+			attributes: { url: this.getDownloadUrl(files) }
+		});
+	}
+
+	get hasVisibleFiles() {
+		return this.visibleFiles.length > 0;
+	}
+
+	get emptyStateText() {
+		return this.filter ? 'No documents in this folder match your search.' : 'This folder is empty.';
+	}
+
+	handleFolderSelect(event) {
+		this.selectedFolderName = event.currentTarget.dataset.name;
+	}
+
+	handleFolderMenu(event) {
+		const folder = this.selectedFolder;
+		if (!folder) {
+			return;
+		}
+		if (event.detail.value === 'rename') {
+			this.folderToRename = folder;
+			this.renameFolderModalOpen = true;
+		} else if (event.detail.value === 'download' && folder.data.length) {
+			this[NavigationMixin.Navigate]({
+				type: 'standard__webPage',
+				attributes: { url: this.getDownloadUrl(folder.data) }
+			});
+		}
+	}
+
+	// No rendition exists for some types (zip, msg...). Hiding the broken image uncovers the
+	// file-type icon rendered underneath it.
+	handleThumbError(event) {
+		event.target.style.display = 'none';
+	}
+
+	handleDragStart(event) {
+		this.dragFileId = event.currentTarget.dataset.id;
+		this.dragFromFolder = this.selectedFolderName;
+		event.dataTransfer.effectAllowed = 'move';
+		// Firefox will not start a drag without data.
+		event.dataTransfer.setData('text/plain', this.dragFileId);
+	}
+
+	handleDragEnd() {
+		this.dragFileId = null;
+		this.dragFromFolder = null;
+		this.dragOverFolder = null;
+		this.dropTargetId = null;
+	}
+
+	handleCardDragOver(event) {
+		if (!this.dragFileId) {
+			return;
+		}
+		event.preventDefault();
+		event.stopPropagation();
+		const targetId = event.currentTarget.dataset.id;
+		const rect = event.currentTarget.getBoundingClientRect();
+		const before = event.clientX < rect.left + rect.width / 2;
+		if (targetId === this.dragFileId) {
+			this.dropTargetId = null;
+		} else if (targetId !== this.dropTargetId || before !== this.dropBefore) {
+			this.dropTargetId = targetId;
+			this.dropBefore = before;
+		}
+	}
+
+	handleGridDragOver(event) {
+		if (this.dragFileId) {
+			event.preventDefault();
+		}
+	}
+
+	handleCardDrop(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		this.dropWithinFolder(this.dropTargetId, this.dropBefore);
+	}
+
+	// Dropped on the gap between cards: send it to the end.
+	handleGridDrop(event) {
+		event.preventDefault();
+		this.dropWithinFolder(null, false);
+	}
+
+	dropWithinFolder(targetId, before) {
+		const fileId = this.dragFileId;
+		const folder = this.selectedFolder;
+		this.handleDragEnd();
+		if (!fileId || !folder || fileId === targetId) {
+			return;
+		}
+		const ids = folder.data.map((file) => file.id).filter((id) => id !== fileId);
+		let index = targetId ? ids.indexOf(targetId) : ids.length;
+		if (index < 0) index = ids.length;
+		if (targetId && !before) index += 1;
+		ids.splice(index, 0, fileId);
+
+		const unchanged = ids.every((id, i) => id === folder.data[i].id);
+		if (!unchanged) {
+			this.saveMove(fileId, folder.name, ids);
+		}
+	}
+
+	handleFolderDragOver(event) {
+		const name = event.currentTarget.dataset.name;
+		// "No Folder" is only where unfiled documents collect; it is not something to file into.
+		if (!this.dragFileId || name === this.dragFromFolder || name === this.NO_FOLDER) {
+			return;
+		}
+		event.preventDefault();
+		event.dataTransfer.dropEffect = 'move';
+		this.dragOverFolder = name;
+	}
+
+	handleFolderDragLeave(event) {
+		if (this.dragOverFolder === event.currentTarget.dataset.name) {
+			this.dragOverFolder = null;
+		}
+	}
+
+	handleFolderDrop(event) {
+		event.preventDefault();
+		const fileId = this.dragFileId;
+		const target = this.allFolders.find((folder) => folder.name === event.currentTarget.dataset.name);
+		this.handleDragEnd();
+		if (!fileId || !target) {
+			return;
+		}
+		this.saveMove(fileId, target.name, [...target.data.map((file) => file.id), fileId]);
+	}
+
+	// Moves the card on screen straight away, then saves. A failed save reloads from the server
+	// so the screen never shows an order that was not kept.
+	saveMove(fileId, folderName, orderedIds) {
+		const byId = new Map(this.docs.map((doc) => [doc.id, doc]));
+		const fromFolder = byId.get(fileId).folderName;
+
+		const folders = this.allFolders.map((folder) => {
+			if (folder.name === folderName) {
+				const data = orderedIds.map((id, i) => Object.assign(byId.get(id), { folderName, sortOrder: i }));
+				return { ...folder, data };
+			}
+			return { ...folder, data: folder.data.filter((file) => file.id !== fileId) };
+		});
+		this.folders = folders;
+		this.allFolders = [...folders];
+
+		moveFiles({ recordId: this.resolvedRecordId, folderName, orderedFileIds: orderedIds })
+			.then(() => {
+				if (fromFolder !== folderName) {
+					this.showToast(`Moved to ${folderName}`, this.SUCCESS_TOAST_VARIANT);
+				}
+			})
+			.catch((error) => {
+				this.showToast(
+					this.apexErrorMessage(error, 'That move could not be saved. Try again.'),
+					this.ERROR_TOAST_VARIANT
+				);
+				this.connectedCallback();
+			});
+	}
+}
