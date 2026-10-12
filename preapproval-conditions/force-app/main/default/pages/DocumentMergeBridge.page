@@ -71,16 +71,27 @@
         var merged = await output.save({ useObjectStreams: true });
 
         // Multipart rather than base64 JSON: no size ceiling worth worrying about, and no 33%
-        // inflation of a file that is already large.
+        // inflation of a file that is already large. Built by hand because FormData gives every
+        // Blob part a filename, and Salesforce then counts the JSON as a second file and refuses
+        // the request ("Cannot include more than one binary part").
         var fileName = request.title + '.pdf';
-        var form = new FormData();
-        form.append('entity_content', new Blob([JSON.stringify({
-            Title: request.title,
-            PathOnClient: fileName,
-            FirstPublishLocationId: request.recordId
-        })], { type: 'application/json' }));
-        form.append('VersionData', new Blob([merged], { type: 'application/pdf' }), fileName);
-        var created = await (await api('/sobjects/ContentVersion', { method: 'POST', body: form })).json();
+        var boundary = 'merge' + Math.random().toString(16).slice(2);
+        var body = new Blob([
+            '--' + boundary + '\r\n'
+                + 'Content-Disposition: form-data; name="entity_content"\r\n'
+                + 'Content-Type: application/json\r\n\r\n'
+                + JSON.stringify({ Title: request.title, PathOnClient: fileName, FirstPublishLocationId: request.recordId })
+                + '\r\n--' + boundary + '\r\n'
+                + 'Content-Disposition: form-data; name="VersionData"; filename="' + fileName.replace(/["\r\n]/g, '') + '"\r\n'
+                + 'Content-Type: application/pdf\r\n\r\n',
+            merged,
+            '\r\n--' + boundary + '--\r\n'
+        ]);
+        var created = await (await api('/sobjects/ContentVersion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'multipart/form-data; boundary=' + boundary },
+            body: body
+        })).json();
         return created.id;
     }
 
