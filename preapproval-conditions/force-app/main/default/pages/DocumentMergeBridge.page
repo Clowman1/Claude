@@ -1,0 +1,107 @@
+<!--
+    Hidden helper for the Documents tab's "Merge into one PDF".
+
+    Apex can only carry about 3.5 MB of file in and out, and a merged bank statement is routinely
+    bigger, so the merge never goes through Apex. The documentViewer LWC loads this page in a hidden
+    iframe and posts it the files to merge; this page reads them, merges them with pdf-lib and saves
+    the result through the REST API with the user's own session, where the limit is 2 GB.
+    DocumentViewerController.finishMerge then files it.
+
+    It acts only on messages from this org's Lightning domain, and only with the running user's
+    own access: it can read and create nothing the user could not through the API.
+-->
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+<html>
+<head>
+    <script src="{!$Resource.pdfLib}"></script>
+</head>
+<body>
+<script>
+(function () {
+    'use strict';
+    var SESSION = '{!JSENCODE($Api.Session_ID)}';
+    var API = '/services/data/v62.0';
+    // reachhomeloans--c.vf.force.com -> reachhomeloans.lightning.force.com (and the sandbox forms).
+    var myDomain = location.hostname.replace(/--c\..*$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var LIGHTNING_ORIGIN = new RegExp('^https://' + myDomain + '\\.(sandbox\\.)?lightning\\.force\\.com$');
+    // Letter width. An image page takes the image's proportions at that width, so a phone photo
+    // sits at the same scale as the scanned pages either side of it.
+    var IMAGE_PAGE_WIDTH = 612;
+
+    async function api(path, options) {
+        options = options || {};
+        options.headers = Object.assign({ Authorization: 'Bearer ' + SESSION }, options.headers || {});
+        var response = await fetch(API + path, options);
+        if (!response.ok) {
+            var detail = '';
+            try {
+                var body = await response.json();
+                detail = body && body[0] && body[0].message;
+            } catch (ignored) {
+                // Not JSON; the status says enough.
+            }
+            throw new Error(detail || 'Salesforce refused the request (' + response.status + ').');
+        }
+        return response;
+    }
+
+    async function merge(request) {
+        var output = await PDFLib.PDFDocument.create();
+        for (var i = 0; i < request.sources.length; i++) {
+            var source = request.sources[i];
+            var bytes = new Uint8Array(
+                await (await api('/sobjects/ContentVersion/' + source.versionId + '/VersionData')).arrayBuffer()
+            );
+            if (source.extension === 'pdf') {
+                var sourcePdf;
+                try {
+                    sourcePdf = await PDFLib.PDFDocument.load(bytes);
+                } catch (loadError) {
+                    throw new Error(source.name + ' is password-protected or damaged, so it cannot be merged.');
+                }
+                var pages = await output.copyPages(sourcePdf, sourcePdf.getPageIndices());
+                pages.forEach(function (page) { output.addPage(page); });
+            } else {
+                var image = source.extension === 'png' ? await output.embedPng(bytes) : await output.embedJpg(bytes);
+                var height = IMAGE_PAGE_WIDTH * image.height / image.width;
+                output.addPage([IMAGE_PAGE_WIDTH, height])
+                    .drawImage(image, { x: 0, y: 0, width: IMAGE_PAGE_WIDTH, height: height });
+            }
+        }
+        var merged = await output.save({ useObjectStreams: true });
+
+        // Multipart rather than base64 JSON: no size ceiling worth worrying about, and no 33%
+        // inflation of a file that is already large.
+        var fileName = request.title + '.pdf';
+        var form = new FormData();
+        form.append('entity_content', new Blob([JSON.stringify({
+            Title: request.title,
+            PathOnClient: fileName,
+            FirstPublishLocationId: request.recordId
+        })], { type: 'application/json' }));
+        form.append('VersionData', new Blob([merged], { type: 'application/pdf' }), fileName);
+        var created = await (await api('/sobjects/ContentVersion', { method: 'POST', body: form })).json();
+        return created.id;
+    }
+
+    window.addEventListener('message', function (event) {
+        var request = event.data;
+        if (!LIGHTNING_ORIGIN.test(event.origin) || !request || request.type !== 'merge') {
+            return;
+        }
+        function reply(body) {
+            event.source.postMessage(Object.assign({ type: 'mergeResult', requestId: request.requestId }, body), event.origin);
+        }
+        merge(request).then(
+            function (contentVersionId) { reply({ ok: true, contentVersionId: contentVersionId }); },
+            function (error) { reply({ ok: false, message: error && error.message }); }
+        );
+    });
+
+    // Carries nothing, so it can go to any origin; the viewer checks where it came from.
+    window.parent.postMessage({ type: 'mergeBridgeReady' }, '*');
+})();
+</script>
+</body>
+</html>
+</apex:page>
