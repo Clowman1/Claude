@@ -1,6 +1,7 @@
 # LO Workspace guided tour: script (for approval before build)
 
 Status: REVISED 2026-10-09 after Round 6 (grill decisions 45-59) and the O3 / O4a deploys. Awaiting owner approval (grill decision 32). Document only: nothing built, nothing deployed.
+Update 2026-10-13: the owner approved `TOUR-UPDATE-2026-10-13.md` as written and it is merged here (chapter M "Communication settings", stop PD-CS, corrected PD-03/A-02, PD-04, PD-10/E-03, D-01, D-03, H-03, H-05, the `up-next-reply` hook). Built as package `lo-workspace/phaseO4h` (check-only validated, not deployed). Ship it only after the comms flow activation, otherwise PD-CS and M-02 ("from Reach's no-reply number") are not yet true.
 Source: read-only Production retrieves from 2026-10-09. The first pass covered `externalLoPortalShell`, `portalUtils`, `perfectDayHome` + children, `externalLoLeads`, `externalLoPreApprovals`, `externalLoLoans`, `externalLoRealtors`, `loWsPastClientDetail`, `loWsAppointments`, `loWsFollowUpPicker`, `portalActivityModal`, `portalCommunicationModal`, `loWsInPersonEvents`, `bdInviteModal`, `loanSubmissionWizard`, `loWsVolumeDrawer`, `loWsConnectGate`, the `LO_Workspace` app, tabs, flexipages, `PerfectDayHomeBuilder` and CustomLabels. A second retrieve after O3/O4a covered `externalLoLeadConversionModal`, `loWsZoomCard`, `zoomMeetingAssistant`, `loWsApplicationSummary`, `loWsCommunications`, `externalLoRecentLog`, `externalLoRealtors`, `externalLoLoans`, `loWsPastClientDetail`, `loWsFollowUpPicker`, `externalLoPortalShell` and `perfectDayHome`. Every quoted label below is the on-screen text in prod today, unless it is marked (new). A (new) label is something the tour build adds.
 
 ---
@@ -58,7 +59,7 @@ A record-level stop needs data on screen, such as a lead card, a loan or an uplo
 
 ---
 
-## 2. Full "Perfect Day" run (16 stops)
+## 2. Full "Perfect Day" run (17 stops + RingCentral)
 
 Hooks are `data-tour="…"` attributes to add in the build (full list in section 7).
 
@@ -66,14 +67,16 @@ Hooks are `data-tour="…"` attributes to add in the build (full list in section
 |---|---|---|---|---|---|---|---|
 | PD-01 | Welcome | Perfect Day (`perfectDay`) | Whole welcome banner (greeting + date) · `perfectDayHome` · `pd-banner` | waving | Hi, I'm Bran, your LO Workspace coach! Give me two minutes and I'll walk you through a Perfect Day from first coffee to wrap-up. | N | F |
 | PD-02 | Morning check | Perfect Day | "of N activity goals met today" bar + pace badge, then the metric cards "Daily Score", "Goals Completed", "Overdue Tasks", "Activities Remaining" · `perfectDayHome` · `pd-progress`, `pd-metrics` | presenting | Start every morning right here: this bar shows how many of today's goals you've hit and whether you're on pace. The cards and the Pipeline snapshot below tell you where the money is today. | N (zeros are fine on day one) | S |
-| PD-03 | Up Next | Perfect Day | "Up next for you" panel (first card = a High alert "Review documents" when one exists) + "Open all →" · `externalLoActivityPrompts` · `up-next`, `up-next-alert` | pointing | This is your to-do list, ranked by impact: documents to review sit at the very top as urgent actions, then new leads, follow-ups due today and weekly touches. Follow-ups you set show up here on the day they're due, so work it top to bottom every day. | Y, SS-UPNEXT | S |
-| PD-04 | Logging & replies | Perfect Day | "Log activity" button (banner), then "Recent activity" with a "Text reply" row on top · `perfectDayHome`, `externalLoRecentLog` · `pd-log-activity`, `recent-log` | hands-on-hips | Every call, text, meeting or post goes in with Log activity, and it counts toward today's goals. When a borrower or agent texts back, their reply shows at the top of Recent activity, so check it between calls. | Y, SS-RECENT (only when Recent activity has no reply) | S |
+| PD-03 | Up Next | Perfect Day | "Up next for you" panel (first cards = red High alerts: "Text reply from …", then "Review documents", when they exist) + "Open all →" · `externalLoActivityPrompts` · `up-next`, `up-next-alert` | pointing | This is your to-do list, ranked by impact: text replies and documents to review sit at the very top as red High alerts, then follow-ups due today, new leads and weekly touches. Follow-ups you set show up here on the day they're due, so work it top to bottom every day. | Y, SS-UPNEXT | S |
+| PD-04 | Logging & replies | Perfect Day | "Log activity" button (banner), then "Recent activity" with a "Text reply" row on top · `perfectDayHome`, `externalLoRecentLog` · `pd-log-activity`, `recent-log` | hands-on-hips | Every call, text, meeting or post goes in with Log activity, and it counts toward today's goals. When a borrower or agent texts back, the reply shows at the top of Recent activity, and a reply to an automatic text also gets its own card in Up Next. | Y, SS-RECENT (only when Recent activity has no reply) | S |
+| PD-RC | Logging & replies | Perfect Day (only LOs on Reach's RingCentral, `User.LoWs_RingCentral_Required__c`; decision 61) | "Recent activity" · `externalLoRecentLog` · `recent-log` | thinking | Calls you make in Reach's RingCentral log here automatically and count toward your goals. | N | S |
+| PD-CS | Your automatic texts | Perfect Day | Sidebar "Communication settings" link · `externalLoPortalShell` · `comm-settings` | pointing | Reach texts your borrowers and agents for you at key steps, from a no-reply number, and their answers land at the top of Up Next. Open Communication settings under your name any time to turn a message off or put it in your own words. | N | S |
 | PD-05 | My Active Leads | My Active Leads (`leads`, Board) | Board columns "New", "Contacting", "Working", "Docs Requested", "Docs Received" + one card's "Move to…" · `externalLoLeads` · `leads-board`, `leads-move-to` | presenting | My Active Leads shows every working lead by stage. Open a card to work it, or drag it to another column (or use Move to…) to change its status right from the board. | Y, SS-BOARD | S |
 | PD-06 | A lead page | Lead page (first lead in New, otherwise a screenshot) | Status dropdown + "Log communication" + tab bar (Overview, Documents, Document requests, Calls/Zooms, Communications, Notes) · `externalLoLeads` · `lead-status`, `lead-log-communication`, `lead-tabs` | pointing | Everything about one borrower lives here: set the status at the top and tap Log communication after every touch. Overview holds Contact and Pre-Approval Details; the other tabs hold documents, calls, texts, emails and notes. | Y, SS-LEAD | S |
 | PD-07 | Schedule a Zoom | Lead page, Overview (right column) | "Schedule a Zoom" card + "Schedule Zoom Meeting" · `loWsZoomCard` (`zoomMeetingAssistant` compact) · `lead-zoom` | hands-on-hips | Book a Zoom with this borrower right from the Schedule a Zoom card: it goes on your calendar and they get the invite. If it ever says Connect your Zoom, follow the steps in the card and click Try again. | Y, SS-ZOOM | S |
 | PD-08 | Texts | Lead page → "Communications" → "Texts" | "Texts" subtab (an agent text + a reply with "Reply from your phone") · `loWsCommunications` · `comms-texts` | thinking | Texts shows what Reach texted the borrower and their agent automatically, plus their replies. You can't reply from here, so use the number under Reply from your phone. | Y, SS-TEXTS | S |
 | PD-09 | Document review | Lead page → "Document requests" tab | "Add Conditions", "Send Request Email", "Start review" · `leadPortalDocumentRequestManager` · `doc-req` | thinking | Document requests is where you ask for paperwork and review what comes back. Tap Start review, then Approve, Reject or Not Needed, and the borrower gets your comment on anything you reject. | Y, SS-DOCREQ | S |
-| PD-10 | Pre-approval letter | Lead page header | "Pre-Approval Letter" button · `externalLoLeads` · `lead-letter` | pointing | Pre-Approval Letter works once the lead reaches Pre-Approval or any later status; before that, the button tells you exactly what to do to unlock it. A lead that's already been converted to a loan can't get a new letter. | Y, SS-LETTER | S |
+| PD-10 | Pre-approval letter | Lead page header | "Pre-Approval Letter" button · `externalLoLeads` · `lead-letter` | pointing | Pre-Approval Letter works at any status, and finalizing it moves the lead to Pre-Approval and lets their agent know. A lead that's already been converted to a loan can't get a new letter. | Y, SS-LETTER | S |
 | PD-11 | Application Summary | Lead page header | "Application Summary" button (next to "Convert to transaction") · `externalLoLeads` · `lead-app-summary` | presenting | Application Summary is the borrower's story, built from your call summaries. Fix anything that's wrong and add what's missing; later calls add to it and never overwrite what you write. | Y, SS-APPSUM | S |
 | PD-12 | Convert to a loan | Lead page header | "Convert to transaction" button (the screenshot shows the "Confirm TRID application pieces" modal) · `externalLoLeads` · `lead-convert` | arms-crossed | Convert to transaction checks six things: Borrower name, Borrower income, Borrower SSN, Subject property, Estimated property value and Loan amount. Whatever's already in Salesforce fills in by itself; mark the rest Info received only when you really have it, then Confirm conversion. | Y, SS-TRID | S |
 | PD-13 | My Loans | My Loans (`loans`, My Active Loans, Board) | Board columns "Application" → "Closing" + a "Needs update" badge · `externalLoLoans` · `loans-board` | presenting | Converted files land in My Loans, grouped by milestone from Application to Closing. A Needs update badge means the processor is waiting on you, so open that loan first. | Y, SS-LOANS | S |
@@ -81,13 +84,13 @@ Hooks are `data-tour="…"` attributes to add in the build (full list in section
 | PD-15 | Calendar | Perfect Day | "Upcoming appointments" + "Open calendar" · `loWsAppointments` · `appointments` | thinking | Upcoming appointments shows your next 7 days, including the Zooms you book, and Open calendar gives you the full month. Click any appointment to jump straight to that borrower or realtor. | Y, SS-CAL | S |
 | PD-16 | Wrap-up | Perfect Day | Sidebar "Take the tour" link + banner "?" · `externalLoPortalShell`, `perfectDayHome` · `tour-menu`, `pd-tour-help` | double-thumbs | That's a Perfect Day: work Up Next, log every touch, set the follow-up, repeat! Want a refresher? Take the tour under your name, or the ? on this banner, replays any part. | N | L |
 
-My Progress / Volume (previously PD-14) moved to chapter K only, which keeps the run at 16 stops.
+My Progress / Volume (previously PD-14) moved to chapter K only. PD-CS (2026-10-13) sits right after PD-RC and before PD-05, so every Perfect Day stop comes before the run moves to My Active Leads; it does not open the settings modal (chapter M does). The run is 17 stops ("N of 17"), 18 with RingCentral. Resume is keyed on the stop id, so a run in progress survives the new stop.
 
 ---
 
 ## 3. Chapter menu (replays)
 
-The menu is titled **Take the tour**. Each row shows the chapter name, "N stops" and a tick once seen. The first row is **The full Perfect Day (16 stops)**, which is section 2. "= PD-xx" means the stop is reused word for word.
+The menu is titled **Take the tour**. Each row shows the chapter name, "N stops" and a tick once seen. The first row is **The full Perfect Day (17 stops)** (18 with RingCentral), which is section 2. "= PD-xx" means the stop is reused word for word.
 
 ### Chapter A: Perfect Day & Up Next (6 stops)
 
@@ -95,7 +98,7 @@ The menu is titled **Take the tour**. Each row shows the chapter name, "N stops"
 |---|---|---|---|---|---|---|
 | A-01 | Perfect Day | = PD-02 (`pd-progress`, `pd-metrics`) | presenting | = PD-02 | N | C |
 | A-02 | Perfect Day | = PD-03 (`up-next`, `up-next-alert`) | pointing | = PD-03 | Y, SS-UPNEXT | C |
-| A-03 | Perfect Day | Up Next card buttons "Log it done", "Mark complete", "Tomorrow" · `externalLoActivityPrompts` · `up-next-actions` | thinking | Log it done records the touch, Mark complete closes a follow-up, and Tomorrow pushes the card to the morning. Use Tomorrow sparingly: a new lead you push may miss its contact window. | Y, SS-UPNEXT | C |
+| A-03 | Perfect Day | Up Next card buttons "Log it done", "Mark complete", "Tomorrow" · `externalLoActivityPrompts` · `up-next-actions` (never on a Text reply card, whose buttons are "Open thread" / "Mark handled") | thinking | Log it done records the touch, Mark complete closes a follow-up, and Tomorrow pushes the card to the morning. Use Tomorrow sparingly: a new lead you push may miss its contact window. | Y, SS-UPNEXT | C |
 | A-04 | Perfect Day | "Pipeline snapshot" list (New leads need contact, Realtor follow-ups are due, Pre-approvals need review, Loans waiting on you, Overdue tasks need resolution) · `perfectDayHome` · `pd-pipeline-snapshot` | presenting | Pipeline snapshot counts what's waiting in each queue, and anything red is urgent. Click a row to open that exact list. | N | C |
 | A-05 | Perfect Day | "Log activity" → "Log an activity" modal ("What did you do?") · `portalActivityModal` · `pd-log-activity`, `log-modal-category` | hands-on-hips | Your turn: every call, text, meeting or post goes in with Log activity, and it counts toward today's goals. Calls and texts from your own phone aren't captured automatically, so log them here. | N | C |
 | A-06 | Perfect Day | "Today's Plan" (Log buttons) + "Recent activity" (a "Text reply" row with "Reply from your phone") · `externalLoTodayPlan`, `externalLoRecentLog` · `today-plan`, `recent-log` | thumbs-up | Today's Plan splits your weekly targets into today's share, with a Log button on each line. Recent activity shows everything you log, and borrower and agent text replies land at the top with the number to reply from your phone. | Y, SS-RECENT (only when no reply exists) | CL |
@@ -126,9 +129,9 @@ The menu is titled **Take the tour**. Each row shows the chapter name, "N stops"
 
 | # | Page / view | Highlight | Pose | Bubble text | Screenshot? | Buttons |
 |---|---|---|---|---|---|---|
-| D-01 | Perfect Day | First High alert card in Up Next + "Review documents" · `externalLoActivityPrompts` · `up-next-alert` | arms-crossed | When a borrower uploads documents, a red High alert lands at the very top of Up Next. There's no timer on it, but it stays on top as your most urgent action until you review them. | Y, SS-ALERT | C |
+| D-01 | Perfect Day | First document High alert card in Up Next + "Review documents" · `externalLoActivityPrompts` · `up-next-alert` (document alerts only; reply cards carry `up-next-reply`) | arms-crossed | When a borrower uploads documents, a red High alert lands at the top of Up Next, right below any text replies. There's no timer on it, but it stays there as an urgent action until you review them. | Y, SS-ALERT | C |
 | D-02 | Lead page → "Document requests" | "Add Conditions" · `leadPortalDocumentRequestManager` · `doc-req-add` | hands-on-hips | Start with Add Conditions to list what you need from the borrower. Assign each item to the right borrower so nobody gets asked for someone else's paperwork. | Y, SS-DOCREQ | C |
-| D-03 | Lead page → "Document requests" | "Send Request Email" · `leadPortalDocumentRequestManager` · `doc-req-send` | pointing | Send Request Email gives each borrower their own list and their own upload link. When they upload, the review shows up at the top of Up Next. | Y, SS-DOCREQ | C |
+| D-03 | Lead page → "Document requests" | "Send Request Email" · `leadPortalDocumentRequestManager` · `doc-req-send` | pointing | Send Request Email gives each borrower their own list and upload link, and moves a new or working lead to Docs Requested. When they upload, the review shows up at the top of Up Next. | Y, SS-DOCREQ | C |
 | D-04 | Lead page → "Document requests" | "Start review" → "Approve" / "Reject" / "Not Needed" · `leadPortalDocumentRequestManager` · `doc-req-start-review` | thinking | = PD-09 | Y, SS-DOCREQ | CL |
 
 ### Chapter E: Pre-approvals & the letter (3 stops)
@@ -139,7 +142,7 @@ The menu is titled **Take the tour**. Each row shows the chapter name, "N stops"
 | E-02 | My Pre-Approvals | Filter chips "All" / "Weekly touch due" / "On track" · `externalLoPreApprovals` · `preapprovals-filters` | arms-crossed | Weekly touch due means it's been 7 days or more since you last talked to them. Clear this list every week, and they'll show up in Up Next until you do. | Y, SS-PREAPP | C |
 | E-03 | Lead page header | = PD-10 (`lead-letter`) | pointing | = PD-10 | Y, SS-LETTER | CL |
 
-When the letter is locked, the button shows this toast (prod text, O4a): "Pre-approval letters unlock once this lead reaches Pre-Approval. Move the lead to Pre-Approval once you've reviewed credit and documents." On a converted lead it shows: "This lead has already been converted to a loan, so a new pre-approval letter cannot be issued from it." The bubble deliberately does not list the six allowed statuses; the button is the source of truth.
+The letter has no status gate since 2026-10-12, and the O4a "Pre-approval letters unlock once…" toast no longer exists. Finalizing moves the lead to Pre-Approval (never backwards) and fires the Pre-Approved agent text (again on every new purchase price). On a converted lead the button shows: "This lead has already been converted to a loan, so a new pre-approval letter cannot be issued from it."
 
 ### Chapter F: Converting to a loan & the Submission Form (3 stops)
 
@@ -166,9 +169,9 @@ When the letter is locked, the button shows this toast (prod text, O4a): "Pre-ap
 |---|---|---|---|---|---|---|
 | H-01 | My Realtors | = PD-14 (`realtors-list`) | pointing | = PD-14 | Y, SS-REALTORS | C |
 | H-02 | My Realtors | Filters "Last 30 days" / "Last 60 days" / "Last 90 days" / "Follow-up due" / "All partners" · `externalLoRealtors` · `realtors-filters` | thinking | Your list builds itself from the touches you log, so keep touching an agent and they stay on it. Follow-up due is the filter to check every morning. | Y, SS-REALTORS | C |
-| H-03 | My Realtors | "Add partner" → "Add a partner" ("Tag me") · `externalLoRealtors` · `realtors-add` | hands-on-hips | Add partner checks Reach's shared list first. If the agent is already here, tap Tag me instead of creating a duplicate, and they join your list with your own stage. | Y, SS-REALTORS | C |
+| H-03 | My Realtors | "Add partner" → "Add a partner" ("Search shared partners" + "Link"; "Tag me" on a Create new match) · `externalLoRealtors` · `realtors-add` | hands-on-hips | Add partner starts with a search of Reach's shared list: find the agent by name and tap Link, and they join your list with your own stage. Only create them new if they're not there, and tap Tag me if it spots a match. | Y, SS-REALTORS | C |
 | H-04 | Realtor page | "My stage" (Prospect, Contacted, Meeting Set, Met, Active Partner, Dormant) + "Shared pipeline" + "New lead" · `externalLoRealtors` · `realtor-stage`, `realtor-shared-pipeline` | presenting | Move My stage forward as the relationship grows: you can set Active Partner yourself, and it moves there automatically when they send you a lead. Shared pipeline shows every borrower they've sent you. | Y, SS-REALTOR | C |
-| H-05 | Realtor page | "Texts" card ("To <agent>", "Reply from your phone: …") · `externalLoRealtors` → `loWsCommunications` texts-only · `realtor-texts` | thinking | The Texts card shows what Reach texted this agent about your leads and loans, and their replies. Answer from your phone with the number under Reply from your phone. | Y, SS-REALTOR | C |
+| H-05 | Realtor page | "Texts" card ("Automated texts" switch, "To <agent>", "Reply from your phone: …") · `externalLoRealtors` → `loWsCommunications` texts-only · `realtor-texts` | thinking | The Texts card shows what Reach texted this agent about your leads and loans, and their replies; answer from your phone with the number under Reply from your phone. Automated texts at the top of the card turns those texts off for this agent. | Y, SS-REALTOR | C |
 | H-06 | Realtor page | "Schedule a Zoom" card · `loWsZoomCard` · `realtor-zoom` | hands-on-hips | Want a face-to-face? Schedule a Zoom books it with this agent and puts it on your calendar. Other Contacts in the menu works the same way for title, insurance and other pros. | Y, SS-REALTOR | CL |
 
 ### Chapter I: Past clients & CSV import (4 stops)
@@ -208,11 +211,28 @@ Approved Investors is a separate app tab outside the shell. The tour stays on Pe
 | L-01 | Perfect Day (centered bubble) | none | presenting | Approved Investors, the tab next to Perfect Day at the top, lists every investor we can send a loan to, with their products, channels and account executives. | Y, SS-INVESTORS (always) | C |
 | L-02 | Perfect Day (centered bubble) | none | thinking | Check it before you pick an investor on the Submission form, so the channel and product match. | Y, SS-INVESTORS (always) | CL |
 
+### Chapter M: Communication settings (6 stops; added 2026-10-13)
+
+Letter M was freed when the phone chapter was removed; if the phone chapter comes back it takes N. Menu row: "Communication settings · 6 stops", after L.
+
+What the LO sees (prod 2026-10-13): sidebar link "Communication settings" under "Take the tour" (LO Workspace only). Modal "Communication settings", subtitle "Automated texts sent for you from the no-reply number (561) 589-4420. Replies show in Up Next; answer them from your own phone.", groups "To buyer's agents" (8) and "To borrowers" (7); each row has a when-line, an On / Off switch (saves at once), the preview with a locked "No-reply" footer and "Edit message". The editor has merge-field chips, a 160-character counter, "Reset to default" (saves at once), "Cancel", "Save message". Per-contact "Automated texts" switch on the lead Overview Contact card, the Realtor "Texts" card, the Past client Contact card and the top of the loan's "Loan details"; turning off asks "Turn off automated texts?". Replies to the no-reply number raise a red "Text reply from <name>" card ("Open thread" / "Mark handled") at the very top of Up Next, and still show in Recent activity.
+
+| # | Page / view | Highlight (exact label · component · hook) | Pose | Bubble text | Screenshot? | Buttons |
+|---|---|---|---|---|---|---|
+| M-01 | Perfect Day | Sidebar "Communication settings" link, just under "Take the tour" · `externalLoPortalShell` · `comm-settings` | pointing | Communication settings, right under your name, controls the automatic texts Reach sends for you to agents and borrowers. Every message starts switched on, so take a minute to make them sound like you. | N | C |
+| M-02 | Perfect Day, "Communication settings" modal open (clicks `comm-settings`) | Modal header + subtitle "Automated texts sent for you from the no-reply number (561) 589-4420…" · `loWsCommSettingsModal` · `comm-settings-intro` | thinking | These texts go out from Reach's no-reply number, (561) 589-4420, and always end with No-reply. When someone answers, reach them from your own phone. | N | C |
+| M-03 | Modal | Group titles "To buyer's agents" / "To borrowers", each row's when-line and On / Off switch · `loWsCommSettingsModal` · `comm-settings-groups` | presenting | Messages are grouped To buyer's agents and To borrowers, and each one tells you when it goes out. Switch one to Off and it stops on every one of your files. | N | C |
+| M-04 | Modal, first row's editor open (clicks `comm-settings-edit`; after: `comm-settings-cancel`, `comm-settings-close`) | Textarea, field chips, character count, "Reset to default", "Save message" · `loWsCommSettingsModal` · `comm-settings-editor` | hands-on-hips | Tap Edit message to write it your way: the field buttons drop in names like {First Name}, and the counter warns you past 160 characters. Save message keeps your version, and Reset to default brings Reach's wording back. | N | C |
+| M-05 | Lead page, Overview (record; clicks `lead-tab-overview`) | "Automated texts" row in the Contact card ("Borrower <name>" · On) · `loWsTextsSwitch` · `texts-switch` | arms-crossed | Need one person left alone? Switch Automated texts to Off here, or on their realtor, past client or loan page, and you'll be asked to confirm. Nothing automatic goes to them until you switch it back on. | Y, SS-SWITCH | C |
+| M-06 | Perfect Day | First "Text reply from …" card + "Open thread" / "Mark handled" · `externalLoActivityPrompts` · `up-next-reply` | thumbs-up | When someone replies to one of these texts, a red Text reply card jumps to the top of Up Next. Open thread shows the whole conversation, and Mark handled clears the card once you've called or texted them back. | Y, SS-REPLY | CL |
+
+Build rules (as built in O4h): M-02..M-04 each click `comm-settings` (opening is idempotent) and close it with `comm-settings-close` on leave, so Exit chapter or Back never leaves the modal open; M-03 waits for the rows (`need: comm-settings-edit`); M-04 also clicks `comm-settings-edit` and leaves with `comm-settings-cancel` then `comm-settings-close`. The tour never clicks a switch, "Reset to default" or "Save message" (all three save at once). M-05 only spotlights the switch; it never toggles it, and with no switch on the page it shows SS-SWITCH. The tour overlay (z-index 100000) sits above the modal (9100) and the switch dialog (9200).
+
 ---
 
 ## 4. Phone chapter
 
-Phone chapter removed 2026-10-09 at owner request; re-add later.
+Phone chapter removed 2026-10-09 at owner request; re-add later as chapter N (M is Communication settings since 2026-10-13).
 
 ---
 
@@ -231,7 +251,7 @@ Each shot is 1280 px wide and annotated with a callout arrow and label.
 | SS-TEXTS | PD-08, C-06 | Lead page L3 → Communications → Texts | T1 outbound status text to the agent + T2 reply on L3 | "Texts" subtab, "To …" line, "Reply from your phone: …" |
 | SS-TEXTS-LOAN | G-05 | Loan page N2 → Communications → Texts | T3 outbound milestone text + T4 reply on N2 | Same callouts as SS-TEXTS |
 | SS-DOCREQ | PD-09, D-02..D-04 | Lead page L4 → Document requests | L4 with 3 requests: 1 in Review (with a dummy PDF), 1 Requested, 1 Approved | "Add Conditions", "Send Request Email", "Start review", Approve / Reject / Not Needed |
-| SS-LETTER | PD-10, E-03 | Lead page L5, Pre-Approval Letter modal | L5 at Pre-Approval with Pre-Approval Details filled | The letter preview. Inset: the locked toast captured on L1 |
+| SS-LETTER | PD-10, E-03 | Lead page L5, Pre-Approval Letter modal | L5 at Pre-Approval with Pre-Approval Details filled | The letter preview |
 | SS-APPSUM | PD-11, C-07 | Lead page L5, Application Summary modal | L5 with summary fields typed in and saved (no Call_Insight__c needed) | "Application Summary" button next to "Convert to transaction", modal sections, "Save" / "Save to Note" |
 | SS-TRID | PD-12, F-01 | Lead page L6, "Confirm TRID application pieces" | L6 with name, income and property filled; value and amount blank | Ticked rows, one "Info received" button, the "I confirm…" box, "Confirm conversion" (capture, then **Decline**) |
 | SS-PREAPP | E-01, E-02 | My Pre-Approvals | L5 (weekly touch due) + L7 (on track) | "Weekly touch due" chip, both rows |
@@ -244,8 +264,12 @@ Each shot is 1280 px wide and annotated with a callout arrow and label.
 | SS-CAL | PD-15, J-01, J-02 | Perfect Day + the calendar | E1, E2 Events in the next 7 days (WhoId L3, R2) | "Upcoming appointments", "Open calendar", Month / Week / Day, one popover with Open / Event |
 | SS-EVENTS | J-04, J-05 | Perfect Day, In-person events | V1 in-person event with R1, R2 invited (1 Yes) | The card, the In Person Invite modal with "Invite partners" / "Send invites" (never send) |
 | SS-INVESTORS | L-01, L-02 | Approved Investors tab | none (real investor list, no borrower data) | The tab in the nav bar, "Open investor list" |
+| SS-SWITCH (new 2026-10-13) | M-05 | Lead page L3, Overview | L3, no phone on the lead | Contact card with the "Automated texts" row "Borrower Demo Casey …" · On. Inset: the "Turn off automated texts?" dialog with Cancel / Turn off (click the switch, capture, then **Cancel**, never Turn off) |
+| SS-REPLY (new 2026-10-13) | M-06 | Perfect Day, "Up next for you" | DOM-only edit of a real card (same method as the 2026-10-09 texts shots, Q60); no inbound TwilioSF__Message__c is inserted | Top card "High alert · Reply to an automated text", "Text reply from Demo Oakley Bennett", a short reply in quotes + "Reply from your phone to 407-555-01xx", "Open thread" / "Mark handled"; a document alert underneath |
 
-Stops that never need a screenshot: PD-01, PD-02, PD-16, A-04, A-05, B-03, B-04, I-01, I-03, I-04, J-03, K-01..K-04, and every nav-item stop. In those stops the page itself is the subject.
+Recapture needed since 2026-10-13 (the per-contact switch is missing in these shots): SS-LEAD (L3 Overview; can be the SS-SWITCH capture without the dialog), SS-REALTOR (R2, "Automated texts" row above the thread), SS-PASTCLIENT (P1 Contact card), SS-LOAN (N3 "Loan details" top rows). Optional: SS-UPNEXT with a DOM-edited reply card on top. Two capture cautions: never click "Turn off" or a settings switch on the pilot (both save), and leave the pilot's Communication settings at defaults (`User.LoWs_Comm_Settings__c` blank). Until captured, SS-SWITCH and SS-REPLY ship as placeholders (phaseO4h/assets).
+
+Stops that never need a screenshot: PD-01, PD-02, PD-RC, PD-CS, PD-16, M-01..M-04, A-04, A-05, B-03, B-04, I-01, I-03, I-04, J-03, K-01..K-04, and every nav-item stop. In those stops the page itself is the subject.
 
 ---
 
@@ -327,8 +351,15 @@ Each target sits in a different LWC with its own shadow root, so the tour cannot
 | `pd-pipeline-snapshot` | `perfectDayHome` | "Pipeline snapshot" panel |
 | `pd-goal-progress` | `perfectDayHome` | "Goal Progress" panel |
 | `up-next` | `externalLoActivityPrompts` | "Up next for you" panel incl. "Open all →" |
-| `up-next-alert` | `externalLoActivityPrompts` | First High alert card |
-| `up-next-actions` | `externalLoActivityPrompts` | First card's action buttons |
+| `up-next-alert` | `externalLoActivityPrompts` | First document High alert card (never a reply card) |
+| `up-next-reply` | `externalLoActivityPrompts` | First "Text reply from …" card (`isTextReply`) (2026-10-13) |
+| `up-next-actions` | `externalLoActivityPrompts` | First non-reply card's action buttons |
+| `comm-settings` | `externalLoPortalShell` | Sidebar "Communication settings" link (2026-10-13) |
+| `comm-settings-intro` | `loWsCommSettingsModal` | Modal header + subtitle (2026-10-13) |
+| `comm-settings-groups` | `loWsCommSettingsModal` | Modal body with both groups (2026-10-13) |
+| `comm-settings-edit` | `loWsCommSettingsModal` | First row's "Edit message" (2026-10-13) |
+| `comm-settings-editor`, `comm-settings-cancel`, `comm-settings-close` | `loWsCommSettingsModal` | Editor block, its "Cancel", the header "×" (2026-10-13) |
+| `texts-switch` | `loWsTextsSwitch` | "Automated texts" block (lead, realtor, past client, loan pages) (2026-10-13) |
 | `today-plan` | `externalLoTodayPlan` | "Today's Plan" panel |
 | `recent-log` | `externalLoRecentLog` | "Recent activity" panel (first "Text reply" row when present) |
 | `appointments` | `loWsAppointments` | "Upcoming appointments" card |
@@ -377,6 +408,7 @@ Each target sits in a different LWC with its own shadow root, so the tour cannot
 The `investors-*` hooks were dropped: chapter L is screenshot-only.
 
 Stop counts:
-- Full run: 16 stops.
-- Chapters: A 6, B 4, C 8, D 4, E 3, F 3, G 6, H 6, I 4, J 5, K 4, L 2. That is 12 chapters and 55 chapter stops: 42 new and 13 reused from the full run (A-01, A-02, B-01, C-01, C-03, C-06, C-07, D-04, E-03, F-01, G-01, H-01, J-01; D-04 reuses only the text).
-- Screenshots: 22 shot rows (the four SS-PHONE captures went with the phone chapter). The earlier draft had 19 rows.
+- Full run: 17 stops (18 with PD-RC for RingCentral LOs).
+- Chapters (2026-10-13): A 6 (7 with A-RC), B 4, C 8, D 4, E 3, F 3, G 6, H 6, I 4, J 5, K 4, L 2, M 6: 61 stops across 13 chapters (62 with A-RC).
+- Before 2026-10-13: 12 chapters and 55 chapter stops: 42 new and 13 reused from the full run (A-01, A-02, B-01, C-01, C-03, C-06, C-07, D-04, E-03, F-01, G-01, H-01, J-01; D-04 reuses only the text).
+- Screenshots: 24 shot rows since 2026-10-13 (SS-SWITCH, SS-REPLY added); before that 22 (the four SS-PHONE captures went with the phone chapter). The earlier draft had 19 rows.

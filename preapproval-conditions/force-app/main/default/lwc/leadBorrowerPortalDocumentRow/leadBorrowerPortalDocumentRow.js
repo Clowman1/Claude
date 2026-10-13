@@ -341,6 +341,14 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
      * comes back unchanged and is refused by the size check as before.
      */
     async shrinkIfOversizedImage(file) {
+        // HEIC is converted whatever its size: no desktop browser and no Salesforce preview can
+        // show it. The picker no longer offers it, so an iPhone already sends JPEG; this catches
+        // one that arrives by drag and drop. Safari can decode HEIC, so the conversion works
+        // where these files come from; elsewhere it comes back unchanged and uploads as before.
+        const isHeic = /\.(heic|heif)$/i.test(file.name || '') || /image\/hei[cf]/i.test(file.type || '');
+        if (isHeic) {
+            return (await this.downscaleImage(file)) || file;
+        }
         if (file.size <= MAX_FILE_BYTES || !String(file.type || '').startsWith('image/')) {
             return file;
         }
@@ -412,8 +420,10 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
                         blob => {
                             URL.revokeObjectURL(objectUrl);
                             resolve(
+                                // Renamed to match: the bytes are JPEG now, and a .png or .heic
+                                // name would make viewers treat them as that format.
                                 blob
-                                    ? new File([blob], file.name, { type: 'image/jpeg' })
+                                    ? new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' })
                                     : null
                             );
                         },

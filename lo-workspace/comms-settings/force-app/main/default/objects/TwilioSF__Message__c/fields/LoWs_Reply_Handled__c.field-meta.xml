@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Reply_Handled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>LO Workspace: the LO clicked Mark handled on this reply in Up Next.</description>
+    <label>LO Workspace Reply Handled</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,91 @@
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-13T21:45:43.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-13T21:45:07.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "StaticResource",
+          "created": false,
+          "createdDate": "2026-10-13T21:45:28.000Z",
+          "deleted": false,
+          "fileName": "staticresources/LoWsTourAssets.resource",
+          "fullName": "LoWsTourAssets",
+          "id": "081Qi0000005j4XIAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-13T21:45:31.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoActivityPrompts",
+          "fullName": "externalLoActivityPrompts",
+          "id": "0RbQi0000004WNtKAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-13T21:45:31.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001UgxJKAS",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-13T21:45:43.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 2,
+    "numberComponentsTotal": 2,
+    "numberFiles": "10",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-13T21:45:27.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "2451288",
+    "files": [
+      {
+        "fullName": "externalLoActivityPrompts",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoActivityPrompts"
+      },
+      {
+        "fullName": "LoWsTourAssets",
+        "type": "StaticResource",
+        "state": "Changed",
+        "filePath": "staticresources/LoWsTourAssets.resource"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001UgxJKAS%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

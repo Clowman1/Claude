@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_External_LO__c</fullName>
+    <description>True for External Loan Officer role users. Their files text only from the LO Workspace no-reply number; the shared-number flows skip them.</description>
+    <formula>UserRole.DeveloperName = "External_Loan_Officer"</formula>
+    <label>LO Workspace External LO</label>
+    <type>Checkbox</type>
+</CustomField>

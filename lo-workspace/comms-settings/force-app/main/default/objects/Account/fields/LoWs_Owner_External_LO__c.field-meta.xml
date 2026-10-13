@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Owner_External_LO__c</fullName>
+    <description>Owner is an External LO. The birthday/anniversary flows skip these clients; LoWsAutoTextService texts them from the no-reply number.</description>
+    <formula>Owner.LoWs_External_LO__c</formula>
+    <label>Owner Is External LO</label>
+    <type>Checkbox</type>
+</CustomField>

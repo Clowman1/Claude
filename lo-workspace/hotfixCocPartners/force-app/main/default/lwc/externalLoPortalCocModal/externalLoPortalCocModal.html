@@ -1,0 +1,135 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="coc-title">
+        <div class="modal-card">
+            <header class="modal-header">
+                <p class="eyebrow">Reach Home Loans · Change of circumstance</p>
+                <h2 id="coc-title">{greeting}</h2>
+                <p class="subtitle">{subtitle}</p>
+                <ol class="steps">
+                    <template for:each={steps} for:item="s">
+                        <li key={s.n} class={s.className} aria-current={s.ariaCurrent}>
+                            <span class="step-dot">{s.n}</span>
+                            <span class="step-label">{s.label}</span>
+                        </li>
+                    </template>
+                </ol>
+            </header>
+
+            <div class="modal-body">
+                <template lwc:if={isLoading}>
+                    <div class="loading"><span class="spinner" aria-hidden="true"></span> Loading loan…</div>
+                </template>
+                <template lwc:elseif={loadError}>
+                    <p class="error-copy">{loadError}</p>
+                </template>
+
+                <template lwc:elseif={isStep1}>
+                    <p class="step-intro">What's changing on this loan? <span class="muted">{selectionLabel}</span></p>
+                    <template for:each={reasonGroups} for:item="group">
+                        <div key={group.key} class="chip-group">
+                            <p class="chip-group-label">{group.label}</p>
+                            <div class="chips">
+                                <template for:each={group.chips} for:item="chip">
+                                    <button
+                                        key={chip.value}
+                                        type="button"
+                                        class={chip.className}
+                                        data-value={chip.value}
+                                        aria-pressed={chip.pressed}
+                                        onclick={handleChip}
+                                    >{chip.value}</button>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+
+                <template lwc:elseif={isStep2}>
+                    <template lwc:if={hasFields}>
+                        <p class="step-intro">Great. What are the new numbers?</p>
+                        <div class="value-grid">
+                            <template for:each={visibleFields} for:item="f">
+                                <div key={f.key} class="value-card">
+                                    <template lwc:if={f.isCurrency}>
+                                        <lightning-input type="number" formatter="currency" step="0.01" label={f.label} value={f.value} required={f.required} field-level-help={f.help} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-input>
+                                    </template>
+                                    <template lwc:elseif={f.isRate}>
+                                        <lightning-input type="number" step="0.001" label={f.label} value={f.value} required={f.required} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-input>
+                                    </template>
+                                    <template lwc:elseif={f.isNumber}>
+                                        <lightning-input type="number" step="1" label={f.label} value={f.value} required={f.required} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-input>
+                                    </template>
+                                    <template lwc:elseif={f.isDate}>
+                                        <lightning-input type="date" label={f.label} value={f.value} required={f.required} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-input>
+                                    </template>
+                                    <template lwc:elseif={f.isText}>
+                                        <lightning-input label={f.label} value={f.value} required={f.required} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-input>
+                                    </template>
+                                    <template lwc:elseif={f.isSelect}>
+                                        <lightning-combobox label={f.label} value={f.value} options={f.options} required={f.required} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-combobox>
+                                    </template>
+                                    <template lwc:elseif={f.isTextarea}>
+                                        <lightning-textarea label={f.label} value={f.value} required={f.required} data-key={f.key} data-kind={f.kind} onchange={handleValue}></lightning-textarea>
+                                    </template>
+                                    <template lwc:if={f.currentLabel}>
+                                        <p class="current">{f.currentLabel}</p>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="no-values">
+                            <p><strong>No new numbers needed</strong> for these changes.</p>
+                            <p class="muted">Add the details on the next step so the COC desk knows what changed.</p>
+                        </div>
+                    </template>
+                </template>
+
+                <template lwc:elseif={isStep3}>
+                    <p class="step-intro">Last look before it goes to the COC desk.</p>
+                    <div class="summary">
+                        <p class="summary-label">Changing</p>
+                        <div class="summary-pills">
+                            <template for:each={summaryReasons} for:item="r">
+                                <span key={r.key} class="pill">{r.label}</span>
+                            </template>
+                        </div>
+                        <template lwc:if={hasSummaryRows}>
+                            <dl class="summary-rows">
+                                <template for:each={summaryRows} for:item="row">
+                                    <div key={row.key} class="summary-row">
+                                        <dt>{row.label}</dt>
+                                        <dd>
+                                            <template lwc:if={row.from}>
+                                                <span class="from">{row.from}</span>
+                                                <span class="arrow" aria-label="to">→</span>
+                                            </template>
+                                            <span class="to">{row.to}</span>
+                                        </dd>
+                                    </div>
+                                </template>
+                            </dl>
+                        </template>
+                    </div>
+                    <lightning-textarea label="Anything else to add?" placeholder="e.g. Borrower confirmed by phone, lock today if possible." value={notes} onchange={handleNotesChange}></lightning-textarea>
+                </template>
+            </div>
+
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-ghost" onclick={handleClose} disabled={saving}>Cancel</button>
+                <div class="footer-right">
+                    <template lwc:if={showBack}>
+                        <button type="button" class="btn btn-outline" onclick={handleBack} disabled={saving}>Back</button>
+                    </template>
+                    <template lwc:if={isStep3}>
+                        <button type="button" class="btn btn-brand" onclick={handleSubmit} disabled={saving}>Submit COC</button>
+                    </template>
+                    <template lwc:else>
+                        <button type="button" class="btn btn-brand" onclick={handleNext} disabled={nextDisabled}>Next</button>
+                    </template>
+                </div>
+            </footer>
+        </div>
+    </section>
+</template>

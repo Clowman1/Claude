@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>LoWs_Twilio_From_Number</fullName>
+        <categories>LO Workspace</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LO Workspace no-reply Twilio number</shortDescription>
+        <value>5615894420</value>
+    </labels>
+</CustomLabels>
