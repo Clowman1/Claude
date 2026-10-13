@@ -14,7 +14,7 @@ const STAMP = join(import.meta.dirname, '.integrity-last-run');
 const FIELDS = [
   'Id', 'Name', 'Status__c', 'Channel__c', 'MERS_Min__c', 'Loan_Number__c',
   'Loan_Amount_1st__c', 'Rate_1st_TD__c', 'Loan_Purpose__c', 'Loan_Type_1st_TD__c',
-  'Loan_Type_2nd_TD__c', 'Loan_Program_1st__c', 'Property_Address__c', 'Property_City__c',
+  'Loan_Type_2nd_TD__c', 'Loan_Program_1st__c', 'Lien_Position__c', 'Occupancy__c', 'Lead_Source__c', 'Biz_Dev__c', 'Property_Address__c', 'Property_City__c',
   'Property_State__c', 'Property_Postal_Code__c', 'Property_Type__c', 'Closing_Date__c',
   'Loan_Application_Date__c', 'TRID_Date__c',
   'Disclosures_Out_Date__c', 'Disclosures_Received_Date__c',
@@ -104,6 +104,12 @@ function evaluate(rows) {
     if (!x.Loan_Purpose__c) add('loan', x, 'Loan Purpose is blank');
     if (!x.Loan_Type_1st_TD__c) add('loan', x, 'Loan Type is blank');
     if (!x.Loan_Program_1st__c) add('loan', x, 'Loan Program is blank');
+    if (!x.Lien_Position__c) add('loan', x, 'Lien Position is blank');
+    // Blank only: Occupancy and Lead Source are unrestricted picklists full of legacy spellings
+    // (Primary, 2ndHome, TikTok...) that are real data. Biz Dev 'None' is a deliberate value.
+    if (!x.Occupancy__c) add('loan', x, 'Occupancy is blank');
+    if (!x.Lead_Source__c) add('loan', x, 'Lead Source is blank');
+    if (!x.Biz_Dev__c) add('loan', x, 'Biz Dev is blank');
     if (!x.Loan_Number__c) add('loan', x, 'Loan Number is blank');
     if (!x.Channel__c) add('loan', x, 'Channel is blank (neither Broker nor Correspondent)');
     if (!x.Property_Address__c) add('loan', x, 'Property Address is blank');
