@@ -1,0 +1,40 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "GroupMember",
+          "url": "/services/data/v68.0/sobjects/GroupMember/011Qi00000XD6W1IAL"
+        },
+        "Id": "011Qi00000XD6W1IAL",
+        "GroupId": "00GAJ000000MgkJ2AS",
+        "Group": {
+          "attributes": {
+            "type": "Group",
+            "url": "/services/data/v68.0/sobjects/Group/00GAJ000000MgkJ2AS"
+          },
+          "DeveloperName": "Lead_Sharing"
+        }
+      },
+      {
+        "attributes": {
+          "type": "GroupMember",
+          "url": "/services/data/v68.0/sobjects/GroupMember/011Qi00000XD6PZIA1"
+        },
+        "Id": "011Qi00000XD6PZIA1",
+        "GroupId": "00GQi000009mSjCMAU",
+        "Group": {
+          "attributes": {
+            "type": "Group",
+            "url": "/services/data/v68.0/sobjects/Group/00GQi000009mSjCMAU"
+          },
+          "DeveloperName": "Megan_LP_Group"
+        }
+      }
+    ],
+    "totalSize": 2,
+    "done": true
+  },
+  "warnings": []
+}

@@ -148,6 +148,20 @@ Track progress on **LO Oversight → Onboarding**: setup, Zoom, Outlook, RingCen
 
 ---
 
+## Moving an existing internal LO into LO Workspace
+
+The script's reconcile mode never changes profile or role, so it can't do this alone. First done for Manuel Anagnostou on 2026-10-14; files in `lo-workspace/migrations/manny/`.
+
+1. Snapshot the user, permission set assignments, group memberships and lead Loan Partners (JSON) for rollback.
+2. Set profile "External Loan Officer Profile" and role "External Loan Officer". Remove every GroupMember row (Lead_Sharing, LP groups).
+3. **Straight away**, run `migrations/manny/backfill-stamps.apex` with the user's Id. Child records only get the `External_LO__c` stamp when an owner or LO changes, so without it the LO's existing notes, insights and doc requests are invisible to them. Admins can't read the stamp field (FLS is Integrations Profile only); check with `SystemModstamp` on the children instead.
+4. Run the script on a hire file, then `--apply`. It adds the permission set group.
+5. Remove the permission sets outside LO Workspace: All_Apex_Classes, All_Visualforce_Pages, UWMPermissions, Pipeline_Command_Center_Pilot_Access, Reach_Mobile_LO, DocuSign_Transaction_Access, ActiveCampaign_Standard_User.
+6. Tag their own realtors as partners: anonymous Apex `LoWsPartnerTagBackfill.tagOwnedPartners('<userId>', 'Active Partner');` (deployed 2026-10-14). Only Person Accounts they own; business-account title companies can't be tagged. The tag fields have no FLS, so a one-off script can't write them.
+7. Old texts aren't attributed to their leads, so they don't show under Texts (O3 `backfill-90d.apex` covers that, not run for Manny).
+
+---
+
 ## Offboarding (Chris only)
 
 Do these in order, the same day if you can.

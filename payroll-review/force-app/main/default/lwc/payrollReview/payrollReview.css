@@ -1,0 +1,115 @@
+.pr {
+    font-size: 0.875rem;
+    color: #1f2a37;
+}
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin: 0 0 0.75rem;
+    color: #4b5563;
+}
+.meta strong {
+    color: #0b2545;
+}
+h3 {
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #0b2545;
+}
+.scroll {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th,
+td {
+    padding: 0.375rem 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    white-space: nowrap;
+}
+th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    background: #f9fafb;
+}
+.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+tfoot td {
+    font-weight: 600;
+    color: #374151;
+}
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.75rem;
+    padding: 0.625rem 0.5rem;
+    border-top: 2px solid #0b2545;
+    font-size: 1rem;
+}
+.total strong {
+    font-size: 1.25rem;
+    color: #0b2545;
+    font-variant-numeric: tabular-nums;
+}
+.status {
+    margin: 0.5rem 0 0;
+    color: #166534;
+}
+.error {
+    margin: 0.5rem 0 0;
+    color: #b91c1c;
+}
+.field {
+    display: block;
+    margin-top: 0.75rem;
+}
+.field span {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border: 1px solid #c9ced6;
+    border-radius: 0.25rem;
+    font: inherit;
+}
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+.btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #c9ced6;
+    border-radius: 0.25rem;
+    background: #fff;
+    color: #0b2545;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-primary {
+    background: #0b2545;
+    border-color: #0b2545;
+    color: #fff;
+}
+.btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

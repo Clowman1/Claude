@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Review_Closes__c</fullName>
+    <label>Review Closes</label>
+    <type>Date</type>
+    <required>false</required>
+    <description>Last day the review is shown (the 11th). Hidden from the employee after this date.</description>
+</CustomField>

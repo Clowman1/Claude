@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>One person's monthly payroll for review in the Payroll Review modal (Command Center / LO Workspace Volume drawer). Loaded from the payroll workbook; owned by the loader, so LOs reach it only through PayrollReviewController.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Payroll Review</label>
+    <nameField>
+        <label>Payroll Review Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Payroll Reviews</pluralLabel>
+    <sharingModel>Private</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

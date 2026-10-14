@@ -1,0 +1,622 @@
+@import 'c/portalSharedStyles';
+
+:host {
+    display: block;
+    color: var(--pw-navy-900, #0f1f36);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.detail-page {
+    padding: 20px 16px 40px;
+}
+
+.detail-page-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.back-link {
+    border: none;
+    background: transparent;
+    color: var(--pw-navy-600, #2c4a76);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.detail-header-card {
+    border: 1px solid var(--pw-line, #dfe8f3);
+    border-radius: 18px;
+    background: var(--pw-surface, #fff);
+    padding: 20px;
+    box-shadow: 0 1px 2px 0 rgba(15, 31, 54, 0.04);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.detail-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-outline {
+    border: 1px solid #c7d6ea;
+    background: #fff;
+    color: #243c60;
+}
+
+.btn-brand {
+    border: none;
+    background: #1b4d8c;
+    color: #fff;
+}
+
+/* Shell detail tab strip: grey-blue pills, brand blue when active. Same block in externalLoLeads and externalLoLoans. */
+.detail-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px 0 10px;
+    border-bottom: 1px solid #dfe8f3;
+}
+
+.detail-tab {
+    border: 1px solid #d5deea;
+    background: #e8eef5;
+    color: #3d6296;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.detail-tab:hover {
+    background: #dbe4ef;
+    border-color: #c3d0e0;
+    color: #1a2d4a;
+}
+
+.detail-tab:focus-visible {
+    outline: 2px solid #1d63c4;
+    outline-offset: 2px;
+}
+
+.detail-tab-active,
+.detail-tab-active:hover {
+    background: #d6e3f5;
+    border-color: #1d63c4;
+    color: #1d63c4;
+    box-shadow: inset 0 -2px 0 #1d63c4;
+}
+
+.detail-embed-panel,
+.detail-calls-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-embed-title {
+    margin: 0 0 8px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.activity-list,
+.condition-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.activity-item,
+.condition-item {
+    padding: 12px 0;
+    border-top: 1px solid #f1f5fa;
+}
+
+.activity-top,
+.condition-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.activity-channel,
+.condition-meta,
+.helper-copy,
+.empty-copy {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #3d6296;
+}
+
+.activity-note,
+.condition-description {
+    margin: 6px 0 0;
+    font-size: 13px;
+}
+
+.detail-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.detail-primary {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--pw-navy-700, #243c60);
+}
+
+.detail-meta {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--pw-navy-500, #3d6296);
+}
+
+.detail-card {
+    border: 1px solid var(--pw-line, #dfe8f3);
+    border-radius: 18px;
+    background: var(--pw-surface, #fff);
+    padding: 20px;
+    box-shadow: 0 1px 2px 0 rgba(15, 31, 54, 0.04);
+}
+
+.detail-card-title {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.field-list {
+    margin: 0;
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 8px 16px;
+    padding: 8px 0;
+    border-top: 1px solid var(--pw-navy-50, #f1f5fa);
+    font-size: 14px;
+}
+
+.field-row:first-child {
+    border-top: none;
+    padding-top: 0;
+}
+
+.field-row dt {
+    color: var(--pw-navy-500, #3d6296);
+}
+
+.field-row dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .detail-page {
+        padding: 24px 24px 40px;
+    }
+}
+.notes-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.notes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.note-row {
+    padding: 12px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.note-subject {
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.note-meta {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 6px 0 0;
+}
+.logged-calls-hint {
+    margin: 0 0 8px;
+    font-size: 12px;
+    color: var(--pw-ink-400, #5f83b3);
+}
+/* Colour pass (2026-10-02): tinted page, navy accent on the header card, tinted card headers. */
+.detail-page {
+    box-sizing: border-box;
+    min-height: 100%;
+    background: #f4f7fb;
+}
+
+.detail-header-card {
+    border-color: #d5deea;
+    border-left: 6px solid #1b2a4a;
+    background: linear-gradient(90deg, #eef3fa 0, #ffffff 280px);
+}
+
+.detail-card {
+    border-color: #d5deea;
+}
+
+.detail-card-title {
+    margin: -20px -20px 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #d5deea;
+    border-radius: 18px 18px 0 0;
+    background: #e8eef5;
+    color: #1b2a4a;
+}
+
+.detail-card-accent {
+    border-top: 4px solid #24386a;
+}
+
+.detail-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.milestone-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #e8eef5;
+    color: #1b2a4a;
+    box-shadow: inset 0 0 0 1px #d5deea;
+}
+
+.milestone-chip-progress {
+    background: #eff6ff;
+    color: #1d63c4;
+    box-shadow: inset 0 0 0 1px #bfdbfe;
+}
+
+.milestone-chip-ctc {
+    background: #ecfdf3;
+    color: #15803d;
+    box-shadow: inset 0 0 0 1px #bbf7d0;
+}
+
+.milestone-chip-closed {
+    background: #1b2a4a;
+    color: #fff;
+    box-shadow: none;
+}
+
+.milestone-chip-warn {
+    background: #fff8ed;
+    color: #9a4d0c;
+    box-shadow: inset 0 0 0 1px #f5d9a8;
+}
+/* My Loans board (Active tab, default view) and Board / List toggle. 2026-10-08. */
+.view-toggle {
+    display: inline-flex;
+    border: 1px solid #c0d1e6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.view-btn {
+    border: none;
+    background: #fff;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #243c60;
+    cursor: pointer;
+}
+
+.view-btn + .view-btn {
+    border-left: 1px solid #c0d1e6;
+}
+
+.view-btn-on {
+    background: #e6effb;
+    color: #1d63c4;
+}
+
+.board-scroll {
+    overflow-x: auto;
+    padding: 16px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+.board-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 240px;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f1f5fa;
+}
+
+.board-col-head {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 2px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #5b6b82;
+}
+
+.board-col-count {
+    font-variant-numeric: tabular-nums;
+}
+
+.board-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dfe8f3;
+    border-radius: 10px;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+
+.board-card:hover {
+    border-color: #94b0d2;
+}
+
+.board-card:focus-visible {
+    outline: 2px solid #1d63c4;
+    outline-offset: 2px;
+}
+
+.board-card-flag {
+    border-left: 3px solid #a32020;
+}
+
+.board-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f1f36;
+}
+
+.board-card-amount {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a2d4a;
+    font-variant-numeric: tabular-nums;
+}
+
+.board-card-meta {
+    font-size: 12px;
+    color: #5b6b82;
+}
+
+.board-card-flag-pill {
+    margin-top: 2px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #fbe6e6;
+    color: #a32020;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.board-col-empty {
+    margin: 4px 2px;
+    font-size: 12px;
+    color: #8a9ab0;
+}
+/* Pinned note marker (2026-10-08) */
+.note-pin {
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #e6effb;
+    color: #1d63c4;
+    font-size: 11px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* RHL blue pass (2026-10-13): blue tabs and card headers, tinted rows. Same block in externalLoLeads and externalLoLoans. */
+.detail-page {
+    background: #e9eff7;
+}
+
+.detail-tabs {
+    border-bottom-color: #c7d6ea;
+}
+
+.detail-tab {
+    background: #1b4d8c;
+    border-color: #1b4d8c;
+    color: #fff;
+}
+
+.detail-tab:hover {
+    background: #24386a;
+    border-color: #24386a;
+    color: #fff;
+}
+
+.detail-tab-active,
+.detail-tab-active:hover {
+    background: #0f2f5c;
+    border-color: #0f2f5c;
+    color: #fff;
+    box-shadow: inset 0 -3px 0 #60a5fa;
+}
+
+.detail-card-title {
+    background: #1b4d8c;
+    border-bottom-color: #1b4d8c;
+    color: #fff;
+}
+
+.detail-embed-title {
+    color: #1b4d8c;
+}
+
+.field-row,
+.field-row:first-child {
+    padding: 8px 10px;
+    border-top: none;
+    border-radius: 6px;
+}
+
+.field-row:nth-child(even) {
+    background: #eef3fa;
+}
+
+/* Details tab: Loan details and Transaction Partners side by side on wide screens. */
+.details-pair {
+    display: grid;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .details-pair {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
+/* Details tab right column: Transaction Partners, then COC history. */
+.details-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+.coc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.coc-item {
+    border: 1px solid #d5deea;
+    border-left: 4px solid #1b4d8c;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: #f7f9fc;
+}
+
+.coc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.coc-reasons {
+    font-weight: 600;
+    color: #0f2f5c;
+}
+
+.coc-status {
+    flex-shrink: 0;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.coc-status-submitted {
+    background: #fff4e5;
+    color: #9a5b00;
+    box-shadow: inset 0 0 0 1px #f5d49a;
+}
+
+.coc-status-completed {
+    background: #ecfdf3;
+    color: #15803d;
+    box-shadow: inset 0 0 0 1px #bbf7d0;
+}
+
+.coc-status-cancelled {
+    background: #f1f5fa;
+    color: #5f7590;
+    box-shadow: inset 0 0 0 1px #d5deea;
+}
+
+.coc-meta {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #3d6296;
+}
+
+.coc-notes {
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.coc-notes summary {
+    cursor: pointer;
+    color: #1b4d8c;
+    font-weight: 600;
+}
+
+.coc-notes p {
+    margin: 6px 0 0;
+    white-space: pre-wrap;
+    color: #1a2d4a;
+}
+
+.coc-empty {
+    margin: 0;
+    font-size: 14px;
+    color: #5f7590;
+}

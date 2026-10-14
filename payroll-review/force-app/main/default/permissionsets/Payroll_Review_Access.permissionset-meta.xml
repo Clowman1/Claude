@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Lets an employee see their own monthly Payroll Review (Command Center / LO Workspace). Records are reached only through PayrollReviewController, scoped to the running user.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Payroll Review Access</label>
+    <classAccesses>
+        <apexClass>PayrollReviewController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+</PermissionSet>

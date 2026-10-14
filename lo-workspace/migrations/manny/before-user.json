@@ -1,0 +1,39 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "User",
+          "url": "/services/data/v68.0/sobjects/User/005Qi00000TYQgvIAH"
+        },
+        "Id": "005Qi00000TYQgvIAH",
+        "Username": "manny@reachhomeloans.com",
+        "ProfileId": "00ef2000001wwBCAAY",
+        "Profile": {
+          "attributes": {
+            "type": "Profile",
+            "url": "/services/data/v68.0/sobjects/Profile/00ef2000001wwBCAAY"
+          },
+          "Name": "Loan Officer Profile"
+        },
+        "UserRoleId": "00E5x000002OGkXEAW",
+        "UserRole": {
+          "attributes": {
+            "type": "UserRole",
+            "url": "/services/data/v68.0/sobjects/UserRole/00E5x000002OGkXEAW"
+          },
+          "Name": "Loan Officer"
+        },
+        "Loan_Partner__c": null,
+        "CallCenterId": "04vAJ0000008OJSYA2",
+        "NMLS__c": "2544089",
+        "Licensed_States__c": "FL;MD",
+        "LoWs_RingCentral_Required__c": false
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

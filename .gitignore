@@ -4,3 +4,7 @@
 # Integrity report local state -- the log holds borrower names and loan numbers
 .claude/.integrity-last-run
 .claude/integrity-log.md
+
+# Payroll Review previews/payloads -- employee pay, never commit
+payroll-review/preview/
+*payroll*payload*.json

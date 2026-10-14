@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total__c</fullName>
+    <label>Total</label>
+    <type>Currency</type>
+    <precision>12</precision>
+    <scale>2</scale>
+    <required>false</required>
+    <description>Paid total from the main payroll tab. Always shown as the total, even if the rows differ.</description>
+</CustomField>
