@@ -1,0 +1,430 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0Pa5x0000075H8VCAU"
+        },
+        "Id": "0Pa5x0000075H8VCAU",
+        "PermissionSetId": "0PS5x000001UHPFGA4",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PS5x000001UHPFGA4"
+          },
+          "Name": "Twilio_User"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0Pa5x0000075vzZCAQ"
+        },
+        "Id": "0Pa5x0000075vzZCAQ",
+        "PermissionSetId": "0PS5x000001UI1OGAW",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PS5x000001UI1OGAW"
+          },
+          "Name": "Multi_Factor_Authentication_MFA"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0Pa5x000007627dCAA"
+        },
+        "Id": "0Pa5x000007627dCAA",
+        "PermissionSetId": "0PS5x000001UI8NGAW",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PS5x000001UI8NGAW"
+          },
+          "Name": "ActiveCampaign_Standard_User"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaAJ00000008tg0AA"
+        },
+        "Id": "0PaAJ00000008tg0AA",
+        "PermissionSetId": "0PSAJ00000006ZM4AY",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSAJ00000006ZM4AY"
+          },
+          "Name": "Enhances_Notes"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaAJ00000008rK0AQ"
+        },
+        "Id": "0PaAJ00000008rK0AQ",
+        "PermissionSetId": "0PSAJ00000006ZR4AY",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSAJ00000006ZR4AY"
+          },
+          "Name": "All_Apex_Classes"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaAJ00000009Do0AI"
+        },
+        "Id": "0PaAJ00000009Do0AI",
+        "PermissionSetId": "0PSAJ00000006aF4AQ",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSAJ00000006aF4AQ"
+          },
+          "Name": "Wire_Calculator_PDF_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaAJ0000000d4l0AA"
+        },
+        "Id": "0PaAJ0000000d4l0AA",
+        "PermissionSetId": "0PSAJ00000008AW4AY",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSAJ00000008AW4AY"
+          },
+          "Name": "All_Visualforce_Pages"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000iHPnjKAG"
+        },
+        "Id": "0PaQi00000iHPnjKAG",
+        "PermissionSetId": "0PSQi000000FOoROAW",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000FOoROAW"
+          },
+          "Name": "ConditionPermissions"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000iHQ0lKAG"
+        },
+        "Id": "0PaQi00000iHQ0lKAG",
+        "PermissionSetId": "0PSQi000000FOoSOAW",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000FOoSOAW"
+          },
+          "Name": "UWMPermissions"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000iHPobKAG"
+        },
+        "Id": "0PaQi00000iHPobKAG",
+        "PermissionSetId": "0PSQi000000FOoTOAW",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000FOoTOAW"
+          },
+          "Name": "UserActionsPermissions"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000jzfS0KAI"
+        },
+        "Id": "0PaQi00000jzfS0KAI",
+        "PermissionSetId": "0PSQi000000GOj7OAG",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000GOj7OAG"
+          },
+          "Name": "Condition_Files_Permissions"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000m0wtTKAQ"
+        },
+        "Id": "0PaQi00000m0wtTKAQ",
+        "PermissionSetId": "0PSQi000000GtjhOAC",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000GtjhOAC"
+          },
+          "Name": "Pipeline_Command_Center_Pilot_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000nBNTVKA4"
+        },
+        "Id": "0PaQi00000nBNTVKA4",
+        "PermissionSetId": "0PSQi000000Hj2LOAS",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000Hj2LOAS"
+          },
+          "Name": "Realtor_Referral_Source_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000t8tm5KAA"
+        },
+        "Id": "0PaQi00000t8tm5KAA",
+        "PermissionSetId": "0PSQi000000Hn9BOAS",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000Hn9BOAS"
+          },
+          "Name": "Lead_Document_Collection_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000owiTyKAI"
+        },
+        "Id": "0PaQi00000owiTyKAI",
+        "PermissionSetId": "0PSQi000000IelNOAS",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000IelNOAS"
+          },
+          "Name": "Borrower_Rating_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000oxr8TKAQ"
+        },
+        "Id": "0PaQi00000oxr8TKAQ",
+        "PermissionSetId": "0PSQi000000IemzOAC",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000IemzOAC"
+          },
+          "Name": "Property_Sold_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000qZe1UKAS"
+        },
+        "Id": "0PaQi00000qZe1UKAS",
+        "PermissionSetId": "0PSQi000000JWfJOAW",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000JWfJOAW"
+          },
+          "Name": "Zoom_Meeting_Assistant_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000qn05mKAA"
+        },
+        "Id": "0PaQi00000qn05mKAA",
+        "PermissionSetId": "0PSQi000000JXI1OAO",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000JXI1OAO"
+          },
+          "Name": "Zoom_OAuth_Connection_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000rTSgtKAG"
+        },
+        "Id": "0PaQi00000rTSgtKAG",
+        "PermissionSetId": "0PSQi000000JpQDOA0",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000JpQDOA0"
+          },
+          "Name": "Application_Summary_Fields"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000rZaIDKA0"
+        },
+        "Id": "0PaQi00000rZaIDKA0",
+        "PermissionSetId": "0PSQi000000JsazOAC",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000JsazOAC"
+          },
+          "Name": "Application_Summary_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000sM9f4KAC"
+        },
+        "Id": "0PaQi00000sM9f4KAC",
+        "PermissionSetId": "0PSQi000000KbD7OAK",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000KbD7OAK"
+          },
+          "Name": "Reach_Mobile_LO"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000sLuI3KAK"
+        },
+        "Id": "0PaQi00000sLuI3KAK",
+        "PermissionSetId": "0PSQi000000KbLBOA0",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000KbLBOA0"
+          },
+          "Name": "Lead_Team_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000sp5EfKAI"
+        },
+        "Id": "0PaQi00000sp5EfKAI",
+        "PermissionSetId": "0PSQi000000KlHJOA0",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000KlHJOA0"
+          },
+          "Name": "Zoom_Meeting_Sync_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000tY8bRKAS"
+        },
+        "Id": "0PaQi00000tY8bRKAS",
+        "PermissionSetId": "0PSQi000000KsnROAS",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000KsnROAS"
+          },
+          "Name": "Borrower_Management"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000ueORgKAM"
+        },
+        "Id": "0PaQi00000ueORgKAM",
+        "PermissionSetId": "0PSQi000000L5BBOA0",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000L5BBOA0"
+          },
+          "Name": "DocuSign_Transaction_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000v9YOVKA2"
+        },
+        "Id": "0PaQi00000v9YOVKA2",
+        "PermissionSetId": "0PSQi000000LDa9OAG",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000LDa9OAG"
+          },
+          "Name": "Borrower_Application_Fields"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000vr266KAA"
+        },
+        "Id": "0PaQi00000vr266KAA",
+        "PermissionSetId": "0PSQi000000M3IbOAK",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000M3IbOAK"
+          },
+          "Name": "Payroll_Review_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0Pa5x0000076DrCCAU"
+        },
+        "Id": "0Pa5x0000076DrCCAU",
+        "PermissionSetId": "0PSf2000001ZdX6GAK",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSf2000001ZdX6GAK"
+          },
+          "Name": "StandardEinsteinActivityCapturePsl"
+        }
+      }
+    ],
+    "totalSize": 28,
+    "done": true
+  },
+  "warnings": []
+}

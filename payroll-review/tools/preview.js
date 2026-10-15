@@ -32,7 +32,7 @@ function card(person, i) {
     return `<section class="modal" id="p${i}" ${i ? 'hidden' : ''} aria-label="${esc(person.name)}">
       <header class="mh">Payroll Review</header>
       <div class="mb">
-        <p class="meta"><strong>${esc(p.period)} Payroll</strong><span>Pay Date ${longDate(p.payDate)}</span><span>Review closes ${longDate(p.reviewCloses)}</span></p>
+        <p class="meta"><strong>${esc(p.period)} Payroll</strong><span>Pay Date ${longDate(p.payDate)}</span><span>Feedback by ${longDate(p.feedbackCloses)}</span><span>Review closes ${longDate(p.reviewCloses)}</span></p>
         ${sections}
         <div class="total"><span>Total</span><strong>${money(person.total)}</strong></div>
         <div class="actions"><button class="btn" type="button">Report an issue</button><button class="btn btn-primary" type="button">Looks good</button></div>

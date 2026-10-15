@@ -1,7 +1,8 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import getVolume from '@salesforce/apex/LoWsVolumeService.getVolume';
 import { reduceApexError } from 'c/portalUtils';
 import getMyPayrollReview from '@salesforce/apex/PayrollReviewController.getMine';
+import { needsResponse } from 'c/payrollReview';
 
 // Volume drawer (2026-10-08): fixed right-edge tab on the LO Workspace main screens.
 // Figures load each time it opens, so they are never stale.
@@ -12,6 +13,20 @@ function units(n) {
 }
 
 export default class LoWsVolumeDrawer extends LightningElement {
+    // Partner Workspace portal (Harold, 2026-10-15): payroll only, no volume figures, and the tab shows only
+    // while a review is open.
+    @api payrollOnly = false;
+
+    get showTab() {
+        return !this.payrollOnly || !!this.payrollReview;
+    }
+    get tabLabel() {
+        return this.payrollOnly ? 'Payroll' : 'Volume';
+    }
+    get tabIcon() {
+        return this.payrollOnly ? 'file-check-2' : 'trending-up';
+    }
+
     open = false;
     loading = false;
     error;
@@ -26,7 +41,7 @@ export default class LoWsVolumeDrawer extends LightningElement {
     }
 
     // Payroll Review (2026-10-14): shown at the top of the drawer until the 11th; the drawer opens
-    // itself on load until the LO clicks Looks good or Report an issue.
+    // itself on load until the LO clicks Looks good or Report an issue (or the 8th passes).
     payrollReview;
 
     async loadPayrollReview() {
@@ -35,13 +50,13 @@ export default class LoWsVolumeDrawer extends LightningElement {
         } catch (e) {
             this.payrollReview = undefined;
         }
-        if (this.payrollReview?.Status__c === 'Not Reviewed' && !this.open) {
+        if (this.payrollPending && !this.open) {
             this.toggle();
         }
     }
 
     get payrollPending() {
-        return this.payrollReview?.Status__c === 'Not Reviewed';
+        return needsResponse(this.payrollReview);
     }
 
     disconnectedCallback() {
@@ -71,6 +86,7 @@ export default class LoWsVolumeDrawer extends LightningElement {
             return;
         }
         this.open = true;
+        if (this.payrollOnly) return;
         this.loading = !this.v;
         this.error = undefined;
         try {
@@ -100,6 +116,7 @@ export default class LoWsVolumeDrawer extends LightningElement {
 
     get headline() {
         const month = (this.v?.monthLabel || '').split(' ')[0];
+        if (this.payrollOnly) return 'Your payroll';
         return month ? `Your ${month} volume` : 'Your volume';
     }
 

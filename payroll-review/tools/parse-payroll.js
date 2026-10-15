@@ -52,6 +52,7 @@ const payDateText = (norm(main[1].A).match(/Pay Date: ([A-Za-z]+ \d+, \d{4})/) |
 const pd = new Date(payDateText);
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const payDate = iso(pd);
+const feedbackCloses = iso(new Date(pd.getFullYear(), pd.getMonth(), 8));
 const reviewCloses = iso(new Date(pd.getFullYear(), pd.getMonth(), 11));
 const units = +((norm(main[1].A).match(/(\d+) Funded Files/) || [])[1] || 0);
 
@@ -135,8 +136,8 @@ for (const name of [...new Set([...LOS, ...LOAS, ...BONUS])]) {
     people.push({ name, total: b.total, lines });
 }
 
-const payload = { period, payDate, reviewCloses, people };
-console.log(`${period} · pay date ${payDate} · review closes ${reviewCloses}`);
+const payload = { period, payDate, feedbackCloses, reviewCloses, people };
+console.log(`${period} · pay date ${payDate} · feedback closes ${feedbackCloses} · review closes ${reviewCloses}`);
 for (const p of people) console.log(`  ${p.name.padEnd(20)} ${String(p.lines.length).padStart(3)} rows   total $${p.total.toFixed(2)}`);
 console.log(checks.length ? `\nCHECKS:\n  ${checks.join('\n  ')}` : '\nCHECKS: none');
 if (out) fs.writeFileSync(out, JSON.stringify(payload, null, 2));
@@ -147,6 +148,6 @@ if (out) {
     const d = (s) => `Date.valueOf(${q(s)})`;
     fs.writeFileSync(
         out.replace(/\.json$/, '') + '.apex',
-        `System.debug(PayrollReviewController.load(${q(period)}, ${d(payDate)}, ${d(reviewCloses)}, ${q(JSON.stringify(people))}).size() + ' reviews loaded');\n`
+        `System.debug(PayrollReviewController.load(${q(period)}, ${d(payDate)}, ${d(feedbackCloses)}, ${d(reviewCloses)}, ${q(JSON.stringify(people))}).size() + ' reviews loaded');\n`
     );
 }

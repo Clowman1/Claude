@@ -1,0 +1,66 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000jzfRsKAI"
+        },
+        "Id": "0PaQi00000jzfRsKAI",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000GOj7OAG"
+          },
+          "Name": "Condition_Files_Permissions"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000tg5oQKAQ"
+        },
+        "Id": "0PaQi00000tg5oQKAQ",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000KfS1OAK"
+          },
+          "Name": "External_LO_Perfect_Day_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000ueORjKAM"
+        },
+        "Id": "0PaQi00000ueORjKAM",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000L5BBOA0"
+          },
+          "Name": "DocuSign_Transaction_Access"
+        }
+      },
+      {
+        "attributes": {
+          "type": "PermissionSetAssignment",
+          "url": "/services/data/v68.0/sobjects/PermissionSetAssignment/0PaQi00000vrYFdKAM"
+        },
+        "Id": "0PaQi00000vrYFdKAM",
+        "PermissionSet": {
+          "attributes": {
+            "type": "PermissionSet",
+            "url": "/services/data/v68.0/sobjects/PermissionSet/0PSQi000000M3IbOAK"
+          },
+          "Name": "Payroll_Review_Access"
+        }
+      }
+    ],
+    "totalSize": 4,
+    "done": true
+  },
+  "warnings": []
+}

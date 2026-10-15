@@ -19,6 +19,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Payroll_Review__c.Feedback_Closes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Payroll_Review__c.Pay_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -105,4 +110,8 @@
         <object>Payroll_Review_Line__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>Payroll_Review__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>

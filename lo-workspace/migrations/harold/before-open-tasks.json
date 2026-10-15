@@ -1,0 +1,34 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "Task",
+          "url": "/services/data/v68.0/sobjects/Task/00TQi00000bwa5uMAA"
+        },
+        "Id": "00TQi00000bwa5uMAA",
+        "Subject": "Call - Prospecting on 2025-04-26 14:41:00Z on 4/25/2025 9:41:29 AM",
+        "Status": "Open",
+        "ActivityDate": "2025-04-26",
+        "WhatId": null,
+        "WhoId": null
+      },
+      {
+        "attributes": {
+          "type": "Task",
+          "url": "/services/data/v68.0/sobjects/Task/00TQi00001LtiiCMAR"
+        },
+        "Id": "00TQi00001LtiiCMAR",
+        "Subject": "Cure Incomplete File on 5/20/2026 12:48:38 PM",
+        "Status": "Open",
+        "ActivityDate": "2026-05-20",
+        "WhatId": "a01Qi00001FcrYSIAZ",
+        "WhoId": null
+      }
+    ],
+    "totalSize": 2,
+    "done": true
+  },
+  "warnings": []
+}

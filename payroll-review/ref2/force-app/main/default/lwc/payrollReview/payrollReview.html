@@ -1,0 +1,68 @@
+<template>
+    <div class="pr">
+        <p class="meta">
+            <strong>{period} Payroll</strong>
+            <span>Pay Date {payDate}</span>
+            <span>Review closes {closes}</span>
+        </p>
+
+        <template for:each={sections} for:item="s">
+            <div key={s.key} class="section">
+                <template lwc:if={s.name}><h3>{s.name}</h3></template>
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Loan</th>
+                                <th scope="col" class="num">Loan Amount</th>
+                                <th scope="col">Biz Dev</th>
+                                <th scope="col" class="num">Rate Applied</th>
+                                <th scope="col" class="num">Commission</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={s.rows} for:item="r">
+                                <tr key={r.key}>
+                                    <td>{r.loan}</td>
+                                    <td class="num">{r.amount}</td>
+                                    <td>{r.bizDev}</td>
+                                    <td class="num">{r.rate}</td>
+                                    <td class="num">{r.commission}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                        <template lwc:if={s.showSubtotal}>
+                            <tfoot>
+                                <tr><td colspan="4">{s.name} subtotal</td><td class="num">{s.subtotal}</td></tr>
+                            </tfoot>
+                        </template>
+                    </table>
+                </div>
+            </div>
+        </template>
+
+        <div class="total"><span>Total</span><strong>{total}</strong></div>
+
+        <template lwc:if={status}><p class="status" role="status">{status}</p></template>
+        <template lwc:if={error}><p class="error" role="alert">{error}</p></template>
+
+        <template lwc:if={reporting}>
+            <label class="field">
+                <span>What looks wrong?</span>
+                <textarea rows="4" onchange={handleMessage} oninput={handleMessage} placeholder="e.g. My Smith file is missing, or the rate on Jones should be 150 BPS"></textarea>
+            </label>
+            <div class="actions">
+                <button type="button" class="btn" onclick={cancelReport} disabled={busy}>Cancel</button>
+                <button type="button" class="btn btn-primary" onclick={send} disabled={sendDisabled}>Send to Christopher &amp; Bianca</button>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="actions">
+                <button type="button" class="btn" onclick={startReport} disabled={busy}>Report an issue</button>
+                <template lwc:if={showLooksGood}>
+                    <button type="button" class="btn btn-primary" onclick={looksGood} disabled={busy}>Looks good</button>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

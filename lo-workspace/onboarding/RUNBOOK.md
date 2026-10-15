@@ -160,6 +160,17 @@ The script's reconcile mode never changes profile or role, so it can't do this a
 6. Tag their own realtors as partners: anonymous Apex `LoWsPartnerTagBackfill.tagOwnedPartners('<userId>', 'Active Partner');` (deployed 2026-10-14). Only Person Accounts they own; business-account title companies can't be tagged. The tag fields have no FLS, so a one-off script can't write them.
 7. Old texts aren't attributed to their leads, so they don't show under Texts (O3 `backfill-90d.apex` covers that, not run for Manny).
 
+**Portal (Customer Community Plus) users can't be converted.** Harold Ellis, 2026-10-15; files in `lo-workspace/migrations/harold/`:
+
+1. If deactivating the portal user fails with "default owner of records created by guest users", go to Setup > Digital Experiences > the site > Workspaces > Administration > Preferences > Record Ownership > Default Owner. Change it to an internal user and Save.
+2. Rename the portal username (e.g. `name.portal@`) and deactivate it in the same update. That frees the username, and the script refuses a second active user with the same email.
+3. Create the new user with the script, then add Payroll_Review_Access.
+4. On loans, move **`Loan_Officer__c` only**. Changing the Owner to the same person fails: the "Re-create Transaction Share" flow shares the loan with its Loan Officer, and Salesforce rejects a share to the record's owner. The LO's Manual share gives them access.
+5. Move Accounts, open Tasks and future Events by OwnerId. Children restamp automatically because the new user is already in the role, so no backfill is needed.
+6. Tag their realtors (`LoWsPartnerTagBackfill`).
+
+**Up Next after a move:** close stale auto-created tasks, then look at pre-approvals. For Joseph, 87 aged Pre-Approval leads went to "Nurture - Preapproval". That status sends nothing.
+
 ---
 
 ## Offboarding (Chris only)

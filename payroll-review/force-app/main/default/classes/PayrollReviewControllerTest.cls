@@ -15,7 +15,7 @@ private class PayrollReviewControllerTest {
     @IsTest
     static void loadReviewFeedbackAndReload() {
         Date closes = Date.today().addDays(3);
-        PayrollReviewController.load('September 2026', Date.today(), closes, people(5251.47));
+        PayrollReviewController.load('September 2026', Date.today(), closes, closes, people(5251.47));
 
         Payroll_Review__c mine = PayrollReviewController.getMine();
         Assert.areEqual(2, mine.Lines__r.size());
@@ -33,8 +33,12 @@ private class PayrollReviewControllerTest {
         Assert.areEqual('Disputed', disputed.Status__c);
         Assert.isTrue(disputed.Feedback__c.contains('Missing the Smith file'));
 
+        // Sorted out with no change: the LO can still accept.
+        PayrollReviewController.markReviewed(mine.Id);
+        Assert.areEqual('Reviewed', [SELECT Status__c FROM Payroll_Review__c WHERE Id = :mine.Id].Status__c);
+
         // A corrected reload replaces the lines, resets the status and keeps the feedback.
-        PayrollReviewController.load('September 2026', Date.today(), closes, people(5300));
+        PayrollReviewController.load('September 2026', Date.today(), closes, closes, people(5300));
         Payroll_Review__c reloaded = [SELECT Status__c, Feedback__c, Total__c, (SELECT Id FROM Lines__r) FROM Payroll_Review__c];
         Assert.areEqual('Not Reviewed', reloaded.Status__c);
         Assert.areEqual(5300, reloaded.Total__c);
@@ -44,7 +48,7 @@ private class PayrollReviewControllerTest {
 
     @IsTest
     static void closedReviewIsHiddenAndLocked() {
-        PayrollReviewController.load('August 2026', Date.today().addDays(-30), Date.today().addDays(-1), people(1));
+        PayrollReviewController.load('August 2026', Date.today().addDays(-30), Date.today().addDays(-1), Date.today().addDays(-1), people(1));
         Assert.isNull(PayrollReviewController.getMine());
         Id reviewId = [SELECT Id FROM Payroll_Review__c].Id;
         try {
@@ -52,6 +56,19 @@ private class PayrollReviewControllerTest {
             Assert.fail('closed review should be locked');
         } catch (AuraHandledException e) {
             Assert.isTrue(true);
+        }
+    }
+
+    @IsTest
+    static void viewOnlyAfterFeedbackCloses() {
+        PayrollReviewController.load('September 2026', Date.today(), Date.today().addDays(-1), Date.today().addDays(2), people(1));
+        Payroll_Review__c mine = PayrollReviewController.getMine();
+        Assert.isNotNull(mine, 'still viewable until Review Closes');
+        try {
+            PayrollReviewController.submitFeedback(mine.Id, 'too late');
+            Assert.fail('feedback should be closed');
+        } catch (AuraHandledException e) {
+            Assert.areEqual('Not Reviewed', [SELECT Status__c FROM Payroll_Review__c].Status__c);
         }
     }
 
@@ -64,7 +81,7 @@ private class PayrollReviewControllerTest {
             Assert.isTrue(true);
         }
         try {
-            PayrollReviewController.load('September 2026', Date.today(), Date.today(), '[{"name":"No Such Person zz","total":1,"lines":[]}]');
+            PayrollReviewController.load('September 2026', Date.today(), Date.today(), Date.today(), '[{"name":"No Such Person zz","total":1,"lines":[]}]');
             Assert.fail('unknown name should fail');
         } catch (IllegalArgumentException e) {
             Assert.isTrue(e.getMessage().contains('No Such Person zz'));

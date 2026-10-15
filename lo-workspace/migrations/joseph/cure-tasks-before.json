@@ -1,0 +1,78 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "Task",
+          "url": "/services/data/v68.0/sobjects/Task/00TQi00001BeVcbMAF"
+        },
+        "Id": "00TQi00001BeVcbMAF",
+        "Subject": "Cure Incomplete File on 2/23/2026 10:21:56 AM",
+        "ActivityDate": "2026-02-23",
+        "WhatId": "a01Qi000011j2qlIAA",
+        "What": {
+          "attributes": {
+            "type": "Name",
+            "url": "/services/data/v68.0/sobjects/Transaction__c/a01Qi000011j2qlIAA"
+          },
+          "Name": "Meyers - 1226123127"
+        }
+      },
+      {
+        "attributes": {
+          "type": "Task",
+          "url": "/services/data/v68.0/sobjects/Task/00TQi00001CWKHSMA5"
+        },
+        "Id": "00TQi00001CWKHSMA5",
+        "Subject": "Cure Incomplete File on 3/2/2026 5:29:30 PM",
+        "ActivityDate": "2026-03-02",
+        "WhatId": "a01Qi000012jlnhIAA",
+        "What": {
+          "attributes": {
+            "type": "Name",
+            "url": "/services/data/v68.0/sobjects/Transaction__c/a01Qi000012jlnhIAA"
+          },
+          "Name": "Dantes - 7600262291"
+        }
+      },
+      {
+        "attributes": {
+          "type": "Task",
+          "url": "/services/data/v68.0/sobjects/Task/00TQi00001Cf68qMAB"
+        },
+        "Id": "00TQi00001Cf68qMAB",
+        "Subject": "Cure Incomplete File on 3/3/2026 4:31:00 PM",
+        "ActivityDate": "2026-03-03",
+        "WhatId": "a01Qi000012tFk7IAE",
+        "What": {
+          "attributes": {
+            "type": "Name",
+            "url": "/services/data/v68.0/sobjects/Transaction__c/a01Qi000012tFk7IAE"
+          },
+          "Name": "Otano - 1526099381"
+        }
+      },
+      {
+        "attributes": {
+          "type": "Task",
+          "url": "/services/data/v68.0/sobjects/Task/00TQi00001DtbohMAB"
+        },
+        "Id": "00TQi00001DtbohMAB",
+        "Subject": "Cure Incomplete File on 3/13/2026 12:08:29 PM",
+        "ActivityDate": "2026-03-13",
+        "WhatId": "a01Qi000014DbdzIAC",
+        "What": {
+          "attributes": {
+            "type": "Name",
+            "url": "/services/data/v68.0/sobjects/Transaction__c/a01Qi000014DbdzIAC"
+          },
+          "Name": "D'Angelo - 1526118000"
+        }
+      }
+    ],
+    "totalSize": 4,
+    "done": true
+  },
+  "warnings": []
+}

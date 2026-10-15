@@ -4,6 +4,7 @@
     <columns><field>Payroll_Review__c.Period__c</field></columns>
     <columns><field>Payroll_Review__c.Status__c</field></columns>
     <columns><field>Payroll_Review__c.Reviewed_On__c</field></columns>
+    <columns><field>Payroll_Review__c.Feedback_Closes__c</field></columns>
     <columns><field>Payroll_Review__c.Total__c</field></columns>
     <columns><field>Payroll_Review__c.Feedback__c</field></columns>
     <columns><field>Payroll_Review__c.Resolved__c</field></columns>

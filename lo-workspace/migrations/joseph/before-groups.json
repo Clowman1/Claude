@@ -1,0 +1,25 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "GroupMember",
+          "url": "/services/data/v68.0/sobjects/GroupMember/011Qi000003j6PLIAY"
+        },
+        "Id": "011Qi000003j6PLIAY",
+        "GroupId": "00GQi000001z469MAA",
+        "Group": {
+          "attributes": {
+            "type": "Group",
+            "url": "/services/data/v68.0/sobjects/Group/00GQi000001z469MAA"
+          },
+          "DeveloperName": "Joe_Carey"
+        }
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

@@ -1,14 +1,17 @@
 <template>
+    <template lwc:if={showTab}>
     <button type="button" class="edge-tab" aria-expanded={expanded} aria-controls="lows-volume-drawer" onclick={toggle}>
-        <span class="edge-icon"><c-portal-icon name="trending-up" size="16"></c-portal-icon></span>
-        <span class="edge-label">Volume</span>
+        <span class="edge-icon"><c-portal-icon name={tabIcon} size="16"></c-portal-icon></span>
+        <span class="edge-label">{tabLabel}</span>
         <template lwc:if={payrollPending}><span class="edge-dot" aria-label="Payroll review waiting"></span></template>
     </button>
+    </template>
     <div class={scrimClass} onclick={close}></div>
     <aside id="lows-volume-drawer" class={drawerClass} aria-label="My volume" aria-hidden={hidden}>
         <header class="band">
             <div class="band-top">
-                <template lwc:if={photoUrl}>
+                <template lwc:if={payrollOnly}></template>
+                <template lwc:elseif={photoUrl}>
                     <img class="avatar" src={photoUrl} alt="" />
                 </template>
                 <template lwc:else>

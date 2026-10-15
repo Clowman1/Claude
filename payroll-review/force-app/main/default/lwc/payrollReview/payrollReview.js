@@ -3,6 +3,7 @@ import markReviewed from '@salesforce/apex/PayrollReviewController.markReviewed'
 import submitFeedback from '@salesforce/apex/PayrollReviewController.submitFeedback';
 
 // Payroll Review body (2026-10-14), shared by the Command Center modal and the LO Workspace Volume drawer.
+// Looks good / Report an issue until Feedback_Closes__c (the 8th), then view-only until the 11th.
 // Fires "done" after Looks good so the host can close itself; after a sent issue it stays open to confirm.
 const MONEY = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 const WHOLE = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
@@ -11,6 +12,22 @@ function longDate(iso) {
     if (!iso) return '';
     const [y, m, d] = iso.split('-').map(Number);
     return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function todayIso() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+export function feedbackOpen(review) {
+    return !!review?.Feedback_Closes__c && review.Feedback_Closes__c >= todayIso();
+}
+
+// Hosts pop the review open on their own while this is true: not yet answered, or a dispute that
+// Christopher/Bianca marked Resolved (so the LO can now accept it). Never after the 8th.
+export function needsResponse(review) {
+    const waiting = review?.Status__c === 'Not Reviewed' || (review?.Status__c === 'Disputed' && review?.Resolved__c);
+    return feedbackOpen(review) && waiting;
 }
 
 export default class PayrollReview extends LightningElement {
@@ -27,6 +44,12 @@ export default class PayrollReview extends LightningElement {
     }
     get payDate() {
         return longDate(this.review?.Pay_Date__c);
+    }
+    get feedbackBy() {
+        return longDate(this.review?.Feedback_Closes__c);
+    }
+    get canRespond() {
+        return feedbackOpen(this.review);
     }
     get closes() {
         return longDate(this.review?.Review_Closes__c);
@@ -60,14 +83,22 @@ export default class PayrollReview extends LightningElement {
     }
 
     get status() {
-        if (this.sent) return 'Your issue was sent to Christopher and Bianca. They will follow up with you.';
-        if (this.confirmed || this.review?.Status__c === 'Reviewed') return 'You confirmed this payroll looks good.';
-        if (this.review?.Status__c === 'Disputed') return 'You reported an issue. You can send another below.';
+        if (this.confirmed || (!this.sent && this.review?.Status__c === 'Reviewed')) return 'You confirmed this payroll looks good.';
+        if (this.sent) {
+            return 'Your issue was sent to Christopher and Bianca. Once it is sorted out, click Looks good to accept this payroll.';
+        }
+        if (this.review?.Status__c === 'Disputed') {
+            if (!this.canRespond) return 'You reported an issue.';
+            return this.review.Resolved__c
+                ? 'Your issue was marked resolved. If this payroll is right, click Looks good.'
+                : 'You reported an issue. Once it is sorted out, click Looks good, or send another note.';
+        }
         return '';
     }
 
+    // Also offered after a dispute, so the LO can accept once it is sorted out.
     get showLooksGood() {
-        return this.review?.Status__c === 'Not Reviewed' && !this.confirmed && !this.sent && !this.reporting;
+        return this.canRespond && !this.confirmed && !this.reporting && (this.sent || this.review?.Status__c !== 'Reviewed');
     }
 
     startReport() {

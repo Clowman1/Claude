@@ -3,6 +3,7 @@
         <p class="meta">
             <strong>{period} Payroll</strong>
             <span>Pay Date {payDate}</span>
+            <template lwc:if={canRespond}><span>Feedback by {feedbackBy}</span></template>
             <span>Review closes {closes}</span>
         </p>
 
@@ -46,6 +47,7 @@
         <template lwc:if={status}><p class="status" role="status">{status}</p></template>
         <template lwc:if={error}><p class="error" role="alert">{error}</p></template>
 
+        <template lwc:if={canRespond}>
         <template lwc:if={reporting}>
             <label class="field">
                 <span>What looks wrong?</span>
@@ -63,6 +65,10 @@
                     <button type="button" class="btn btn-primary" onclick={looksGood} disabled={busy}>Looks good</button>
                 </template>
             </div>
+        </template>
+        </template>
+        <template lwc:else>
+            <p class="closed">Feedback closed on {feedbackBy}. This payroll is view-only until {closes}. Questions? Contact Christopher or Bianca directly.</p>
         </template>
     </div>
 </template>

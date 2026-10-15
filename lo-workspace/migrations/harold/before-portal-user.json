@@ -1,0 +1,28 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "User",
+          "url": "/services/data/v68.0/sobjects/User/005AJ000000Ig20YAC"
+        },
+        "Id": "005AJ000000Ig20YAC",
+        "Username": "hellis@reachhomeloans.com",
+        "Email": "hellis@reachhomeloans.com",
+        "IsActive": true,
+        "ProfileId": "00eAJ000000LsqrYAC",
+        "ContactId": "003AJ000003gDBbYAM",
+        "NMLS__c": "1312052",
+        "Licensed_States__c": "FL;GA",
+        "Phone": null,
+        "MobilePhone": null,
+        "Title": null,
+        "TimeZoneSidKey": "America/New_York"
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

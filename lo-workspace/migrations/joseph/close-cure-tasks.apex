@@ -1,0 +1,1 @@
+List<Task> ts=[SELECT Id FROM Task WHERE Id IN ('00TQi00001BeVcbMAF','00TQi00001CWKHSMA5','00TQi00001Cf68qMAB','00TQi00001DtbohMAB') AND IsClosed=false]; for(Task t:ts) t.Status='Completed'; update ts; System.debug('CLOSED '+ts.size());

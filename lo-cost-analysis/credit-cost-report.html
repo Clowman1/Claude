@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Loan Officer Credit &amp; Per-Loan Cost Analysis</title>
+<style>
+  @page { size: Letter; margin: 0.6in 0.65in; }
+  :root { --ink:#1d2433; --muted:#5b6475; --line:#d9dee7; --accent:#1f4e79; --soft:#f3f6fa; --warn:#8a5a00; --warnbg:#fff6e0; }
+  * { box-sizing: border-box; }
+  body { font: 10pt/1.4 "Segoe UI", Arial, sans-serif; color: var(--ink); margin: 0; background:#fff; }
+  h1 { font-size: 20pt; margin: 0 0 2pt; color: var(--accent); }
+  h2 { page-break-after: avoid; font-size: 13pt; margin: 14pt 0 5pt; color: var(--accent); border-bottom: 1.5pt solid var(--accent); padding-bottom: 2pt; }
+  h3 { font-size: 11pt; margin: 12pt 0 4pt; }
+  p { margin: 0 0 6pt; }
+  .sub { color: var(--muted); margin-bottom: 14pt; }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt; font-size: 9.5pt; page-break-inside: avoid; }
+  th, td { border-bottom: 0.75pt solid var(--line); padding: 3pt 6pt; text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: var(--soft); font-weight: 600; }
+  tr.total td { font-weight: 700; border-top: 1.25pt solid var(--ink); }
+  .kpis { display: flex; gap: 8pt; margin: 6pt 0 10pt; }
+  .kpi { flex: 1; background: var(--soft); border-radius: 6pt; padding: 8pt 10pt; }
+  .kpi b { display: block; font-size: 17pt; color: var(--accent); }
+  .kpi span { color: var(--muted); font-size: 9pt; }
+  .note { background: var(--warnbg); border-left: 3pt solid var(--warn); padding: 6pt 9pt; margin: 8pt 0; font-size: 9.5pt; page-break-inside: avoid; }
+  .rec { background: var(--soft); border-left: 3pt solid var(--accent); padding: 6pt 9pt; margin: 8pt 0; page-break-inside: avoid; }
+  ul { margin: 2pt 0 6pt 16pt; padding: 0; }
+  li { margin-bottom: 2pt; }
+  .small { font-size: 8.5pt; color: var(--muted); }
+  .pb { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<h1>Loan Officer Credit &amp; Per-Loan Cost Analysis</h1>
+<div class="sub">Reach Home Loans &middot; Prepared October 15, 2026 &middot; Data: January&ndash;September 2026</div>
+
+<h2>Summary</h2>
+<div class="kpis">
+  <div class="kpi"><b>$495</b><span>Average credit cost per closed loan (all three LOs)</span></div>
+  <div class="kpi"><b>$230</b><span>Operations bonus per closed loan</span></div>
+  <div class="kpi"><b>&asymp;$725</b><span>Credit + ops bonus per closed loan</span></div>
+</div>
+<ul>
+  <li>Credit cost per closed loan ranges from <b>$326</b> (Olmsted) to <b>$870</b> (Harold). The driver is how many pulls it takes to close a loan, not the price per pull.</li>
+  <li><b>Biggest lever: investor free credit pulls.</b> Olmsted moved to an investor's free pull option over the summer. His credit cost fell from <b>$471</b> to <b>$117</b> per closed loan (Section 5).</li>
+  <li>A standard tri-merge costs <b>$89</b>, including joint reports. Harold's soft pulls cost <b>$75 single / $150 joint</b>, more than a standard pull.</li>
+  <li><b>Recommendation:</b> do not give soft-pull accounts to new outside loan officers at current vendor pricing (see Section 4).</li>
+  <li>With investor free pulls (Olmsted, June&ndash;September), the per-loan figure falls to about <b>$347</b> ($117 + $230).</li>
+</ul>
+
+<h2>1. Method</h2>
+<ul>
+  <li><b>Source:</b> credit vendor monthly statements for Joe Olmsted, Joseph Carey and Harold Ellis (two accounts: standard and soft pull). Every month was reconciled to the vendor's own monthly summary totals.</li>
+  <li><b>RMCR $250 charges are excluded.</b> They are recouped from the borrower at closing, so they are not a net cost to the company. Each RMCR line corresponds to a closed loan, and the RMCR counts closely match Salesforce closings, which supports the closing counts used here.</li>
+  <li><b>Payments are not costs.</b> Invoice payments and autopay lines are excluded.</li>
+  <li><b>Cost includes add-ons</b> such as rescores, report copies, tradeline updates and upgrades. A "pull" is a billed credit report (any bureau combination).</li>
+  <li><b>Closed loans</b> come from Salesforce: transactions where the LO is the assigned Loan Officer, with a closing date in the month and a status of Closing, Funding, PC Review or Post-Closed.</li>
+  <li><b>Period:</b> January&ndash;September 2026 (9 full months). October is partial and is left out of the averages.</li>
+</ul>
+
+<h3>Data notes</h3>
+<ul>
+  <li><b>Carey, July:</b> the second half of the July statement is missing from the PDF; about $698 of charges is estimated.</li>
+  <li><b>Small samples:</b> Carey has 18 closings and Harold 30 over nine months, so one or two loans move their per-loan figures noticeably.</li>
+  <li><b>Timing:</b> pulls and closings are matched by calendar month. A pull in one month often belongs to a loan that closes one to two months later, so nine-month totals are more reliable than any single month.</li>
+</ul>
+
+<div style="page-break-inside:avoid"><h2>2. Monthly pulls and net credit cost</h2>
+<p class="small">Each cell shows billed pulls / net cost (after excluding RMCR and payments).</p>
+<table>
+  <tr><th>Month</th><th>Olmsted</th><th>Carey</th><th>Harold &ndash; standard</th><th>Harold &ndash; soft</th></tr>
+  <tr><td>January</td><td>41 / $3,677</td><td>18 / $1,561</td><td>19 / $1,715</td><td>8 / $875</td></tr>
+  <tr><td>February</td><td>33 / $3,022</td><td>12 / $1,144</td><td>18 / $1,623</td><td>6 / $451</td></tr>
+  <tr><td>March</td><td>42 / $3,786</td><td>11 / $1,056</td><td>18 / $2,563</td><td>24 / $2,001</td></tr>
+  <tr><td>April</td><td>41 / $3,677</td><td>9 / $979</td><td>17 / $1,619</td><td>22 / $1,650</td></tr>
+  <tr><td>May</td><td>31 / $2,804</td><td>7 / $633</td><td>24 / $2,143</td><td>11 / $900</td></tr>
+  <tr><td>June</td><td>12 / $1,068</td><td>11 / $938</td><td>25 / $2,572</td><td>14 / $1,275</td></tr>
+  <tr><td>July</td><td>9 / $822</td><td>5 / $1,157*</td><td>18 / $1,607</td><td>8 / $600</td></tr>
+  <tr><td>August</td><td>8 / $858</td><td>0 / $0</td><td>20 / $1,983</td><td>1 / $75</td></tr>
+  <tr><td>September</td><td>2 / $178</td><td>5 / $455</td><td>24 / $2,139</td><td>4 / $300</td></tr>
+  <tr class="total"><td>Total (9 mo)</td><td>219 / $19,892</td><td>78 / $7,923</td><td>183 / $17,964</td><td>98 / $8,127</td></tr>
+</table>
+</div><p class="small">* Carey's July statement is missing pages; about $698 of July charges is estimated from the statement's year-to-date total.</p>
+
+<h2>3. Averages per loan officer</h2>
+<table>
+  <tr><th>Loan officer</th><th>Pulls / month</th><th>Credit cost / month</th><th>Closed loans (9 mo)</th><th>Pulls per closing</th><th>Credit cost per closed loan</th></tr>
+  <tr><td>Joe Olmsted</td><td>24.3</td><td>$2,210</td><td>61</td><td>3.6</td><td>$326</td></tr>
+  <tr><td>Joseph Carey</td><td>8.7</td><td>$880</td><td>18</td><td>4.3</td><td>$440</td></tr>
+  <tr><td>Harold Ellis (both accounts)</td><td>31.2</td><td>$2,899</td><td>30</td><td>9.4</td><td>$870</td></tr>
+  <tr class="total"><td>All three combined</td><td>64.2</td><td>$5,990</td><td>109</td><td>5.3</td><td>$495</td></tr>
+</table>
+
+<div style="page-break-inside:avoid"><h3>Cost per closed loan</h3>
+<table>
+  <tr><th>Component</th><th>Per closed loan</th></tr>
+  <tr><td>Credit reports (combined average)</td><td>$495</td></tr>
+  <tr><td>Processor bonus</td><td>$120</td></tr>
+  <tr><td>Processing team lead bonus</td><td>$40</td></tr>
+  <tr><td>Operations manager bonus</td><td>$60</td></tr>
+  <tr><td>Closer bonus</td><td>$10</td></tr>
+  <tr class="total"><td>Total</td><td>&asymp;$725</td></tr>
+</table>
+<p class="small">Operations bonuses are paid on closed transactions only. Other per-LO costs (licensing, software seats, phone, lead spend) are not yet included.</p></div>
+
+<h2>4. Soft-pull accounts: should new outside LOs get one?</h2>
+<p>Harold is the only LO with both a soft-pull and a standard-pull account, so his data shows what soft pull does in practice.</p>
+<table>
+  <tr><th>Finding (2026 statements)</th><th>Result</th></tr>
+  <tr><td>Price of a soft pull vs. a standard tri-merge</td><td>$75 single / $150 joint vs. $89</td></tr>
+  <tr><td>Borrowers soft-pulled</td><td>106</td></tr>
+  <tr><td>&hellip; who later also got a standard pull (paid twice)</td><td>34 (32%)</td></tr>
+  <tr><td>Borrowers standard-pulled</td><td>154</td></tr>
+  <tr><td>&hellip; who had a soft pull first</td><td>40 (26%)</td></tr>
+  <tr><td>Pulls per closed loan: Harold vs. Olmsted / Carey</td><td>9.4 vs. 3.6 / 4.3</td></tr>
+  <tr><td>Credit cost per closed loan: Harold vs. Olmsted / Carey</td><td>$870 vs. $326 / $440</td></tr>
+</table>
+<ul>
+  <li><b>Soft costs more, not less.</b> At these prices every soft pull costs about the same as or more than going straight to a standard pull, so it cannot save money even when it screens out a borrower.</li>
+  <li><b>About a third are paid twice.</b> When a soft-pulled borrower moves forward, the file still needs a standard pull for underwriting.</li>
+  <li><b>It isn't used as a screen.</b> Three quarters of Harold's standard pulls had no soft pull first, so the soft account adds volume instead of replacing hard pulls.</li>
+</ul>
+<div class="rec"><b>Recommendation:</b> do not give soft-pull accounts to new outside loan officers at current pricing. Revisit only if the vendor offers a soft product priced well below the $89 standard pull. One single-bureau soft pull on Harold's account was billed at $24.75, which shows cheaper options exist. If soft pull is ever rolled out, use company-controlled sub-accounts that can be audited and switched off, since every pull still requires a permissible purpose and borrower authorization.</div>
+
+<h2>5. Investor free credit pulls</h2>
+<p>Over the summer Olmsted began using an investor's free credit pull option. His billed pulls fell from about 40 a month to 2 by September, while his closings held steady.</p>
+<table>
+  <tr><th>Olmsted</th><th>Billed pulls / month</th><th>Credit cost / month</th><th>Closed loans</th><th>Credit cost per closed loan</th></tr>
+  <tr><td>January&ndash;May (paid pulls)</td><td>37.6</td><td>$3,393</td><td>36</td><td>$471</td></tr>
+  <tr><td>June&ndash;September (investor free pulls)</td><td>7.8</td><td>$732</td><td>25</td><td>$117</td></tr>
+</table>
+<div class="rec"><b>Recommendation:</b> make the investor free-pull option the default for every LO on eligible loans, including new hires. If Carey and Harold matched Olmsted's summer rate, their combined credit spend would fall from about $3,780 a month to about $625. The fallback is the $89 standard pull through the company account, not a soft pull.</div>
+<p class="small">Because Olmsted's free pulls do not appear on the vendor statements, his nine-month average ($326) blends both periods. Use $471 as the paid-pull rate and $117 as the free-pull rate.</p>
+
+
+
+</body>
+</html>

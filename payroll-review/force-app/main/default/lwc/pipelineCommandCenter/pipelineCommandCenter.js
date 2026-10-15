@@ -36,6 +36,7 @@ import addCoHosts from '@salesforce/apex/RealtorEventWorkspaceController.addCoHo
 import addAllNickleyTeamInvitees from '@salesforce/apex/RealtorEventWorkspaceController.addAllNickleyTeamInvitees';
 import ApprovedInvestorsModal, { OPEN_LIST_VIEW } from 'c/approvedInvestorsModal';
 import PayrollReviewModal from 'c/payrollReviewModal';
+import { needsResponse } from 'c/payrollReview';
 import getMyPayrollReview from '@salesforce/apex/PayrollReviewController.getMine';
 
 const OBJECT_OPTIONS = [
@@ -265,7 +266,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
         this.loadPayrollReview(true);
     }
 
-    // Payroll Review (2026-10-14): pops up on load until Looks good / Report an issue; button until the 11th.
+    // Payroll Review (2026-10-14): pops up on load until Looks good / Report an issue (or the 8th); button until the 11th.
     payrollReview;
 
     async loadPayrollReview(autoOpen) {
@@ -275,7 +276,7 @@ export default class PipelineCommandCenter extends NavigationMixin(LightningElem
             this.payrollReview = undefined;
             return;
         }
-        if (autoOpen && this.payrollReview?.Status__c === 'Not Reviewed') {
+        if (autoOpen && needsResponse(this.payrollReview)) {
             this.openPayrollReview();
         }
     }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Reviews</fullName>
+    <columns>NAME</columns>
+    <columns>Employee__c</columns>
+    <columns>Period__c</columns>
+    <columns>Status__c</columns>
+    <columns>Resolved__c</columns>
+    <columns>Total__c</columns>
+    <columns>Reviewed_On__c</columns>
+    <columns>Feedback_Closes__c</columns>
+    <filterScope>Everything</filterScope>
+
+    <label>All payroll reviews</label>
+</ListView>

@@ -14,7 +14,7 @@ Design: [DESIGN.md](DESIGN.md). Run around the 2nd–3rd of the month, once Bian
 3. **Preview**: `node tools/preview.js "$dir\payroll-payload.json" preview/<month>.html` (preview/ is gitignored). Show Christopher.
 4. **Load** after his OK: `sf apex run -o Production -f "$dir\payroll-payload.apex"`
    - Fails and loads nothing if a name doesn't match exactly one active User.
-   - Re-running for the same period (a correction) replaces that person's rows, keeps their feedback, and resets them to Not Reviewed so it pops up again.
+   - Sets Feedback Closes = the 8th and Review Closes = the 11th of the pay-date month. Re-running for the same period (a correction) replaces that person's rows, keeps their feedback, and resets them to Not Reviewed so it pops up again.
 5. **New person?** Add their exact User.Name to `LOS`, `LOAS` or `BONUS` at the top of `tools/parse-payroll.js`, and assign the **Payroll Review Access** permission set (without it they silently see nothing).
 
 Status: report **Payroll Review › Payroll Review Status**. Reviews disappear for employees after Review Closes (the 11th).

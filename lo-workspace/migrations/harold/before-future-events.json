@@ -1,0 +1,19 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "Event",
+          "url": "/services/data/v68.0/sobjects/Event/00UQi00000apznvMAA"
+        },
+        "Id": "00UQi00000apznvMAA",
+        "Subject": "New LO Salesforce Expirience",
+        "StartDateTime": "2026-10-15T17:00:00.000+0000"
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

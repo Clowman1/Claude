@@ -1,0 +1,25 @@
+{
+  "status": 0,
+  "result": {
+    "records": [
+      {
+        "attributes": {
+          "type": "User",
+          "url": "/services/data/v68.0/sobjects/User/0055x00000Bj5XkAAJ"
+        },
+        "Id": "0055x00000Bj5XkAAJ",
+        "Username": "jcarey@reachhomeloans.com",
+        "Email": "jcarey@reachhomeloans.com",
+        "ProfileId": "00ef2000001wwBCAAY",
+        "UserRoleId": "00E5x000002OGkXEAW",
+        "Loan_Partner__c": null,
+        "CallCenterId": null,
+        "NMLS__c": "1907939",
+        "Licensed_States__c": "FL"
+      }
+    ],
+    "totalSize": 1,
+    "done": true
+  },
+  "warnings": []
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Feedback_Closes__c</fullName>
+    <label>Feedback Closes</label>
+    <type>Date</type>
+    <required>false</required>
+    <description>Last day the employee can click Looks good / Report an issue (the 8th). After this the review is view-only until Review Closes.</description>
+</CustomField>

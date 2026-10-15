@@ -1,5 +1,5 @@
 // Payroll Review (2026-10-14): monthly payroll shown to each LO on the Command Center and in the
-// LO Workspace Volume drawer until the 11th. Records are owned by whoever loads them (Private OWD),
+// LO Workspace Volume drawer until the 11th; Looks good / Report an issue only until the 8th. Records are owned by whoever loads them (Private OWD),
 // so every employee-facing method is scoped to UserInfo.getUserId() and runs without sharing.
 public without sharing class PayrollReviewController {
 
@@ -13,7 +13,7 @@ public without sharing class PayrollReviewController {
     @AuraEnabled
     public static Payroll_Review__c getMine() {
         List<Payroll_Review__c> reviews = [
-            SELECT Id, Period__c, Pay_Date__c, Review_Closes__c, Total__c, Status__c, Reviewed_On__c,
+            SELECT Id, Period__c, Pay_Date__c, Feedback_Closes__c, Review_Closes__c, Total__c, Status__c, Reviewed_On__c, Resolved__c,
                 (SELECT Section__c, Loan__c, Loan_Amount__c, Biz_Dev__c, Rate__c, Commission__c
                  FROM Lines__r ORDER BY Sort_Order__c)
             FROM Payroll_Review__c
@@ -27,7 +27,8 @@ public without sharing class PayrollReviewController {
     @AuraEnabled
     public static void markReviewed(Id reviewId) {
         Payroll_Review__c review = mine(reviewId);
-        if (review.Status__c == NOT_REVIEWED) {
+        // Also after a dispute: the LO accepts once it is sorted out. Feedback history is kept.
+        if (review.Status__c != 'Reviewed') {
             update new Payroll_Review__c(Id = review.Id, Status__c = 'Reviewed', Reviewed_On__c = System.now());
         }
     }
@@ -71,10 +72,10 @@ public without sharing class PayrollReviewController {
         List<Payroll_Review__c> reviews = [
             SELECT Id, Period__c, Total__c, Status__c, Feedback__c
             FROM Payroll_Review__c
-            WHERE Id = :reviewId AND Employee__c = :UserInfo.getUserId() AND Review_Closes__c >= :Date.today()
+            WHERE Id = :reviewId AND Employee__c = :UserInfo.getUserId() AND Feedback_Closes__c >= :Date.today()
         ];
         if (reviews.isEmpty()) {
-            throw new AuraHandledException('This payroll review is closed.');
+            throw new AuraHandledException('Feedback for this payroll is closed. Contact Christopher or Bianca directly.');
         }
         return reviews[0];
     }
@@ -98,7 +99,7 @@ public without sharing class PayrollReviewController {
 
     // Replaces each person's review for the period and resets it to Not Reviewed, so a corrected
     // reload pops up again. Throws (loading nothing) if any name does not match exactly one active user.
-    public static List<Payroll_Review__c> load(String period, Date payDate, Date reviewCloses, String peopleJson) {
+    public static List<Payroll_Review__c> load(String period, Date payDate, Date feedbackCloses, Date reviewCloses, String peopleJson) {
         List<Person> people = (List<Person>) JSON.deserialize(peopleJson, List<Person>.class);
         Set<String> names = new Set<String>();
         for (Person p : people) {
@@ -137,7 +138,7 @@ public without sharing class PayrollReviewController {
             Id userId = idsByName.get(p.name)[0];
             reviews.add(new Payroll_Review__c(
                 Id = existingByUser.get(userId), Name = (p.name + ' — ' + period).left(80), Employee__c = userId,
-                Period__c = period, Pay_Date__c = payDate, Review_Closes__c = reviewCloses,
+                Period__c = period, Pay_Date__c = payDate, Feedback_Closes__c = feedbackCloses, Review_Closes__c = reviewCloses,
                 Total__c = p.total, Status__c = NOT_REVIEWED, Reviewed_On__c = null
             ));
         }
