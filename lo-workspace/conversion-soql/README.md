@@ -26,3 +26,8 @@ ExternalLoPortalConversionFacadeTest LeadConversionFieldCarryTest ApplicationSum
 
 ## Measuring headroom
 `measure-conversion-soql.apex` runs the conversion and then rolls it back, reporting SOQL use. Baseline after these fixes: 72 of 100 (2026-10-20, Jhoana Carag and Madilynn Hershberger). Re-run it after adding any automation on Lead update, Transaction__c insert/update, Condition__c insert or Lead_Document_Request__c update.
+
+## Early warning (deployed 2026-10-20, 0AfQi000001VGPhKAO)
+`ExternalLoPortalConversionFacade.warnIfNearSoqlLimit` runs after each successful LO Workspace conversion. When the conversion used
+85 or more SOQL queries (`soqlAlertThreshold`), it emails clowman@reachhomeloans.com. It spends no SOQL and swallows every error.
+The Convert_Lead screen flow and Convert_Lead_to_Person_Account_on_TRID_Date are NOT covered.
