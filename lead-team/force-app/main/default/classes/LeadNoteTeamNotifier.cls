@@ -9,17 +9,33 @@
  *   - Other                            -- always, except when they wrote the note.
  *   - Scenario Manager                 -- only when @mentioned in the note body,
  *                                         so they aren't inundated by every note.
+ *   - Byron Richie                     -- whenever "@" is followed by a word containing
+ *                                         "byron" (@Byron., @Byronn, @ByronR, @ Byron),
+ *                                         on any Consumer lead, Scenario Manager or not.
  */
 public without sharing class LeadNoteTeamNotifier {
     private static final String LIGHTNING_BASE =
         'https://reachhomeloans.lightning.force.com/lightning/r/Lead/';
     private static final String NOTE_TYPE = 'Note';
+    // Same user the Lead - Default Scenario Manager flow stamps.
+    private static final Id BYRON_ID = '0055x00000Bf9saAAB';
+    private static final Pattern BYRON_MENTION = Pattern.compile('(?i)@\\s*[A-Za-z0-9._\'-]*byron');
     private static final Set<String> CONSUMER_RECORD_TYPES = new Set<String>{
         'Consumer_Lead_record_type',
         'Consumer_Under_Contract_Lead_Record_Type'
     };
 
+    /**
+     * True while ExternalLoActivityLogService.addNote inserts the note typed in Log an activity /
+     * Log communication (LO Workspace). Those notes don't email the team; AddNewNote notes still do.
+     */
+    @TestVisible
+    public static Boolean suppressForLoggedActivity = false;
+
     public static void notifyForNotes(List<Enhanced_Note__c> newNotes) {
+        if (suppressForLoggedActivity) {
+            return;
+        }
         List<Messaging.SingleEmailMessage> emails = buildEmails(newNotes);
         if (emails.isEmpty()) {
             return;
@@ -123,6 +139,9 @@ public without sharing class LeadNoteTeamNotifier {
             && mentions(note.Body__c, usersById.get(theLead.Scenario_Manager__c))) {
             candidates.add(theLead.Scenario_Manager__c);
         }
+        if (mentionsByron(note.Body__c)) {
+            candidates.add(BYRON_ID);
+        }
 
         // Owner (the Loan Officer) and Loan Partner get every note, even one they wrote.
         Set<Id> evenIfAuthor = new Set<Id>{ theLead.OwnerId, theLead.Loan_Partner__c };
@@ -183,8 +202,9 @@ public without sharing class LeadNoteTeamNotifier {
 
         for (String handle : handles) {
             // (?i) case-insensitive; the handle must not run straight into more word characters,
-            // so "@Byron" matches but "@Byronson" does not.
-            Pattern p = Pattern.compile('(?i)@' + Pattern.quote(handle) + '(?![A-Za-z0-9._])');
+            // so "@Byron" matches but "@Byronson" does not. A trailing period ("@Byron.") is
+            // punctuation; only a period followed by more text ("@Byron.Richie") continues the handle.
+            Pattern p = Pattern.compile('(?i)@' + Pattern.quote(handle) + '(?![A-Za-z0-9_]|\\.[A-Za-z0-9])');
             if (p.matcher(text).find()) {
                 return true;
             }
@@ -192,9 +212,16 @@ public without sharing class LeadNoteTeamNotifier {
         return false;
     }
 
+    /** Loose on purpose: any "@" followed by a word containing "byron", in any form. */
+    @TestVisible
+    private static Boolean mentionsByron(String body) {
+        return String.isNotBlank(body)
+            && BYRON_MENTION.matcher(body.stripHtmlTags().unescapeHtml4()).find();
+    }
+
     /** OwnerId can be a Queue, so resolve users explicitly rather than through Owner.Email. */
     private static Map<Id, User> activeTeamUsers(List<Lead> leads) {
-        Set<Id> userIds = new Set<Id>();
+        Set<Id> userIds = new Set<Id>{ BYRON_ID };
         for (Lead theLead : leads) {
             for (Id userId : new List<Id>{
                 theLead.OwnerId,
@@ -208,9 +235,6 @@ public without sharing class LeadNoteTeamNotifier {
             }
         }
         Map<Id, User> usersById = new Map<Id, User>();
-        if (userIds.isEmpty()) {
-            return usersById;
-        }
         for (User u : [
             SELECT Id, Email, FirstName, LastName, Alias
             FROM User

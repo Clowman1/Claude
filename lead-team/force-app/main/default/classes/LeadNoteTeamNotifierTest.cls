@@ -81,6 +81,10 @@ private class LeadNoteTeamNotifierTest {
             LeadNoteTeamNotifier.mentions('<p>@Byron.Richie please advise</p>', byron),
             'Dotted handle'
         );
+        System.assert(
+            LeadNoteTeamNotifier.mentions('<p>@Byron. This lead is under contract.</p>', byron),
+            'Handle followed by a sentence period'
+        );
     }
 
     @IsTest
@@ -102,12 +106,47 @@ private class LeadNoteTeamNotifierTest {
             !LeadNoteTeamNotifier.mentions('<p>Spoke with the borrower about rate lock timing.</p>', byron),
             'No @ at all'
         );
-        System.assert(
-            !LeadNoteTeamNotifier.mentions('<p>@Byronson is a different person</p>', byron),
-            'Handle must not run into more word characters'
-        );
         System.assert(!LeadNoteTeamNotifier.mentions(null, byron), 'Null body is safe');
         System.assert(!LeadNoteTeamNotifier.mentions('<p>@Byron</p>', null), 'Null user is safe');
+    }
+
+    @IsTest
+    static void byronMentionIsLooseOnPurpose() {
+        for (String body : new List<String>{
+            '<p>@Byron. This lead is under contract.</p>', '<p>@byron</p>', '<p>@Byronn</p>',
+            '<p>@ByronR</p>', '<p>@Byronson</p>', '<p>@byron.richie</p>', '<p>@ Byron</p>', '<p>@Byron\'s call</p>'
+        }) {
+            System.assert(LeadNoteTeamNotifier.mentionsByron(body), body);
+        }
+        for (String body : new List<String>{
+            '<p>called &amp; texted again @ 5:20</p>', '<p>Emailed byron@reachhomeloans.com</p>',
+            '<p>Byron should see this</p>', null
+        }) {
+            System.assert(!LeadNoteTeamNotifier.mentionsByron(body), body);
+        }
+    }
+
+    @IsTest
+    static void byronIsEmailedWhenMentionedEvenIfNotScenarioManager() {
+        List<User> users = buildUsers(1);
+        Lead theLead = new Lead(
+            LastName = 'Tactuk', Company = 'Test', Status = 'New',
+            RecordTypeId = consumerRecordTypeId(), OwnerId = users[0].Id
+        );
+        insert theLead;
+        List<User> byron = [SELECT Email FROM User WHERE Id = '0055x00000Bf9saAAB' AND IsActive = true];
+
+        Test.startTest();
+        Enhanced_Note__c note = insertNote(theLead.Id, 'Note', '<p>@Byron. Under contract, DTI too high.</p>');
+        List<Messaging.SingleEmailMessage> emails =
+            LeadNoteTeamNotifier.buildEmails(new List<Enhanced_Note__c>{ note });
+        Test.stopTest();
+
+        Set<String> addresses = toAddresses(emails[0]);
+        System.assert(addresses.contains(users[0].Email.toLowerCase()), 'Owner emailed');
+        if (!byron.isEmpty()) {
+            System.assert(addresses.contains(byron[0].Email.toLowerCase()), 'Byron emailed: ' + addresses);
+        }
     }
 
     // ---------- recipient selection ----------

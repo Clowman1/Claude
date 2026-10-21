@@ -33,12 +33,16 @@
         <filterFormula>AND(
             ISBLANK({!$Record.Scenario_Manager__c}),
             OR(
-                {!$Record.RecordTypeId} = "0125x000000KuZLAA0",
-                {!$Record.RecordTypeId} = "0125x000000KuaiAAC"
+                {!$Record.RecordTypeId} = &quot;0125x000000KuZLAA0&quot;,
+                {!$Record.RecordTypeId} = &quot;0125x000000KuaiAAC&quot;
+            ),
+            OR(
+                ISNEW(),
+                ISBLANK(PRIORVALUE({!$Record.RecordTypeId}))
             )
         )</filterFormula>
         <object>Lead</object>
-        <recordTriggerType>Create</recordTriggerType>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
