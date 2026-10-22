@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Renews_License__c</fullName>
+    <label>Renews License</label>
+    <inlineHelpText>Completing it marks the employee's license for this task's state renewed (expires Dec 31 next year).</inlineHelpText>
+    <type>Checkbox</type><defaultValue>false</defaultValue>
+</CustomField>

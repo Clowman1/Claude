@@ -110,6 +110,7 @@ public with sharing class PeopleController {
         @AuraEnabled public List<DigestItem> digest;
         @AuraEnabled public Integer renewalYear = Date.today().year();
         @AuraEnabled public Integer renewalEligible;
+        @AuraEnabled public Map<Id, List<String>> missing;
         @AuraEnabled public Date today = Date.today();
     }
 
@@ -193,10 +194,11 @@ public with sharing class PeopleController {
         }
         b.staff = [
             SELECT Id, Name, Role__c, Work_Arrangement__c, Status__c, Start_Date__c, NMLS_ID__c, Licensed_States__c, Manager__r.Name, Branch__r.Name,
-                User__c, Termination_Date__c
+                User__c, Termination_Date__c, Title__c, Department__c, Employment_Type__c, Hire_Date__c
             FROM People_Employee__c WHERE Status__c NOT IN :GONE ORDER BY Name
         ];
         b.renewalEligible = renewalTargets(b.renewalYear).size();
+        b.missing = PeopleHrController.missingFor(null);
         b.branches = [
             SELECT Id, Name, State__c, Status__c, Target_Open_Date__c, Branch_Manager__r.Name, (SELECT Name FROM Employees__r WHERE Status__c NOT IN :GONE)
             FROM People_Branch__c WHERE Status__c != 'Closed' ORDER BY Name
@@ -252,7 +254,7 @@ public with sharing class PeopleController {
             d.employee = [
                 SELECT Id, Name, First_Name__c, Last_Name__c, Role__c, Work_Arrangement__c, Status__c, Start_Date__c, Manager__c, Manager__r.Name,
                     Branch__c, Branch__r.Name, Work_Email__c, Personal_Email__c, NMLS_ID__c, Licensed_States__c, User__c, User__r.Name,
-                    Termination_Date__c, Termination_Reason__c
+                    Termination_Date__c, Termination_Reason__c, Title__c, Department__c, Employment_Type__c, Schedule__c, Hire_Date__c
                 FROM People_Employee__c WHERE Id = :recordId
             ];
         }
@@ -339,6 +341,7 @@ public with sharing class PeopleController {
             employee.Status__c = 'Candidate';
         }
         insert employee;
+        PeopleHrController.licensesFromStates(employee.Id, employee.Name, employee.Licensed_States__c, 'Pending');
         generate(ONBOARDING, employee, null, employee.Start_Date__c, null);
         PeopleUserSync.start();
         return employee.Id;
@@ -350,7 +353,7 @@ public with sharing class PeopleController {
     static Id generate(String type, People_Employee__c emp, People_Branch__c br, Date anchor, Integer year) {
         String who = emp != null ? emp.Name : br.Name;
         People_Checklist__c cl = new People_Checklist__c(
-            Name = (type + (year == null ? '' : ' ' + year) + ' · ' + who).left(80), Type__c = type, Status__c = 'Open',
+            Name = ((type == RENEWAL ? 'Annual Compliance' : type) + (year == null ? '' : ' ' + year) + ' · ' + who).left(80), Type__c = type, Status__c = 'Open',
             Employee__c = emp?.Id, Branch__c = br?.Id, Anchor_Date__c = anchor, Renewal_Year__c = year
         );
         insert cl;
@@ -368,6 +371,7 @@ public with sharing class PeopleController {
             for (String st : emp?.Licensed_States__c == null ? new List<String>() : emp.Licensed_States__c.split(';')) {
                 People_Task__c task = fromTemplate(t, cl.Id, anchor);
                 task.Name = t.Name.replace('{STATE}', st).left(80);
+                task.License_State__c = st;
                 tasks.add(task);
             }
         }
@@ -501,7 +505,7 @@ public with sharing class PeopleController {
     @AuraEnabled
     public static void setTaskStatus(Id taskId, String status) {
         People_Task__c t = [
-            SELECT Id, Sets_Status__c, Checklist__r.Status__c, Checklist__r.Employee__c, Checklist__r.Employee__r.Status__c
+            SELECT Id, Sets_Status__c, Renews_License__c, License_State__c, Checklist__r.Status__c, Checklist__r.Employee__c, Checklist__r.Employee__r.Status__c
             FROM People_Task__c WHERE Id = :taskId
         ];
         if (t.Checklist__r.Status__c != 'Open') {
@@ -513,6 +517,9 @@ public with sharing class PeopleController {
             Completed_By__c = closing ? UserInfo.getUserId() : null,
             Completed_At__c = closing ? System.now() : null
         );
+        if (status == 'Done' && t.Renews_License__c && t.License_State__c != null && t.Checklist__r.Employee__c != null) {
+            PeopleHrController.markRenewed(t.Checklist__r.Employee__c, t.License_State__c);
+        }
         if (status == 'Done' && t.Sets_Status__c != null && t.Checklist__r.Employee__r?.Status__c == 'Candidate') {
             update new People_Employee__c(Id = t.Checklist__r.Employee__c, Status__c = t.Sets_Status__c);
         }
@@ -698,7 +705,7 @@ public with sharing class PeopleController {
         return [
             SELECT Id, Name, Checklist_Type__c, Sort_Order__c, Phase__c, Description__c, Default_Assignee__c, Default_Assignee__r.Name, Led_By__c,
                 Offset_Days__c, Offset_Unit__c, Roles__c, Work_Arrangements__c, Optional__c, Email_Template__c, Via_DocuSign__c, Send_To__c,
-                Exam_Section__c, Sets_Status__c, Remind__c, Auto_Complete__c, Per_State__c, Active__c
+                Exam_Section__c, Sets_Status__c, Remind__c, Auto_Complete__c, Per_State__c, Renews_License__c, Active__c
             FROM People_Template_Task__c WHERE Checklist_Type__c = :checklistType ORDER BY Sort_Order__c, Name
         ];
     }
@@ -764,7 +771,7 @@ public with sharing class PeopleController {
             Due_Date__c = dueDate(startDate, t.Offset_Days__c, t.Offset_Unit__c),
             Assigned_To__c = t.Default_Assignee__c, Led_By__c = t.Led_By__c, Status__c = 'Open', Email_Template__c = t.Email_Template__c,
             Via_DocuSign__c = t.Via_DocuSign__c, Send_To__c = t.Send_To__c, Exam_Section__c = t.Exam_Section__c, Sets_Status__c = t.Sets_Status__c,
-            Remind__c = t.Remind__c, Auto_Complete__c = t.Auto_Complete__c
+            Remind__c = t.Remind__c, Auto_Complete__c = t.Auto_Complete__c, Renews_License__c = t.Renews_License__c
         );
     }
 

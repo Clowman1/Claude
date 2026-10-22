@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LO_Comp_Bps__c</fullName>
+    <label>LO Comp (bps)</label>
+    <inlineHelpText>Basis points of the loan amount.</inlineHelpText>
+    <type>Number</type><precision>6</precision><scale>2</scale>
+</CustomField>

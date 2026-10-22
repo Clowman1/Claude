@@ -37,6 +37,15 @@
                 <template lwc:if={canGenerateRenewals}>
                     <button class="btn btn-primary" disabled={busy} onclick={openRenewals}>{renewalButtonLabel}</button>
                 </template>
+                <template lwc:if={showStaff}>
+                    <button class="btn btn-primary" onclick={openExisting}>
+                        <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
+                        Add existing employee
+                    </button>
+                </template>
+                <template lwc:if={showCompliance}>
+                    <button class="btn" onclick={exportCompliance}>Export CSV</button>
+                </template>
                 <template lwc:if={showBranches}>
                     <button class="btn btn-primary" onclick={openNewBranch}>
                         <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
@@ -45,6 +54,13 @@
                 </template>
             </div>
 
+            <template lwc:if={missingBanner}>
+                <div class="banner">
+                    <lightning-icon icon-name="utility:warning" size="x-small" class="banner-icon"></lightning-icon>
+                    <span class="grow">{missingBanner}</span>
+                    <button class="btn" onclick={reviewMissing}>Review</button>
+                </div>
+            </template>
             <div class="split">
                 <div class="split-main">
                     <template lwc:if={showCards}>
@@ -114,8 +130,8 @@
                                 <span>Name</span><span>Role</span><span>Status</span><span>Start</span><span>Manager</span><span>NMLS · States</span>
                             </div>
                             <template for:each={staffRows} for:item="s">
-                                <button key={s.Id} class="staff-row" data-id={s.Id} onclick={openCard}>
-                                    <span class="name">{s.Name}</span>
+                                <button key={s.Id} class={s.rowCls} data-id={s.Id} onclick={openCard}>
+                                    <span class="name">{s.Name}<template lwc:if={s.needs}> <span class="needs-pill">{s.needs}</span></template></span>
                                     <span>{s.Role__c}</span>
                                     <span><span class={s.statusCls}>{s.Status__c}</span></span>
                                     <span>{s.start}</span>
@@ -123,6 +139,53 @@
                                     <span class="muted small">{s.NMLS_ID__c} · {s.states}</span>
                                 </button>
                             </template>
+                        </section>
+                    </template>
+                    <template lwc:if={showCompliance}>
+                        <section class="panel flush">
+                            <div class="phase-head"><h2 class="h2">{complianceTitle}</h2><span class="muted small">Done · Open · Overdue · — not applicable</span></div>
+                            <template lwc:if={hasComplianceRows}>
+                                <div class="grid-wrap">
+                                    <table class="grid">
+                                        <thead><tr><th>Employee</th>
+                                            <template for:each={complianceColumns} for:item="col"><th key={col.key}>{col.name}</th></template>
+                                        </tr></thead>
+                                        <tbody>
+                                            <template for:each={complianceRows} for:item="r">
+                                                <tr key={r.employeeId}>
+                                                    <td><button class="link-btn small-link" data-id={r.employeeId} onclick={openCard}>{r.name}</button><div class="muted small">{r.role}</div></td>
+                                                    <template for:each={r.cells} for:item="c"><td key={c.key}><span class={c.cls}>{c.text}</span></td></template>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </template>
+                            <template lwc:else><div class="empty flat">No Annual Compliance checklists yet.</div></template>
+                        </section>
+                        <section class="panel">
+                            <h2 class="h2">Licenses expiring within 60 days</h2>
+                            <template lwc:if={hasExpiring}>
+                                <template for:each={expiringRows} for:item="l">
+                                    <button key={l.Id} class="digest-row" data-id={l.Employee__c} onclick={openCard}>
+                                        <span class="digest-subject">{l.name} · {l.State__c} {l.License_Number__c}</span>
+                                        <span class="digest-meta">Expires {l.when}</span>
+                                    </button>
+                                </template>
+                            </template>
+                            <template lwc:else><div class="muted small pad-top">None. Licenses without an expiration date are listed under Missing information.</div></template>
+                        </section>
+                        <section class="panel">
+                            <h2 class="h2">Missing information</h2>
+                            <template lwc:if={hasMissingRows}>
+                                <template for:each={missingRows} for:item="m">
+                                    <button key={m.id} class="digest-row" data-id={m.id} onclick={openCard}>
+                                        <span class="digest-subject">{m.name}</span>
+                                        <span class="digest-meta late">{m.items}</span>
+                                    </button>
+                                </template>
+                            </template>
+                            <template lwc:else><div class="muted small pad-top">Everything is filled in.</div></template>
                         </section>
                     </template>
                 </div>
@@ -182,6 +245,9 @@
                         <div key={f.label} class="fact"><span class="fact-label">{f.label}</span><span>{f.value}</span></div>
                     </template>
                 </div>
+                <template lwc:if={hrMissing}>
+                    <div class="handover">{hrMissing}. Use Edit details or the sections below.</div>
+                </template>
                 <template lwc:if={handover}>
                     <div class="handover">{handover} Reassign them before the last day.</div>
                 </template>
@@ -214,6 +280,39 @@
                 </template>
             </section>
 
+            <template lwc:if={isPersonView}>
+                <div class="hr-split">
+                    <section class="panel hr-panel">
+                        <div class="row-wrap"><h2 class="h2 grow">Licenses</h2><button class="btn" onclick={openLicense}>Add license</button></div>
+                        <template lwc:if={hasLicenses}>
+                            <template for:each={licenseRows} for:item="l">
+                                <button key={l.Id} class="hr-row" data-id={l.Id} onclick={openLicense}>
+                                    <span class="name">{l.State__c}</span>
+                                    <span class={l.numberCls}>{l.number}</span>
+                                    <span class={l.statusCls}>{l.Status__c}</span>
+                                    <span class={l.expiresCls}>{l.expires}</span>
+                                    <span class="muted small">{l.Sponsorship__c} {l.renewed}</span>
+                                </button>
+                            </template>
+                        </template>
+                        <template lwc:else><div class="muted small pad-top">No licenses on file.</div></template>
+                    </section>
+                    <section class="panel hr-panel">
+                        <div class="row-wrap"><h2 class="h2 grow">Compensation</h2><button class="btn" onclick={openComp}>Add entry</button></div>
+                        <template lwc:if={hasComp}>
+                            <template for:each={compRows} for:item="c">
+                                <button key={c.Id} class="hr-row comp-row" data-id={c.Id} onclick={openComp}>
+                                    <span class="name">{c.when}<template lwc:if={c.current}> <span class="pill pill-active">Current</span></template></span>
+                                    <span>{c.Pay_Type__c}</span>
+                                    <span>{c.base}</span>
+                                    <span class="muted small">{c.extra}</span>
+                                </button>
+                            </template>
+                        </template>
+                        <template lwc:else><div class="muted small pad-top">No comp entries yet.</div></template>
+                    </section>
+                </div>
+            </template>
             <template lwc:if={hasChecklistTabs}>
                 <div class="toolbar">
                     <div class="segs" role="group" aria-label="Checklist">
@@ -385,8 +484,18 @@
                         <lightning-input label="First name" required value={form.First_Name__c} data-field="First_Name__c" onchange={draftForm}></lightning-input>
                         <lightning-input label="Last name" required value={form.Last_Name__c} data-field="Last_Name__c" onchange={draftForm}></lightning-input>
                         <lightning-combobox label="Role" required options={roleOptions} value={form.Role__c} data-field="Role__c" onchange={draftForm}></lightning-combobox>
-                        <lightning-combobox label="Work arrangement" required options={arrangementOptions} value={form.Work_Arrangement__c} data-field="Work_Arrangement__c" onchange={draftForm}></lightning-combobox>
-                        <lightning-input type="date" label="Start date" required value={form.Start_Date__c} data-field="Start_Date__c" onchange={draftForm}></lightning-input>
+                        <lightning-combobox label="Work arrangement" options={arrangementOptions} value={form.Work_Arrangement__c} data-field="Work_Arrangement__c" onchange={draftForm}></lightning-combobox>
+                        <template lwc:if={showStartDate}>
+                            <lightning-input type="date" label="Start date" required value={form.Start_Date__c} data-field="Start_Date__c" onchange={draftForm}></lightning-input>
+                        </template>
+                        <lightning-input label="Title" value={form.Title__c} data-field="Title__c" onchange={draftForm}></lightning-input>
+                        <lightning-combobox label="Department" options={departmentOptions} value={form.Department__c} data-field="Department__c" onchange={draftForm}></lightning-combobox>
+                        <lightning-combobox label="Employment type" options={employmentOptions} value={form.Employment_Type__c} data-field="Employment_Type__c" onchange={draftForm}></lightning-combobox>
+                        <lightning-combobox label="Schedule" options={scheduleOptions} value={form.Schedule__c} data-field="Schedule__c" onchange={draftForm}></lightning-combobox>
+                        <lightning-input type="date" label="Hire date" value={form.Hire_Date__c} data-field="Hire_Date__c" onchange={draftForm}></lightning-input>
+                        <template lwc:if={isExistingModal}>
+                            <lightning-record-picker label="Salesforce user (optional)" object-api-name="User" value={form.User__c} onchange={pickUser}></lightning-record-picker>
+                        </template>
                         <lightning-combobox label="Branch" options={branchOptions} value={form.Branch__c} data-field="Branch__c" onchange={draftForm}></lightning-combobox>
                         <lightning-record-picker label="Manager" object-api-name="User" value={form.Manager__c} onchange={pickManager}></lightning-record-picker>
                         <lightning-input type="email" label="Personal email" value={form.Personal_Email__c} data-field="Personal_Email__c" onchange={draftForm}></lightning-input>
@@ -396,7 +505,9 @@
                             <lightning-input type="date" label="Last day" value={form.Termination_Date__c} data-field="Termination_Date__c" onchange={draftForm}></lightning-input>
                             <lightning-combobox label="Termination reason" options={reasonOptions} value={form.Termination_Reason__c} data-field="Termination_Reason__c" onchange={draftForm}></lightning-combobox>
                         </template>
+                        <template lwc:if={showStatesPicker}>
                         <lightning-dual-listbox class="span-2" label="Licensed states" source-label="Available" selected-label="Licensed" options={stateOptions} value={statesValue} size="4" data-field="Licensed_States__c" onchange={draftForm}></lightning-dual-listbox>
+                        </template>
                     </div>
                     <template lwc:if={isNewModal}>
                         <template lwc:if={preview}><div class="preview">{preview}</div></template>
@@ -405,6 +516,60 @@
                 <div class="slds-modal__footer">
                     <button class="btn" onclick={closeEmployeeModal}>Cancel</button>
                     <button class="btn btn-primary" onclick={saveEmployeeForm}>{saveLabel}</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- ================= LICENSE MODAL ================= -->
+    <template lwc:if={showLicenseModal}>
+        <section role="dialog" aria-modal="true" aria-label={licenseTitle} class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">{licenseTitle}</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <lightning-combobox label="State" required options={stateOptions} value={licenseForm.State__c} data-field="State__c" onchange={draftLicense}></lightning-combobox>
+                        <lightning-input label="License number" value={licenseForm.License_Number__c} data-field="License_Number__c" onchange={draftLicense}></lightning-input>
+                        <lightning-combobox label="Status" required options={licenseStatusOptions} value={licenseForm.Status__c} data-field="Status__c" onchange={draftLicense}></lightning-combobox>
+                        <lightning-combobox label="Sponsorship" options={sponsorshipOptions} value={licenseForm.Sponsorship__c} data-field="Sponsorship__c" onchange={draftLicense}></lightning-combobox>
+                        <lightning-input type="date" label="Issue date" value={licenseForm.Issue_Date__c} data-field="Issue_Date__c" onchange={draftLicense}></lightning-input>
+                        <lightning-input type="date" label="Expiration date" value={licenseForm.Expiration_Date__c} data-field="Expiration_Date__c" onchange={draftLicense}></lightning-input>
+                        <lightning-input type="date" label="Last renewed" value={licenseForm.Last_Renewed__c} data-field="Last_Renewed__c" onchange={draftLicense}></lightning-input>
+                    </div>
+                    <div class="preview">Active and Pending licenses make up the Licensed States (copied to the Salesforce user). Set Inactive instead of deleting.</div>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="btn" onclick={closeLicense}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveLicenseForm}>Save</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- ================= COMP MODAL ================= -->
+    <template lwc:if={showCompModal}>
+        <section role="dialog" aria-modal="true" aria-label={compTitle} class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">{compTitle}</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <lightning-input type="date" label="Effective date" required value={compForm.Effective_Date__c} data-field="Effective_Date__c" onchange={draftComp}></lightning-input>
+                        <lightning-combobox label="Pay type" required options={payTypeOptions} value={compForm.Pay_Type__c} data-field="Pay_Type__c" onchange={draftComp}></lightning-combobox>
+                        <lightning-input type="number" formatter="currency" step="0.01" label="Base amount" value={compForm.Base_Amount__c} data-field="Base_Amount__c" onchange={draftComp}></lightning-input>
+                        <lightning-combobox label="Per" options={perOptions} value={compForm.Base_Per__c} data-field="Base_Per__c" onchange={draftComp}></lightning-combobox>
+                        <lightning-input type="number" step="0.01" label="LO comp (bps)" value={compForm.LO_Comp_Bps__c} data-field="LO_Comp_Bps__c" onchange={draftComp}></lightning-input>
+                        <lightning-input type="number" formatter="currency" step="0.01" label="Per-loan flat" value={compForm.Per_Loan_Flat__c} data-field="Per_Loan_Flat__c" onchange={draftComp}></lightning-input>
+                        <lightning-input class="span-2" label="Bonus plan" value={compForm.Bonus_Plan__c} data-field="Bonus_Plan__c" onchange={draftComp}></lightning-input>
+                        <lightning-textarea class="span-2" label="Notes" value={compForm.Notes__c} data-field="Notes__c" onchange={draftComp}></lightning-textarea>
+                    </div>
+                    <div class="preview">For a raise or plan change, add a new entry with its effective date; the newest entry is current and history is kept.</div>
+                </div>
+                <div class="slds-modal__footer">
+                    <template lwc:if={compIsSaved}><button class="btn btn-quiet" onclick={removeComp}>Delete</button></template>
+                    <button class="btn" onclick={closeComp}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveCompForm}>Save</button>
                 </div>
             </div>
         </section>

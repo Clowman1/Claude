@@ -7,6 +7,12 @@ import getDetail from '@salesforce/apex/PeopleController.getDetail';
 import offboard from '@salesforce/apex/PeopleController.offboard';
 import generateRenewals from '@salesforce/apex/PeopleController.generateRenewals';
 import saveBranch from '@salesforce/apex/PeopleController.saveBranch';
+import getHr from '@salesforce/apex/PeopleHrController.getHr';
+import saveComp from '@salesforce/apex/PeopleHrController.saveComp';
+import deleteComp from '@salesforce/apex/PeopleHrController.deleteComp';
+import saveLicense from '@salesforce/apex/PeopleHrController.saveLicense';
+import addExistingEmployee from '@salesforce/apex/PeopleHrController.addExistingEmployee';
+import getCompliance from '@salesforce/apex/PeopleHrController.getCompliance';
 import previewChecklist from '@salesforce/apex/PeopleController.previewChecklist';
 import createEmployee from '@salesforce/apex/PeopleController.createEmployee';
 import saveEmployee from '@salesforce/apex/PeopleController.saveEmployee';
@@ -35,6 +41,9 @@ const PHASES_BY_TYPE = {
     Branch: ['Approval', 'Licensing', 'Setup', 'Launch']
 };
 const TYPES = ['Onboarding', 'Renewal', 'Offboarding', 'Branch'];
+const TYPE_LABEL = { Onboarding: 'Onboarding', Renewal: 'Annual Compliance', Offboarding: 'Offboarding', Branch: 'Branch' };
+const DEPARTMENTS = ['Leadership', 'Sales', 'Processing', 'Closing & Funding', 'Operations', 'Marketing', 'Business Development'];
+const money = (n) => (n == null ? '' : '$' + Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 }));
 const PHASES = [].concat(...Object.values(PHASES_BY_TYPE));
 const STATES = 'AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA PR RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ');
 const EXAM = ['Regulatory', 'Systems', 'Documentation'];
@@ -79,12 +88,23 @@ export default class PeopleApp extends LightningElement {
     templateType = 'Onboarding';
     offboardForm;
     branchForm;
+    hr;
+    compForm;
+    licenseForm;
+    compliance;
 
     roleOptions = opts(ROLES);
     arrangementOptions = opts(ARRANGEMENTS);
     phaseOptions = opts(PHASES);
     stateOptions = opts(STATES);
     reasonOptions = opts(['Resigned', 'Terminated', 'Other']);
+    departmentOptions = opts(DEPARTMENTS);
+    employmentOptions = opts(['W-2 Employee', '1099 Contractor']);
+    scheduleOptions = opts(['Full-time', 'Part-time']);
+    payTypeOptions = opts(['Salary', 'Hourly', 'Commission only', 'Salary + Commission', 'Per-file']);
+    perOptions = opts(['Year', 'Hour']);
+    licenseStatusOptions = opts(['Active', 'Pending', 'Inactive', 'Expired']);
+    sponsorshipOptions = opts(['Sponsored', 'Pending', 'Removed']);
     branchStatusOptions = opts(['Planning', 'Licensing', 'Open', 'Closed']);
     examOptions = [{ label: 'None', value: '' }].concat(opts(EXAM));
     setsStatusOptions = [{ label: 'None', value: '' }, { label: 'Pre-Start', value: 'Pre-Start' }];
@@ -120,21 +140,32 @@ export default class PeopleApp extends LightningElement {
     get tabs() {
         const b = this.board ? this.board.branches.length : 0;
         const s = this.board ? this.board.staff.length : 0;
-        return [['Onboarding', `Onboarding · ${this.countOf('Onboarding')}`], ['Renewal', `Renewals · ${this.countOf('Renewal')}`],
-            ['Offboarding', `Offboarding · ${this.countOf('Offboarding')}`], ['Branch', `Branches · ${b}`], ['Staff', `Staff · ${s}`]]
+        return [['Onboarding', `Onboarding · ${this.countOf('Onboarding')}`], ['Renewal', `Annual Compliance · ${this.countOf('Renewal')}`],
+            ['Offboarding', `Offboarding · ${this.countOf('Offboarding')}`], ['Branch', `Branches · ${b}`], ['Staff', `Staff · ${s}`], ['Compliance', 'Compliance']]
             .map(([value, label]) => ({ value, label, pressed: String(this.tab === value), cls: 'seg' + (this.tab === value ? ' seg-on' : '') }));
     }
-    pickTab(e) { this.tab = e.currentTarget.dataset.value; }
+    pickTab(e) {
+        this.tab = e.currentTarget.dataset.value;
+        if (this.tab === 'Compliance') this.loadCompliance();
+    }
+    get showCompliance() { return this.tab === 'Compliance'; }
+    get missingMap() { return (this.board && this.board.missing) || {}; }
+    get missingCount() { return Object.keys(this.missingMap).length; }
+    get missingBanner() {
+        const n = this.missingCount;
+        return n ? `${n} employee${n === 1 ? ' needs' : 's need'} information filled in` : null;
+    }
+    reviewMissing() { this.tab = 'Compliance'; this.loadCompliance(); }
     get showCards() { return ['Onboarding', 'Renewal', 'Offboarding'].includes(this.tab); }
     get showBranches() { return this.tab === 'Branch'; }
     get showStaff() { return this.tab === 'Staff'; }
     get isRenewalTab() { return this.tab === 'Renewal'; }
     get isOnboardingTab() { return this.tab === 'Onboarding'; }
     get canGenerateRenewals() { return this.isRenewalTab && this.board && this.board.renewalEligible > 0; }
-    get renewalButtonLabel() { return this.board ? `Open ${this.board.renewalYear} renewals (${this.board.renewalEligible})` : ''; }
+    get renewalButtonLabel() { return this.board ? `Open ${this.board.renewalYear} Annual Compliance (${this.board.renewalEligible})` : ''; }
     get emptyCardsText() {
         if (this.tab === 'Renewal') {
-            return 'No open renewal checklists. Renewals open every October 15 for Active employees (one task per licensed state, plus NMLS CE, BSA/AML and handbook).';
+            return 'No open Annual Compliance checklists. They open every October 15 for Active employees (license renewals per state, NMLS CE, BSA/AML, Fair Lending, GLBA privacy, IT security, handbook).';
         }
         if (this.tab === 'Offboarding') return 'No one is offboarding. Open an employee from Staff and use Offboard.';
         return 'No one is onboarding. Use New Employee to start a checklist.';
@@ -143,7 +174,7 @@ export default class PeopleApp extends LightningElement {
         this.busy = true;
         generateRenewals({ year: this.board.renewalYear }).then((n) => {
             this.busy = false;
-            this.toast(`${n} renewal checklist${n === 1 ? '' : 's'} opened`);
+            this.toast(`${n} Annual Compliance checklist${n === 1 ? '' : 's'} opened`);
             return this.loadBoard();
         }).catch((e) => { this.busy = false; this.fail(e); });
     }
@@ -155,7 +186,9 @@ export default class PeopleApp extends LightningElement {
             statusCls: statusClass(e.Status__c),
             start: e.Start_Date__c ? fmt(e.Start_Date__c) + ', ' + e.Start_Date__c.slice(0, 4) : '—',
             states: e.Licensed_States__c ? e.Licensed_States__c.split(';').join(', ') : '—',
-            manager: e.Manager__r ? e.Manager__r.Name : '—'
+            manager: e.Manager__r ? e.Manager__r.Name : '—',
+            needs: this.missingMap[e.Id] ? 'Needs info' : null,
+            rowCls: 'staff-row' + (this.missingMap[e.Id] ? ' staff-needs' : '')
         }));
     }
 
@@ -170,7 +203,7 @@ export default class PeopleApp extends LightningElement {
                 avatarCls: 'avatar ' + AVATARS[i % AVATARS.length],
                 statusCls: statusClass(c.status),
                 meta: [c.role, c.arrangement].filter(Boolean).join(' · '),
-                startLabel: c.type === 'Renewal' ? `${c.year} renewal · due by ${fmt(c.anchorDate, true)}`
+                startLabel: c.type === 'Renewal' ? `Annual Compliance ${c.year} · due by ${fmt(c.anchorDate, true)}`
                     : c.type === 'Offboarding' ? 'Last day ' + fmt(c.anchorDate, true)
                     : c.startDate ? (started ? 'Started ' : 'Starts ') + fmt(c.startDate, !started) : 'No start date',
                 dash: `${pct} 100`,
@@ -219,11 +252,18 @@ export default class PeopleApp extends LightningElement {
         this.personal = undefined;
         this.editTaskId = undefined;
         this.taskFilter = 'all';
+        this.hr = undefined;
+        if (String(id).length) {
+            getHr({ employeeId: id }).then((x) => { this.hr = x; }).catch(() => { this.hr = undefined; });
+        }
         return getDetail({ recordId: id, checklistId: checklistId || null }).then((d) => {
             this.detail = d;
             this.view = 'employee';
             this.loading = false;
         }).catch((e) => this.fail(e));
+    }
+    reloadHr() {
+        return getHr({ employeeId: this.emp.Id }).then((x) => { this.hr = x; }).catch((e) => this.fail(e));
     }
     reloadEmployee() {
         const id = this.detail.employee ? this.detail.employee.Id : this.detail.branch.Id;
@@ -241,7 +281,7 @@ export default class PeopleApp extends LightningElement {
         if (!this.detail || this.detail.checklists.length < 2) return [];
         return this.detail.checklists.map((c) => {
             const on = this.detail.checklist && this.detail.checklist.Id === c.Id;
-            const label = c.Type__c + (c.Renewal_Year__c ? ' ' + c.Renewal_Year__c : '') + (c.Status__c === 'Open' ? '' : ' · ' + c.Status__c);
+            const label = TYPE_LABEL[c.Type__c] + (c.Renewal_Year__c ? ' ' + c.Renewal_Year__c : '') + (c.Status__c === 'Open' ? '' : ' · ' + c.Status__c);
             return { value: c.Id, label, pressed: String(on), cls: 'seg' + (on ? ' seg-on' : '') };
         });
     }
@@ -283,7 +323,12 @@ export default class PeopleApp extends LightningElement {
                 ['Employees', e.Employees__r && e.Employees__r.length ? e.Employees__r.map((x) => x.Name).join(', ') : 'None linked yet']
             ].map(([label, value]) => ({ label, value }));
         }
+        const anniv = e.Hire_Date__c ? fmt(e.Hire_Date__c) + ' (hired ' + e.Hire_Date__c.slice(0, 4) + ')' : '—';
         return [
+            ['Title', e.Title__c || '—'],
+            ['Department', e.Department__c || '—'],
+            ['Employment', [e.Employment_Type__c, e.Schedule__c].filter(Boolean).join(' · ') || '—'],
+            ['Work anniversary', anniv],
             ['Manager', e.Manager__r ? e.Manager__r.Name : '—'],
             ['Branch', e.Branch__r ? e.Branch__r.Name : '—'],
             ['NMLS ID', e.NMLS_ID__c || '—'],
@@ -448,6 +493,123 @@ export default class PeopleApp extends LightningElement {
     get canViewPersonal() { return this.detail && this.detail.canViewPersonal; }
     get checklistPhaseOptions() { return opts(PHASES_BY_TYPE[this.checklistType] || PHASES); }
 
+    // ---------- HR: missing data, licenses, compensation (P4) ----------
+    get hrMissing() { return this.hr && this.hr.missing && this.hr.missing.length ? 'Needs: ' + this.hr.missing.join(', ') : null; }
+    get licenseRows() {
+        return (this.hr ? this.hr.licenses : []).map((l) => ({
+            ...l,
+            statusCls: statusClass(l.Status__c),
+            number: l.License_Number__c || 'No number',
+            numberCls: l.License_Number__c ? '' : 'needs-text',
+            expires: l.Expiration_Date__c ? fmt(l.Expiration_Date__c) + ', ' + l.Expiration_Date__c.slice(0, 4) : 'No expiration',
+            expiresCls: l.Expiration_Date__c ? '' : 'needs-text',
+            renewed: l.Last_Renewed__c ? 'Renewed ' + fmt(l.Last_Renewed__c) + ', ' + l.Last_Renewed__c.slice(0, 4) : ''
+        }));
+    }
+    get hasLicenses() { return this.licenseRows.length > 0; }
+    get compRows() {
+        return (this.hr ? this.hr.compensation : []).map((c, i) => ({
+            ...c,
+            current: i === 0,
+            when: c.Effective_Date__c ? fmt(c.Effective_Date__c) + ', ' + c.Effective_Date__c.slice(0, 4) : '—',
+            base: c.Base_Amount__c != null ? money(c.Base_Amount__c) + (c.Base_Per__c ? ' / ' + c.Base_Per__c.toLowerCase() : '') : '',
+            extra: [c.LO_Comp_Bps__c != null ? c.LO_Comp_Bps__c + ' bps' : null, c.Per_Loan_Flat__c != null ? money(c.Per_Loan_Flat__c) + ' per loan' : null, c.Bonus_Plan__c]
+                .filter(Boolean).join(' · ')
+        }));
+    }
+    get hasComp() { return this.compRows.length > 0; }
+
+    openLicense(e) {
+        const id = e.currentTarget.dataset.id;
+        const l = id ? this.hr.licenses.find((x) => x.Id === id) : null;
+        this.licenseForm = l
+            ? { Id: l.Id, State__c: l.State__c, License_Number__c: l.License_Number__c, Status__c: l.Status__c, Issue_Date__c: l.Issue_Date__c,
+                Expiration_Date__c: l.Expiration_Date__c, Sponsorship__c: l.Sponsorship__c, Last_Renewed__c: l.Last_Renewed__c }
+            : { Employee__c: this.emp.Id, Status__c: 'Active', Sponsorship__c: 'Sponsored' };
+    }
+    closeLicense() { this.licenseForm = undefined; }
+    get showLicenseModal() { return !!this.licenseForm; }
+    get licenseTitle() { return this.licenseForm && this.licenseForm.Id ? 'Edit ' + this.licenseForm.State__c + ' license' : 'Add license'; }
+    draftLicense(e) { this.licenseForm = { ...this.licenseForm, [e.target.dataset.field]: e.detail.value }; }
+    saveLicenseForm() {
+        const rec = { ...this.licenseForm };
+        Object.keys(rec).forEach((k) => { if (rec[k] === '') rec[k] = null; });
+        saveLicense({ rec }).then(() => {
+            this.licenseForm = undefined;
+            this.toast('License saved', 'success', 'Licensed states updated.');
+            this.reloadHr();
+            this.reloadEmployee();
+        }).catch((er) => this.fail(er));
+    }
+
+    openComp(e) {
+        const id = e.currentTarget.dataset.id;
+        const c = id ? this.hr.compensation.find((x) => x.Id === id) : null;
+        this.compForm = c ? { ...c } : { Employee__c: this.emp.Id, Effective_Date__c: this.today, Pay_Type__c: 'Salary', Base_Per__c: 'Year' };
+        delete this.compForm.Name;
+    }
+    closeComp() { this.compForm = undefined; }
+    get showCompModal() { return !!this.compForm; }
+    get compTitle() { return this.compForm && this.compForm.Id ? 'Edit comp entry' : 'Add comp entry'; }
+    get compIsSaved() { return this.compForm && !!this.compForm.Id; }
+    draftComp(e) {
+        const f = e.target.dataset.field;
+        let v = e.detail.value;
+        if (['Base_Amount__c', 'LO_Comp_Bps__c', 'Per_Loan_Flat__c'].includes(f)) v = v === '' || v == null ? null : Number(v);
+        this.compForm = { ...this.compForm, [f]: v };
+    }
+    saveCompForm() {
+        const rec = { ...this.compForm };
+        Object.keys(rec).forEach((k) => { if (rec[k] === '') rec[k] = null; });
+        saveComp({ rec }).then(() => { this.compForm = undefined; this.toast('Comp entry saved'); this.reloadHr(); }).catch((er) => this.fail(er));
+    }
+    removeComp() {
+        // eslint-disable-next-line no-alert
+        if (!window.confirm('Delete this comp entry? History is kept by adding new entries, so delete only mistakes.')) return;
+        deleteComp({ compId: this.compForm.Id }).then(() => { this.compForm = undefined; this.reloadHr(); }).catch((er) => this.fail(er));
+    }
+
+    // ---------- Compliance tab ----------
+    loadCompliance() {
+        getCompliance().then((c) => { this.compliance = c; }).catch((e) => this.fail(e));
+    }
+    get complianceTitle() { return this.compliance ? 'Annual Compliance ' + this.compliance.year : 'Annual Compliance'; }
+    get complianceColumns() { return this.compliance ? this.compliance.columns.map((name, i) => ({ key: 'c' + i, name })) : []; }
+    get complianceRows() {
+        if (!this.compliance) return [];
+        const label = { done: 'Done', open: 'Open', overdue: 'Overdue', na: '—' };
+        return this.compliance.rows.map((r) => ({
+            ...r,
+            cells: r.cells.map((c, i) => ({ key: r.employeeId + i, cls: 'cell cell-' + c.status, text: c.detail || label[c.status] }))
+        }));
+    }
+    get hasComplianceRows() { return this.complianceRows.length > 0; }
+    get expiringRows() {
+        return (this.compliance ? this.compliance.expiring : []).map((l) => ({
+            ...l,
+            name: l.Employee__r ? l.Employee__r.Name : '',
+            when: fmt(l.Expiration_Date__c) + ', ' + l.Expiration_Date__c.slice(0, 4),
+            late: l.Expiration_Date__c < this.today
+        }));
+    }
+    get hasExpiring() { return this.expiringRows.length > 0; }
+    get missingRows() {
+        if (!this.compliance) return [];
+        return Object.keys(this.compliance.missing).map((id) => ({ id, name: this.compliance.names[id], items: this.compliance.missing[id].join(', ') }))
+            .sort((a, b) => (a.name > b.name ? 1 : -1));
+    }
+    get hasMissingRows() { return this.missingRows.length > 0; }
+    exportCompliance() {
+        const c = this.compliance;
+        const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+        const lines = [['Employee', 'Role'].concat(c.columns).map(q).join(',')]
+            .concat(this.complianceRows.map((r) => [r.name, r.role].concat(r.cells.map((x) => x.text)).map(q).join(',')));
+        const a = document.createElement('a');
+        a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + lines.join('\r\n'));
+        a.download = `annual-compliance-${c.year}.csv`;
+        a.click();
+    }
+
     // ---------- offboarding ----------
     openOffboard() { this.offboardForm = { lastDay: null, reason: 'Resigned' }; }
     closeOffboard() { this.offboardForm = undefined; }
@@ -508,10 +670,20 @@ export default class PeopleApp extends LightningElement {
     get branchOptions() {
         return [{ label: 'None', value: '' }].concat((this.board ? this.board.branches : []).map((b) => ({ label: b.Name, value: b.Id })));
     }
-    get modalTitle() { return this.employeeModal === 'new' ? 'New Employee' : 'Edit ' + this.emp.Name; }
+    get modalTitle() {
+        return this.employeeModal === 'new' ? 'New Employee (onboarding)' : this.employeeModal === 'existing' ? 'Add existing employee' : 'Edit ' + this.emp.Name;
+    }
     get isNewModal() { return this.employeeModal === 'new'; }
+    get isExistingModal() { return this.employeeModal === 'existing'; }
+    get showStatesPicker() { return this.employeeModal !== 'edit'; }
+    get showStartDate() { return this.employeeModal !== 'existing'; }
+    openExisting() {
+        this.form = { Role__c: 'Loan Officer', Branch__c: '', Employment_Type__c: 'W-2 Employee', Schedule__c: 'Full-time' };
+        this.employeeModal = 'existing';
+    }
+    pickUser(e) { this.form = { ...this.form, User__c: e.detail.recordId || null }; }
     get showEmployeeModal() { return !!this.employeeModal; }
-    get saveLabel() { return this.isNewModal ? 'Create and generate tasks' : 'Save'; }
+    get saveLabel() { return this.isNewModal ? 'Create and generate tasks' : this.isExistingModal ? 'Add employee' : 'Save'; }
     get statesValue() { return this.form.Licensed_States__c ? this.form.Licensed_States__c.split(';') : []; }
 
     openNew() {
@@ -525,8 +697,10 @@ export default class PeopleApp extends LightningElement {
             Id: e.Id, First_Name__c: e.First_Name__c, Last_Name__c: e.Last_Name__c, Role__c: e.Role__c, Work_Arrangement__c: e.Work_Arrangement__c,
             Status__c: e.Status__c, Start_Date__c: e.Start_Date__c, Manager__c: e.Manager__c, Branch__c: e.Branch__c || '', Work_Email__c: e.Work_Email__c,
             Personal_Email__c: e.Personal_Email__c, NMLS_ID__c: e.NMLS_ID__c, Licensed_States__c: e.Licensed_States__c,
-            Termination_Date__c: e.Termination_Date__c, Termination_Reason__c: e.Termination_Reason__c
+            Termination_Date__c: e.Termination_Date__c, Termination_Reason__c: e.Termination_Reason__c, Title__c: e.Title__c,
+            Department__c: e.Department__c, Employment_Type__c: e.Employment_Type__c, Schedule__c: e.Schedule__c, Hire_Date__c: e.Hire_Date__c
         };
+        delete this.form.Licensed_States__c; // licenses own the states now (P4-15)
         this.employeeModal = 'edit';
     }
     closeEmployeeModal() { this.employeeModal = undefined; }
@@ -550,7 +724,13 @@ export default class PeopleApp extends LightningElement {
     saveEmployeeForm() {
         const rec = { ...this.form, Branch__c: this.form.Branch__c || null };
         Object.keys(rec).forEach((k) => { if (rec[k] === '') rec[k] = null; });
-        if (this.isNewModal) {
+        if (this.isExistingModal) {
+            addExistingEmployee({ employee: rec }).then((id) => {
+                this.employeeModal = undefined;
+                this.toast('Employee added', 'success', 'No onboarding checklist; licenses created for the states entered.');
+                this.openRecord(id);
+            }).catch((e) => this.fail(e));
+        } else if (this.isNewModal) {
             createEmployee({ employee: rec }).then((id) => {
                 this.employeeModal = undefined;
                 this.toast('Employee created', 'success', 'Checklist generated.');
@@ -562,6 +742,7 @@ export default class PeopleApp extends LightningElement {
                 if (late > 0) this.toast('Start date moved', 'warning', `${late} open task${late === 1 ? ' is' : 's are'} now due in the past.`);
                 else this.toast('Saved');
                 this.reloadEmployee();
+                this.reloadHr();
             }).catch((e) => this.fail(e));
         }
     }
@@ -591,13 +772,14 @@ export default class PeopleApp extends LightningElement {
         }));
     }
     get templateTypes() {
-        return TYPES.map((value) => ({ value, label: value, pressed: String(this.templateType === value), cls: 'seg' + (this.templateType === value ? ' seg-on' : '') }));
+        return TYPES.map((value) => ({ value, label: TYPE_LABEL[value], pressed: String(this.templateType === value), cls: 'seg' + (this.templateType === value ? ' seg-on' : '') }));
     }
     pickTemplateType(e) { this.templateType = e.currentTarget.dataset.value; this.loadTemplates(); }
     get templatePhaseOptions() { return opts(PHASES_BY_TYPE[this.templateDraft ? this.templateDraft.Checklist_Type__c : this.templateType]); }
     get isRenewalTemplate() { return this.templateDraft && this.templateDraft.Checklist_Type__c === 'Renewal'; }
+    get isPerStateDraft() { return this.isRenewalTemplate && this.templateDraft.Per_State__c; }
     get anchorHelp() {
-        return { Onboarding: 'start date', Offboarding: 'last day', Renewal: 'Dec 31 of the renewal year', Branch: 'target open date' }[this.templateType];
+        return { Onboarding: 'start date', Offboarding: 'last day', Renewal: 'Dec 31 of the compliance year', Branch: 'target open date' }[this.templateType];
     }
     get templateCount() { return `${this.templates.filter((t) => t.Active__c).length} active tasks`; }
 

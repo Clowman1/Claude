@@ -58,3 +58,25 @@ Started 2026-10-21. Replaces the Nimbus Candidate Checklist build. Seed list: `C
 - User already has `NMLS__c` (Text) and `Licensed_States__c` (multi-select).
 - Only OWEA: reachus@reachhomeloans.com.
 - PH-x template bodies not found anywhere searchable (likely Bianca's Outlook).
+
+## Phase 4 grill (started 2026-10-22): managing all employees
+- P4-0. Not every employee uses Salesforce. Bianca or Chris must be able to add an existing employee by hand: no Salesforce user, no onboarding checklist, straight to Active. (People_Employee__c already allows a blank User; the gap is the UI, since New Employee always generates onboarding.)
+- Open: Q1 self-service, Q2 HR fields, Q3 per-state License records, Q4 NMLS import, Q5 requirements catalog, Q6 completion recording, Q7 Compliance tab, Q8 annual reviews.
+- P4-1. Admin-only for HR: Chris, Bianca, Adam. No self-service.
+- P4-2. Store all suggested HR fields AND pay rates + comp plans in Salesforce; only the three admins may see them.
+- P4-3. One License record per state (number, status, issue/expiration, sponsorship, last renewed); renewals update it.
+- P4-4. NMLS info is entered by Bianca at hire; she updates license states by hand. No import.
+- P4-5. Requirements: BSA/AML, Fair Lending, GLBA privacy, anti-harassment, NMLS CE, background re-checks, handbook/policy acknowledgments, PLUS IT security training.
+- P4-6. Bianca ticks completion (stamp + optional certificate link).
+- P4-7. Compliance tab: grid, expiring licenses (60 days), missing data, CSV export.
+- P4-8. Annual reviews: not now.
+- P4-9. "Add existing employee" on the Staff tab (no onboarding, optional SF user, opens the current renewal).
+- P4-10. Compensation history (effective-dated entries); Bianca adds by hand or sends comp forms to load.
+- P4-11/18. Comp stored as plain numbers: permset-only for the three, readable by full admins (Jamie/Brandon), which is acceptable. Reportable.
+- P4-12. "Annual Compliance {year}" replaces Renewal: CE, per-state submit/approve, BSA/AML, Fair Lending, GLBA privacy, IT security, handbook. NO anti-harassment (P4-19).
+- P4-13. Background re-checks: on hold.
+- P4-14. Employment type W-2 Employee / 1099 Contractor; Schedule Full-time / Part-time; Department Leadership / Sales / Processing / Closing & Funding / Operations / Marketing / Business Development (editable).
+- P4-15/17. NMLS ID master = People employee, copied to User. Staff Person Accounts are NOT used (none hold an NMLS; 6 staff have none).
+- P4-16. Hire dates for loaded staff stay blank; Bianca fills them in.
+- P4-19. The 23 open 2026 renewals: rename to Annual Compliance 2026 and add Fair Lending, GLBA, IT security (not anti-harassment).
+- P4-20. Missing data is highlighted in the app (board banner, Staff rows, the employee page), not emailed.

@@ -6,6 +6,7 @@
     <applicationVisibilities><application>People</application><visible>true</visible></applicationVisibilities>
     <classAccesses><apexClass>PeopleController</apexClass><enabled>true</enabled></classAccesses>
     <classAccesses><apexClass>PeopleExamPdfController</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PeopleHrController</apexClass><enabled>true</enabled></classAccesses>
     <fieldPermissions><editable>true</editable><field>People_Branch__c.State__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Branch__c.Address__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Branch__c.Branch_NMLS_ID__c</field><readable>true</readable></fieldPermissions>
@@ -80,11 +81,36 @@
     <fieldPermissions><editable>true</editable><field>People_Employee__c.Termination_Reason__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Checklist__c.Anchor_Date__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Checklist__c.Renewal_Year__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Title__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Department__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Employment_Type__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Schedule__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Hire_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Effective_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Pay_Type__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Base_Amount__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Base_Per__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.LO_Comp_Bps__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Per_Loan_Flat__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Bonus_Plan__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Compensation__c.Notes__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.State__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.License_Number__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.Issue_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.Expiration_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.Sponsorship__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_License__c.Last_Renewed__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Template_Task__c.Renews_License__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Task__c.Renews_License__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Task__c.License_State__c</field><readable>true</readable></fieldPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Branch__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Employee__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Template_Task__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Checklist__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Task__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Compensation__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_License__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <pageAccesses><apexPage>PeopleExamPdf</apexPage><enabled>true</enabled></pageAccesses>
     <tabSettings><tab>People</tab><visibility>Visible</visibility></tabSettings>
     <userPermissions><enabled>true</enabled><name>ViewEncryptedData</name></userPermissions>

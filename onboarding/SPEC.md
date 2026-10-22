@@ -75,7 +75,39 @@ There are no files. Documents stay in OneDrive. There is no SSN field.
 - Templates seeded by `people/scripts/phase3-templates.apex`: Renewal 6, Offboarding 13, Branch 31.
 - **Staff load:** `staff-load/proposed-staff.csv` (23 people, roles guessed from titles) is waiting on Chris's review; `staff-load/load-staff.mjs` loads it, then opens the 2026 renewals.
 
-**P4 (to outline after P3): employee management.** Run every current employee through People: renewal and licensing completion tracking, general HR information and more. Chris asked for this on 2026-10-22; grill it before building.
+**P4: employee management** (grilled 2026-10-22, decisions P4-0 to P4-20 in GRILL.md). Admin-only: Chris, Bianca, Adam.
+
+1. **Add existing employee** (Staff tab). No onboarding checklist, Salesforce user optional (many staff never log in), straight to Active. If the year's Annual Compliance has already opened, it opens for them too.
+2. **HR fields on People_Employee__c:**
+   - Job: Title, Department, Employment Type (W-2 Employee / 1099 Contractor), Schedule (Full-time / Part-time), Hire Date. The work anniversary is derived from Hire Date.
+   - Existing fields kept: manager, branch, contact, and the encrypted DOB/address/phone/emergency contact.
+   - Shown on the employee page in Job / Contact / Compensation / Licenses sections.
+3. **Compensation history:** `People_Compensation__c`, a child of Employee with effective-dated entries.
+   - Fields: Effective Date, Pay Type (Salary / Hourly / Commission only / Salary + Commission / Per-file), Base Amount + Per (Year/Hour), LO Comp (bps), Per-Loan Flat, Bonus Plan, Notes.
+   - The newest entry is "current". Plain numbers: People_Admin only; full admins can read them, which is acceptable.
+4. **Licenses:** `People_License__c`, one per employee per state.
+   - Fields: State, License Number, Status (Active / Pending / Inactive / Expired), Issue Date, Expiration Date, Sponsorship (Sponsored / Pending / Removed), Last Renewed.
+   - The employee's Licensed States is recalculated from Active/Pending licenses, then copied to the User (existing sync). NMLS ID stays on the employee and is copied to the User. Person Accounts are not used.
+   - Backfill: one Active license per state for the 23 loaded staff, numbers blank.
+   - Ticking "Confirm {STATE} renewal approved" sets that license's Last Renewed = today and Expiration = Dec 31 next year.
+5. **Annual Compliance {year}** replaces "Renewal" in the UI and checklist names (Type value stays Renewal).
+   - Contents: CE (Nov 16), per-state submit (Dec 1) and approve (Dec 31), plus BSA/AML, Fair Lending, GLBA privacy, IT security and handbook (Dec 1). No anti-harassment.
+   - Bianca ticks each item; an optional certificate link goes in the notes.
+   - The 23 open 2026 checklists are renamed, and Fair Lending, GLBA and IT security are added to them.
+6. **Compliance tab:**
+   - A grid of people against Annual Compliance items (done / due soon / overdue / n/a).
+   - Licenses expiring within 60 days.
+   - Missing data.
+   - CSV export of the grid for examiners.
+7. **Missing-data highlighting (in-app only):**
+   - A board banner with "N employees need information".
+   - An amber marker on Staff rows.
+   - On the employee page, a list of exactly what's missing, with the empty fields highlighted.
+   - Missing means: no hire date / department / employment type / emergency contact; or, with an NMLS ID, a license with no number or expiration date.
+
+Not now: self-service, background re-checks, annual reviews, anti-harassment.
+
+**P4 status (2026-10-22): live.** `PeopleHrController` + `People_Compensation__c` + `People_License__c`; Compliance tab; Add existing employee; missing-data banner, Staff markers and employee page list. Migration `people/scripts/phase4-migrate.apex`: 32 licenses (numbers/expirations blank), +3 Annual Compliance items on all 23 open 2026 checklists (renamed), 58 per-state tasks tagged. 24 employees currently flagged for missing info (no hire dates, departments, employment types, emergency contacts, license numbers yet).
 
 ## Later / not now
 Assignees outside the three, the new hire's own self-service view, Teams notifications, a permission-set bundle offer on user link, OneDrive links.
