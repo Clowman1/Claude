@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#1D4ED8</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>Employee onboarding, renewals, offboarding and branches.</description>
+    <formFactors>Large</formFactors>
+    <label>People</label>
+    <navType>Standard</navType>
+    <tabs>People</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

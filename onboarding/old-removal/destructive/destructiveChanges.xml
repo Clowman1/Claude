@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ChecklistConfiguration.Onboarding_Checklist</members>
+        <members>ChecklistConfiguration.Investor_Credentials</members>
+        <members>ChecklistConfiguration.ARIVE_Account_Setup</members>
+        <name>CustomMetadata</name>
+    </types>
+    <version>62.0</version>
+</Package>

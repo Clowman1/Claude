@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>People: onboarding board</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F4F6F8}
+a{color:#1D4ED8}a:hover{color:#1E3A8A}
+.card{transition:box-shadow .15s, transform .15s}
+.card:hover{box-shadow:0 8px 24px rgba(17,24,39,.08);transform:translateY(-1px)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #1D4ED8;outline-offset:2px}
+.row:hover{background:#F9FAFB}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F4F6F8; font-family: Inter, system-ui, sans-serif; color: #111827; font-size: 14px">
+  <header style="background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 14px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+      <div style="width: 36px; height: 36px; border-radius: 10px; background: #1D4ED8; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px" aria-hidden="true">P</div>
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 18px; font-weight: 700">People</div>
+        <div style="font-size: 12px; color: #5B6472">Onboarding · Renewals · Offboarding · Branches</div>
+      </div>
+      <div style="flex: 1 1 auto"></div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #5B6472">
+        <div style="width: 30px; height: 30px; border-radius: 50%; background: #FDE7D3; color: #7C2D12; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px" aria-hidden="true">BR</div>
+        Viewing as Bianca Rodrigues
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width: 1320px; margin: 0 auto; padding: 24px 16px 48px; box-sizing: border-box">
+
+    <sc-if value="{{isBoard}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px">
+        <div style="display: flex; gap: 4px; background: #E9ECF0; padding: 4px; border-radius: 12px; flex-wrap: wrap" role="group" aria-label="Board filter">
+          <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+            <button onClick="{{tab.pick}}" aria-pressed="{{tab.pressed}}" style="{{tab.style}}">{{tab.label}}</button>
+          </sc-for>
+        </div>
+        <div style="flex: 1 1 auto"></div>
+        <button onClick="{{openModal}}" style="background: #1D4ED8; color: #FFFFFF; border: 0; border-radius: 10px; padding: 0 18px; height: 44px; font: inherit; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+          New Employee
+        </button>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+        <div style="flex: 999 1 600px; min-width: 0">
+          <sc-if value="{{showHires}}" hint-placeholder-val="{{ true }}">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px">
+              <sc-for list="{{hires}}" as="h" hint-placeholder-count="4">
+                <button class="card" onClick="{{h.open}}" style="text-align: left; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px; cursor: pointer; font: inherit; color: inherit">
+                  <div style="display: flex; align-items: center; gap: 12px; width: 100%">
+                    <div style="{{h.avatarStyle}}" aria-hidden="true">{{h.initials}}</div>
+                    <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                      <div style="font-weight: 600; font-size: 15px">{{h.name}}</div>
+                      <div style="font-size: 12px; color: #5B6472">{{h.roleLabel}} · {{h.arrLabel}}</div>
+                    </div>
+                    <div style="position: relative; width: 52px; height: 52px; flex: 0 0 auto">
+                      <svg width="52" height="52" viewBox="0 0 36 36" aria-hidden="true">
+                        <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#E5E7EB" stroke-width="3.5"></circle>
+                        <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#1D4ED8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="{{h.dash}}" transform="rotate(-90 18 18)"></circle>
+                      </svg>
+                      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">{{h.pctLabel}}</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
+                    <span style="{{h.statusStyle}}">{{h.status}}</span>
+                    <span style="font-size: 12px; color: #5B6472">{{h.startLabel}}</span>
+                  </div>
+                  <div style="font-size: 12px; color: #374151; line-height: 1.45">
+                    <span style="color: #5B6472">Next:</span> {{h.nextLabel}}
+                  </div>
+                  <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #F0F2F5; padding-top: 12px; font-size: 12px">
+                    <span style="color: #5B6472">{{h.doneLabel}}</span>
+                    <span style="{{h.flagStyle}}">{{h.flagLabel}}</span>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{showBranches}}" hint-placeholder-val="{{ false }}">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px">
+              <div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <div style="width: 44px; height: 44px; border-radius: 12px; background: #E0E7FF; color: #3730A3; display: flex; align-items: center; justify-content: center; font-weight: 700" aria-hidden="true">NV</div>
+                  <div style="display: flex; flex-direction: column; gap: 2px">
+                    <div style="font-weight: 600; font-size: 15px">Nevada Branch</div>
+                    <div style="font-size: 12px; color: #5B6472">Branch Manager: [TBD] · Target open: [TBD]</div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                  <span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #EEF2FF; color: #3730A3">Planning</span>
+                  <span style="font-size: 12px; color: #5B6472">1 employee linked: Jordan Avery</span>
+                </div>
+                <div style="font-size: 12px; color: #374151; line-height: 1.5">Branch checklist: NV Division of Mortgage Lending branch license, NMLS branch sponsorship, IT discovery, FHA/VA IDs, MLO page. Template is built in Phase 3.</div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{showEmpty}}" hint-placeholder-val="{{ false }}">
+            <div style="background: #FFFFFF; border: 1px dashed #CBD2DB; border-radius: 16px; padding: 48px 24px; text-align: center; color: #5B6472; line-height: 1.6">{{emptyText}}</div>
+          </sc-if>
+        </div>
+
+        <aside style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px" aria-label="Digest preview">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <div style="font-weight: 600; font-size: 15px">Your 9 AM digest</div>
+            <div style="font-size: 12px; color: #5B6472">Overdue and due in the next 5 business days</div>
+          </div>
+          <sc-for list="{{digest}}" as="d" hint-placeholder-count="5">
+            <button onClick="{{d.open}}" class="row" style="text-align: left; background: transparent; border: 0; border-top: 1px solid #F0F2F5; padding: 10px 4px; font: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 3px; min-height: 44px">
+              <span style="font-weight: 500; font-size: 13px">{{d.subject}}</span>
+              <span style="{{d.metaStyle}}">{{d.meta}}</span>
+            </button>
+          </sc-for>
+          <sc-if value="{{digestEmpty}}" hint-placeholder-val="{{ false }}">
+            <div style="font-size: 13px; color: #5B6472">Nothing due. No email goes out today.</div>
+          </sc-if>
+        </aside>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isHire}}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{back}}" style="background: transparent; border: 0; padding: 0 4px; height: 44px; font: inherit; color: #1D4ED8; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-bottom: 8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+        All employees
+      </button>
+
+      <div style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 20px">
+        <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
+          <div style="{{sel.avatarBig}}" aria-hidden="true">{{sel.initials}}</div>
+          <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+              <h1 style="margin: 0; font-size: 22px; font-weight: 700">{{sel.name}}</h1>
+              <span style="{{sel.statusStyle}}">{{sel.status}}</span>
+            </div>
+            <div style="font-size: 13px; color: #5B6472">{{sel.roleLabel}} · {{sel.arrLabel}} · {{sel.startLabel}}</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button disabled="{{ true }}" style="height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #E3E6EB; background: #FFFFFF; color: #5B6472; font: inherit; font-weight: 500; display: flex; align-items: center; gap: 8px">Exam PDF <span style="font-size: 11px; background: #F3F4F6; padding: 2px 6px; border-radius: 6px">P2</span></button>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #5B6472"><span>{{sel.doneLabel}}</span><span>{{sel.flagLabel}}</span></div>
+          <div style="height: 8px; background: #E5E7EB; border-radius: 999px; overflow: hidden"><div style="{{sel.barStyle}}"></div></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; font-size: 13px">
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #5B6472; text-transform: uppercase; letter-spacing: .04em">Manager</span><span>{{sel.manager}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #5B6472; text-transform: uppercase; letter-spacing: .04em">Branch</span><span>{{sel.branch}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #5B6472; text-transform: uppercase; letter-spacing: .04em">NMLS ID</span><span>{{sel.nmls}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #5B6472; text-transform: uppercase; letter-spacing: .04em">Work email</span><span>{{sel.email}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #5B6472; text-transform: uppercase; letter-spacing: .04em">Date of birth</span><span>{{dobShown}}</span></div>
+          <div style="display: flex; align-items: flex-end">
+            <button onClick="{{toggleReveal}}" style="height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E3E6EB; background: #FFFFFF; font: inherit; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+              {{revealLabel}}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px">
+        <div style="display: flex; gap: 4px; background: #E9ECF0; padding: 4px; border-radius: 12px" role="group" aria-label="Task filter">
+          <sc-for list="{{taskFilters}}" as="f" hint-placeholder-count="3">
+            <button onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="{{f.style}}">{{f.label}}</button>
+          </sc-for>
+        </div>
+        <span style="font-size: 12px; color: #5B6472">Due dates count business days from the start date, skipping weekends and company holidays.</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <sc-for list="{{phases}}" as="p" hint-placeholder-count="3">
+          <section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; overflow: hidden">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #FAFBFC; border-bottom: 1px solid #EEF0F3">
+              <h2 style="margin: 0; font-size: 15px; font-weight: 600">{{p.name}}</h2>
+              <span style="font-size: 12px; color: #5B6472">{{p.count}}</span>
+            </div>
+            <sc-for list="{{p.tasks}}" as="t" hint-placeholder-count="4">
+              <div class="row" style="display: flex; gap: 14px; align-items: flex-start; padding: 12px 18px; border-top: 1px solid #F0F2F5; flex-wrap: wrap">
+                <label style="display: flex; gap: 12px; align-items: flex-start; flex: 1 1 340px; min-width: 0; cursor: pointer">
+                  <input type="checkbox" checked="{{t.done}}" disabled="{{t.locked}}" onChange="{{t.toggle}}" style="width: 20px; height: 20px; margin: 1px 0 0; accent-color: #1D4ED8; flex: 0 0 auto">
+                  <span style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+                    <span style="{{t.subjectStyle}}">{{t.subject}}</span>
+                    <span style="font-size: 12px; color: #5B6472; line-height: 1.45">{{t.desc}}</span>
+                    <sc-if value="{{t.hasStamp}}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size: 11px; color: #1E3A8A">{{t.stamp}}</span>
+                    </sc-if>
+                  </span>
+                </label>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end">
+                  <sc-if value="{{t.hasLed}}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size: 11px; color: #374151; background: #F3F4F6; padding: 3px 8px; border-radius: 6px">Led by {{t.led}}</span>
+                  </sc-if>
+                  <sc-if value="{{t.docusign}}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size: 11px; color: #3730A3; background: #EEF2FF; padding: 3px 8px; border-radius: 6px">DocuSign</span>
+                  </sc-if>
+                  <sc-if value="{{t.canSend}}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{t.send}}" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #1D4ED8; background: #FFFFFF; color: #1D4ED8; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+                      Send {{t.template}}
+                    </button>
+                  </sc-if>
+                  <span style="{{t.dueStyle}}">{{t.dueLabel}}</span>
+                  <span style="width: 28px; height: 28px; border-radius: 50%; background: #F3F4F6; color: #374151; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600" title="{{t.who}}" aria-label="Assigned to {{t.who}}">{{t.whoInitials}}</span>
+                </div>
+              </div>
+            </sc-for>
+          </section>
+        </sc-for>
+
+        <sc-if value="{{hasOptional}}" hint-placeholder-val="{{ false }}">
+          <section style="background: #FFFFFF; border: 1px dashed #CBD2DB; border-radius: 16px; padding: 14px 18px; display: flex; flex-direction: column; gap: 10px">
+            <h2 style="margin: 0; font-size: 15px; font-weight: 600">Optional for this hire</h2>
+            <sc-for list="{{optional}}" as="o" hint-placeholder-count="1">
+              <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+                <span style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">{{o.subject}}</span><span style="font-size: 12px; color: #5B6472">{{o.desc}}</span></span>
+                <button onClick="{{o.add}}" style="height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid #E3E6EB; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Add to checklist</button>
+              </div>
+            </sc-for>
+          </section>
+        </sc-if>
+
+        <section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+          <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px">Compliance sign-off <span style="font-size: 11px; font-weight: 500; background: #F3F4F6; padding: 2px 6px; border-radius: 6px">P2</span></div>
+            <div style="font-size: 12px; color: #5B6472; line-height: 1.5">{{signText}}</div>
+          </div>
+          <sc-if value="{{notSigned}}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{signOff}}" disabled="{{signDisabled}}" style="{{signStyle}}">Sign off as Bianca Rodrigues</button>
+          </sc-if>
+        </section>
+      </div>
+    </sc-if>
+  </main>
+
+  <sc-if value="{{modalOpen}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(17,24,39,.45); display: flex; align-items: flex-start; justify-content: center; padding: 48px 16px; overflow-y: auto; z-index: 10">
+      <div role="dialog" aria-label="New employee" style="background: #FFFFFF; border-radius: 18px; width: 100%; max-width: 560px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 24px 60px rgba(17,24,39,.25)">
+        <div style="display: flex; align-items: center; justify-content: space-between">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 700">New Employee</h2>
+          <button onClick="{{closeModal}}" aria-label="Close" style="width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer; color: #5B6472; display: flex; align-items: center; justify-content: center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: #374151">First name<input value="{{form.first}}" onChange="{{setFirst}}" style="height: 40px; border: 1px solid #CBD2DB; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px"></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: #374151">Last name<input value="{{form.last}}" onChange="{{setLast}}" style="height: 40px; border: 1px solid #CBD2DB; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px"></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: #374151">Role
+            <select value="{{form.role}}" onChange="{{setRole}}" style="height: 40px; border: 1px solid #CBD2DB; border-radius: 8px; padding: 0 8px; font: inherit; font-size: 14px; background: #FFFFFF">
+              <option value="LO">Loan Officer</option><option value="BM">Branch Manager</option><option value="PROC">Processor</option><option value="CLO">Closer</option><option value="OPN">Opener</option><option value="OPS">Operations/Admin</option><option value="MGR">Manager</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: #374151">Work arrangement
+            <select value="{{form.arr}}" onChange="{{setArr}}" style="height: 40px; border: 1px solid #CBD2DB; border-radius: 8px; padding: 0 8px; font: inherit; font-size: 14px; background: #FFFFFF">
+              <option value="O">In-Office</option><option value="R">Remote</option><option value="H">Hybrid</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: #374151">Start date<input type="date" value="{{form.start}}" onChange="{{setStart}}" style="height: 40px; border: 1px solid #CBD2DB; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px"></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 500; color: #374151">Branch
+            <select value="{{form.branch}}" onChange="{{setBranch}}" style="height: 40px; border: 1px solid #CBD2DB; border-radius: 8px; padding: 0 8px; font: inherit; font-size: 14px; background: #FFFFFF">
+              <option value="Main office">Main office</option><option value="Nevada Branch">Nevada Branch</option>
+            </select>
+          </label>
+        </div>
+        <div style="background: #EFF4FF; border-radius: 12px; padding: 12px 14px; font-size: 13px; color: #1E3A8A; line-height: 1.5">{{preview}}</div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button onClick="{{closeModal}}" style="height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #E3E6EB; background: #FFFFFF; font: inherit; font-weight: 500; cursor: pointer">Cancel</button>
+          <button onClick="{{create}}" style="height: 44px; padding: 0 18px; border-radius: 10px; border: 0; background: #1D4ED8; color: #FFFFFF; font: inherit; font-weight: 600; cursor: pointer">Create and generate tasks</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":1100}}'>
+const TODAY = '2026-10-22';
+const HOL = ['2026-09-07','2026-10-12','2026-11-11','2026-11-26','2026-12-25','2027-01-01'];
+const ROLE = {LO:'Loan Officer',BM:'Branch Manager',PROC:'Processor',CLO:'Closer',OPN:'Opener',OPS:'Operations/Admin',MGR:'Manager'};
+const ARR = {O:'In-Office',R:'Remote',H:'Hybrid'};
+const PHASES = ['Pre-Start','Day 1','Week 1','30 Days','90 Days'];
+const AV = [['#DBEAFE','#1E3A8A'],['#FDE7D3','#7C2D12'],['#E0E7FF','#3730A3'],['#D1FAE5','#065F46'],['#FCE7F3','#831843']];
+
+// Seeded from Onboarding Checklist - Salesforce Import.csv (subset)
+const TASKS = [
+  {id:1,ph:0,s:'Welcome call to new hire',d:'Introduce yourself and explain what to expect',w:'Bianca',off:-14},
+  {id:2,ph:0,s:'Confirm start date and compensation',d:'Confirm with Adam',w:'Bianca',off:-14,led:'Adam'},
+  {id:3,ph:0,s:'Send offer letter and comp/bonus forms',d:'Offer letter and bonus plan via DocuSign, then the PH-3 heads-up email',w:'Bianca',off:-14,tpl:'PH-3'},
+  {id:4,ph:0,s:'Collect background check info',d:'Full legal name, home address, phone, date of birth',w:'Bianca',off:-13,tpl:'PH-4'},
+  {id:5,ph:0,s:'Initiate HireRight background check',d:'Essential Criminal Package; invite arrives in 24-48 hrs',w:'Bianca',off:-13},
+  {id:6,ph:0,s:'Background check cleared',d:'Confirm results before proceeding',w:'Bianca',off:-11},
+  {id:7,ph:0,s:'Add new worker in Paychex Flex',d:'Hiring > Add a New Worker; Job Title: Onboarding; send invite',w:'Bianca',off:-10},
+  {id:8,ph:0,s:'Complete Paychex manager signature and send notification',d:'Registration due within 2 business days',w:'Bianca',off:-10,tpl:'PH-7'},
+  {id:9,ph:0,s:'Confirm NMLS ID',d:'Sponsorship with Reach Home Loans (NMLS# 2266637)',w:'Bianca',off:-10,tpl:'PH-8',roles:['LO','BM']},
+  {id:10,ph:0,s:'Email Licensing Store (Tonya)',d:'Start date, position, NMLS ID, email, phone',w:'Bianca',off:-10,ds:true,roles:['LO','BM']},
+  {id:11,ph:0,s:'Email UWM for LO access',d:'Chelsea Morgan: EASE / Launchpad / ENC',w:'Bianca',off:-10,ds:true,roles:['LO','BM']},
+  {id:12,ph:0,s:'Send IT request to KB Technologies',d:'Computer setup and firstname.lastname@reachhomeloans.com',w:'Bianca',off:-10},
+  {id:13,ph:0,s:'Send employee handbook and I-9 document list',d:'PH-6',w:'Bianca',off:-7,ds:true},
+  {id:14,ph:0,s:'FHA Connection ID setup',d:'See FHA Connection ID Administration guide',w:'Bianca',off:-7,roles:['LO'],opt:true},
+  {id:15,ph:0,s:'Set up Microsoft 365 / Teams / SharePoint',d:'Teams channels, distribution lists, department folders',w:'Bianca',off:-5},
+  {id:16,ph:0,s:'Set up RingCentral',d:'Assign extension and softphone',w:'Bianca',off:-5},
+  {id:17,ph:0,s:'Set up VPN',d:'Remote/hybrid only',w:'Bianca',off:-5,arr:['R','H']},
+  {id:18,ph:0,s:'Set up ARIVE',d:'User Mgmt > +User; branch settings, Twilio SMS, Outlook connection',w:'Bianca',off:-5,roles:['LO','PROC']},
+  {id:19,ph:0,s:'Set up EASE (UWM)',d:'Assign correct role',w:'Bianca',off:-5,roles:['LO','PROC','CLO']},
+  {id:20,ph:0,s:'Set up Salesforce user',d:'LO: Salesforce license; Processor/Closer: Platform license; Einstein Activity Capture',w:'Chris',off:-5},
+  {id:21,ph:0,s:'Set up DocuSign',d:'Processors only',w:'Bianca',off:-5,roles:['PROC']},
+  {id:22,ph:0,s:'Prepare equipment',d:'Laptop, monitor, headset, dock; ship 1 business day early if remote',w:'Bianca',off:-5},
+  {id:23,ph:0,s:'Assign desk and order business cards',d:'If applicable',w:'Bianca',off:-5,arr:['O']},
+  {id:24,ph:0,s:'Send Day 1 Instructions email',d:'Day 1 Instructions',w:'Bianca',off:-3,ds:true},
+  {id:25,ph:0,s:'Send BSA/AML training via OnCourse',d:'Request certificate by Day 1',w:'Bianca',off:-3},
+  {id:26,ph:1,s:'Complete I-9',d:'Verify ID docs; Section 2 due within 3 business days',w:'Bianca',off:0},
+  {id:27,ph:1,s:'Equipment handoff and MFA setup',d:'Employee signs equipment receipt',w:'Bianca',off:0},
+  {id:28,ph:1,s:'Verify all system logins',d:'M365, RingCentral, EASE, ARIVE, credit, Trainual, Salesforce as applicable',w:'Bianca',off:0},
+  {id:29,ph:1,s:'LO role setup',d:'NMLS transferred to RHL (2266637); Twilio and Outlook connected in ARIVE',w:'Bianca',off:0,roles:['LO']},
+  {id:30,ph:2,s:'ARIVE training',d:'With Chris and Brandon Dobos',w:'Chris',off:1,roles:['LO'],led:'Chris + Brandon Dobos'},
+  {id:31,ph:2,s:'Processing training',d:'Disclosing, opening a file, processing',w:'Bianca',off:2,roles:['LO'],led:'Angelina'},
+  {id:32,ph:2,s:'Confirm I-9 Section 2 complete',d:'Federal deadline: 3 business days',w:'Bianca',off:3},
+  {id:33,ph:2,s:'Confirm BSA/AML certificate received',d:'',w:'Bianca',off:4},
+  {id:34,ph:3,s:'Benefits enrollment deadline reminder',d:'Confirm enrollment completed',w:'Bianca',off:25},
+  {id:35,ph:3,s:'30-day check-in',d:'1:1 on training, tools, team, expectations',w:'Bianca',off:30,led:'Manager'},
+  {id:36,ph:4,s:'90-day check-in',d:'Performance review',w:'Bianca',off:90,led:'Manager'}
+];
+
+const SEED = [
+  {id:'h1',first:'Priya',last:'Shah',role:'PROC',arr:'O',start:'2026-11-02',manager:'Bianca Rodrigues',branch:'Main office',status:'Pre-Start',nmls:'n/a',cutoff:'2026-10-16',open:[6]},
+  {id:'h2',first:'Jordan',last:'Avery',role:'LO',arr:'R',start:'2026-11-30',manager:'[Branch Manager TBD]',branch:'Nevada Branch',status:'Candidate',nmls:'[NMLS ID]',cutoff:'1900-01-01',open:[],extraDone:[1]},
+  {id:'h3',first:'Marcus',last:'Lee',role:'LO',arr:'H',start:'2026-10-05',manager:'Adam Stephens',branch:'Main office',status:'Active',nmls:'[NMLS ID]',cutoff:'2026-10-20',open:[33]},
+  {id:'h4',first:'Dana',last:'Ortiz',role:'CLO',arr:'R',start:'2026-08-03',manager:'Bianca Rodrigues',branch:'Main office',status:'Active',nmls:'n/a',cutoff:'2026-10-22',open:[]}
+];
+
+function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function addBiz(start, n){
+  const d = new Date(start+'T12:00:00'); const step = n < 0 ? -1 : 1; let left = Math.abs(n);
+  while (left > 0) { d.setDate(d.getDate()+step); const dow = d.getDay(); if (dow !== 0 && dow !== 6 && HOL.indexOf(iso(d)) < 0) left--; }
+  return iso(d);
+}
+function fmt(s, wd){ const d = new Date(s+'T12:00:00'); return d.toLocaleDateString('en-US', wd ? {weekday:'short',month:'short',day:'numeric'} : {month:'short',day:'numeric'}); }
+function bizBetween(a, b){ let n = 0; const d = new Date(a+'T12:00:00'); while (iso(d) < b) { d.setDate(d.getDate()+1); const dow = d.getDay(); if (dow !== 0 && dow !== 6 && HOL.indexOf(iso(d)) < 0) n++; } return n; }
+function applies(t, role, arr){ return (!t.roles || t.roles.indexOf(role) >= 0) && (!t.arr || t.arr.indexOf(arr) >= 0); }
+function pill(bg, fg){ return 'font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: '+bg+'; color: '+fg; }
+const STATUS = {'Candidate':pill('#F3F4F6','#374151'),'Pre-Start':pill('#FEF3C7','#92400E'),'Active':pill('#DBEAFE','#1E3A8A'),'Signed off':pill('#D1FAE5','#065F46')};
+function seg(on){ return 'height: 36px; padding: 0 14px; border-radius: 9px; border: 0; font: inherit; font-size: 13px; font-weight: '+(on?'600':'500')+'; cursor: pointer; background: '+(on?'#FFFFFF':'transparent')+'; color: '+(on?'#111827':'#4B5563')+'; box-shadow: '+(on?'0 1px 2px rgba(17,24,39,.12)':'none'); }
+
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.state = {view:'board', tab:'onboarding', hireId:null, done:{}, stamp:{}, added:{}, signed:{}, reveal:false, filter:'all', modal:false,
+      form:{first:'',last:'',role:'LO',arr:'R',start:'2026-11-30',branch:'Main office'}, extra:[]};
+  }
+  hireTasks(h){
+    const s = this.state;
+    return TASKS.filter(t => applies(t, h.role, h.arr) && (!t.opt || s.added[h.id+':'+t.id])).map(t => {
+      const key = h.id+':'+t.id, due = addBiz(h.start, t.off);
+      const seeded = (due < h.cutoff && h.open.indexOf(t.id) < 0) || (h.extraDone || []).indexOf(t.id) >= 0;
+      const done = key in s.done ? s.done[key] : seeded;
+      const stamp = s.stamp[key] || (done ? (t.w === 'Chris' ? 'Chris Lowman' : 'Bianca Rodrigues')+' · '+fmt(due < TODAY ? due : TODAY) : '');
+      return {t, key, due, done, stamp, overdue: !done && due < TODAY};
+    });
+  }
+  summarize(h){
+    const list = this.hireTasks(h), done = list.filter(x => x.done).length, over = list.filter(x => x.overdue).length;
+    const next = list.filter(x => !x.done).sort((a,b) => a.due < b.due ? -1 : 1)[0];
+    const pct = list.length ? Math.round(done*100/list.length) : 0, c = AV[parseInt(h.id.replace(/\D/g,''),10) % AV.length];
+    const signed = !!this.state.signed[h.id], status = signed ? 'Signed off' : h.status;
+    const startLabel = h.start > TODAY ? 'Starts '+fmt(h.start, true) : 'Started '+fmt(h.start)+' · business day '+(bizBetween(h.start, TODAY)+1);
+    return {
+      id:h.id, name:h.first+' '+h.last, initials:(h.first[0]||'')+(h.last[0]||''), roleLabel:ROLE[h.role], arrLabel:ARR[h.arr],
+      status, statusStyle: STATUS[status] || STATUS['Candidate'], startLabel, manager:h.manager, branch:h.branch, nmls:h.nmls,
+      email:(h.first+'.'+h.last).toLowerCase()+'@reachhomeloans.com', list, pct, done, total:list.length, over,
+      dash: pct+' 100', pctLabel: pct+'%', doneLabel: done+' of '+list.length+' tasks done',
+      nextLabel: next ? next.t.s+' · due '+fmt(next.due) : 'All tasks complete',
+      flagLabel: over ? over+' overdue' : 'On track',
+      flagStyle: over ? 'font-weight: 600; color: #92400E; background: #FEF3C7; padding: 3px 8px; border-radius: 6px' : 'font-weight: 600; color: #1E3A8A',
+      avatarStyle: 'width: 44px; height: 44px; border-radius: 50%; background: '+c[0]+'; color: '+c[1]+'; display: flex; align-items: center; justify-content: center; font-weight: 700; flex: 0 0 auto',
+      avatarBig: 'width: 64px; height: 64px; border-radius: 50%; background: '+c[0]+'; color: '+c[1]+'; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; flex: 0 0 auto',
+      barStyle: 'height: 100%; width: '+pct+'%; background: #1D4ED8; border-radius: 999px; transition: width .2s',
+      open: () => this.setState({view:'hire', hireId:h.id, filter:'all', reveal:false})
+    };
+  }
+  complete(key, on){
+    const now = 'Bianca Rodrigues · '+fmt(TODAY)+', 9:14 AM';
+    this.setState({done:{...this.state.done, [key]:on}, stamp:{...this.state.stamp, [key]: on ? now : ''}});
+  }
+  setForm(k, v){ this.setState({form:{...this.state.form, [k]:v}}); }
+  renderVals(){
+    const s = this.state, all = SEED.concat(s.extra), sums = all.map(h => this.summarize(h));
+    const tabDefs = [['onboarding','Onboarding · '+all.length],['renewals','Renewals'],['offboarding','Offboarding'],['branches','Branches · 1']];
+    const tabs = tabDefs.map(([k,l]) => ({label:l, pressed: s.tab===k ? 'true' : 'false', style: seg(s.tab===k), pick: () => this.setState({tab:k})}));
+    const horizon = addBiz(TODAY, 5), digest = [];
+    sums.forEach(h => h.list.forEach(x => { if (!x.done && x.t.w === 'Bianca' && x.due <= horizon) digest.push({x, h}); }));
+    digest.sort((a,b) => a.x.due < b.x.due ? -1 : 1);
+    const vals = {
+      isBoard: s.view==='board', isHire: s.view==='hire', tabs, hires: sums,
+      showHires: s.tab==='onboarding', showBranches: s.tab==='branches', showEmpty: s.tab==='renewals' || s.tab==='offboarding',
+      emptyText: s.tab==='renewals' ? 'The 2026 renewal checklists (one task per licensed state, NMLS CE, BSA/AML refresher, handbook re-acknowledgment) are generated after the current-staff load in Phase 3.' : 'No one is offboarding. The Offboard button on an employee record starts the checklist from the last day.',
+      digest: digest.slice(0, 8).map(({x, h}) => ({subject:x.t.s, meta:h.name+' · '+(x.overdue ? 'overdue since '+fmt(x.due) : 'due '+fmt(x.due, true)),
+        metaStyle: 'font-size: 12px; color: '+(x.overdue ? '#92400E; font-weight: 600' : '#5B6472'), open: h.open})),
+      digestEmpty: digest.length === 0,
+      openModal: () => this.setState({modal:true}), closeModal: () => this.setState({modal:false}), modalOpen: s.modal, form: s.form,
+      setFirst: e => this.setForm('first', e.target.value), setLast: e => this.setForm('last', e.target.value),
+      setRole: e => this.setForm('role', e.target.value), setArr: e => this.setForm('arr', e.target.value),
+      setStart: e => this.setForm('start', e.target.value), setBranch: e => this.setForm('branch', e.target.value)
+    };
+    const f = s.form, fl = TASKS.filter(t => applies(t, f.role, f.arr) && !t.opt), nOpt = TASKS.filter(t => applies(t, f.role, f.arr) && t.opt).length;
+    vals.preview = f.start ? fl.length+' tasks will be generated for a '+ROLE[f.role]+' ('+ARR[f.arr]+')'+(nOpt ? ', plus '+nOpt+' optional to add' : '')+'. First task due '+fmt(addBiz(f.start, -14), true)+'; first day '+fmt(f.start, true)+'.' : 'Pick a start date to preview the checklist.';
+    vals.create = () => {
+      const id = 'h'+(5 + s.extra.length);
+      const h = {id, first:f.first||'New', last:f.last||'Hire', role:f.role, arr:f.arr, start:f.start||'2026-11-30', manager:'[Manager]', branch:f.branch, status:'Candidate', nmls: (f.role==='LO'||f.role==='BM') ? '[NMLS ID]' : 'n/a', cutoff:'1900-01-01', open:[]};
+      this.setState({extra: s.extra.concat([h]), modal:false, tab:'onboarding', form:{first:'',last:'',role:'LO',arr:'R',start:'2026-11-30',branch:'Main office'}});
+    };
+    vals.back = () => this.setState({view:'board'});
+    const raw = all.find(h => h.id === s.hireId);
+    if (s.view === 'hire' && raw) {
+      const sel = sums.find(h => h.id === raw.id), locked = !!s.signed[raw.id];
+      vals.sel = sel;
+      vals.dobShown = s.reveal ? '03/14/1991' : '**/**/****';
+      vals.revealLabel = s.reveal ? 'Hide' : 'Reveal (admins only)';
+      vals.toggleReveal = () => this.setState({reveal: !s.reveal});
+      vals.taskFilters = [['all','All'],['mine','Mine'],['open','Open']].map(([k,l]) => ({label:l, pressed: s.filter===k ? 'true' : 'false', style: seg(s.filter===k), pick: () => this.setState({filter:k})}));
+      const shown = sel.list.filter(x => s.filter==='all' || (s.filter==='mine' && x.t.w==='Bianca') || (s.filter==='open' && !x.done));
+      vals.phases = PHASES.map((name, i) => {
+        const inPh = sel.list.filter(x => x.t.ph === i), vis = shown.filter(x => x.t.ph === i);
+        return {name, count: inPh.filter(x => x.done).length+' of '+inPh.length+' done', show: vis.length > 0,
+          tasks: vis.map(x => ({
+            subject: x.t.s, desc: x.t.d || ' ', done: x.done, locked, hasStamp: x.done && !!x.stamp, stamp: 'Completed by '+x.stamp,
+            hasLed: !!x.t.led, led: x.t.led, docusign: !!x.t.ds, canSend: !!x.t.tpl && !x.done && !locked, template: x.t.tpl,
+            who: x.t.w === 'Chris' ? 'Chris Lowman' : 'Bianca Rodrigues', whoInitials: x.t.w === 'Chris' ? 'CL' : 'BR',
+            subjectStyle: 'font-weight: 500; color: '+(x.done ? '#6B7280; text-decoration: line-through' : '#111827'),
+            dueLabel: x.overdue ? 'Overdue · '+fmt(x.due) : fmt(x.due, true),
+            dueStyle: 'font-size: 12px; white-space: nowrap; padding: 3px 8px; border-radius: 6px; '+(x.overdue ? 'background: #FEF3C7; color: #92400E; font-weight: 600' : 'color: #5B6472'),
+            toggle: e => this.complete(x.key, e.target.checked),
+            send: () => this.complete(x.key, true)
+          }))};
+      }).filter(p => p.show);
+      const opts = TASKS.filter(t => t.opt && applies(t, raw.role, raw.arr) && !s.added[raw.id+':'+t.id]);
+      vals.optional = opts.map(t => ({subject:t.s, desc:t.d, add: () => this.setState({added:{...s.added, [raw.id+':'+t.id]:true}})}));
+      vals.hasOptional = opts.length > 0 && !locked;
+      vals.notSigned = !locked;
+      vals.signDisabled = sel.pct < 100;
+      vals.signStyle = 'height: 44px; padding: 0 18px; border-radius: 10px; border: 0; font: inherit; font-weight: 600; '+(sel.pct < 100 ? 'background: #E5E7EB; color: #6B7280; cursor: not-allowed' : 'background: #1D4ED8; color: #FFFFFF; cursor: pointer');
+      vals.signText = locked ? 'Signed off by Bianca Rodrigues · '+fmt(TODAY, true)+', 2026. I attest all items were completed as recorded. The checklist is locked.' : sel.pct < 100 ? 'Available once every task is done ('+(sel.total - sel.done)+' left). Signing off locks the checklist and stamps your name and the time.' : 'All tasks are done. Signing off locks the checklist and stamps your name and the time.';
+      vals.signOff = () => this.setState({signed:{...s.signed, [raw.id]:true}});
+    } else {
+      vals.sel = {}; vals.phases = []; vals.optional = []; vals.taskFilters = [];
+    }
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

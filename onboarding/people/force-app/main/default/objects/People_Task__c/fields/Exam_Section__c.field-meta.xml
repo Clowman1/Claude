@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exam_Section__c</fullName>
+    <label>Exam Section</label>
+    
+    <type>Picklist</type><valueSet><restricted>true</restricted><valueSetDefinition><sorted>false</sorted><value><fullName>Regulatory</fullName><default>false</default><label>Regulatory</label></value><value><fullName>Systems</fullName><default>false</default><label>Systems</label></value><value><fullName>Documentation</fullName><default>false</default><label>Documentation</label></value></valueSetDefinition></valueSet>
+    
+</CustomField>

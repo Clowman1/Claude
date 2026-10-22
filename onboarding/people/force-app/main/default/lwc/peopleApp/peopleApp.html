@@ -1,0 +1,365 @@
+<template>
+    <div class="shell">
+        <header class="topbar">
+            <div class="logo" aria-hidden="true">P</div>
+            <div class="brand">
+                <div class="brand-name">People</div>
+                <div class="muted small">Onboarding · Renewals · Offboarding · Branches</div>
+            </div>
+            <div class="grow"></div>
+            <template lwc:if={isTemplates}>
+                <button class="btn" onclick={backToBoard}>Back to board</button>
+            </template>
+            <template lwc:else>
+                <button class="btn" onclick={openTemplates}>Master template</button>
+            </template>
+        </header>
+
+        <template lwc:if={loading}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+
+        <!-- ================= BOARD ================= -->
+        <template lwc:if={isBoard}>
+            <div class="toolbar">
+                <div class="segs" role="group" aria-label="Board filter">
+                    <template for:each={tabs} for:item="t">
+                        <button key={t.value} class={t.cls} aria-pressed={t.pressed} data-value={t.value} onclick={pickTab}>{t.label}</button>
+                    </template>
+                </div>
+                <div class="grow"></div>
+                <button class="btn btn-primary" onclick={openNew}>
+                    <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
+                    New Employee
+                </button>
+            </div>
+
+            <div class="split">
+                <div class="split-main">
+                    <template lwc:if={showOnboarding}>
+                        <template lwc:if={hasCards}>
+                            <div class="cards">
+                                <template for:each={cards} for:item="c">
+                                    <button key={c.id} class="card" data-id={c.id} onclick={openCard}>
+                                        <span class="card-top">
+                                            <span class={c.avatarCls} aria-hidden="true">{c.initials}</span>
+                                            <span class="card-name">
+                                                <span class="name">{c.name}</span>
+                                                <span class="muted small">{c.meta}</span>
+                                            </span>
+                                            <span class="ring">
+                                                <svg width="52" height="52" viewBox="0 0 36 36" aria-hidden="true">
+                                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#E5E7EB" stroke-width="3.5"></circle>
+                                                    <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#1D4ED8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray={c.dash} transform="rotate(-90 18 18)"></circle>
+                                                </svg>
+                                                <span class="ring-label">{c.pctLabel}</span>
+                                            </span>
+                                        </span>
+                                        <span class="card-pills">
+                                            <span class={c.statusCls}>{c.status}</span>
+                                            <span class="muted small">{c.startLabel}</span>
+                                        </span>
+                                        <span class="card-next"><span class="muted">Next:</span> {c.nextLabel}</span>
+                                        <span class="card-foot">
+                                            <span class="muted">{c.doneLabel}</span>
+                                            <span class={c.flagCls}>{c.flagLabel}</span>
+                                        </span>
+                                    </button>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="empty">No one is onboarding. Use <strong>New Employee</strong> to start a checklist.</div>
+                        </template>
+                    </template>
+
+                    <template lwc:if={showBranches}>
+                        <template lwc:if={hasBranches}>
+                            <div class="cards">
+                                <template for:each={branchCards} for:item="b">
+                                    <div key={b.Id} class="card card-static">
+                                        <span class="card-top">
+                                            <span class="avatar av-indigo square" aria-hidden="true">{b.code}</span>
+                                            <span class="card-name">
+                                                <span class="name">{b.Name}</span>
+                                                <span class="muted small">{b.meta}</span>
+                                            </span>
+                                        </span>
+                                        <span class="card-pills"><span class={b.statusCls}>{b.Status__c}</span></span>
+                                        <span class="card-next"><span class="muted">Employees:</span> {b.people}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <div class="empty">No branches yet.</div>
+                        </template>
+                    </template>
+
+                    <template lwc:if={showEmptyTab}>
+                        <div class="empty">{emptyTabText}</div>
+                    </template>
+                </div>
+
+                <aside class="panel digest" aria-label="Digest">
+                    <div class="panel-title">Your 9 AM digest</div>
+                    <div class="muted small">Overdue and due in the next 5 business days</div>
+                    <template for:each={digest} for:item="d">
+                        <button key={d.taskId} class="digest-row" data-id={d.employeeId} onclick={openCard}>
+                            <span class="digest-subject">{d.subject}</span>
+                            <span class={d.metaCls}>{d.meta}</span>
+                        </button>
+                    </template>
+                    <template lwc:if={digestEmpty}>
+                        <div class="muted small pad-top">Nothing due. No email goes out today.</div>
+                    </template>
+                </aside>
+            </div>
+        </template>
+
+        <!-- ================= EMPLOYEE ================= -->
+        <template lwc:if={isEmployee}>
+            <button class="link-btn" onclick={backToBoard}>
+                <lightning-icon icon-name="utility:chevronleft" size="x-small" class="link-icon"></lightning-icon>
+                All employees
+            </button>
+
+            <section class="panel hero">
+                <div class="hero-top">
+                    <span class="avatar av-blue big" aria-hidden="true">{empInitials}</span>
+                    <div class="hero-name">
+                        <div class="row-wrap">
+                            <h1 class="h1">{emp.Name}</h1>
+                            <span class={empStatusCls}>{emp.Status__c}</span>
+                        </div>
+                        <div class="muted">{empMeta}</div>
+                    </div>
+                    <div class="row-wrap">
+                        <button class="btn" onclick={openEdit}>Edit details</button>
+                        <template lwc:if={unlocked}>
+                            <button class="btn btn-quiet" onclick={confirmWithdraw}>Withdraw</button>
+                        </template>
+                    </div>
+                </div>
+                <div>
+                    <div class="bar-labels muted small"><span>{progress.label}</span><span>{progress.flag}</span></div>
+                    <div class="bar"><div class="bar-fill" style={progress.bar}></div></div>
+                </div>
+                <div class="facts">
+                    <template for:each={facts} for:item="f">
+                        <div key={f.label} class="fact"><span class="fact-label">{f.label}</span><span>{f.value}</span></div>
+                    </template>
+                </div>
+                <template lwc:if={canViewPersonal}>
+                    <div class="personal">
+                        <div class="row-wrap">
+                            <span class="panel-title small-title">Personal details</span>
+                            <span class="muted small">Encrypted · visible to People admins only</span>
+                            <div class="grow"></div>
+                            <template lwc:if={personalShown}>
+                                <button class="btn" onclick={hidePersonal}>Hide</button>
+                                <button class="btn btn-primary" onclick={savePersonal}>Save</button>
+                            </template>
+                            <template lwc:else>
+                                <button class="btn" onclick={revealPersonal}>
+                                    <lightning-icon icon-name="utility:lock" size="x-small" class="btn-icon"></lightning-icon>
+                                    Reveal
+                                </button>
+                            </template>
+                        </div>
+                        <template lwc:if={personalShown}>
+                            <div class="form-grid">
+                                <lightning-input label="Date of birth (MM/DD/YYYY)" value={personal.Date_of_Birth__c} max-length="10" data-field="Date_of_Birth__c" onchange={draftPersonal}></lightning-input>
+                                <lightning-input label="Personal phone" value={personal.Personal_Phone__c} max-length="20" data-field="Personal_Phone__c" onchange={draftPersonal}></lightning-input>
+                                <lightning-input label="Home address" value={personal.Home_Address__c} max-length="175" data-field="Home_Address__c" onchange={draftPersonal}></lightning-input>
+                                <lightning-input label="Emergency contact (name, relation, phone)" value={personal.Emergency_Contact__c} max-length="175" data-field="Emergency_Contact__c" onchange={draftPersonal}></lightning-input>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </section>
+
+            <div class="toolbar">
+                <div class="segs" role="group" aria-label="Task filter">
+                    <template for:each={taskFilters} for:item="f">
+                        <button key={f.value} class={f.cls} aria-pressed={f.pressed} data-value={f.value} onclick={pickTaskFilter}>{f.label}</button>
+                    </template>
+                </div>
+                <span class="muted small">Due dates count business days from the start date, skipping weekends and company holidays.</span>
+            </div>
+
+            <template for:each={phases} for:item="p">
+                <section key={p.name} class="panel phase">
+                    <div class="phase-head">
+                        <h2 class="h2">{p.name}</h2>
+                        <span class="muted small">{p.count}</span>
+                    </div>
+                    <template for:each={p.tasks} for:item="t">
+                        <div key={t.Id} class="task">
+                            <div class="task-main">
+                                <label class="task-check">
+                                    <input type="checkbox" checked={t.done} disabled={locked} data-id={t.Id} onchange={toggleTask} aria-label={t.checkLabel} />
+                                    <span class="task-text">
+                                        <span class={t.subjectCls}>{t.Name}<template lwc:if={t.isNa}> (N/A)</template></span>
+                                        <template lwc:if={t.Description__c}><span class="muted small">{t.Description__c}</span></template>
+                                        <template lwc:if={t.Notes__c}><span class="note small">Note: {t.Notes__c}</span></template>
+                                        <template lwc:if={t.stamp}><span class="stamp">{t.stamp}</span></template>
+                                    </span>
+                                </label>
+                                <div class="task-chips">
+                                    <template lwc:if={t.Led_By__c}><span class="chip">Led by {t.Led_By__c}</span></template>
+                                    <template lwc:if={t.templateChip}><span class="chip chip-indigo">{t.templateChip}</span></template>
+                                    <template lwc:if={t.Send_To__c}><span class="chip">To: {t.Send_To__c}</span></template>
+                                    <span class={t.dueCls}>{t.dueLabel}</span>
+                                    <span class="who" title={t.whoName} aria-label={t.whoName}>{t.whoInitials}</span>
+                                    <template lwc:if={unlocked}>
+                                        <button class="icon-btn" data-id={t.Id} onclick={startEditTask} title="Edit task" aria-label="Edit task">
+                                            <lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                            <template lwc:if={t.editing}>
+                                <div class="task-edit">
+                                    <lightning-combobox label="Assigned to" options={assigneeOptions} value={taskDraft.assignedTo} data-field="assignedTo" onchange={draftTask}></lightning-combobox>
+                                    <lightning-input type="date" label="Due date" value={taskDraft.due} data-field="due" onchange={draftTask}></lightning-input>
+                                    <lightning-textarea class="span-2" label="Notes" value={taskDraft.notes} data-field="notes" onchange={draftTask}></lightning-textarea>
+                                    <div class="row-wrap span-2">
+                                        <button class="btn btn-primary" onclick={saveTask}>Save</button>
+                                        <button class="btn" onclick={cancelEditTask}>Cancel</button>
+                                        <div class="grow"></div>
+                                        <button class="btn btn-quiet" onclick={markNa}>Mark N/A</button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </section>
+            </template>
+
+            <template lwc:if={hasOptional}>
+                <section class="panel dashed">
+                    <h2 class="h2">Optional for this hire</h2>
+                    <template for:each={optional} for:item="o">
+                        <div key={o.Id} class="opt-row">
+                            <span class="task-text grow"><span class="subject">{o.Name}</span><span class="muted small">{o.Description__c}</span></span>
+                            <button class="btn" data-id={o.Id} onclick={addOptional}>Add to checklist</button>
+                        </div>
+                    </template>
+                </section>
+            </template>
+
+            <template lwc:if={unlocked}>
+                <section class="panel">
+                    <h2 class="h2">Add a task for this hire</h2>
+                    <div class="add-grid">
+                        <lightning-input class="span-2" label="Subject" value={newTask.subject} max-length="80" data-field="subject" onchange={draftNewTask}></lightning-input>
+                        <lightning-combobox label="Phase" options={phaseOptions} value={newTask.phase} data-field="phase" onchange={draftNewTask}></lightning-combobox>
+                        <lightning-input type="date" label="Due date" value={newTask.due} data-field="due" onchange={draftNewTask}></lightning-input>
+                        <lightning-combobox label="Assigned to" options={assigneeOptions} value={newTask.assignedTo} data-field="assignedTo" onchange={draftNewTask}></lightning-combobox>
+                        <div class="add-btn"><button class="btn btn-primary" onclick={addTask}>Add task</button></div>
+                    </div>
+                </section>
+            </template>
+        </template>
+
+        <!-- ================= TEMPLATE EDITOR ================= -->
+        <template lwc:if={isTemplates}>
+            <div class="toolbar">
+                <div>
+                    <h1 class="h1">Master onboarding template</h1>
+                    <div class="muted small">{templateCount}. Drag to reorder. Changes apply to employees created from now on; existing checklists keep their tasks.</div>
+                </div>
+                <div class="grow"></div>
+                <button class="btn btn-primary" onclick={newTemplate}>
+                    <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
+                    New task
+                </button>
+            </div>
+            <section class="panel flush">
+                <template for:each={templateRows} for:item="t">
+                    <div key={t.Id} class={t.rowCls} draggable="true" data-id={t.Id}
+                         ondragstart={dragStart} ondragover={dragOver} ondrop={drop} ondragend={dragEnd}>
+                        <span class="grip" aria-hidden="true">⋮⋮</span>
+                        <span class="tpl-num muted small">{t.num}</span>
+                        <span class="tpl-main">
+                            <span class="subject">{t.Name}</span>
+                            <span class="muted small">{t.Phase__c} · {t.offsetLabel} · {t.roles} · {t.arrangements} · {t.who}</span>
+                            <template lwc:if={t.tags}><span class="stamp">{t.tags}</span></template>
+                        </span>
+                        <span class="tpl-actions">
+                            <button class="icon-btn" data-id={t.Id} data-dir="-1" onclick={moveTemplate} title="Move up" aria-label="Move up"><lightning-icon icon-name="utility:arrowup" size="x-small"></lightning-icon></button>
+                            <button class="icon-btn" data-id={t.Id} data-dir="1" onclick={moveTemplate} title="Move down" aria-label="Move down"><lightning-icon icon-name="utility:arrowdown" size="x-small"></lightning-icon></button>
+                            <button class="icon-btn" data-id={t.Id} onclick={editTemplate} title="Edit" aria-label="Edit"><lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon></button>
+                        </span>
+                    </div>
+                </template>
+            </section>
+        </template>
+    </div>
+
+    <!-- ================= EMPLOYEE MODAL ================= -->
+    <template lwc:if={showEmployeeModal}>
+        <section role="dialog" aria-modal="true" aria-label={modalTitle} class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">{modalTitle}</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <lightning-input label="First name" required value={form.First_Name__c} data-field="First_Name__c" onchange={draftForm}></lightning-input>
+                        <lightning-input label="Last name" required value={form.Last_Name__c} data-field="Last_Name__c" onchange={draftForm}></lightning-input>
+                        <lightning-combobox label="Role" required options={roleOptions} value={form.Role__c} data-field="Role__c" onchange={draftForm}></lightning-combobox>
+                        <lightning-combobox label="Work arrangement" required options={arrangementOptions} value={form.Work_Arrangement__c} data-field="Work_Arrangement__c" onchange={draftForm}></lightning-combobox>
+                        <lightning-input type="date" label="Start date" required value={form.Start_Date__c} data-field="Start_Date__c" onchange={draftForm}></lightning-input>
+                        <lightning-combobox label="Branch" options={branchOptions} value={form.Branch__c} data-field="Branch__c" onchange={draftForm}></lightning-combobox>
+                        <lightning-record-picker label="Manager" object-api-name="User" value={form.Manager__c} onchange={pickManager}></lightning-record-picker>
+                        <lightning-input type="email" label="Personal email" value={form.Personal_Email__c} data-field="Personal_Email__c" onchange={draftForm}></lightning-input>
+                        <lightning-input type="email" label="Work email" value={form.Work_Email__c} data-field="Work_Email__c" onchange={draftForm}></lightning-input>
+                        <lightning-input label="NMLS ID" value={form.NMLS_ID__c} data-field="NMLS_ID__c" onchange={draftForm}></lightning-input>
+                        <lightning-dual-listbox class="span-2" label="Licensed states" source-label="Available" selected-label="Licensed" options={stateOptions} value={statesValue} size="4" data-field="Licensed_States__c" onchange={draftForm}></lightning-dual-listbox>
+                    </div>
+                    <template lwc:if={isNewModal}>
+                        <template lwc:if={preview}><div class="preview">{preview}</div></template>
+                    </template>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="btn" onclick={closeEmployeeModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveEmployeeForm}>{saveLabel}</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- ================= TEMPLATE MODAL ================= -->
+    <template lwc:if={showTemplateModal}>
+        <section role="dialog" aria-modal="true" aria-label={templateModalTitle} class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">{templateModalTitle}</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <lightning-input class="span-2" label="Subject" required max-length="80" value={templateDraft.Name} data-field="Name" onchange={draftTemplate}></lightning-input>
+                        <lightning-textarea class="span-2" label="Description" value={templateDraft.Description__c} data-field="Description__c" onchange={draftTemplate}></lightning-textarea>
+                        <lightning-combobox label="Phase" options={phaseOptions} value={templateDraft.Phase__c} data-field="Phase__c" onchange={draftTemplate}></lightning-combobox>
+                        <lightning-input type="number" label="Offset (business days from start)" field-level-help="Negative = before the start date. Blank = no due date." value={templateDraft.Offset_Days__c} data-field="Offset_Days__c" onchange={draftTemplate}></lightning-input>
+                        <lightning-combobox label="Default assignee" options={assigneeOptions} value={templateDraft.Default_Assignee__c} data-field="Default_Assignee__c" onchange={draftTemplate}></lightning-combobox>
+                        <lightning-input label="Led by (free text)" max-length="80" value={templateDraft.Led_By__c} data-field="Led_By__c" onchange={draftTemplate}></lightning-input>
+                        <lightning-checkbox-group label="Roles (none = all)" options={roleOptions} value={draftRoles} data-field="Roles__c" onchange={draftTemplate}></lightning-checkbox-group>
+                        <lightning-checkbox-group label="Work arrangements (none = all)" options={arrangementOptions} value={draftArrangements} data-field="Work_Arrangements__c" onchange={draftTemplate}></lightning-checkbox-group>
+                        <lightning-input label="Email template" field-level-help="e.g. PH-3. One-click send arrives in Phase 2." max-length="40" value={templateDraft.Email_Template__c} data-field="Email_Template__c" onchange={draftTemplate}></lightning-input>
+                        <lightning-input label="Send to" max-length="120" value={templateDraft.Send_To__c} data-field="Send_To__c" onchange={draftTemplate}></lightning-input>
+                        <lightning-combobox label="Exam section" options={examOptions} value={templateDraft.Exam_Section__c} data-field="Exam_Section__c" onchange={draftTemplate}></lightning-combobox>
+                        <lightning-combobox label="Completing it moves a Candidate to" options={setsStatusOptions} value={templateDraft.Sets_Status__c} data-field="Sets_Status__c" onchange={draftTemplate}></lightning-combobox>
+                        <lightning-input type="toggle" label="Sent via DocuSign" checked={templateDraft.Via_DocuSign__c} data-field="Via_DocuSign__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
+                        <lightning-input type="toggle" label="Optional (offered, not generated)" checked={templateDraft.Optional__c} data-field="Optional__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
+                        <lightning-input type="toggle" label="Active" checked={templateDraft.Active__c} data-field="Active__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="btn" onclick={closeTemplateModal}>Cancel</button>
+                    <button class="btn btn-primary" onclick={saveTemplateDraft}>Save</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

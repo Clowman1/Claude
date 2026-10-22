@@ -1,0 +1,54 @@
+Order,Phase,Subject,Description,Assigned To,Days From Start Date,Applies To
+1,Pre-Start,Welcome call to new hire,Introduce yourself and explain what to expect,Bianca,-14,All
+2,Pre-Start,Confirm start date and compensation,Confirm with Adam,Bianca,-14,All
+3,Pre-Start,Send offer letter and comp/bonus forms,Send via DocuSign (Email Template PH-3),Bianca,-14,All
+4,Pre-Start,Collect background check info,"Full legal name, home address, phone, date of birth",Bianca,-13,All
+5,Pre-Start,Initiate HireRight background check,Essential Criminal Package; notify employee invite arrives in 24-48 hrs (PH-4),Bianca,-13,All
+6,Pre-Start,Background check cleared,Confirm results before proceeding,Bianca,-11,All
+7,Pre-Start,Add new worker in Paychex Flex,"Hiring > Add a New Worker; Job Title: Onboarding; correct Client Location; send invite",Bianca,-10,All
+8,Pre-Start,Get hire details from Adam,"Hire date, job title, duties, full/part time, job category",Bianca,-10,All
+9,Pre-Start,Complete Paychex manager signature and send notification,Email Template PH-7,Bianca,-10,All
+10,Pre-Start,Finalize Paychex hire,Set status to Hired - Exported to Payroll; Add Worker > Begin Review > Finish,Bianca,-7,All
+11,Pre-Start,Send employee handbook and I-9 document list,Email Template PH-6,Bianca,-7,All
+12,Pre-Start,Confirm NMLS ID,Email Template PH-8,Bianca,-10,Loan Officers / Branch Managers
+13,Pre-Start,Email Licensing Store (Tonya),"Start date, position, NMLS ID, email, phone (PH-9)",Bianca,-10,Loan Officers / Branch Managers
+14,Pre-Start,Email UWM for LO access,"Chelsea Morgan cmorgan1@uwm.com; EASE / Launchpad / ENC (PH-10)",Bianca,-10,Loan Officers / Branch Managers
+15,Pre-Start,FHA Connection ID setup,See FHA Connection ID Administration guide,Bianca,-7,Loan Officers (if applicable)
+16,Pre-Start,Send IT request to KB Technologies,support@kb-global.com; computer setup and firstname.lastname@reachhomeloans.com,Bianca,-10,All
+17,Pre-Start,Set up Microsoft 365 / Teams / SharePoint,Add to Teams channels and distribution lists; department folder access,Bianca,-5,All
+18,Pre-Start,Set up RingCentral,Assign extension and softphone,Bianca,-5,All
+19,Pre-Start,Set up VPN,Remote/hybrid only,Bianca,-5,Remote / Hybrid
+20,Pre-Start,Set up ARIVE,"User Mgmt > +User; branch settings, milestone comms, Twilio SMS, Outlook connection",Bianca,-5,Loan Officers / Processors
+21,Pre-Start,Set up Trainual,Assign role training tracks,Bianca,-5,All
+22,Pre-Start,Set up Advantage Credit and CIC Credit,CIC: contact Chris,Bianca,-5,Loan Officers / Processors
+23,Pre-Start,Set up GoHighLevel,Credentials; review campaign content,Bianca,-5,Loan Officers
+24,Pre-Start,Set up EASE (UWM),Assign correct role,Bianca,-5,Loan Officers / Processors / Closers
+25,Pre-Start,Set up Salesforce user,"LO: Salesforce license / Loan Officer Profile; Processor/Closer: Platform license / Processor Profile; grant Einstein Activity Capture",Chris,-5,All
+26,Pre-Start,Set up DocuSign,Processors only,Bianca,-5,Processors
+27,Pre-Start,Request Launchpad credentials,Contact Chris Butterfield,Bianca,-5,Loan Officers
+28,Pre-Start,Prepare equipment,"Laptop, monitor, headset, dock; ship to arrive 1 business day before start if remote",Bianca,-5,All
+29,Pre-Start,Assign desk and order business cards,If applicable,Bianca,-5,In-Office
+30,Pre-Start,Send Day 1 Instructions email,Email Template - Day 1 Instructions,Bianca,-3,All
+31,Pre-Start,Send BSA/AML training via OnCourse,Request certificate by Day 1,Bianca,-3,All
+32,Pre-Start,Notify manager and team; assign buddy,Send Team Announcement email,Bianca,-3,All
+33,Day 1,Paychex Flex and benefits walkthrough,"Pay, clock in/out, time off; benefits enrollment within 30 days",Bianca,0,All
+34,Day 1,Complete I-9,Verify ID docs; Section 2 due within 3 business days,Bianca,0,All
+35,Day 1,Complete W-4 and direct deposit,,Bianca,0,All
+36,Day 1,Sign handbook and remaining agreements,Explain semi-monthly payroll and expense reimbursement,Bianca,0,All
+37,Day 1,Equipment handoff and MFA setup,Employee signs equipment receipt,Bianca,0,All
+38,Day 1,Verify all system logins,"M365, RingCentral, EASE, ARIVE, Launchpad, credit, GHL, Trainual, Salesforce, DocuSign, VPN as applicable",Bianca,0,All
+39,Day 1,Introductions,"Manager, team, buddy; org chart and contacts list; Week 1 schedule",Bianca,0,All
+40,Day 1,LO role setup,NMLS transferred to RHL (2266637); Twilio and Outlook connected in ARIVE,Bianca,0,Loan Officers
+41,Day 1,File paperwork and log open items,,Bianca,0,All
+42,Week 1,ARIVE training,With Chris and Brandon Dobos,Chris,1,Loan Officers
+43,Week 1,Processing training,"Disclosing, opening a file, processing",Angelina,2,Loan Officers
+44,Week 1,Closing and post-closing training,"Closing, funding, post-closing",Chris Lowman,3,Loan Officers
+45,Week 1,Training roundup,End-to-end loan process review; test scenario; collect feedback,Bianca,4,Loan Officers
+46,Week 1,Confirm I-9 Section 2 complete,Federal deadline: 3 business days,Bianca,3,All
+47,Week 1,Confirm BSA/AML certificate received,,Bianca,4,All
+48,Week 1,Add to distribution lists and recurring meetings,,Bianca,4,All
+49,Week 1,Send new hire self-checklist,"Email signature, Teams photo, voicemail, contacts, Trainual modules",Bianca,4,All
+50,30 Days,Benefits enrollment deadline reminder,Confirm enrollment completed,Bianca,25,All
+51,30 Days,30-day check-in,"1:1 on training, tools, team, expectations; file summary",Manager / Bianca,30,All
+52,30 Days,Schedule 90-day check-in,Document performance goals,Manager / Bianca,30,All
+53,90 Days,90-day check-in,Performance review,Manager / Bianca,90,All
