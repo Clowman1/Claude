@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Offset_Unit__c</fullName>
+    <label>Offset Unit</label>
+    <inlineHelpText>Calendar Days: a due date on a weekend or holiday moves to the next business day.</inlineHelpText>
+    <type>Picklist</type><valueSet><restricted>true</restricted><valueSetDefinition><sorted>false</sorted><value><fullName>Business Days</fullName><default>true</default><label>Business Days</label></value><value><fullName>Calendar Days</fullName><default>false</default><label>Calendar Days</label></value></valueSetDefinition></valueSet>
+</CustomField>

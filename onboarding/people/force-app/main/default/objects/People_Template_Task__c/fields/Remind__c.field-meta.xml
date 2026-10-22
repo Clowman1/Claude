@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Remind__c</fullName>
+    <label>Email Reminder</label>
+    <inlineHelpText>Emails the assignee a reminder 7 days before and on the due date.</inlineHelpText>
+    <type>Checkbox</type><defaultValue>false</defaultValue><trackHistory>true</trackHistory>
+</CustomField>

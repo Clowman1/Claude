@@ -4,7 +4,12 @@
 public with sharing class PeopleController {
 
     public static final String ONBOARDING = 'Onboarding';
-    static final Set<String> GONE = new Set<String>{ 'Terminated', 'Withdrawn' };
+    public static final Set<String> GONE = new Set<String>{ 'Terminated', 'Withdrawn' };
+
+    // Compliance sign-off (decision 24): Bianca Rodrigues, with Christopher Lowman as backup.
+    @TestVisible
+    static Set<Id> signers = new Set<Id>{ '0055x00000Bf9iaAAB', '005f2000009OtLnAAK' };
+    public static final String ATTESTATION = 'I attest that every item on this checklist was completed as recorded.';
 
     // ---------- business days ----------
     // Company holidays are attached to the TRID business hours only (Default has none), and TRID counts
@@ -49,6 +54,22 @@ public with sharing class PeopleController {
         return d;
     }
 
+    // Calendar-day offsets (the 30/90-day items) count straight days, then roll forward off a weekend or holiday.
+    @TestVisible
+    static Date dueDate(Date start, Decimal offset, String unit) {
+        if (start == null || offset == null) {
+            return null;
+        }
+        if (unit != 'Calendar Days') {
+            return addBusinessDays(start, offset.intValue());
+        }
+        Date d = start.addDays(offset.intValue());
+        while (!isWorkday(d)) {
+            d = d.addDays(1);
+        }
+        return d;
+    }
+
     // ---------- shapes ----------
     public class Card {
         @AuraEnabled public Id id;
@@ -87,7 +108,15 @@ public with sharing class PeopleController {
         @AuraEnabled public List<People_Task__c> tasks;
         @AuraEnabled public List<People_Template_Task__c> optional;
         @AuraEnabled public Boolean canViewPersonal;
+        @AuraEnabled public Boolean canSignOff;
+        @AuraEnabled public String attestation;
         @AuraEnabled public Date today = Date.today();
+    }
+
+    public class EmailDraft {
+        @AuraEnabled public String to;
+        @AuraEnabled public String subject;
+        @AuraEnabled public String body;
     }
 
     public class Option {
@@ -187,13 +216,13 @@ public with sharing class PeopleController {
             FROM People_Employee__c WHERE Id = :employeeId
         ];
         List<People_Checklist__c> cls = [
-            SELECT Id, Name, Status__c FROM People_Checklist__c
+            SELECT Id, Name, Status__c, Signed_Off_By__r.Name, Signed_Off_At__c, Exam_PDF_Id__c FROM People_Checklist__c
             WHERE Employee__c = :employeeId AND Type__c = :ONBOARDING ORDER BY CreatedDate DESC LIMIT 1
         ];
         d.checklist = cls.isEmpty() ? null : cls[0];
         d.tasks = d.checklist == null ? new List<People_Task__c>() : [
             SELECT Id, Name, Phase__c, Sort_Order__c, Description__c, Due_Date__c, Status__c, Assigned_To__c, Assigned_To__r.Name, Led_By__c,
-                Completed_By__r.Name, Completed_At__c, Notes__c, Email_Template__c, Via_DocuSign__c, Send_To__c, Template_Task__c
+                Completed_By__r.Name, Completed_At__c, Notes__c, Email_Template__c, Via_DocuSign__c, Send_To__c, Template_Task__c, Remind__c
             FROM People_Task__c WHERE Checklist__c = :d.checklist.Id ORDER BY Sort_Order__c, Due_Date__c
         ];
         Set<Id> used = new Set<Id>();
@@ -207,13 +236,15 @@ public with sharing class PeopleController {
             }
         }
         d.canViewPersonal = canViewPersonal();
+        d.canSignOff = signers.contains(UserInfo.getUserId());
+        d.attestation = ATTESTATION;
         return d;
     }
 
     @AuraEnabled
     public static Map<String, Object> previewChecklist(String role, String arrangement, Date startDate) {
         Integer n = 0, opt = 0;
-        Integer firstOffset;
+        Date firstDue;
         for (People_Template_Task__c t : templates(ONBOARDING, null)) {
             if (!applies(t, role, arrangement)) {
                 continue;
@@ -223,14 +254,12 @@ public with sharing class PeopleController {
                 continue;
             }
             n++;
-            if (t.Offset_Days__c != null && (firstOffset == null || t.Offset_Days__c < firstOffset)) {
-                firstOffset = t.Offset_Days__c.intValue();
+            Date due = dueDate(startDate, t.Offset_Days__c, t.Offset_Unit__c);
+            if (due != null && (firstDue == null || due < firstDue)) {
+                firstDue = due;
             }
         }
-        return new Map<String, Object>{
-            'count' => n, 'optional' => opt,
-            'firstDue' => firstOffset == null ? null : addBusinessDays(startDate, firstOffset)
-        };
+        return new Map<String, Object>{ 'count' => n, 'optional' => opt, 'firstDue' => firstDue };
     }
 
     @AuraEnabled
@@ -256,6 +285,7 @@ public with sharing class PeopleController {
             }
         }
         insert tasks;
+        PeopleUserSync.start();
         return employee.Id;
     }
 
@@ -265,16 +295,18 @@ public with sharing class PeopleController {
         People_Employee__c old = [SELECT Start_Date__c FROM People_Employee__c WHERE Id = :employee.Id];
         employee.Name = fullName(employee);
         update employee;
+        PeopleUserSync.start();
         if (employee.Start_Date__c == null || employee.Start_Date__c == old.Start_Date__c) {
             return 0;
         }
         List<People_Task__c> open = [
-            SELECT Id, Offset_Days__c FROM People_Task__c
-            WHERE Checklist__r.Employee__c = :employee.Id AND Checklist__r.Type__c = :ONBOARDING AND Status__c = 'Open' AND Offset_Days__c != null
+            SELECT Id, Offset_Days__c, Offset_Unit__c FROM People_Task__c
+            WHERE Checklist__r.Employee__c = :employee.Id AND Checklist__r.Type__c = :ONBOARDING AND Checklist__r.Status__c = 'Open'
+                AND Status__c = 'Open' AND Offset_Days__c != null
         ];
         Integer late = 0;
         for (People_Task__c t : open) {
-            t.Due_Date__c = addBusinessDays(employee.Start_Date__c, t.Offset_Days__c.intValue());
+            t.Due_Date__c = dueDate(employee.Start_Date__c, t.Offset_Days__c, t.Offset_Unit__c);
             if (t.Due_Date__c < Date.today()) {
                 late++;
             }
@@ -323,16 +355,19 @@ public with sharing class PeopleController {
 
     @AuraEnabled
     public static void updateTask(Id taskId, Id assignedTo, Date dueDate, String notes) {
+        requireOpen([SELECT Checklist__r.Status__c FROM People_Task__c WHERE Id = :taskId].Checklist__r.Status__c);
         update new People_Task__c(Id = taskId, Assigned_To__c = assignedTo, Due_Date__c = dueDate, Notes__c = notes);
     }
 
     @AuraEnabled
     public static void addOptionalTask(Id employeeId, Id templateId) {
         Detail d = getEmployee(employeeId);
-        People_Template_Task__c t = [SELECT Id, Name, Phase__c, Sort_Order__c, Description__c, Offset_Days__c, Default_Assignee__c, Led_By__c,
-                Email_Template__c, Via_DocuSign__c, Send_To__c, Exam_Section__c, Sets_Status__c
-            FROM People_Template_Task__c WHERE Id = :templateId];
-        insert fromTemplate(t, d.checklist.Id, d.employee.Start_Date__c);
+        requireOpen(d.checklist?.Status__c);
+        for (People_Template_Task__c t : getTemplates(ONBOARDING)) {
+            if (t.Id == templateId) {
+                insert fromTemplate(t, d.checklist.Id, d.employee.Start_Date__c);
+            }
+        }
     }
 
     @AuraEnabled
@@ -341,10 +376,106 @@ public with sharing class PeopleController {
             throw new AuraHandledException('Subject is required.');
         }
         Detail d = getEmployee(employeeId);
+        requireOpen(d.checklist?.Status__c);
         insert new People_Task__c(
             Name = subject.trim().left(80), Checklist__c = d.checklist.Id, Phase__c = phase, Due_Date__c = dueDate,
             Assigned_To__c = assignedTo, Status__c = 'Open', Sort_Order__c = 99999
         );
+    }
+
+    static void requireOpen(String checklistStatus) {
+        if (checklistStatus != 'Open') {
+            throw new AuraHandledException('This checklist is closed and can no longer change.');
+        }
+    }
+
+    // ---------- email (Bianca's templates, decision 16) ----------
+    // A task's Email_Template__c "PH-3" maps to the classic template People_PH_3 in the People Onboarding folder.
+    // {{SEND_DATE_PLUS_2}} in a template becomes the send date + 2 business days (the Paychex deadline).
+    @AuraEnabled
+    public static EmailDraft getEmailDraft(Id taskId) {
+        People_Task__c t = [
+            SELECT Email_Template__c, Send_To__c, Checklist__r.Status__c, Checklist__r.Employee__c, Checklist__r.Employee__r.Personal_Email__c
+            FROM People_Task__c WHERE Id = :taskId
+        ];
+        requireOpen(t.Checklist__r.Status__c);
+        String dev = 'People_' + String.valueOf(t.Email_Template__c).replaceAll('[^A-Za-z0-9]+', '_');
+        List<EmailTemplate> tpl = [SELECT Id FROM EmailTemplate WHERE DeveloperName = :dev AND IsActive = true LIMIT 1];
+        if (tpl.isEmpty()) {
+            throw new AuraHandledException('No Salesforce email template named ' + dev + '.');
+        }
+        Messaging.SingleEmailMessage m = Messaging.renderStoredEmailTemplate(tpl[0].Id, null, t.Checklist__r.Employee__c);
+        String due = Datetime.newInstanceGmt(addBusinessDays(Date.today(), 2), Time.newInstance(12, 0, 0, 0)).formatGmt('EEEE, MMMM d');
+        EmailDraft d = new EmailDraft();
+        d.to = t.Send_To__c != null && t.Send_To__c.contains('@') ? t.Send_To__c : t.Checklist__r.Employee__r.Personal_Email__c;
+        d.subject = m.getSubject();
+        d.body = (m.getHtmlBody() != null ? m.getHtmlBody() : m.getPlainTextBody().escapeHtml4().replace('\n', '<br>')).replace('{{SEND_DATE_PLUS_2}}', due);
+        return d;
+    }
+
+    // Sends as the clicking user (decision 32), then completes the task with the stamp and a note of who it went to.
+    @AuraEnabled
+    public static void sendTaskEmail(Id taskId, String toAddress, String subject, String body) {
+        People_Task__c t = [SELECT Id, Notes__c, Status__c, Checklist__r.Status__c FROM People_Task__c WHERE Id = :taskId];
+        requireOpen(t.Checklist__r.Status__c);
+        List<String> to = new List<String>();
+        for (String a : (toAddress == null ? '' : toAddress).split('[,;\\s]+')) {
+            if (Pattern.matches('[^@\\s]+@[^@\\s]+\\.[^@\\s]+', a)) {
+                to.add(a);
+            }
+        }
+        if (to.isEmpty() || String.isBlank(subject) || String.isBlank(body)) {
+            throw new AuraHandledException('A valid To address, a subject and a message are required.');
+        }
+        Messaging.SingleEmailMessage m = new Messaging.SingleEmailMessage();
+        m.setToAddresses(to);
+        m.setSubject(subject);
+        m.setHtmlBody(body);
+        m.setSaveAsActivity(false);
+        Messaging.SendEmailResult r = Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ m }, false)[0];
+        if (!r.isSuccess()) {
+            throw new AuraHandledException('Email not sent: ' + r.getErrors()[0].getMessage());
+        }
+        String stamp = 'Emailed to ' + String.join(to, ', ') + ' · ' + System.now().format('MMM d, yyyy h:mm a', 'America/New_York') + ' ET';
+        update new People_Task__c(
+            Id = t.Id, Status__c = 'Done', Completed_By__c = UserInfo.getUserId(), Completed_At__c = System.now(),
+            Notes__c = (String.isBlank(t.Notes__c) ? '' : t.Notes__c + '\n') + stamp
+        );
+    }
+
+    // ---------- compliance sign-off + exam PDF (decisions 13, 24, 25) ----------
+    @AuraEnabled
+    public static void signOff(Id checklistId) {
+        if (!signers.contains(UserInfo.getUserId())) {
+            throw new AuraHandledException('Only Bianca Rodrigues or Christopher Lowman can sign off.');
+        }
+        People_Checklist__c c = [SELECT Id, Status__c, (SELECT Id FROM Tasks__r WHERE Status__c = 'Open') FROM People_Checklist__c WHERE Id = :checklistId];
+        requireOpen(c.Status__c);
+        if (!c.Tasks__r.isEmpty()) {
+            throw new AuraHandledException(c.Tasks__r.size() + ' task(s) are still open.');
+        }
+        update new People_Checklist__c(Id = c.Id, Status__c = 'Signed Off', Signed_Off_By__c = UserInfo.getUserId(), Signed_Off_At__c = System.now());
+    }
+
+    // Renders the exam PDF and files it on the employee. Separate call from signOff: rendering a page counts as a callout,
+    // which cannot follow DML in the same transaction.
+    @AuraEnabled
+    public static Id saveExamPdf(Id checklistId) {
+        People_Checklist__c c = [SELECT Id, Status__c, Employee__c, Employee__r.Name FROM People_Checklist__c WHERE Id = :checklistId];
+        if (c.Status__c != 'Signed Off') {
+            throw new AuraHandledException('Sign off first; the filed PDF is the signed record.');
+        }
+        PageReference p = Page.PeopleExamPdf;
+        p.getParameters().put('id', checklistId);
+        Blob pdf = Test.isRunningTest() ? Blob.valueOf('pdf') : p.getContentAsPDF();
+        ContentVersion v = new ContentVersion(
+            Title = 'Onboarding checklist - ' + c.Employee__r.Name + ' - signed ' + Date.today().format(), PathOnClient = 'onboarding-checklist.pdf',
+            VersionData = pdf, FirstPublishLocationId = c.Employee__c
+        );
+        insert v;
+        Id docId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :v.Id].ContentDocumentId;
+        update new People_Checklist__c(Id = c.Id, Exam_PDF_Id__c = docId);
+        return docId;
     }
 
     // ---------- encrypted personal fields ----------
@@ -380,8 +511,8 @@ public with sharing class PeopleController {
     public static List<People_Template_Task__c> getTemplates(String checklistType) {
         return [
             SELECT Id, Name, Checklist_Type__c, Sort_Order__c, Phase__c, Description__c, Default_Assignee__c, Default_Assignee__r.Name, Led_By__c,
-                Offset_Days__c, Roles__c, Work_Arrangements__c, Optional__c, Email_Template__c, Via_DocuSign__c, Send_To__c, Exam_Section__c,
-                Sets_Status__c, Active__c
+                Offset_Days__c, Offset_Unit__c, Roles__c, Work_Arrangements__c, Optional__c, Email_Template__c, Via_DocuSign__c, Send_To__c,
+                Exam_Section__c, Sets_Status__c, Remind__c, Auto_Complete__c, Active__c
             FROM People_Template_Task__c WHERE Checklist_Type__c = :checklistType ORDER BY Sort_Order__c, Name
         ];
     }
@@ -443,10 +574,11 @@ public with sharing class PeopleController {
     static People_Task__c fromTemplate(People_Template_Task__c t, Id checklistId, Date startDate) {
         return new People_Task__c(
             Name = t.Name, Checklist__c = checklistId, Template_Task__c = t.Id, Phase__c = t.Phase__c, Sort_Order__c = t.Sort_Order__c,
-            Description__c = t.Description__c, Offset_Days__c = t.Offset_Days__c,
-            Due_Date__c = addBusinessDays(startDate, t.Offset_Days__c == null ? null : t.Offset_Days__c.intValue()),
+            Description__c = t.Description__c, Offset_Days__c = t.Offset_Days__c, Offset_Unit__c = t.Offset_Unit__c,
+            Due_Date__c = dueDate(startDate, t.Offset_Days__c, t.Offset_Unit__c),
             Assigned_To__c = t.Default_Assignee__c, Led_By__c = t.Led_By__c, Status__c = 'Open', Email_Template__c = t.Email_Template__c,
-            Via_DocuSign__c = t.Via_DocuSign__c, Send_To__c = t.Send_To__c, Exam_Section__c = t.Exam_Section__c, Sets_Status__c = t.Sets_Status__c
+            Via_DocuSign__c = t.Via_DocuSign__c, Send_To__c = t.Send_To__c, Exam_Section__c = t.Exam_Section__c, Sets_Status__c = t.Sets_Status__c,
+            Remind__c = t.Remind__c, Auto_Complete__c = t.Auto_Complete__c
         );
     }
 

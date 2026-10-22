@@ -20,6 +20,8 @@ public with sharing class PeopleDaily implements Schedulable {
             e.Status__c = 'Active';
         }
         update starting;
+        PeopleUserSync.start();
+        sendReminders(today);
 
         String dow = Datetime.newInstanceGmt(today, Time.newInstance(12, 0, 0, 0)).formatGmt('E');
         if (dow == 'Sat' || dow == 'Sun') {
@@ -58,5 +60,36 @@ public with sharing class PeopleDaily implements Schedulable {
         if (!mails.isEmpty()) {
             Messaging.sendEmail(mails, false);
         }
+    }
+
+    // Tasks flagged Email Reminder (the 30/90-day check-ins and benefits deadline) email their assignee
+    // 7 days before and on the due date, every day of the week, on top of the weekday digest.
+    @TestVisible
+    static Integer sendReminders(Date today) {
+        String link = URL.getOrgDomainUrl().toExternalForm() + '/lightning/n/People';
+        List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
+        for (People_Task__c t : [
+            SELECT Name, Due_Date__c, Assigned_To__c, Description__c, Checklist__r.Employee__r.Name
+            FROM People_Task__c
+            WHERE Remind__c = true AND Status__c = 'Open' AND Assigned_To__c != null AND Checklist__r.Status__c = 'Open'
+                AND Checklist__r.Employee__r.Status__c NOT IN :PeopleController.GONE AND Due_Date__c IN :new Set<Date>{ today, today.addDays(7) }
+        ]) {
+            String dueText = t.Due_Date__c == today ? 'today' : 'on ' + Datetime.newInstanceGmt(t.Due_Date__c, Time.newInstance(12, 0, 0, 0)).formatGmt('EEEE, MMMM d');
+            String who = t.Checklist__r.Employee__r.Name;
+            Messaging.SingleEmailMessage m = new Messaging.SingleEmailMessage();
+            m.setTargetObjectId(t.Assigned_To__c);
+            m.setSaveAsActivity(false);
+            m.setSenderDisplayName('People');
+            m.setSubject('Reminder: ' + t.Name + ' for ' + who + ' is due ' + dueText);
+            m.setHtmlBody('<div style="font-family:Arial,sans-serif;font-size:14px;color:#111827">'
+                + '<p><strong>' + t.Name.escapeHtml4() + '</strong> for ' + who.escapeHtml4() + ' is due ' + dueText + '.</p>'
+                + (t.Description__c == null ? '' : '<p style="color:#5B6472">' + t.Description__c.escapeHtml4() + '</p>')
+                + '<p><a href="' + link + '">Open People</a></p></div>');
+            mails.add(m);
+        }
+        if (!mails.isEmpty()) {
+            Messaging.sendEmail(mails, false);
+        }
+        return mails.size();
     }
 }

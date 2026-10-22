@@ -57,7 +57,10 @@ const lines = rows.map(([order, phase, subject, desc, who, offset, applies]) => 
         `Phase__c = ${s(PHASE[phase])}, Description__c = ${s(desc)}, Default_Assignee__c = '${assignee}', Led_By__c = ${s(led)}, ` +
         `Offset_Days__c = ${Number(offset)}, Roles__c = ${s(a.roles)}, Work_Arrangements__c = ${s(a.arr)}, Optional__c = ${!!a.optional}, ` +
         `Email_Template__c = ${s(EMAIL[n] || DOCUSIGN[n])}, Via_DocuSign__c = ${!!DOCUSIGN[n]}, Send_To__c = ${s(SEND_TO[n])}, ` +
-        `Exam_Section__c = ${s(exam)}, Sets_Status__c = ${n === 4 ? "'Pre-Start'" : 'null'}, Active__c = true)`;
+        `Exam_Section__c = ${s(exam)}, Sets_Status__c = ${n === 4 ? "'Pre-Start'" : 'null'}, Active__c = true, ` +
+        // 30/90-day items count calendar days and email reminders; the Salesforce user task completes when the user is linked.
+        `Offset_Unit__c = '${n >= 50 ? 'Calendar Days' : 'Business Days'}', Remind__c = ${n >= 50}, ` +
+        `Auto_Complete__c = ${n === 25 ? "'Salesforce user linked'" : 'null'})`;
 });
 
 fs.writeFileSync(new URL('./seed-templates.apex', import.meta.url),

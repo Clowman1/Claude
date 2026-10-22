@@ -136,6 +136,7 @@
                     </div>
                     <div class="row-wrap">
                         <button class="btn" onclick={openEdit}>Edit details</button>
+                        <button class="btn" onclick={previewPdf}>Exam PDF</button>
                         <template lwc:if={unlocked}>
                             <button class="btn btn-quiet" onclick={confirmWithdraw}>Withdraw</button>
                         </template>
@@ -210,6 +211,13 @@
                                     <template lwc:if={t.Led_By__c}><span class="chip">Led by {t.Led_By__c}</span></template>
                                     <template lwc:if={t.templateChip}><span class="chip chip-indigo">{t.templateChip}</span></template>
                                     <template lwc:if={t.Send_To__c}><span class="chip">To: {t.Send_To__c}</span></template>
+                                    <template lwc:if={t.Remind__c}><span class="chip">Email reminder</span></template>
+                                    <template lwc:if={t.canSend}>
+                                        <button class="btn btn-send" data-id={t.Id} onclick={openSend}>
+                                            <lightning-icon icon-name="utility:send" size="x-small" class="send-icon"></lightning-icon>
+                                            {t.sendLabel}
+                                        </button>
+                                    </template>
                                     <span class={t.dueCls}>{t.dueLabel}</span>
                                     <span class="who" title={t.whoName} aria-label={t.whoName}>{t.whoInitials}</span>
                                     <template lwc:if={unlocked}>
@@ -261,6 +269,24 @@
                     </div>
                 </section>
             </template>
+
+            <section class="panel signoff">
+                <div class="signoff-text">
+                    <h2 class="h2">Compliance sign-off</h2>
+                    <div class="muted small">{signText}</div>
+                </div>
+                <div class="row-wrap">
+                    <template lwc:if={showSignButton}>
+                        <button class="btn btn-primary" disabled={signDisabled} onclick={doSignOff}>Sign off</button>
+                    </template>
+                    <template lwc:if={needsPdf}>
+                        <button class="btn btn-primary" disabled={busy} onclick={filePdf}>File exam PDF</button>
+                    </template>
+                    <template lwc:if={hasPdf}>
+                        <button class="btn" onclick={openPdf}>Open filed PDF</button>
+                    </template>
+                </div>
+            </section>
         </template>
 
         <!-- ================= TEMPLATE EDITOR ================= -->
@@ -330,6 +356,28 @@
         <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
     </template>
 
+    <!-- ================= EMAIL MODAL ================= -->
+    <template lwc:if={showEmailModal}>
+        <section role="dialog" aria-modal="true" aria-label="Send email" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">Send email</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="email-form">
+                        <lightning-input type="text" label="To" required value={emailDraft.to} data-field="to" onchange={draftEmail}></lightning-input>
+                        <lightning-input label="Subject" required value={emailDraft.subject} data-field="subject" onchange={draftEmail}></lightning-input>
+                        <lightning-input-rich-text label="Message" label-visible value={emailDraft.body} data-field="body" onchange={draftEmail}></lightning-input-rich-text>
+                        <div class="muted small">Sends from your own email address. Sending marks the task done and notes who it went to.</div>
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="btn" onclick={closeEmail}>Cancel</button>
+                    <button class="btn btn-primary" disabled={busy} onclick={sendEmail}>Send</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
     <!-- ================= TEMPLATE MODAL ================= -->
     <template lwc:if={showTemplateModal}>
         <section role="dialog" aria-modal="true" aria-label={templateModalTitle} class="slds-modal slds-fade-in-open">
@@ -340,7 +388,9 @@
                         <lightning-input class="span-2" label="Subject" required max-length="80" value={templateDraft.Name} data-field="Name" onchange={draftTemplate}></lightning-input>
                         <lightning-textarea class="span-2" label="Description" value={templateDraft.Description__c} data-field="Description__c" onchange={draftTemplate}></lightning-textarea>
                         <lightning-combobox label="Phase" options={phaseOptions} value={templateDraft.Phase__c} data-field="Phase__c" onchange={draftTemplate}></lightning-combobox>
-                        <lightning-input type="number" label="Offset (business days from start)" field-level-help="Negative = before the start date. Blank = no due date." value={templateDraft.Offset_Days__c} data-field="Offset_Days__c" onchange={draftTemplate}></lightning-input>
+                        <lightning-input type="number" label="Offset (days from start)" field-level-help="Negative = before the start date. Blank = no due date." value={templateDraft.Offset_Days__c} data-field="Offset_Days__c" onchange={draftTemplate}></lightning-input>
+                        <lightning-combobox label="Offset counts" field-level-help="Calendar Days: a weekend or holiday due date moves to the next business day." options={unitOptions} value={templateDraft.Offset_Unit__c} data-field="Offset_Unit__c" onchange={draftTemplate}></lightning-combobox>
+                        <lightning-combobox label="Complete automatically when" options={autoCompleteOptions} value={templateDraft.Auto_Complete__c} data-field="Auto_Complete__c" onchange={draftTemplate}></lightning-combobox>
                         <lightning-combobox label="Default assignee" options={assigneeOptions} value={templateDraft.Default_Assignee__c} data-field="Default_Assignee__c" onchange={draftTemplate}></lightning-combobox>
                         <lightning-input label="Led by (free text)" max-length="80" value={templateDraft.Led_By__c} data-field="Led_By__c" onchange={draftTemplate}></lightning-input>
                         <lightning-checkbox-group label="Roles (none = all)" options={roleOptions} value={draftRoles} data-field="Roles__c" onchange={draftTemplate}></lightning-checkbox-group>
@@ -351,6 +401,7 @@
                         <lightning-combobox label="Completing it moves a Candidate to" options={setsStatusOptions} value={templateDraft.Sets_Status__c} data-field="Sets_Status__c" onchange={draftTemplate}></lightning-combobox>
                         <lightning-input type="toggle" label="Sent via DocuSign" checked={templateDraft.Via_DocuSign__c} data-field="Via_DocuSign__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
                         <lightning-input type="toggle" label="Optional (offered, not generated)" checked={templateDraft.Optional__c} data-field="Optional__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
+                        <lightning-input type="toggle" label="Email reminder (7 days before + due date)" checked={templateDraft.Remind__c} data-field="Remind__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
                         <lightning-input type="toggle" label="Active" checked={templateDraft.Active__c} data-field="Active__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
                     </div>
                 </div>

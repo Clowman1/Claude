@@ -18,6 +18,10 @@ import getTemplates from '@salesforce/apex/PeopleController.getTemplates';
 import saveTemplate from '@salesforce/apex/PeopleController.saveTemplate';
 import reorderTemplates from '@salesforce/apex/PeopleController.reorderTemplates';
 import getAssignees from '@salesforce/apex/PeopleController.getAssignees';
+import getEmailDraft from '@salesforce/apex/PeopleController.getEmailDraft';
+import sendTaskEmail from '@salesforce/apex/PeopleController.sendTaskEmail';
+import signOff from '@salesforce/apex/PeopleController.signOff';
+import saveExamPdf from '@salesforce/apex/PeopleController.saveExamPdf';
 
 const ROLES = ['Loan Officer', 'Branch Manager', 'Processor', 'Closer', 'Opener', 'Operations/Admin', 'Manager'];
 const ARRANGEMENTS = ['In-Office', 'Remote', 'Hybrid'];
@@ -60,6 +64,8 @@ export default class PeopleApp extends LightningElement {
     preview;
     templateDraft;
     dragId;
+    emailDraft;
+    busy = false;
 
     roleOptions = opts(ROLES);
     arrangementOptions = opts(ARRANGEMENTS);
@@ -67,6 +73,8 @@ export default class PeopleApp extends LightningElement {
     stateOptions = opts(STATES);
     examOptions = [{ label: 'None', value: '' }].concat(opts(EXAM));
     setsStatusOptions = [{ label: 'None', value: '' }, { label: 'Pre-Start', value: 'Pre-Start' }];
+    unitOptions = opts(['Business Days', 'Calendar Days']);
+    autoCompleteOptions = [{ label: 'Never', value: '' }, { label: 'Salesforce user linked', value: 'Salesforce user linked' }];
 
     connectedCallback() {
         getAssignees().then((a) => { this.assignees = a; }).catch(() => {});
@@ -244,6 +252,8 @@ export default class PeopleApp extends LightningElement {
             whoInitials: t.Assigned_To__r ? initials(t.Assigned_To__r.Name) : '?',
             templateChip: t.Email_Template__c ? (t.Via_DocuSign__c ? 'DocuSign · ' : 'Email · ') + t.Email_Template__c : (t.Via_DocuSign__c ? 'DocuSign' : ''),
             editing: this.editTaskId === t.Id,
+            canSend: !done && !this.locked && !!t.Email_Template__c && !t.Via_DocuSign__c,
+            sendLabel: 'Send ' + t.Email_Template__c,
             checkLabel: (done ? 'Reopen ' : 'Complete ') + t.Name
         };
     }
@@ -284,6 +294,65 @@ export default class PeopleApp extends LightningElement {
         this.runAndReload(addCustomTask({ employeeId: this.emp.Id, subject: t.subject, phase: t.phase, dueDate: t.due || null, assignedTo: t.assignedTo || null }))
             .then(() => { this.newTask = { subject: '', phase: t.phase, due: null, assignedTo: t.assignedTo }; });
     }
+
+    // ---------- email ----------
+    openSend(e) {
+        const taskId = e.currentTarget.dataset.id;
+        getEmailDraft({ taskId }).then((d) => { this.emailDraft = { taskId, ...d }; }).catch((er) => this.fail(er));
+    }
+    get showEmailModal() { return !!this.emailDraft; }
+    closeEmail() { this.emailDraft = undefined; }
+    draftEmail(e) {
+        const v = e.detail && e.detail.value !== undefined ? e.detail.value : e.target.value; // rich text reports on target
+        this.emailDraft = { ...this.emailDraft, [e.target.dataset.field]: v };
+    }
+    sendEmail() {
+        const d = this.emailDraft;
+        this.busy = true;
+        sendTaskEmail({ taskId: d.taskId, toAddress: d.to, subject: d.subject, body: d.body }).then(() => {
+            this.busy = false;
+            this.emailDraft = undefined;
+            this.toast('Email sent', 'success', 'Sent to ' + d.to + '. The task is marked done.');
+            return this.reloadEmployee();
+        }).catch((er) => { this.busy = false; this.fail(er); });
+    }
+
+    // ---------- sign-off + exam PDF ----------
+    get openCount() { return this.detail ? this.detail.tasks.filter((t) => t.Status__c === 'Open').length : 0; }
+    get signed() { return this.detail && this.detail.checklist && this.detail.checklist.Status__c === 'Signed Off'; }
+    get canSign() { return this.detail && this.detail.canSignOff && !this.signed && !this.locked && this.openCount === 0 && this.detail.tasks.length > 0; }
+    get signDisabled() { return !this.canSign || this.busy; }
+    get showSignButton() { return !this.signed && this.detail && this.detail.canSignOff; }
+    get needsPdf() { return this.signed && !this.detail.checklist.Exam_PDF_Id__c && this.detail.canSignOff; }
+    get hasPdf() { return this.signed && !!this.detail.checklist.Exam_PDF_Id__c; }
+    get signText() {
+        const c = this.detail && this.detail.checklist;
+        if (!c) return '';
+        if (this.signed) {
+            const at = new Date(c.Signed_Off_At__c).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+            return `Signed off by ${c.Signed_Off_By__r ? c.Signed_Off_By__r.Name : ''} · ${at}. ${this.detail.attestation} The checklist is locked.`;
+        }
+        if (!this.detail.canSignOff) return 'Bianca Rodrigues (or Christopher Lowman as backup) signs off once every task is done.';
+        return this.openCount > 0
+            ? `Available once every task is done (${this.openCount} left). Signing off locks the checklist and files the exam PDF on this employee.`
+            : 'Every task is done. ' + this.detail.attestation;
+    }
+    doSignOff() {
+        // eslint-disable-next-line no-alert
+        if (!window.confirm(this.detail.attestation + ' Sign off and lock this checklist?')) return;
+        this.busy = true;
+        signOff({ checklistId: this.detail.checklist.Id }).then(() => this.filePdf()).catch((er) => { this.busy = false; this.fail(er); });
+    }
+    filePdf() {
+        this.busy = true;
+        return saveExamPdf({ checklistId: this.detail.checklist.Id }).then(() => {
+            this.busy = false;
+            this.toast('Signed off', 'success', 'The exam PDF is filed on this employee.');
+            return this.reloadEmployee();
+        }).catch((er) => { this.busy = false; this.fail(er); this.reloadEmployee(); });
+    }
+    previewPdf() { window.open('/apex/PeopleExamPdf?id=' + this.detail.checklist.Id, '_blank'); }
+    openPdf() { window.open('/lightning/r/ContentDocument/' + this.detail.checklist.Exam_PDF_Id__c + '/view', '_blank'); }
 
     // ---------- personal (encrypted) ----------
     get canViewPersonal() { return this.detail && this.detail.canViewPersonal; }
@@ -378,11 +447,13 @@ export default class PeopleApp extends LightningElement {
             ...t,
             num: i + 1,
             rowCls: 'tpl-row' + (t.Active__c ? '' : ' tpl-inactive') + (this.dragId === t.Id ? ' tpl-drag' : ''),
-            offsetLabel: t.Offset_Days__c == null ? 'No due date' : t.Offset_Days__c === 0 ? 'Start day' : (t.Offset_Days__c > 0 ? '+' : '') + t.Offset_Days__c + ' bd',
+            offsetLabel: t.Offset_Days__c == null ? 'No due date' : t.Offset_Days__c === 0 ? 'Start day'
+                : (t.Offset_Days__c > 0 ? '+' : '') + t.Offset_Days__c + (t.Offset_Unit__c === 'Calendar Days' ? ' days' : ' bd'),
             roles: t.Roles__c ? t.Roles__c.split(';').join(', ') : 'All roles',
             arrangements: t.Work_Arrangements__c ? t.Work_Arrangements__c.split(';').join(', ') : 'All arrangements',
             who: t.Default_Assignee__r ? t.Default_Assignee__r.Name : 'Unassigned',
-            tags: [t.Optional__c ? 'Optional' : null, t.Active__c ? null : 'Inactive', t.Email_Template__c, t.Via_DocuSign__c ? 'DocuSign' : null, t.Sets_Status__c ? '→ ' + t.Sets_Status__c : null]
+            tags: [t.Optional__c ? 'Optional' : null, t.Active__c ? null : 'Inactive', t.Email_Template__c, t.Via_DocuSign__c ? 'DocuSign' : null, t.Sets_Status__c ? '→ ' + t.Sets_Status__c : null,
+                t.Remind__c ? 'Email reminder' : null, t.Auto_Complete__c ? 'Auto: ' + t.Auto_Complete__c : null]
                 .filter(Boolean).join(' · ')
         }));
     }
@@ -424,7 +495,8 @@ export default class PeopleApp extends LightningElement {
     get draftArrangements() { return this.templateDraft.Work_Arrangements__c ? this.templateDraft.Work_Arrangements__c.split(';') : []; }
     get assigneeOptions() { return [{ label: 'Unassigned', value: '' }].concat(this.assignees); }
     newTemplate() {
-        this.templateDraft = { Checklist_Type__c: 'Onboarding', Phase__c: 'Pre-Start', Active__c: true, Optional__c: false, Via_DocuSign__c: false, Default_Assignee__c: USER_ID };
+        this.templateDraft = { Checklist_Type__c: 'Onboarding', Phase__c: 'Pre-Start', Active__c: true, Optional__c: false, Via_DocuSign__c: false,
+            Remind__c: false, Offset_Unit__c: 'Business Days', Default_Assignee__c: USER_ID };
     }
     editTemplate(e) {
         const t = this.templates.find((x) => x.Id === e.currentTarget.dataset.id);

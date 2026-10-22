@@ -121,6 +121,12 @@
 .add-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; align-items: end; }
 .add-btn { display: flex; align-items: flex-end; }
 
+.btn-send { height: 30px; padding: 0 10px; font-size: 12px; font-weight: 600; color: var(--accent); border-color: var(--accent); }
+.send-icon { --slds-c-icon-color-foreground-default: var(--accent); }
+.signoff { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.signoff-text { flex: 1 1 320px; display: flex; flex-direction: column; gap: 4px; }
+.email-form { display: flex; flex-direction: column; gap: 12px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
 .span-2 { grid-column: span 2; }
 .preview { margin-top: 16px; background: #eff4ff; border-radius: 12px; padding: 12px 14px; color: #1e3a8a; line-height: 1.5; }

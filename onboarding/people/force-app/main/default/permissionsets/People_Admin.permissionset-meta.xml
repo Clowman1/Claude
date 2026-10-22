@@ -5,6 +5,7 @@
     <hasActivationRequired>false</hasActivationRequired>
     <applicationVisibilities><application>People</application><visible>true</visible></applicationVisibilities>
     <classAccesses><apexClass>PeopleController</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PeopleExamPdfController</apexClass><enabled>true</enabled></classAccesses>
     <fieldPermissions><editable>true</editable><field>People_Branch__c.State__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Branch__c.Address__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Branch__c.Branch_NMLS_ID__c</field><readable>true</readable></fieldPermissions>
@@ -65,11 +66,21 @@
     <fieldPermissions><editable>true</editable><field>People_Task__c.Send_To__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Task__c.Exam_Section__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>People_Task__c.Sets_Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Template_Task__c.Offset_Unit__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Template_Task__c.Remind__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Template_Task__c.Auto_Complete__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Task__c.Offset_Unit__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Task__c.Remind__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Task__c.Auto_Complete__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>People_Checklist__c.Signed_Off_By__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>People_Checklist__c.Signed_Off_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>People_Checklist__c.Exam_PDF_Id__c</field><readable>true</readable></fieldPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Branch__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Employee__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Template_Task__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Checklist__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Task__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
+    <pageAccesses><apexPage>PeopleExamPdf</apexPage><enabled>true</enabled></pageAccesses>
     <tabSettings><tab>People</tab><visibility>Visible</visibility></tabSettings>
     <userPermissions><enabled>true</enabled><name>ViewEncryptedData</name></userPermissions>
 </PermissionSet>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>People app onboarding email (from Bianca's Onboarding Emails docx). Sent from the task in People.</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>PH-7 Paychex Onboarding Notification</name>
+    <style>none</style>
+    <subject>Reach Home Loans — Paychex Onboarding — {!People_Employee__c.Name}</subject>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

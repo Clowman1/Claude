@@ -55,10 +55,18 @@ There are no files. Documents stay in OneDrive. There is no SSN field.
 4. Exam PDF in the TN DFI layout, saved to the Employee record.
 5. User auto-link by work email. Auto-complete "Set up Salesforce user". Sync NMLS and Licensed States to the User.
 
+**Status (2026-10-22):** P1 and P2 are live in prod.
+- P2 deployed: People_PH_3/4/7/8 classic templates (folder "People Onboarding") with Send buttons.
+- Sign-off by Bianca or Chris, then the exam PDF (`PeopleExamPdf`) is filed on the Employee.
+- `PeopleUserSync` + `PeopleUserTrigger` link the User by work email.
+- Change from the grill: the 25/30/90-day items count **calendar days** (rolled off weekends/holidays) and email the assignee 7 days before and on the due date (`Remind__c`).
+
 **P3: branch, renewals, offboarding** (the NV hire is ~1 month out)
 1. Branch template: from the xlsx sub-tabs + NV Division of Mortgage Lending branch license + NMLS branch sponsorship.
 2. Load current active staff (list reviewed first), then generate the 2026 renewals. Renewals generate every year on Oct 15: one task per licensed state + NMLS CE + BSA/AML + handbook re-acknowledgment.
 3. Offboard button: xlsx offboarding items + deactivate the SF user, reassign Leads/Transactions, RingCentral/ARIVE/UWM removal, termination notice, KB Tech Outlook shutdown.
+
+**P4 (to outline after P3): employee management.** Run every current employee through People: renewal and licensing completion tracking, general HR information and more. Chris asked for this on 2026-10-22; grill it before building.
 
 ## Later / not now
 Assignees outside the three, the new hire's own self-service view, Teams notifications, a permission-set bundle offer on user link, OneDrive links.
