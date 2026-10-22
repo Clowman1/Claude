@@ -4,6 +4,9 @@
 public with sharing class PeopleController {
 
     public static final String ONBOARDING = 'Onboarding';
+    public static final String OFFBOARDING = 'Offboarding';
+    public static final String RENEWAL = 'Renewal';
+    public static final String BRANCH = 'Branch';
     public static final Set<String> GONE = new Set<String>{ 'Terminated', 'Withdrawn' };
 
     // Compliance sign-off (decision 24): Bianca Rodrigues, with Christopher Lowman as backup.
@@ -71,8 +74,13 @@ public with sharing class PeopleController {
     }
 
     // ---------- shapes ----------
+    // One open checklist on the board. id is the employee or branch the checklist belongs to.
     public class Card {
         @AuraEnabled public Id id;
+        @AuraEnabled public Id checklistId;
+        @AuraEnabled public String type;
+        @AuraEnabled public Decimal year;
+        @AuraEnabled public Date anchorDate;
         @AuraEnabled public String name;
         @AuraEnabled public String role;
         @AuraEnabled public String arrangement;
@@ -96,15 +104,23 @@ public with sharing class PeopleController {
     }
 
     public class Board {
-        @AuraEnabled public List<Card> employees = new List<Card>();
+        @AuraEnabled public List<Card> cards = new List<Card>();
+        @AuraEnabled public List<People_Employee__c> staff;
         @AuraEnabled public List<People_Branch__c> branches;
         @AuraEnabled public List<DigestItem> digest;
+        @AuraEnabled public Integer renewalYear = Date.today().year();
+        @AuraEnabled public Integer renewalEligible;
         @AuraEnabled public Date today = Date.today();
     }
 
+    // The People page for one employee or one branch, showing one of its checklists.
     public class Detail {
         @AuraEnabled public People_Employee__c employee;
+        @AuraEnabled public People_Branch__c branch;
+        @AuraEnabled public List<People_Checklist__c> checklists;
         @AuraEnabled public People_Checklist__c checklist;
+        @AuraEnabled public Integer openLeads;
+        @AuraEnabled public Integer openTransactions;
         @AuraEnabled public List<People_Task__c> tasks;
         @AuraEnabled public List<People_Template_Task__c> optional;
         @AuraEnabled public Boolean canViewPersonal;
@@ -132,49 +148,55 @@ public with sharing class PeopleController {
     @AuraEnabled
     public static Board getBoard() {
         Board b = new Board();
-        Map<Id, Card> cards = new Map<Id, Card>();
-        for (People_Employee__c e : [
-            SELECT Id, Name, Role__c, Work_Arrangement__c, Status__c, Start_Date__c, Branch__r.Name
-            FROM People_Employee__c WHERE Status__c NOT IN :GONE ORDER BY Start_Date__c NULLS LAST, Name
+        for (People_Checklist__c cl : [
+            SELECT Id, Type__c, Renewal_Year__c, Anchor_Date__c, Employee__c, Employee__r.Name, Employee__r.Role__c, Employee__r.Work_Arrangement__c,
+                Employee__r.Status__c, Employee__r.Start_Date__c, Employee__r.Branch__r.Name, Branch__c, Branch__r.Name, Branch__r.State__c, Branch__r.Status__c,
+                (SELECT Name, Status__c, Due_Date__c FROM Tasks__r ORDER BY Due_Date__c NULLS LAST, Sort_Order__c)
+            FROM People_Checklist__c
+            WHERE Status__c = 'Open' AND (Employee__c = null OR Employee__r.Status__c NOT IN :GONE)
+            ORDER BY Anchor_Date__c NULLS LAST, Name
         ]) {
             Card c = new Card();
-            c.id = e.Id;
-            c.name = e.Name;
-            c.role = e.Role__c;
-            c.arrangement = e.Work_Arrangement__c;
-            c.status = e.Status__c;
-            c.startDate = e.Start_Date__c;
-            c.branch = e.Branch__r?.Name;
-            cards.put(e.Id, c);
+            c.checklistId = cl.Id;
+            c.type = cl.Type__c;
+            c.year = cl.Renewal_Year__c;
+            c.anchorDate = cl.Anchor_Date__c;
+            if (cl.Employee__c != null) {
+                c.id = cl.Employee__c;
+                c.name = cl.Employee__r.Name;
+                c.role = cl.Employee__r.Role__c;
+                c.arrangement = cl.Employee__r.Work_Arrangement__c;
+                c.status = cl.Employee__r.Status__c;
+                c.startDate = cl.Employee__r.Start_Date__c;
+                c.branch = cl.Employee__r.Branch__r?.Name;
+            } else {
+                c.id = cl.Branch__c;
+                c.name = cl.Branch__r?.Name;
+                c.role = cl.Branch__r?.State__c;
+                c.status = cl.Branch__r?.Status__c;
+            }
+            for (People_Task__c t : cl.Tasks__r) {
+                c.total++;
+                if (t.Status__c != 'Open') {
+                    c.done++;
+                    continue;
+                }
+                if (t.Due_Date__c != null && t.Due_Date__c < b.today) {
+                    c.overdue++;
+                }
+                if (c.nextSubject == null) {
+                    c.nextSubject = t.Name;
+                    c.nextDue = t.Due_Date__c;
+                }
+            }
+            b.cards.add(c);
         }
-        Set<Id> withChecklist = new Set<Id>();
-        for (People_Task__c t : [
-            SELECT Name, Status__c, Due_Date__c, Checklist__r.Employee__c
-            FROM People_Task__c
-            WHERE Checklist__r.Employee__c IN :cards.keySet() AND Checklist__r.Type__c = :ONBOARDING AND Checklist__r.Status__c = 'Open'
-            ORDER BY Due_Date__c NULLS LAST, Sort_Order__c
-        ]) {
-            Card c = cards.get(t.Checklist__r.Employee__c);
-            withChecklist.add(c.id);
-            c.total++;
-            if (t.Status__c != 'Open') {
-                c.done++;
-                continue;
-            }
-            if (t.Due_Date__c != null && t.Due_Date__c < b.today) {
-                c.overdue++;
-            }
-            if (c.nextSubject == null) {
-                c.nextSubject = t.Name;
-                c.nextDue = t.Due_Date__c;
-            }
-        }
-        // ponytail: the board shows only people with an open onboarding checklist; Renewals/Offboarding views arrive in phase 3.
-        for (Card c : cards.values()) {
-            if (withChecklist.contains(c.id)) {
-                b.employees.add(c);
-            }
-        }
+        b.staff = [
+            SELECT Id, Name, Role__c, Work_Arrangement__c, Status__c, Start_Date__c, NMLS_ID__c, Licensed_States__c, Manager__r.Name, Branch__r.Name,
+                User__c, Termination_Date__c
+            FROM People_Employee__c WHERE Status__c NOT IN :GONE ORDER BY Name
+        ];
+        b.renewalEligible = renewalTargets(b.renewalYear).size();
         b.branches = [
             SELECT Id, Name, State__c, Status__c, Target_Open_Date__c, Branch_Manager__r.Name, (SELECT Name FROM Employees__r WHERE Status__c NOT IN :GONE)
             FROM People_Branch__c WHERE Status__c != 'Closed' ORDER BY Name
@@ -188,16 +210,17 @@ public with sharing class PeopleController {
         List<DigestItem> items = new List<DigestItem>();
         Date horizon = addBusinessDays(today, 5);
         for (People_Task__c t : [
-            SELECT Id, Name, Due_Date__c, Checklist__r.Employee__c, Checklist__r.Employee__r.Name
+            SELECT Id, Name, Due_Date__c, Checklist__r.Employee__c, Checklist__r.Employee__r.Name, Checklist__r.Branch__c, Checklist__r.Branch__r.Name
             FROM People_Task__c
             WHERE Assigned_To__c = :userId AND Status__c = 'Open' AND Checklist__r.Status__c = 'Open'
-                AND Checklist__r.Employee__r.Status__c NOT IN :GONE AND Due_Date__c <= :horizon
+                AND (Checklist__r.Employee__c = null OR Checklist__r.Employee__r.Status__c NOT IN :GONE) AND Due_Date__c <= :horizon
             ORDER BY Due_Date__c, Sort_Order__c LIMIT 200
         ]) {
             DigestItem d = new DigestItem();
             d.taskId = t.Id;
-            d.employeeId = t.Checklist__r.Employee__c;
-            d.employee = t.Checklist__r.Employee__r.Name;
+            // employeeId/employee name whichever record owns the checklist: an employee, or a branch.
+            d.employeeId = t.Checklist__r.Employee__c != null ? t.Checklist__r.Employee__c : t.Checklist__r.Branch__c;
+            d.employee = t.Checklist__r.Employee__c != null ? t.Checklist__r.Employee__r.Name : t.Checklist__r.Branch__r?.Name;
             d.subject = t.Name;
             d.due = t.Due_Date__c;
             d.overdue = t.Due_Date__c < today;
@@ -206,20 +229,38 @@ public with sharing class PeopleController {
         return items;
     }
 
-    // ---------- one employee ----------
+    // ---------- one employee or branch ----------
+    // Kept for callers that only know the employee: shows the open onboarding checklist (else the newest).
     @AuraEnabled
     public static Detail getEmployee(Id employeeId) {
+        return getDetail(employeeId, null);
+    }
+
+    // recordId is a People_Employee__c or a People_Branch__c; checklistId picks one of its checklists (null = the
+    // first open one by Onboarding, Offboarding, Renewal, Branch order, else the newest).
+    @AuraEnabled
+    public static Detail getDetail(Id recordId, Id checklistId) {
         Detail d = new Detail();
-        d.employee = [
-            SELECT Id, Name, First_Name__c, Last_Name__c, Role__c, Work_Arrangement__c, Status__c, Start_Date__c, Manager__c, Manager__r.Name,
-                Branch__c, Branch__r.Name, Work_Email__c, Personal_Email__c, NMLS_ID__c, Licensed_States__c, User__c, User__r.Name
-            FROM People_Employee__c WHERE Id = :employeeId
+        Boolean isBranch = recordId.getSObjectType() == People_Branch__c.SObjectType;
+        if (isBranch) {
+            d.branch = [
+                SELECT Id, Name, State__c, Address__c, Branch_NMLS_ID__c, Branch_Manager__c, Branch_Manager__r.Name, Target_Open_Date__c, Status__c,
+                    (SELECT Id, Name, Role__c, Status__c FROM Employees__r ORDER BY Name)
+                FROM People_Branch__c WHERE Id = :recordId
+            ];
+        } else {
+            d.employee = [
+                SELECT Id, Name, First_Name__c, Last_Name__c, Role__c, Work_Arrangement__c, Status__c, Start_Date__c, Manager__c, Manager__r.Name,
+                    Branch__c, Branch__r.Name, Work_Email__c, Personal_Email__c, NMLS_ID__c, Licensed_States__c, User__c, User__r.Name,
+                    Termination_Date__c, Termination_Reason__c
+                FROM People_Employee__c WHERE Id = :recordId
+            ];
+        }
+        d.checklists = [
+            SELECT Id, Name, Type__c, Status__c, Renewal_Year__c, Anchor_Date__c, Signed_Off_By__r.Name, Signed_Off_At__c, Exam_PDF_Id__c
+            FROM People_Checklist__c WHERE Employee__c = :recordId OR Branch__c = :recordId ORDER BY CreatedDate DESC
         ];
-        List<People_Checklist__c> cls = [
-            SELECT Id, Name, Status__c, Signed_Off_By__r.Name, Signed_Off_At__c, Exam_PDF_Id__c FROM People_Checklist__c
-            WHERE Employee__c = :employeeId AND Type__c = :ONBOARDING ORDER BY CreatedDate DESC LIMIT 1
-        ];
-        d.checklist = cls.isEmpty() ? null : cls[0];
+        d.checklist = pickChecklist(d.checklists, checklistId);
         d.tasks = d.checklist == null ? new List<People_Task__c>() : [
             SELECT Id, Name, Phase__c, Sort_Order__c, Description__c, Due_Date__c, Status__c, Assigned_To__c, Assigned_To__r.Name, Led_By__c,
                 Completed_By__r.Name, Completed_At__c, Notes__c, Email_Template__c, Via_DocuSign__c, Send_To__c, Template_Task__c, Remind__c
@@ -230,15 +271,39 @@ public with sharing class PeopleController {
             used.add(t.Template_Task__c);
         }
         d.optional = new List<People_Template_Task__c>();
-        for (People_Template_Task__c t : templates(ONBOARDING, true)) {
-            if (!used.contains(t.Id) && applies(t, d.employee.Role__c, d.employee.Work_Arrangement__c)) {
-                d.optional.add(t);
+        if (d.checklist != null) {
+            for (People_Template_Task__c t : templates(d.checklist.Type__c, true)) {
+                if (!used.contains(t.Id) && (isBranch || applies(t, d.employee.Role__c, d.employee.Work_Arrangement__c))) {
+                    d.optional.add(t);
+                }
             }
         }
-        d.canViewPersonal = canViewPersonal();
+        // What an offboarding has to hand over: unconverted Leads they own and active Transactions they are LO on.
+        if (d.employee?.User__c != null) {
+            Id u = d.employee.User__c;
+            d.openLeads = [SELECT COUNT() FROM Lead WHERE OwnerId = :u AND IsConverted = false];
+            d.openTransactions = [SELECT COUNT() FROM Transaction__c WHERE Loan_Officer__c = :u AND Status__c NOT IN ('Post-Closed', 'Cancelled', 'Lost')];
+        }
+        d.canViewPersonal = !isBranch && canViewPersonal();
         d.canSignOff = signers.contains(UserInfo.getUserId());
         d.attestation = ATTESTATION;
         return d;
+    }
+
+    static People_Checklist__c pickChecklist(List<People_Checklist__c> cls, Id checklistId) {
+        for (People_Checklist__c c : cls) {
+            if (c.Id == checklistId) {
+                return c;
+            }
+        }
+        for (String type : new List<String>{ ONBOARDING, OFFBOARDING, RENEWAL, BRANCH }) {
+            for (People_Checklist__c c : cls) {
+                if (c.Type__c == type && c.Status__c == 'Open') {
+                    return c;
+                }
+            }
+        }
+        return cls.isEmpty() ? null : cls[0];
     }
 
     @AuraEnabled
@@ -274,45 +339,143 @@ public with sharing class PeopleController {
             employee.Status__c = 'Candidate';
         }
         insert employee;
-        People_Checklist__c cl = new People_Checklist__c(
-            Name = (ONBOARDING + ' · ' + employee.Name).left(80), Employee__c = employee.Id, Type__c = ONBOARDING, Status__c = 'Open'
-        );
-        insert cl;
-        List<People_Task__c> tasks = new List<People_Task__c>();
-        for (People_Template_Task__c t : templates(ONBOARDING, false)) {
-            if (applies(t, employee.Role__c, employee.Work_Arrangement__c)) {
-                tasks.add(fromTemplate(t, cl.Id, employee.Start_Date__c));
-            }
-        }
-        insert tasks;
+        generate(ONBOARDING, employee, null, employee.Start_Date__c, null);
         PeopleUserSync.start();
         return employee.Id;
     }
 
-    // Returns how many open tasks now fall before today after a start-date move (the UI warns on > 0).
+    // Creates one checklist of the given type for an employee or a branch, with every matching active template task.
+    // Renewal tasks marked One Per Licensed State repeat once per state, with {STATE} in the subject replaced.
+    @TestVisible
+    static Id generate(String type, People_Employee__c emp, People_Branch__c br, Date anchor, Integer year) {
+        String who = emp != null ? emp.Name : br.Name;
+        People_Checklist__c cl = new People_Checklist__c(
+            Name = (type + (year == null ? '' : ' ' + year) + ' · ' + who).left(80), Type__c = type, Status__c = 'Open',
+            Employee__c = emp?.Id, Branch__c = br?.Id, Anchor_Date__c = anchor, Renewal_Year__c = year
+        );
+        insert cl;
+        List<People_Task__c> tasks = new List<People_Task__c>();
+        for (People_Template_Task__c t : templates(type, false)) {
+            if (emp != null && !applies(t, emp.Role__c, emp.Work_Arrangement__c)) {
+                continue;
+            }
+            if (!t.Per_State__c) {
+                tasks.add(fromTemplate(t, cl.Id, anchor));
+                continue;
+            }
+            for (String st : emp?.Licensed_States__c == null ? new List<String>() : emp.Licensed_States__c.split(';')) {
+                People_Task__c task = fromTemplate(t, cl.Id, anchor);
+                task.Name = t.Name.replace('{STATE}', st).left(80);
+                tasks.add(task);
+            }
+        }
+        insert tasks;
+        return cl.Id;
+    }
+
+    // Returns how many open tasks now fall before today after a start-date or last-day move (the UI warns on > 0).
     @AuraEnabled
     public static Integer saveEmployee(People_Employee__c employee) {
-        People_Employee__c old = [SELECT Start_Date__c FROM People_Employee__c WHERE Id = :employee.Id];
         employee.Name = fullName(employee);
         update employee;
         PeopleUserSync.start();
-        if (employee.Start_Date__c == null || employee.Start_Date__c == old.Start_Date__c) {
-            return 0;
+        Integer late = 0;
+        if (employee.Start_Date__c != null) {
+            late += moveAnchor(employee.Id, ONBOARDING, employee.Start_Date__c);
         }
-        List<People_Task__c> open = [
-            SELECT Id, Offset_Days__c, Offset_Unit__c FROM People_Task__c
-            WHERE Checklist__r.Employee__c = :employee.Id AND Checklist__r.Type__c = :ONBOARDING AND Checklist__r.Status__c = 'Open'
-                AND Status__c = 'Open' AND Offset_Days__c != null
+        if (employee.Termination_Date__c != null) {
+            late += moveAnchor(employee.Id, OFFBOARDING, employee.Termination_Date__c);
+        }
+        return late;
+    }
+
+    // Re-dates the open tasks of the record's open checklist of this type when its anchor date changed.
+    static Integer moveAnchor(Id recordId, String type, Date anchor) {
+        List<People_Checklist__c> cls = [
+            SELECT Id, Anchor_Date__c FROM People_Checklist__c
+            WHERE (Employee__c = :recordId OR Branch__c = :recordId) AND Type__c = :type AND Status__c = 'Open'
         ];
         Integer late = 0;
-        for (People_Task__c t : open) {
-            t.Due_Date__c = dueDate(employee.Start_Date__c, t.Offset_Days__c, t.Offset_Unit__c);
-            if (t.Due_Date__c < Date.today()) {
-                late++;
+        for (People_Checklist__c cl : cls) {
+            if (cl.Anchor_Date__c == anchor) {
+                continue;
+            }
+            List<People_Task__c> open = [
+                SELECT Id, Offset_Days__c, Offset_Unit__c FROM People_Task__c
+                WHERE Checklist__c = :cl.Id AND Status__c = 'Open' AND Offset_Days__c != null
+            ];
+            for (People_Task__c t : open) {
+                t.Due_Date__c = dueDate(anchor, t.Offset_Days__c, t.Offset_Unit__c);
+                if (t.Due_Date__c < Date.today()) {
+                    late++;
+                }
+            }
+            update open;
+            update new People_Checklist__c(Id = cl.Id, Anchor_Date__c = anchor);
+        }
+        return late;
+    }
+
+    // ---------- offboarding, renewals, branches (phase 3) ----------
+    @AuraEnabled
+    public static Id offboard(Id employeeId, Date lastDay, String reason) {
+        if (lastDay == null) {
+            throw new AuraHandledException('Last day is required.');
+        }
+        People_Employee__c e = [
+            SELECT Id, Name, Role__c, Work_Arrangement__c, Licensed_States__c, Status__c FROM People_Employee__c WHERE Id = :employeeId
+        ];
+        if (GONE.contains(e.Status__c)) {
+            throw new AuraHandledException(e.Name + ' is already ' + e.Status__c + '.');
+        }
+        if ([SELECT COUNT() FROM People_Checklist__c WHERE Employee__c = :employeeId AND Type__c = :OFFBOARDING AND Status__c = 'Open'] > 0) {
+            throw new AuraHandledException(e.Name + ' already has an open offboarding checklist.');
+        }
+        update new People_Employee__c(Id = e.Id, Status__c = 'Offboarding', Termination_Date__c = lastDay, Termination_Reason__c = reason);
+        return generate(OFFBOARDING, e, null, lastDay, null);
+    }
+
+    // Active and Pre-Start employees with no renewal checklist for the year yet.
+    static List<People_Employee__c> renewalTargets(Integer year) {
+        return [
+            SELECT Id, Name, Role__c, Work_Arrangement__c, Licensed_States__c FROM People_Employee__c
+            WHERE Status__c IN ('Active', 'Pre-Start')
+                AND Id NOT IN (SELECT Employee__c FROM People_Checklist__c WHERE Type__c = :RENEWAL AND Renewal_Year__c = :year AND Employee__c != null)
+            ORDER BY Name
+        ];
+    }
+
+    // Renewal due dates count from Dec 31 of the year (the NMLS renewal deadline). Safe to run twice: done employees are skipped.
+    // ponytail: two DML per employee; fine for a staff of dozens, bulkify past ~70 employees.
+    @AuraEnabled
+    public static Integer generateRenewals(Integer year) {
+        Integer n = 0;
+        for (People_Employee__c e : renewalTargets(year)) {
+            generate(RENEWAL, e, null, Date.newInstance(year, 12, 31), year);
+            n++;
+        }
+        return n;
+    }
+
+    // Insert or update a branch. Its branch checklist starts once it has a target open date, and later
+    // target-date moves re-date the open tasks.
+    @AuraEnabled
+    public static Id saveBranch(People_Branch__c rec) {
+        if (String.isBlank(rec.Name)) {
+            throw new AuraHandledException('Branch name is required.');
+        }
+        if (String.isBlank(rec.Status__c)) {
+            rec.Status__c = 'Planning';
+        }
+        upsert rec;
+        if (rec.Target_Open_Date__c != null) {
+            if ([SELECT COUNT() FROM People_Checklist__c WHERE Branch__c = :rec.Id AND Type__c = :BRANCH] == 0) {
+                generate(BRANCH, null, rec, rec.Target_Open_Date__c, null);
+            } else {
+                moveAnchor(rec.Id, BRANCH, rec.Target_Open_Date__c);
             }
         }
-        update open;
-        return late;
+        return rec.Id;
     }
 
     @AuraEnabled
@@ -360,25 +523,24 @@ public with sharing class PeopleController {
     }
 
     @AuraEnabled
-    public static void addOptionalTask(Id employeeId, Id templateId) {
-        Detail d = getEmployee(employeeId);
-        requireOpen(d.checklist?.Status__c);
-        for (People_Template_Task__c t : getTemplates(ONBOARDING)) {
+    public static void addOptionalTask(Id checklistId, Id templateId) {
+        People_Checklist__c cl = [SELECT Id, Type__c, Status__c, Anchor_Date__c FROM People_Checklist__c WHERE Id = :checklistId];
+        requireOpen(cl.Status__c);
+        for (People_Template_Task__c t : getTemplates(cl.Type__c)) {
             if (t.Id == templateId) {
-                insert fromTemplate(t, d.checklist.Id, d.employee.Start_Date__c);
+                insert fromTemplate(t, cl.Id, cl.Anchor_Date__c);
             }
         }
     }
 
     @AuraEnabled
-    public static void addCustomTask(Id employeeId, String subject, String phase, Date dueDate, Id assignedTo) {
+    public static void addCustomTask(Id checklistId, String subject, String phase, Date dueDate, Id assignedTo) {
         if (String.isBlank(subject)) {
             throw new AuraHandledException('Subject is required.');
         }
-        Detail d = getEmployee(employeeId);
-        requireOpen(d.checklist?.Status__c);
+        requireOpen([SELECT Status__c FROM People_Checklist__c WHERE Id = :checklistId].Status__c);
         insert new People_Task__c(
-            Name = subject.trim().left(80), Checklist__c = d.checklist.Id, Phase__c = phase, Due_Date__c = dueDate,
+            Name = subject.trim().left(80), Checklist__c = checklistId, Phase__c = phase, Due_Date__c = dueDate,
             Assigned_To__c = assignedTo, Status__c = 'Open', Sort_Order__c = 99999
         );
     }
@@ -409,8 +571,20 @@ public with sharing class PeopleController {
         EmailDraft d = new EmailDraft();
         d.to = t.Send_To__c != null && t.Send_To__c.contains('@') ? t.Send_To__c : t.Checklist__r.Employee__r.Personal_Email__c;
         d.subject = m.getSubject();
-        d.body = (m.getHtmlBody() != null ? m.getHtmlBody() : m.getPlainTextBody().escapeHtml4().replace('\n', '<br>')).replace('{{SEND_DATE_PLUS_2}}', due);
+        d.body = (m.getHtmlBody() != null ? m.getHtmlBody() : m.getPlainTextBody().escapeHtml4().replace('\n', '<br>')).replace('{{SEND_DATE_PLUS_2}}', due)
+            + signatureCard();
         return d;
+    }
+
+    // The sender's signature card (User.Email_Signature__c, built by UserTriggerHandler from EmailSignatureTemplate__mdt).
+    // A card still holding $$placeholders$$ (OverrideEmailSignature__c off) is not usable, so fall back to name + company.
+    @TestVisible
+    static String signatureCard() {
+        User u = [SELECT Name, Email_Signature__c FROM User WHERE Id = :UserInfo.getUserId()];
+        if (String.isNotBlank(u.Email_Signature__c) && !u.Email_Signature__c.contains('$$')) {
+            return '<br>' + u.Email_Signature__c;
+        }
+        return '<p>' + u.Name.escapeHtml4() + '<br>Reach Home Loans</p>';
     }
 
     // Sends as the clicking user (decision 32), then completes the task with the stamp and a note of who it went to.
@@ -449,28 +623,38 @@ public with sharing class PeopleController {
         if (!signers.contains(UserInfo.getUserId())) {
             throw new AuraHandledException('Only Bianca Rodrigues or Christopher Lowman can sign off.');
         }
-        People_Checklist__c c = [SELECT Id, Status__c, (SELECT Id FROM Tasks__r WHERE Status__c = 'Open') FROM People_Checklist__c WHERE Id = :checklistId];
+        People_Checklist__c c = [
+            SELECT Id, Status__c, Type__c, Employee__c, (SELECT Id FROM Tasks__r WHERE Status__c = 'Open') FROM People_Checklist__c WHERE Id = :checklistId
+        ];
         requireOpen(c.Status__c);
         if (!c.Tasks__r.isEmpty()) {
             throw new AuraHandledException(c.Tasks__r.size() + ' task(s) are still open.');
         }
         update new People_Checklist__c(Id = c.Id, Status__c = 'Signed Off', Signed_Off_By__c = UserInfo.getUserId(), Signed_Off_At__c = System.now());
+        // A signed-off offboarding is the end of employment (decision 42).
+        if (c.Type__c == OFFBOARDING && c.Employee__c != null) {
+            update new People_Employee__c(Id = c.Employee__c, Status__c = 'Terminated');
+        }
     }
 
     // Renders the exam PDF and files it on the employee. Separate call from signOff: rendering a page counts as a callout,
     // which cannot follow DML in the same transaction.
     @AuraEnabled
     public static Id saveExamPdf(Id checklistId) {
-        People_Checklist__c c = [SELECT Id, Status__c, Employee__c, Employee__r.Name FROM People_Checklist__c WHERE Id = :checklistId];
+        People_Checklist__c c = [
+            SELECT Id, Status__c, Type__c, Renewal_Year__c, Employee__c, Employee__r.Name, Branch__c, Branch__r.Name FROM People_Checklist__c WHERE Id = :checklistId
+        ];
         if (c.Status__c != 'Signed Off') {
             throw new AuraHandledException('Sign off first; the filed PDF is the signed record.');
         }
         PageReference p = Page.PeopleExamPdf;
         p.getParameters().put('id', checklistId);
         Blob pdf = Test.isRunningTest() ? Blob.valueOf('pdf') : p.getContentAsPDF();
+        String kind = c.Type__c + (c.Renewal_Year__c == null ? '' : ' ' + c.Renewal_Year__c.intValue());
         ContentVersion v = new ContentVersion(
-            Title = 'Onboarding checklist - ' + c.Employee__r.Name + ' - signed ' + Date.today().format(), PathOnClient = 'onboarding-checklist.pdf',
-            VersionData = pdf, FirstPublishLocationId = c.Employee__c
+            Title = kind + ' checklist - ' + (c.Employee__c != null ? c.Employee__r.Name : c.Branch__r.Name) + ' - signed ' + Date.today().format(),
+            PathOnClient = kind.toLowerCase().replace(' ', '-') + '-checklist.pdf', VersionData = pdf,
+            FirstPublishLocationId = c.Employee__c != null ? c.Employee__c : c.Branch__c
         );
         insert v;
         Id docId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :v.Id].ContentDocumentId;
@@ -512,7 +696,7 @@ public with sharing class PeopleController {
         return [
             SELECT Id, Name, Checklist_Type__c, Sort_Order__c, Phase__c, Description__c, Default_Assignee__c, Default_Assignee__r.Name, Led_By__c,
                 Offset_Days__c, Offset_Unit__c, Roles__c, Work_Arrangements__c, Optional__c, Email_Template__c, Via_DocuSign__c, Send_To__c,
-                Exam_Section__c, Sets_Status__c, Remind__c, Auto_Complete__c, Active__c
+                Exam_Section__c, Sets_Status__c, Remind__c, Auto_Complete__c, Per_State__c, Active__c
             FROM People_Template_Task__c WHERE Checklist_Type__c = :checklistType ORDER BY Sort_Order__c, Name
         ];
     }

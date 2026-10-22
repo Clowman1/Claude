@@ -21,6 +21,10 @@ public with sharing class PeopleDaily implements Schedulable {
         }
         update starting;
         PeopleUserSync.start();
+        // Renewal checklists for the year open every Oct 15 (decision 18); generateRenewals skips anyone who already has one.
+        if (today.month() == 10 && today.day() == 15) {
+            PeopleController.generateRenewals(today.year());
+        }
         sendReminders(today);
 
         String dow = Datetime.newInstanceGmt(today, Time.newInstance(12, 0, 0, 0)).formatGmt('E');

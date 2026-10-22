@@ -4,6 +4,8 @@ public with sharing class PeopleExamPdfController {
 
     public People_Checklist__c checklist { get; private set; }
     public People_Employee__c employee { get; private set; }
+    public People_Branch__c branch { get; private set; }
+    public String title { get; private set; }
     public List<Section> sections { get; private set; }
     public String attestation { get { return PeopleController.ATTESTATION; } }
     public String signedAt { get; private set; }
@@ -24,14 +26,23 @@ public with sharing class PeopleExamPdfController {
     public PeopleExamPdfController() {
         Id checklistId = ApexPages.currentPage().getParameters().get('id');
         checklist = [
-            SELECT Id, Name, Status__c, Employee__c, Signed_Off_By__r.Name, Signed_Off_At__c,
+            SELECT Id, Name, Status__c, Type__c, Renewal_Year__c, Employee__c, Branch__c, Signed_Off_By__r.Name, Signed_Off_At__c,
                 (SELECT Name, Status__c, Exam_Section__c, Completed_By__r.Name, Completed_At__c FROM Tasks__r ORDER BY Sort_Order__c, Due_Date__c)
             FROM People_Checklist__c WHERE Id = :checklistId
         ];
-        employee = [
-            SELECT Name, Role__c, Start_Date__c, NMLS_ID__c, Manager__r.Name, Branch__r.Name, Licensed_States__c
-            FROM People_Employee__c WHERE Id = :checklist.Employee__c
-        ];
+        if (checklist.Employee__c != null) {
+            employee = [
+                SELECT Name, Role__c, Start_Date__c, Termination_Date__c, NMLS_ID__c, Manager__r.Name, Branch__r.Name, Licensed_States__c
+                FROM People_Employee__c WHERE Id = :checklist.Employee__c
+            ];
+        } else {
+            branch = [SELECT Name, State__c, Branch_NMLS_ID__c, Branch_Manager__r.Name, Target_Open_Date__c FROM People_Branch__c WHERE Id = :checklist.Branch__c];
+        }
+        Map<String, String> titles = new Map<String, String>{
+            'Onboarding' => 'New Hire Onboarding and Training Checklist', 'Renewal' => 'Annual License Renewal and Compliance Checklist',
+            'Offboarding' => 'Employee Offboarding Checklist', 'Branch' => 'New Branch Onboarding Checklist'
+        };
+        title = titles.get(checklist.Type__c) + (checklist.Renewal_Year__c == null ? '' : ' (' + checklist.Renewal_Year__c.intValue() + ')');
         signedAt = checklist.Signed_Off_At__c == null ? null : checklist.Signed_Off_At__c.format('MMMM d, yyyy h:mm a', 'America/New_York') + ' ET';
         printedAt = System.now().format('MMMM d, yyyy h:mm a', 'America/New_York') + ' ET';
         Map<String, Section> byName = new Map<String, Section>();

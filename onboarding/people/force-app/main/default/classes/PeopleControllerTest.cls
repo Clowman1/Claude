@@ -52,8 +52,8 @@ private class PeopleControllerTest {
         System.assertEquals(1, d.optional.size());
         System.assertEquals(PeopleController.addBusinessDays(start, -14), d.tasks[0].Due_Date__c);
 
-        PeopleController.addOptionalTask(lo, d.optional[0].Id);
-        PeopleController.addCustomTask(lo, 'Order nameplate', 'Day 1', start, UserInfo.getUserId());
+        PeopleController.addOptionalTask(d.checklist.Id, d.optional[0].Id);
+        PeopleController.addCustomTask(d.checklist.Id, 'Order nameplate', 'Day 1', start, UserInfo.getUserId());
         d = PeopleController.getEmployee(lo);
         System.assertEquals(6, d.tasks.size());
         System.assertEquals(0, d.optional.size());
@@ -110,13 +110,13 @@ private class PeopleControllerTest {
     static void boardDigestAndWithdraw() {
         Id emp = PeopleController.createEmployee(hire('Processor', 'In-Office', Date.today().addDays(5)));
         PeopleController.Board b = PeopleController.getBoard();
-        System.assertEquals(1, b.employees.size());
-        System.assertEquals(2, b.employees[0].total);
-        System.assertEquals(2, b.employees[0].overdue, 'both tasks are due 13-14 business days before a start 5 days out');
+        System.assertEquals(1, b.cards.size());
+        System.assertEquals(2, b.cards[0].total);
+        System.assertEquals(2, b.cards[0].overdue, 'both tasks are due 13-14 business days before a start 5 days out');
         System.assertEquals(2, b.digest.size());
 
         PeopleController.withdraw(emp);
-        System.assertEquals(0, PeopleController.getBoard().employees.size());
+        System.assertEquals(0, PeopleController.getBoard().cards.size());
         System.assertEquals(0, [SELECT COUNT() FROM People_Task__c WHERE Status__c = 'Open']);
         try {
             PeopleController.setTaskStatus([SELECT Id FROM People_Task__c LIMIT 1].Id, 'Open');

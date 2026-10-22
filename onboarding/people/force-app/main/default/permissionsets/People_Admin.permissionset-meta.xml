@@ -75,6 +75,11 @@
     <fieldPermissions><editable>false</editable><field>People_Checklist__c.Signed_Off_By__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>People_Checklist__c.Signed_Off_At__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>People_Checklist__c.Exam_PDF_Id__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Template_Task__c.Per_State__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Termination_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Employee__c.Termination_Reason__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Checklist__c.Anchor_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>People_Checklist__c.Renewal_Year__c</field><readable>true</readable></fieldPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Branch__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Employee__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
     <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>People_Template_Task__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>

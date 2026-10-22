@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Per_State__c</fullName>
+    <label>One Per Licensed State</label>
+    <inlineHelpText>Renewals: one task per state in the employee's Licensed States; {STATE} in the subject becomes the state code.</inlineHelpText>
+    <type>Checkbox</type><defaultValue>false</defaultValue><trackHistory>true</trackHistory>
+</CustomField>

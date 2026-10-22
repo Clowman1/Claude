@@ -17,15 +17,24 @@
 </style>
 </head>
 <body>
-    <h1>Reach Home Loans: New Hire Onboarding and Training Checklist</h1>
+    <h1>Reach Home Loans: {!title}</h1>
     <div class="sub">NMLS# 2266637 · Printed {!printedAt}</div>
 
+    <apex:outputPanel rendered="{!employee != null}">
     <table class="info">
         <tr><td class="k">Employee</td><td>{!employee.Name}</td><td class="k">NMLS ID</td><td>{!employee.NMLS_ID__c}</td></tr>
         <tr><td class="k">Title / Role</td><td>{!employee.Role__c}</td><td class="k">Start date</td><td><apex:outputText value="{0,date,MM/dd/yyyy}"><apex:param value="{!employee.Start_Date__c}"/></apex:outputText></td></tr>
         <tr><td class="k">Manager</td><td>{!employee.Manager__r.Name}</td><td class="k">Branch</td><td>{!employee.Branch__r.Name}</td></tr>
         <tr><td class="k">Licensed states</td><td colspan="3">{!SUBSTITUTE(employee.Licensed_States__c, ';', ', ')}</td></tr>
     </table>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!branch != null}">
+    <table class="info">
+        <tr><td class="k">Branch</td><td>{!branch.Name}</td><td class="k">Branch NMLS ID</td><td>{!branch.Branch_NMLS_ID__c}</td></tr>
+        <tr><td class="k">State</td><td>{!branch.State__c}</td><td class="k">Target open</td><td><apex:outputText value="{0,date,MM/dd/yyyy}"><apex:param value="{!branch.Target_Open_Date__c}"/></apex:outputText></td></tr>
+        <tr><td class="k">Branch manager</td><td colspan="3">{!branch.Branch_Manager__r.Name}</td></tr>
+    </table>
+    </apex:outputPanel>
 
     <apex:repeat value="{!sections}" var="s">
         <h2>{!s.name}</h2>

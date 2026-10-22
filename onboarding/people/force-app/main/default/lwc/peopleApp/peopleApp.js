@@ -3,7 +3,10 @@ import { LightningElement } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import USER_ID from '@salesforce/user/Id';
 import getBoard from '@salesforce/apex/PeopleController.getBoard';
-import getEmployee from '@salesforce/apex/PeopleController.getEmployee';
+import getDetail from '@salesforce/apex/PeopleController.getDetail';
+import offboard from '@salesforce/apex/PeopleController.offboard';
+import generateRenewals from '@salesforce/apex/PeopleController.generateRenewals';
+import saveBranch from '@salesforce/apex/PeopleController.saveBranch';
 import previewChecklist from '@salesforce/apex/PeopleController.previewChecklist';
 import createEmployee from '@salesforce/apex/PeopleController.createEmployee';
 import saveEmployee from '@salesforce/apex/PeopleController.saveEmployee';
@@ -25,7 +28,14 @@ import saveExamPdf from '@salesforce/apex/PeopleController.saveExamPdf';
 
 const ROLES = ['Loan Officer', 'Branch Manager', 'Processor', 'Closer', 'Opener', 'Operations/Admin', 'Manager'];
 const ARRANGEMENTS = ['In-Office', 'Remote', 'Hybrid'];
-const PHASES = ['Pre-Start', 'Day 1', 'Week 1', '30 Days', '60 Days', '90 Days'];
+const PHASES_BY_TYPE = {
+    Onboarding: ['Pre-Start', 'Day 1', 'Week 1', '30 Days', '60 Days', '90 Days'],
+    Offboarding: ['Before Last Day', 'Last Day', 'After Last Day'],
+    Renewal: ['Renewal'],
+    Branch: ['Approval', 'Licensing', 'Setup', 'Launch']
+};
+const TYPES = ['Onboarding', 'Renewal', 'Offboarding', 'Branch'];
+const PHASES = [].concat(...Object.values(PHASES_BY_TYPE));
 const STATES = 'AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA PR RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ');
 const EXAM = ['Regulatory', 'Systems', 'Documentation'];
 const AVATARS = ['av-blue', 'av-clay', 'av-indigo', 'av-green', 'av-pink'];
@@ -48,7 +58,7 @@ function errText(e) {
 
 export default class PeopleApp extends LightningElement {
     view = 'board';
-    tab = 'onboarding';
+    tab = 'Onboarding';
     board;
     detail;
     templates = [];
@@ -66,11 +76,16 @@ export default class PeopleApp extends LightningElement {
     dragId;
     emailDraft;
     busy = false;
+    templateType = 'Onboarding';
+    offboardForm;
+    branchForm;
 
     roleOptions = opts(ROLES);
     arrangementOptions = opts(ARRANGEMENTS);
     phaseOptions = opts(PHASES);
     stateOptions = opts(STATES);
+    reasonOptions = opts(['Resigned', 'Terminated', 'Other']);
+    branchStatusOptions = opts(['Planning', 'Licensing', 'Open', 'Closed']);
     examOptions = [{ label: 'None', value: '' }].concat(opts(EXAM));
     setsStatusOptions = [{ label: 'None', value: '' }, { label: 'Pre-Start', value: 'Pre-Start' }];
     unitOptions = opts(['Business Days', 'Calendar Days']);
@@ -96,28 +111,57 @@ export default class PeopleApp extends LightningElement {
     }
     get isBoard() { return this.view === 'board'; }
     get isEmployee() { return this.view === 'employee'; }
+    get isBranchView() { return this.isEmployee && this.detail && !!this.detail.branch; }
+    get isPersonView() { return this.isEmployee && this.detail && !!this.detail.employee; }
     get isTemplates() { return this.view === 'templates'; }
     get today() { return this.board ? this.board.today : new Date().toISOString().slice(0, 10); }
 
+    countOf(type) { return this.board ? this.board.cards.filter((c) => c.type === type).length : 0; }
     get tabs() {
-        const n = this.board ? this.board.employees.length : 0;
         const b = this.board ? this.board.branches.length : 0;
-        return [['onboarding', `Onboarding · ${n}`], ['renewals', 'Renewals'], ['offboarding', 'Offboarding'], ['branches', `Branches · ${b}`]]
+        const s = this.board ? this.board.staff.length : 0;
+        return [['Onboarding', `Onboarding · ${this.countOf('Onboarding')}`], ['Renewal', `Renewals · ${this.countOf('Renewal')}`],
+            ['Offboarding', `Offboarding · ${this.countOf('Offboarding')}`], ['Branch', `Branches · ${b}`], ['Staff', `Staff · ${s}`]]
             .map(([value, label]) => ({ value, label, pressed: String(this.tab === value), cls: 'seg' + (this.tab === value ? ' seg-on' : '') }));
     }
     pickTab(e) { this.tab = e.currentTarget.dataset.value; }
-    get showOnboarding() { return this.tab === 'onboarding'; }
-    get showBranches() { return this.tab === 'branches'; }
-    get showEmptyTab() { return this.tab === 'renewals' || this.tab === 'offboarding'; }
-    get emptyTabText() {
-        return this.tab === 'renewals'
-            ? 'Annual renewal checklists (one task per licensed state, NMLS CE, BSA/AML refresher, handbook re-acknowledgment) arrive in Phase 3, after the current-staff load.'
-            : 'Offboarding checklists arrive in Phase 3 with the Offboard button on each employee.';
+    get showCards() { return ['Onboarding', 'Renewal', 'Offboarding'].includes(this.tab); }
+    get showBranches() { return this.tab === 'Branch'; }
+    get showStaff() { return this.tab === 'Staff'; }
+    get isRenewalTab() { return this.tab === 'Renewal'; }
+    get isOnboardingTab() { return this.tab === 'Onboarding'; }
+    get canGenerateRenewals() { return this.isRenewalTab && this.board && this.board.renewalEligible > 0; }
+    get renewalButtonLabel() { return this.board ? `Open ${this.board.renewalYear} renewals (${this.board.renewalEligible})` : ''; }
+    get emptyCardsText() {
+        if (this.tab === 'Renewal') {
+            return 'No open renewal checklists. Renewals open every October 15 for Active employees (one task per licensed state, plus NMLS CE, BSA/AML and handbook).';
+        }
+        if (this.tab === 'Offboarding') return 'No one is offboarding. Open an employee from Staff and use Offboard.';
+        return 'No one is onboarding. Use New Employee to start a checklist.';
+    }
+    openRenewals() {
+        this.busy = true;
+        generateRenewals({ year: this.board.renewalYear }).then((n) => {
+            this.busy = false;
+            this.toast(`${n} renewal checklist${n === 1 ? '' : 's'} opened`);
+            return this.loadBoard();
+        }).catch((e) => { this.busy = false; this.fail(e); });
+    }
+
+    get staffRows() {
+        if (!this.board) return [];
+        return this.board.staff.map((e) => ({
+            ...e,
+            statusCls: statusClass(e.Status__c),
+            start: e.Start_Date__c ? fmt(e.Start_Date__c) + ', ' + e.Start_Date__c.slice(0, 4) : '—',
+            states: e.Licensed_States__c ? e.Licensed_States__c.split(';').join(', ') : '—',
+            manager: e.Manager__r ? e.Manager__r.Name : '—'
+        }));
     }
 
     get cards() {
         if (!this.board) return [];
-        return this.board.employees.map((c, i) => {
+        return this.board.cards.filter((c) => c.type === this.tab).map((c, i) => {
             const pct = c.total ? Math.round((c.done * 100) / c.total) : 0;
             const started = c.startDate && c.startDate <= this.today;
             return {
@@ -126,7 +170,9 @@ export default class PeopleApp extends LightningElement {
                 avatarCls: 'avatar ' + AVATARS[i % AVATARS.length],
                 statusCls: statusClass(c.status),
                 meta: [c.role, c.arrangement].filter(Boolean).join(' · '),
-                startLabel: c.startDate ? (started ? 'Started ' : 'Starts ') + fmt(c.startDate, !started) : 'No start date',
+                startLabel: c.type === 'Renewal' ? `${c.year} renewal · due by ${fmt(c.anchorDate, true)}`
+                    : c.type === 'Offboarding' ? 'Last day ' + fmt(c.anchorDate, true)
+                    : c.startDate ? (started ? 'Started ' : 'Starts ') + fmt(c.startDate, !started) : 'No start date',
                 dash: `${pct} 100`,
                 pctLabel: pct + '%',
                 doneLabel: `${c.done} of ${c.total} tasks done`,
@@ -140,8 +186,12 @@ export default class PeopleApp extends LightningElement {
 
     get branchCards() {
         if (!this.board) return [];
+        const progress = {};
+        this.board.cards.filter((c) => c.type === 'Branch').forEach((c) => { progress[c.id] = c; });
         return this.board.branches.map((b) => ({
             ...b,
+            progress: progress[b.Id] ? `${progress[b.Id].done} of ${progress[b.Id].total} branch tasks done` + (progress[b.Id].overdue ? ` · ${progress[b.Id].overdue} overdue` : '')
+                : 'Add a target open date to start the branch checklist',
             code: b.State__c || initials(b.Name),
             statusCls: statusClass(b.Status__c),
             meta: `Branch Manager: ${b.Branch_Manager__r ? b.Branch_Manager__r.Name : 'TBD'} · Target open: ${b.Target_Open_Date__c ? fmt(b.Target_Open_Date__c, true) : 'TBD'}`,
@@ -160,22 +210,25 @@ export default class PeopleApp extends LightningElement {
     }
     get digestEmpty() { return this.board && this.board.digest.length === 0; }
 
-    openCard(e) { this.openEmployee(e.currentTarget.dataset.id); }
+    openCard(e) { this.openRecord(e.currentTarget.dataset.id, e.currentTarget.dataset.checklist); }
 
     // ---------- employee ----------
-    openEmployee(id) {
+    openEmployee(id) { return this.openRecord(id); }
+    openRecord(id, checklistId) {
         this.loading = true;
         this.personal = undefined;
         this.editTaskId = undefined;
         this.taskFilter = 'all';
-        return getEmployee({ employeeId: id }).then((d) => {
+        return getDetail({ recordId: id, checklistId: checklistId || null }).then((d) => {
             this.detail = d;
             this.view = 'employee';
             this.loading = false;
         }).catch((e) => this.fail(e));
     }
     reloadEmployee() {
-        return getEmployee({ employeeId: this.detail.employee.Id }).then((d) => { this.detail = d; }).catch((e) => this.fail(e));
+        const id = this.detail.employee ? this.detail.employee.Id : this.detail.branch.Id;
+        return getDetail({ recordId: id, checklistId: this.detail.checklist ? this.detail.checklist.Id : null })
+            .then((d) => { this.detail = d; }).catch((e) => this.fail(e));
     }
     backToBoard() {
         this.view = 'board';
@@ -183,18 +236,53 @@ export default class PeopleApp extends LightningElement {
         this.loadBoard();
     }
 
-    get emp() { return this.detail ? this.detail.employee : {}; }
+    get emp() { return (this.detail && (this.detail.employee || this.detail.branch)) || {}; }
+    get checklistTabs() {
+        if (!this.detail || this.detail.checklists.length < 2) return [];
+        return this.detail.checklists.map((c) => {
+            const on = this.detail.checklist && this.detail.checklist.Id === c.Id;
+            const label = c.Type__c + (c.Renewal_Year__c ? ' ' + c.Renewal_Year__c : '') + (c.Status__c === 'Open' ? '' : ' · ' + c.Status__c);
+            return { value: c.Id, label, pressed: String(on), cls: 'seg' + (on ? ' seg-on' : '') };
+        });
+    }
+    get hasChecklistTabs() { return this.checklistTabs.length > 0; }
+    pickChecklist(e) { this.openRecord(this.emp.Id, e.currentTarget.dataset.value); }
+    get checklistType() { return this.detail && this.detail.checklist ? this.detail.checklist.Type__c : 'Onboarding'; }
+    get noChecklist() { return !this.hasChecklist; }
+    get hasChecklist() { return !!(this.detail && this.detail.checklist); }
+    get isOffboarding() { return this.checklistType === 'Offboarding'; }
+    get handover() {
+        const d = this.detail;
+        if (!d || !this.isOffboarding || d.openLeads == null) return null;
+        return `To hand over: ${d.openLeads} open Lead${d.openLeads === 1 ? '' : 's'} owned and ${d.openTransactions} active Transaction${d.openTransactions === 1 ? '' : 's'} as Loan Officer.`;
+    }
+    get canOffboard() {
+        const d = this.detail;
+        return d && d.employee && !['Terminated', 'Withdrawn', 'Offboarding'].includes(d.employee.Status__c);
+    }
+    get canWithdraw() { return this.unlocked && this.checklistType === 'Onboarding'; }
     get locked() { return !this.detail || !this.detail.checklist || this.detail.checklist.Status__c !== 'Open'; }
     get unlocked() { return !this.locked; }
     get empInitials() { return initials(this.emp.Name); }
     get empStatusCls() { return statusClass(this.emp.Status__c); }
     get empMeta() {
         const e = this.emp;
+        if (this.detail && this.detail.branch) {
+            return [e.State__c, e.Target_Open_Date__c ? 'Target open ' + fmt(e.Target_Open_Date__c, true) : 'No target open date'].filter(Boolean).join(' · ');
+        }
         const started = e.Start_Date__c && e.Start_Date__c <= this.today;
         return [e.Role__c, e.Work_Arrangement__c, e.Start_Date__c ? (started ? 'Started ' : 'Starts ') + fmt(e.Start_Date__c, true) : null].filter(Boolean).join(' · ');
     }
     get facts() {
         const e = this.emp;
+        if (this.detail && this.detail.branch) {
+            return [
+                ['Branch manager', e.Branch_Manager__r ? e.Branch_Manager__r.Name : '—'],
+                ['Branch NMLS ID', e.Branch_NMLS_ID__c || '—'],
+                ['Address', e.Address__c || '—'],
+                ['Employees', e.Employees__r && e.Employees__r.length ? e.Employees__r.map((x) => x.Name).join(', ') : 'None linked yet']
+            ].map(([label, value]) => ({ label, value }));
+        }
         return [
             ['Manager', e.Manager__r ? e.Manager__r.Name : '—'],
             ['Branch', e.Branch__r ? e.Branch__r.Name : '—'],
@@ -202,7 +290,8 @@ export default class PeopleApp extends LightningElement {
             ['Licensed states', e.Licensed_States__c ? e.Licensed_States__c.split(';').join(', ') : '—'],
             ['Work email', e.Work_Email__c || '—'],
             ['Personal email', e.Personal_Email__c || '—'],
-            ['Salesforce user', e.User__r ? e.User__r.Name : 'Not linked yet']
+            ['Salesforce user', e.User__r ? e.User__r.Name : 'Not linked yet'],
+            ['Last day', e.Termination_Date__c ? fmt(e.Termination_Date__c, true) + (e.Termination_Reason__c ? ' · ' + e.Termination_Reason__c : '') : '—']
         ].map(([label, value]) => ({ label, value }));
     }
     get progress() {
@@ -225,7 +314,8 @@ export default class PeopleApp extends LightningElement {
         const shown = this.detail.tasks.filter((t) => this.taskFilter === 'all'
             || (this.taskFilter === 'mine' && t.Assigned_To__c === USER_ID)
             || (this.taskFilter === 'open' && t.Status__c === 'Open'));
-        const names = PHASES.concat(this.detail.tasks.map((t) => t.Phase__c || 'Other').filter((p) => !PHASES.includes(p)));
+        const order = PHASES_BY_TYPE[this.checklistType] || PHASES;
+        const names = order.concat(this.detail.tasks.map((t) => t.Phase__c || 'Other').filter((p) => !order.includes(p)));
         return [...new Set(names)].map((name) => {
             const all = this.detail.tasks.filter((t) => (t.Phase__c || 'Other') === name);
             const vis = shown.filter((t) => (t.Phase__c || 'Other') === name);
@@ -286,12 +376,12 @@ export default class PeopleApp extends LightningElement {
     get optional() { return this.detail ? this.detail.optional : []; }
     get hasOptional() { return !this.locked && this.optional.length > 0; }
     addOptional(e) {
-        this.runAndReload(addOptionalTask({ employeeId: this.emp.Id, templateId: e.currentTarget.dataset.id }));
+        this.runAndReload(addOptionalTask({ checklistId: this.detail.checklist.Id, templateId: e.currentTarget.dataset.id }));
     }
     draftNewTask(e) { this.newTask = { ...this.newTask, [e.target.dataset.field]: e.detail.value }; }
     addTask() {
         const t = this.newTask;
-        this.runAndReload(addCustomTask({ employeeId: this.emp.Id, subject: t.subject, phase: t.phase, dueDate: t.due || null, assignedTo: t.assignedTo || null }))
+        this.runAndReload(addCustomTask({ checklistId: this.detail.checklist.Id, subject: t.subject, phase: t.phase, dueDate: t.due || null, assignedTo: t.assignedTo || null }))
             .then(() => { this.newTask = { subject: '', phase: t.phase, due: null, assignedTo: t.assignedTo }; });
     }
 
@@ -356,6 +446,48 @@ export default class PeopleApp extends LightningElement {
 
     // ---------- personal (encrypted) ----------
     get canViewPersonal() { return this.detail && this.detail.canViewPersonal; }
+    get checklistPhaseOptions() { return opts(PHASES_BY_TYPE[this.checklistType] || PHASES); }
+
+    // ---------- offboarding ----------
+    openOffboard() { this.offboardForm = { lastDay: null, reason: 'Resigned' }; }
+    closeOffboard() { this.offboardForm = undefined; }
+    get showOffboardModal() { return !!this.offboardForm; }
+    draftOffboard(e) { this.offboardForm = { ...this.offboardForm, [e.target.dataset.field]: e.detail.value }; }
+    startOffboarding() {
+        const f = this.offboardForm;
+        this.busy = true;
+        offboard({ employeeId: this.emp.Id, lastDay: f.lastDay || null, reason: f.reason }).then((checklistId) => {
+            this.busy = false;
+            this.offboardForm = undefined;
+            this.toast('Offboarding started', 'success', 'Tasks are dated from the last day.');
+            return this.openRecord(this.emp.Id, checklistId);
+        }).catch((er) => { this.busy = false; this.fail(er); });
+    }
+
+    // ---------- branches ----------
+    openNewBranch() { this.branchForm = { Status__c: 'Planning' }; }
+    openEditBranch() {
+        const b = this.detail.branch;
+        this.branchForm = { Id: b.Id, Name: b.Name, State__c: b.State__c, Address__c: b.Address__c, Branch_NMLS_ID__c: b.Branch_NMLS_ID__c,
+            Branch_Manager__c: b.Branch_Manager__c, Target_Open_Date__c: b.Target_Open_Date__c, Status__c: b.Status__c };
+    }
+    closeBranch() { this.branchForm = undefined; }
+    get showBranchModal() { return !!this.branchForm; }
+    get branchModalTitle() { return this.branchForm && this.branchForm.Id ? 'Edit ' + this.branchForm.Name : 'New Branch'; }
+    draftBranch(e) { this.branchForm = { ...this.branchForm, [e.target.dataset.field]: e.detail.value }; }
+    pickBranchManager(e) { this.branchForm = { ...this.branchForm, Branch_Manager__c: e.detail.recordId || null }; }
+    saveBranchForm() {
+        const rec = { ...this.branchForm };
+        Object.keys(rec).forEach((k) => { if (rec[k] === '') rec[k] = null; });
+        this.busy = true;
+        saveBranch({ rec }).then((id) => {
+            this.busy = false;
+            this.branchForm = undefined;
+            this.toast('Branch saved', 'success', rec.Target_Open_Date__c ? 'Branch checklist dated from the target open date.' : 'Add a target open date to start its checklist.');
+            return this.openRecord(id);
+        }).catch((er) => { this.busy = false; this.fail(er); });
+    }
+    editDetails() { if (this.detail.branch) this.openEditBranch(); else this.openEdit(); }
     get personalShown() { return !!this.personal; }
     revealPersonal() {
         getPersonal({ employeeId: this.emp.Id }).then((p) => { this.personal = { ...p }; }).catch((e) => this.fail(e));
@@ -392,7 +524,8 @@ export default class PeopleApp extends LightningElement {
         this.form = {
             Id: e.Id, First_Name__c: e.First_Name__c, Last_Name__c: e.Last_Name__c, Role__c: e.Role__c, Work_Arrangement__c: e.Work_Arrangement__c,
             Status__c: e.Status__c, Start_Date__c: e.Start_Date__c, Manager__c: e.Manager__c, Branch__c: e.Branch__c || '', Work_Email__c: e.Work_Email__c,
-            Personal_Email__c: e.Personal_Email__c, NMLS_ID__c: e.NMLS_ID__c, Licensed_States__c: e.Licensed_States__c
+            Personal_Email__c: e.Personal_Email__c, NMLS_ID__c: e.NMLS_ID__c, Licensed_States__c: e.Licensed_States__c,
+            Termination_Date__c: e.Termination_Date__c, Termination_Reason__c: e.Termination_Reason__c
         };
         this.employeeModal = 'edit';
     }
@@ -440,14 +573,14 @@ export default class PeopleApp extends LightningElement {
     }
     loadTemplates() {
         this.loading = true;
-        return getTemplates({ checklistType: 'Onboarding' }).then((t) => { this.templates = t; this.loading = false; }).catch((e) => this.fail(e));
+        return getTemplates({ checklistType: this.templateType }).then((t) => { this.templates = t; this.loading = false; }).catch((e) => this.fail(e));
     }
     get templateRows() {
         return this.templates.map((t, i) => ({
             ...t,
             num: i + 1,
             rowCls: 'tpl-row' + (t.Active__c ? '' : ' tpl-inactive') + (this.dragId === t.Id ? ' tpl-drag' : ''),
-            offsetLabel: t.Offset_Days__c == null ? 'No due date' : t.Offset_Days__c === 0 ? 'Start day'
+            offsetLabel: t.Offset_Days__c == null ? 'No due date' : t.Offset_Days__c === 0 ? 'Same day as ' + this.anchorHelp
                 : (t.Offset_Days__c > 0 ? '+' : '') + t.Offset_Days__c + (t.Offset_Unit__c === 'Calendar Days' ? ' days' : ' bd'),
             roles: t.Roles__c ? t.Roles__c.split(';').join(', ') : 'All roles',
             arrangements: t.Work_Arrangements__c ? t.Work_Arrangements__c.split(';').join(', ') : 'All arrangements',
@@ -456,6 +589,15 @@ export default class PeopleApp extends LightningElement {
                 t.Remind__c ? 'Email reminder' : null, t.Auto_Complete__c ? 'Auto: ' + t.Auto_Complete__c : null]
                 .filter(Boolean).join(' · ')
         }));
+    }
+    get templateTypes() {
+        return TYPES.map((value) => ({ value, label: value, pressed: String(this.templateType === value), cls: 'seg' + (this.templateType === value ? ' seg-on' : '') }));
+    }
+    pickTemplateType(e) { this.templateType = e.currentTarget.dataset.value; this.loadTemplates(); }
+    get templatePhaseOptions() { return opts(PHASES_BY_TYPE[this.templateDraft ? this.templateDraft.Checklist_Type__c : this.templateType]); }
+    get isRenewalTemplate() { return this.templateDraft && this.templateDraft.Checklist_Type__c === 'Renewal'; }
+    get anchorHelp() {
+        return { Onboarding: 'start date', Offboarding: 'last day', Renewal: 'Dec 31 of the renewal year', Branch: 'target open date' }[this.templateType];
     }
     get templateCount() { return `${this.templates.filter((t) => t.Active__c).length} active tasks`; }
 
@@ -495,8 +637,9 @@ export default class PeopleApp extends LightningElement {
     get draftArrangements() { return this.templateDraft.Work_Arrangements__c ? this.templateDraft.Work_Arrangements__c.split(';') : []; }
     get assigneeOptions() { return [{ label: 'Unassigned', value: '' }].concat(this.assignees); }
     newTemplate() {
-        this.templateDraft = { Checklist_Type__c: 'Onboarding', Phase__c: 'Pre-Start', Active__c: true, Optional__c: false, Via_DocuSign__c: false,
-            Remind__c: false, Offset_Unit__c: 'Business Days', Default_Assignee__c: USER_ID };
+        this.templateDraft = { Checklist_Type__c: this.templateType, Phase__c: PHASES_BY_TYPE[this.templateType][0], Active__c: true, Optional__c: false,
+            Via_DocuSign__c: false, Remind__c: false, Per_State__c: false, Default_Assignee__c: USER_ID,
+            Offset_Unit__c: this.templateType === 'Renewal' ? 'Calendar Days' : 'Business Days' };
     }
     editTemplate(e) {
         const t = this.templates.find((x) => x.Id === e.currentTarget.dataset.id);

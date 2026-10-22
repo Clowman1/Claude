@@ -66,6 +66,15 @@ There are no files. Documents stay in OneDrive. There is no SSN field.
 2. Load current active staff (list reviewed first), then generate the 2026 renewals. Renewals generate every year on Oct 15: one task per licensed state + NMLS CE + BSA/AML + handbook re-acknowledgment.
 3. Offboard button: xlsx offboarding items + deactivate the SF user, reassign Leads/Transactions, RingCentral/ARIVE/UWM removal, termination notice, KB Tech Outlook shutdown.
 
+**P3 status (2026-10-22): live.**
+- Board tabs: Onboarding / Renewals / Offboarding / Branches / Staff.
+- Each employee or branch page switches between its checklists.
+- **Offboard** button (last day + reason) → Offboarding status, with open Lead/Transaction counts to hand over. Sign-off → Terminated.
+- **Renewals:** anchored to Dec 31, one task per licensed state for NMLS submit and approve, plus CE, BSA/AML and handbook. They open every Oct 15 (`PeopleDaily`), or with the "Open 2026 renewals" button.
+- **Branches:** New Branch / Edit details; the checklist starts once a target open date is set, and later date moves re-date it.
+- Templates seeded by `people/scripts/phase3-templates.apex`: Renewal 6, Offboarding 13, Branch 31.
+- **Staff load:** `staff-load/proposed-staff.csv` (23 people, roles guessed from titles) is waiting on Chris's review; `staff-load/load-staff.mjs` loads it, then opens the 2026 renewals.
+
 **P4 (to outline after P3): employee management.** Run every current employee through People: renewal and licensing completion tracking, general HR information and more. Chris asked for this on 2026-10-22; grill it before building.
 
 ## Later / not now

@@ -28,19 +28,30 @@
                     </template>
                 </div>
                 <div class="grow"></div>
-                <button class="btn btn-primary" onclick={openNew}>
-                    <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
-                    New Employee
-                </button>
+                <template lwc:if={isOnboardingTab}>
+                    <button class="btn btn-primary" onclick={openNew}>
+                        <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
+                        New Employee
+                    </button>
+                </template>
+                <template lwc:if={canGenerateRenewals}>
+                    <button class="btn btn-primary" disabled={busy} onclick={openRenewals}>{renewalButtonLabel}</button>
+                </template>
+                <template lwc:if={showBranches}>
+                    <button class="btn btn-primary" onclick={openNewBranch}>
+                        <lightning-icon icon-name="utility:add" size="x-small" variant="inverse" class="btn-icon"></lightning-icon>
+                        New Branch
+                    </button>
+                </template>
             </div>
 
             <div class="split">
                 <div class="split-main">
-                    <template lwc:if={showOnboarding}>
+                    <template lwc:if={showCards}>
                         <template lwc:if={hasCards}>
                             <div class="cards">
                                 <template for:each={cards} for:item="c">
-                                    <button key={c.id} class="card" data-id={c.id} onclick={openCard}>
+                                    <button key={c.checklistId} class="card" data-id={c.id} data-checklist={c.checklistId} onclick={openCard}>
                                         <span class="card-top">
                                             <span class={c.avatarCls} aria-hidden="true">{c.initials}</span>
                                             <span class="card-name">
@@ -69,7 +80,7 @@
                             </div>
                         </template>
                         <template lwc:else>
-                            <div class="empty">No one is onboarding. Use <strong>New Employee</strong> to start a checklist.</div>
+                            <div class="empty">{emptyCardsText}</div>
                         </template>
                     </template>
 
@@ -77,7 +88,7 @@
                         <template lwc:if={hasBranches}>
                             <div class="cards">
                                 <template for:each={branchCards} for:item="b">
-                                    <div key={b.Id} class="card card-static">
+                                    <button key={b.Id} class="card" data-id={b.Id} onclick={openCard}>
                                         <span class="card-top">
                                             <span class="avatar av-indigo square" aria-hidden="true">{b.code}</span>
                                             <span class="card-name">
@@ -87,17 +98,32 @@
                                         </span>
                                         <span class="card-pills"><span class={b.statusCls}>{b.Status__c}</span></span>
                                         <span class="card-next"><span class="muted">Employees:</span> {b.people}</span>
-                                    </div>
+                                        <span class="card-foot"><span class="muted">{b.progress}</span></span>
+                                    </button>
                                 </template>
                             </div>
                         </template>
                         <template lwc:else>
-                            <div class="empty">No branches yet.</div>
+                            <div class="empty">No branches yet. Use New Branch.</div>
                         </template>
                     </template>
 
-                    <template lwc:if={showEmptyTab}>
-                        <div class="empty">{emptyTabText}</div>
+                    <template lwc:if={showStaff}>
+                        <section class="panel flush staff">
+                            <div class="staff-row staff-head" aria-hidden="true">
+                                <span>Name</span><span>Role</span><span>Status</span><span>Start</span><span>Manager</span><span>NMLS · States</span>
+                            </div>
+                            <template for:each={staffRows} for:item="s">
+                                <button key={s.Id} class="staff-row" data-id={s.Id} onclick={openCard}>
+                                    <span class="name">{s.Name}</span>
+                                    <span>{s.Role__c}</span>
+                                    <span><span class={s.statusCls}>{s.Status__c}</span></span>
+                                    <span>{s.start}</span>
+                                    <span>{s.manager}</span>
+                                    <span class="muted small">{s.NMLS_ID__c} · {s.states}</span>
+                                </button>
+                            </template>
+                        </section>
                     </template>
                 </div>
 
@@ -135,9 +161,14 @@
                         <div class="muted">{empMeta}</div>
                     </div>
                     <div class="row-wrap">
-                        <button class="btn" onclick={openEdit}>Edit details</button>
-                        <button class="btn" onclick={previewPdf}>Exam PDF</button>
-                        <template lwc:if={unlocked}>
+                        <button class="btn" onclick={editDetails}>Edit details</button>
+                        <template lwc:if={hasChecklist}>
+                            <button class="btn" onclick={previewPdf}>Exam PDF</button>
+                        </template>
+                        <template lwc:if={canOffboard}>
+                            <button class="btn btn-quiet" onclick={openOffboard}>Offboard</button>
+                        </template>
+                        <template lwc:if={canWithdraw}>
                             <button class="btn btn-quiet" onclick={confirmWithdraw}>Withdraw</button>
                         </template>
                     </div>
@@ -151,6 +182,9 @@
                         <div key={f.label} class="fact"><span class="fact-label">{f.label}</span><span>{f.value}</span></div>
                     </template>
                 </div>
+                <template lwc:if={handover}>
+                    <div class="handover">{handover} Reassign them before the last day.</div>
+                </template>
                 <template lwc:if={canViewPersonal}>
                     <div class="personal">
                         <div class="row-wrap">
@@ -180,13 +214,25 @@
                 </template>
             </section>
 
+            <template lwc:if={hasChecklistTabs}>
+                <div class="toolbar">
+                    <div class="segs" role="group" aria-label="Checklist">
+                        <template for:each={checklistTabs} for:item="c">
+                            <button key={c.value} class={c.cls} aria-pressed={c.pressed} data-value={c.value} onclick={pickChecklist}>{c.label}</button>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            <template lwc:if={noChecklist}>
+                <div class="empty">No checklist yet. For a branch, add a target open date with Edit details to start one.</div>
+            </template>
             <div class="toolbar">
                 <div class="segs" role="group" aria-label="Task filter">
                     <template for:each={taskFilters} for:item="f">
                         <button key={f.value} class={f.cls} aria-pressed={f.pressed} data-value={f.value} onclick={pickTaskFilter}>{f.label}</button>
                     </template>
                 </div>
-                <span class="muted small">Due dates count business days from the start date, skipping weekends and company holidays.</span>
+                <span class="muted small">Due dates skip weekends and company holidays.</span>
             </div>
 
             <template for:each={phases} for:item="p">
@@ -247,7 +293,7 @@
 
             <template lwc:if={hasOptional}>
                 <section class="panel dashed">
-                    <h2 class="h2">Optional for this hire</h2>
+                    <h2 class="h2">Optional items</h2>
                     <template for:each={optional} for:item="o">
                         <div key={o.Id} class="opt-row">
                             <span class="task-text grow"><span class="subject">{o.Name}</span><span class="muted small">{o.Description__c}</span></span>
@@ -259,10 +305,10 @@
 
             <template lwc:if={unlocked}>
                 <section class="panel">
-                    <h2 class="h2">Add a task for this hire</h2>
+                    <h2 class="h2">Add a one-off task</h2>
                     <div class="add-grid">
                         <lightning-input class="span-2" label="Subject" value={newTask.subject} max-length="80" data-field="subject" onchange={draftNewTask}></lightning-input>
-                        <lightning-combobox label="Phase" options={phaseOptions} value={newTask.phase} data-field="phase" onchange={draftNewTask}></lightning-combobox>
+                        <lightning-combobox label="Phase" options={checklistPhaseOptions} value={newTask.phase} data-field="phase" onchange={draftNewTask}></lightning-combobox>
                         <lightning-input type="date" label="Due date" value={newTask.due} data-field="due" onchange={draftNewTask}></lightning-input>
                         <lightning-combobox label="Assigned to" options={assigneeOptions} value={newTask.assignedTo} data-field="assignedTo" onchange={draftNewTask}></lightning-combobox>
                         <div class="add-btn"><button class="btn btn-primary" onclick={addTask}>Add task</button></div>
@@ -293,8 +339,13 @@
         <template lwc:if={isTemplates}>
             <div class="toolbar">
                 <div>
-                    <h1 class="h1">Master onboarding template</h1>
-                    <div class="muted small">{templateCount}. Drag to reorder. Changes apply to employees created from now on; existing checklists keep their tasks.</div>
+                    <h1 class="h1">Master templates</h1>
+                    <div class="muted small">{templateCount}. Offsets count from the {anchorHelp}. Drag to reorder. Changes apply to checklists created from now on.</div>
+                </div>
+                <div class="segs" role="group" aria-label="Template type">
+                    <template for:each={templateTypes} for:item="t">
+                        <button key={t.value} class={t.cls} aria-pressed={t.pressed} data-value={t.value} onclick={pickTemplateType}>{t.label}</button>
+                    </template>
                 </div>
                 <div class="grow"></div>
                 <button class="btn btn-primary" onclick={newTemplate}>
@@ -341,6 +392,10 @@
                         <lightning-input type="email" label="Personal email" value={form.Personal_Email__c} data-field="Personal_Email__c" onchange={draftForm}></lightning-input>
                         <lightning-input type="email" label="Work email" value={form.Work_Email__c} data-field="Work_Email__c" onchange={draftForm}></lightning-input>
                         <lightning-input label="NMLS ID" value={form.NMLS_ID__c} data-field="NMLS_ID__c" onchange={draftForm}></lightning-input>
+                        <template lwc:if={form.Termination_Date__c}>
+                            <lightning-input type="date" label="Last day" value={form.Termination_Date__c} data-field="Termination_Date__c" onchange={draftForm}></lightning-input>
+                            <lightning-combobox label="Termination reason" options={reasonOptions} value={form.Termination_Reason__c} data-field="Termination_Reason__c" onchange={draftForm}></lightning-combobox>
+                        </template>
                         <lightning-dual-listbox class="span-2" label="Licensed states" source-label="Available" selected-label="Licensed" options={stateOptions} value={statesValue} size="4" data-field="Licensed_States__c" onchange={draftForm}></lightning-dual-listbox>
                     </div>
                     <template lwc:if={isNewModal}>
@@ -350,6 +405,52 @@
                 <div class="slds-modal__footer">
                     <button class="btn" onclick={closeEmployeeModal}>Cancel</button>
                     <button class="btn btn-primary" onclick={saveEmployeeForm}>{saveLabel}</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- ================= OFFBOARD MODAL ================= -->
+    <template lwc:if={showOffboardModal}>
+        <section role="dialog" aria-modal="true" aria-label="Offboard" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">Offboard {emp.Name}</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <lightning-input type="date" label="Last day" required value={offboardForm.lastDay} data-field="lastDay" onchange={draftOffboard}></lightning-input>
+                        <lightning-combobox label="Reason" options={reasonOptions} value={offboardForm.reason} data-field="reason" onchange={draftOffboard}></lightning-combobox>
+                    </div>
+                    <div class="preview">Creates the offboarding checklist dated from the last day and sets the status to Offboarding. Signing it off marks the employee Terminated.</div>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="btn" onclick={closeOffboard}>Cancel</button>
+                    <button class="btn btn-primary" disabled={busy} onclick={startOffboarding}>Start offboarding</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- ================= BRANCH MODAL ================= -->
+    <template lwc:if={showBranchModal}>
+        <section role="dialog" aria-modal="true" aria-label={branchModalTitle} class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header"><h2 class="slds-text-heading_medium">{branchModalTitle}</h2></div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="form-grid">
+                        <lightning-input class="span-2" label="Branch name" required value={branchForm.Name} data-field="Name" onchange={draftBranch}></lightning-input>
+                        <lightning-combobox label="State" options={stateOptions} value={branchForm.State__c} data-field="State__c" onchange={draftBranch}></lightning-combobox>
+                        <lightning-combobox label="Status" options={branchStatusOptions} value={branchForm.Status__c} data-field="Status__c" onchange={draftBranch}></lightning-combobox>
+                        <lightning-input type="date" label="Target open date" field-level-help="Starts the branch checklist; due dates count from this date." value={branchForm.Target_Open_Date__c} data-field="Target_Open_Date__c" onchange={draftBranch}></lightning-input>
+                        <lightning-input label="Branch NMLS ID" value={branchForm.Branch_NMLS_ID__c} data-field="Branch_NMLS_ID__c" onchange={draftBranch}></lightning-input>
+                        <lightning-record-picker class="span-2" label="Branch manager" object-api-name="User" value={branchForm.Branch_Manager__c} onchange={pickBranchManager}></lightning-record-picker>
+                        <lightning-textarea class="span-2" label="Address" value={branchForm.Address__c} data-field="Address__c" onchange={draftBranch}></lightning-textarea>
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="btn" onclick={closeBranch}>Cancel</button>
+                    <button class="btn btn-primary" disabled={busy} onclick={saveBranchForm}>Save</button>
                 </div>
             </div>
         </section>
@@ -387,7 +488,7 @@
                     <div class="form-grid">
                         <lightning-input class="span-2" label="Subject" required max-length="80" value={templateDraft.Name} data-field="Name" onchange={draftTemplate}></lightning-input>
                         <lightning-textarea class="span-2" label="Description" value={templateDraft.Description__c} data-field="Description__c" onchange={draftTemplate}></lightning-textarea>
-                        <lightning-combobox label="Phase" options={phaseOptions} value={templateDraft.Phase__c} data-field="Phase__c" onchange={draftTemplate}></lightning-combobox>
+                        <lightning-combobox label="Phase" options={templatePhaseOptions} value={templateDraft.Phase__c} data-field="Phase__c" onchange={draftTemplate}></lightning-combobox>
                         <lightning-input type="number" label="Offset (days from start)" field-level-help="Negative = before the start date. Blank = no due date." value={templateDraft.Offset_Days__c} data-field="Offset_Days__c" onchange={draftTemplate}></lightning-input>
                         <lightning-combobox label="Offset counts" field-level-help="Calendar Days: a weekend or holiday due date moves to the next business day." options={unitOptions} value={templateDraft.Offset_Unit__c} data-field="Offset_Unit__c" onchange={draftTemplate}></lightning-combobox>
                         <lightning-combobox label="Complete automatically when" options={autoCompleteOptions} value={templateDraft.Auto_Complete__c} data-field="Auto_Complete__c" onchange={draftTemplate}></lightning-combobox>
@@ -401,6 +502,9 @@
                         <lightning-combobox label="Completing it moves a Candidate to" options={setsStatusOptions} value={templateDraft.Sets_Status__c} data-field="Sets_Status__c" onchange={draftTemplate}></lightning-combobox>
                         <lightning-input type="toggle" label="Sent via DocuSign" checked={templateDraft.Via_DocuSign__c} data-field="Via_DocuSign__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
                         <lightning-input type="toggle" label="Optional (offered, not generated)" checked={templateDraft.Optional__c} data-field="Optional__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
+                        <template lwc:if={isRenewalTemplate}>
+                            <lightning-input type="toggle" label="One per licensed state ({STATE} in the subject)" checked={templateDraft.Per_State__c} data-field="Per_State__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
+                        </template>
                         <lightning-input type="toggle" label="Email reminder (7 days before + due date)" checked={templateDraft.Remind__c} data-field="Remind__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
                         <lightning-input type="toggle" label="Active" checked={templateDraft.Active__c} data-field="Active__c" onchange={draftTemplate} message-toggle-active="" message-toggle-inactive=""></lightning-input>
                     </div>

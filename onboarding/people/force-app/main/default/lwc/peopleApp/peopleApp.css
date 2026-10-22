@@ -127,6 +127,13 @@
 .signoff-text { flex: 1 1 320px; display: flex; flex-direction: column; gap: 4px; }
 .email-form { display: flex; flex-direction: column; gap: 12px; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.handover { background: var(--late-bg); color: var(--late-fg); border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 500; }
+.staff { margin-bottom: 0; }
+.staff-row { display: grid; grid-template-columns: 1.4fr 1fr 0.9fr 0.8fr 1fr 1.3fr; gap: 12px; align-items: center; width: 100%; text-align: left; background: #fff;
+    border: 0; border-top: 1px solid #f0f2f5; padding: 12px 16px; font: inherit; color: inherit; cursor: pointer; }
+.staff-row:hover { background: #f9fafb; }
+.staff-head { cursor: default; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; border-top: 0; background: #fafbfc; }
+.staff-head:hover { background: #fafbfc; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
 .span-2 { grid-column: span 2; }
 .preview { margin-top: 16px; background: #eff4ff; border-radius: 12px; padding: 12px 14px; color: #1e3a8a; line-height: 1.5; }
@@ -141,6 +148,10 @@
 .tpl-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .tpl-actions { display: flex; gap: 2px; }
 
+@media (max-width: 900px) {
+    .staff-row { grid-template-columns: 1.4fr 1fr 0.9fr; }
+    .staff-row > span:nth-child(n + 4) { display: none; }
+}
 @media (max-width: 640px) {
     .form-grid, .task-edit { grid-template-columns: minmax(0, 1fr); }
     .span-2 { grid-column: auto; }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anchor_Date__c</fullName>
+    <label>Anchor Date</label>
+    <inlineHelpText>Due dates count from this date: start date (onboarding), last day (offboarding), Dec 31 (renewal), target open date (branch).</inlineHelpText>
+    <type>Date</type>
+</CustomField>
