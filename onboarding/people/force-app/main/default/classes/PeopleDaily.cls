@@ -66,28 +66,41 @@ public with sharing class PeopleDaily implements Schedulable {
         }
     }
 
-    // Tasks flagged Email Reminder (the 30/90-day check-ins and benefits deadline) email their assignee
-    // 7 days before and on the due date, every day of the week, on top of the weekday digest.
+    // Tasks flagged Email Reminder (check-ins, benefits deadline, renewals) remind their assignee 7 days before and on
+    // the due date, every day of the week, on top of the weekday digest. One email per assignee per day: a renewal
+    // season puts dozens of reminders on the same date. Returns the number of emails sent.
     @TestVisible
     static Integer sendReminders(Date today) {
         String link = URL.getOrgDomainUrl().toExternalForm() + '/lightning/n/People';
-        List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
+        Map<Id, List<String>> rowsByUser = new Map<Id, List<String>>();
         for (People_Task__c t : [
-            SELECT Name, Due_Date__c, Assigned_To__c, Description__c, Checklist__r.Employee__r.Name
+            SELECT Name, Due_Date__c, Assigned_To__c, Checklist__r.Employee__r.Name, Checklist__r.Branch__r.Name
             FROM People_Task__c
             WHERE Remind__c = true AND Status__c = 'Open' AND Assigned_To__c != null AND Checklist__r.Status__c = 'Open'
-                AND Checklist__r.Employee__r.Status__c NOT IN :PeopleController.GONE AND Due_Date__c IN :new Set<Date>{ today, today.addDays(7) }
+                AND (Checklist__r.Employee__c = null OR Checklist__r.Employee__r.Status__c NOT IN :PeopleController.GONE)
+                AND Due_Date__c IN :new Set<Date>{ today, today.addDays(7) }
+            ORDER BY Due_Date__c, Checklist__r.Employee__r.Name, Sort_Order__c
         ]) {
-            String dueText = t.Due_Date__c == today ? 'today' : 'on ' + Datetime.newInstanceGmt(t.Due_Date__c, Time.newInstance(12, 0, 0, 0)).formatGmt('EEEE, MMMM d');
-            String who = t.Checklist__r.Employee__r.Name;
+            String who = t.Checklist__r.Employee__r?.Name != null ? t.Checklist__r.Employee__r.Name : t.Checklist__r.Branch__r?.Name;
+            String dueText = t.Due_Date__c == today ? 'today' : Datetime.newInstanceGmt(t.Due_Date__c, Time.newInstance(12, 0, 0, 0)).formatGmt('EEE, MMM d');
+            if (!rowsByUser.containsKey(t.Assigned_To__c)) {
+                rowsByUser.put(t.Assigned_To__c, new List<String>());
+            }
+            rowsByUser.get(t.Assigned_To__c).add('<tr><td style="padding:6px 12px 6px 0">' + t.Name.escapeHtml4() + '</td>'
+                + '<td style="padding:6px 12px 6px 0;color:#5B6472">' + (who == null ? '' : who.escapeHtml4()) + '</td>'
+                + '<td style="padding:6px 0;white-space:nowrap;' + (t.Due_Date__c == today ? 'color:#92400E;font-weight:600' : 'color:#5B6472') + '">Due ' + dueText + '</td></tr>');
+        }
+        List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
+        for (Id userId : rowsByUser.keySet()) {
+            List<String> rows = rowsByUser.get(userId);
             Messaging.SingleEmailMessage m = new Messaging.SingleEmailMessage();
-            m.setTargetObjectId(t.Assigned_To__c);
+            m.setTargetObjectId(userId);
             m.setSaveAsActivity(false);
             m.setSenderDisplayName('People');
-            m.setSubject('Reminder: ' + t.Name + ' for ' + who + ' is due ' + dueText);
+            m.setSubject('People reminders: ' + rows.size() + ' item' + (rows.size() == 1 ? '' : 's') + ' due today or in 7 days');
             m.setHtmlBody('<div style="font-family:Arial,sans-serif;font-size:14px;color:#111827">'
-                + '<p><strong>' + t.Name.escapeHtml4() + '</strong> for ' + who.escapeHtml4() + ' is due ' + dueText + '.</p>'
-                + (t.Description__c == null ? '' : '<p style="color:#5B6472">' + t.Description__c.escapeHtml4() + '</p>')
+                + '<p>These People items are due today or one week from today:</p>'
+                + '<table style="border-collapse:collapse;font-size:14px">' + String.join(rows, '') + '</table>'
                 + '<p><a href="' + link + '">Open People</a></p></div>');
             mails.add(m);
         }

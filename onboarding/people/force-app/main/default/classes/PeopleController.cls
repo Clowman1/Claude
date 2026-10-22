@@ -355,8 +355,10 @@ public with sharing class PeopleController {
         );
         insert cl;
         List<People_Task__c> tasks = new List<People_Task__c>();
+        // For renewals, licensing follows the NMLS ID, not the job: a President or Manager with an NMLS ID renews like an LO.
+        String role = emp == null ? null : type == RENEWAL ? (emp.NMLS_ID__c != null ? 'Loan Officer' : 'Unlicensed') : emp.Role__c;
         for (People_Template_Task__c t : templates(type, false)) {
-            if (emp != null && !applies(t, emp.Role__c, emp.Work_Arrangement__c)) {
+            if (emp != null && !applies(t, role, emp.Work_Arrangement__c)) {
                 continue;
             }
             if (!t.Per_State__c) {
@@ -438,7 +440,7 @@ public with sharing class PeopleController {
     // Active and Pre-Start employees with no renewal checklist for the year yet.
     static List<People_Employee__c> renewalTargets(Integer year) {
         return [
-            SELECT Id, Name, Role__c, Work_Arrangement__c, Licensed_States__c FROM People_Employee__c
+            SELECT Id, Name, Role__c, Work_Arrangement__c, Licensed_States__c, NMLS_ID__c FROM People_Employee__c
             WHERE Status__c IN ('Active', 'Pre-Start')
                 AND Id NOT IN (SELECT Employee__c FROM People_Checklist__c WHERE Type__c = :RENEWAL AND Renewal_Year__c = :year AND Employee__c != null)
             ORDER BY Name

@@ -119,6 +119,22 @@ private class PeoplePhase3Test {
     }
 
     @IsTest
+    static void licensingFollowsTheNmlsIdNotTheRole() {
+        People_Template_Task__c ce = tpl('Renewal', 'Complete NMLS CE', -46);
+        ce.Roles__c = 'Loan Officer;Branch Manager';
+        insert ce;
+        People_Employee__c boss = activeEmployee('FL');
+        boss.Role__c = 'Manager';
+        boss.NMLS_ID__c = '342274';
+        People_Employee__c ops = activeEmployee('FL');
+        ops.Role__c = 'Loan Officer';
+        update new List<People_Employee__c>{ boss, ops };
+        PeopleController.generateRenewals(2026);
+        System.assertEquals(1, [SELECT COUNT() FROM People_Task__c WHERE Checklist__r.Employee__c = :boss.Id], 'Manager with NMLS renews');
+        System.assertEquals(0, [SELECT COUNT() FROM People_Task__c WHERE Checklist__r.Employee__c = :ops.Id], 'no NMLS ID, no licensing tasks');
+    }
+
+    @IsTest
     static void octoberFifteenthOpensRenewals() {
         insert tpl('Renewal', 'Annual handbook re-acknowledgment', -30);
         activeEmployee(null);
