@@ -1,0 +1,455 @@
+<title>Leadership Meeting</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centered column; branded header band, then Rocks → To-Dos → Issues as stacked panels of rows. */
+:root {
+  --bg: #bcc5d3; --surface: #e3e8ef; --raise: #d5dce6; --line: #b3bdcc; --ink: #131826; --muted: #4a5266;
+  --accent: #2c56f5; --accent-ink: #ffffff; --accent-soft: #e7ecff;
+  --ok: #0f7d54; --ok-soft: #dff4ea; --warn: #b8460b; --warn-soft: #fdebdf;
+  --bad: #b3223a; --bad-soft: #fbe3e7; --idle: #5d6579; --idle-soft: #eceff5;
+  --p-adam: #d9722b; --p-brandon: #6d4ff0; --p-chris: #158a78; --p-ernesto: #c93a6f; --p-patrick: #2c6fe0;
+  --logo-filter: none; --logo-blend: multiply;
+  --f-display: "Raleway", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --r: 12px;
+}
+/* Deliberately light-only: the team asked for a bright page regardless of Claude's theme. */
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.45 var(--f-body); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.band { background: var(--surface); border-bottom: 1px solid var(--line);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px; }
+.band-in { max-width: 1080px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; }
+.ident { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.brands .mascot { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; flex: none; filter: none; mix-blend-mode: normal; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+h1 { font: 700 clamp(24px, 4vw, 32px)/1.1 var(--f-display); margin: 2px 0 0; letter-spacing: -.01em; }
+.brands { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.brands img { filter: var(--logo-filter); mix-blend-mode: var(--logo-blend); display: block; }
+.brands .reach { height: 64px; }
+.brands .bran { height: 72px; }
+.brands .sep { width: 1px; height: 48px; background: var(--line); }
+
+main { max-width: 1080px; margin: 0 auto; display: grid; gap: 22px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px 48px; }
+.av { width: 26px; height: 26px; border-radius: 50%; color: #fff; font: 600 11px/26px var(--f-body); text-align: center; flex: none; letter-spacing: .02em; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.phead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 16px 18px 12px; }
+.phead h2 { font: 700 20px/1.2 var(--f-display); margin: 0; }
+.phead .sub { color: var(--muted); font-size: 13px; flex-basis: 100%; order: 3; margin-top: -4px; }
+.phead .spacer { flex: 1; }
+.tabs { display: inline-flex; background: var(--raise); border: 1px solid var(--line); border-radius: 9px; padding: 2px; }
+.tabs button { border: 0; background: none; padding: 4px 11px; border-radius: 7px; cursor: pointer; font-size: 13px; color: var(--muted); }
+.tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / .08); font-weight: 600; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 6px 12px; cursor: pointer; font-size: 14px; font-weight: 500; }
+.btn:hover { background: var(--raise); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.danger { color: var(--bad); border-color: var(--bad); }
+.btn.danger.armed { background: var(--bad); color: var(--surface); }
+.btn.ghost { border-color: transparent; background: none; color: var(--muted); padding: 6px 8px; }
+.btn.ghost:hover { color: var(--ink); background: var(--raise); }
+
+.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.row { display: grid; align-items: center; gap: 10px 14px; padding: 11px 18px; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.row .tick { grid-area: tick; } .row .what { grid-area: what; } .row .owner { grid-area: own; }
+.row .date { grid-area: due; } .row .status { grid-area: status; } .row .acts { grid-area: acts; }
+.rocks .row { grid-template: "own what due status acts" / 150px minmax(0, 1fr) 128px 120px auto; }
+.todos .row { grid-template: "tick what own due acts" / 22px minmax(0, 1fr) 150px 128px auto; }
+.issues .row { grid-template: "what own due acts" / minmax(0, 1fr) 150px 92px auto; }
+.owner { display: inline-flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 500; }
+.owner .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.group { display: flex; align-items: center; gap: 8px; padding: 8px 18px; background: var(--raise); border-bottom: 1px solid var(--line);
+  font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.group .av { width: 20px; height: 20px; line-height: 20px; font-size: 9px; }
+.sort { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.sort select { border: 1px solid var(--line); background: var(--raise); border-radius: 8px; padding: 4px 8px; font-size: 13px; color: var(--ink); }
+.what { min-width: 0; }
+.what .t { font-weight: 500; overflow-wrap: anywhere; }
+.what .n { color: var(--muted); font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 2px; }
+.row.is-done .t { text-decoration: line-through; color: var(--muted); }
+.date { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.date.late { color: var(--bad); font-weight: 600; }
+.date-in { border: 1px solid transparent; background: none; border-radius: 7px; padding: 3px 4px; cursor: pointer; width: 100%; min-width: 0; }
+.date-in:hover { border-color: var(--line); background: var(--raise); }
+.acts { display: flex; gap: 2px; justify-content: flex-end; }
+input[type="checkbox"].tick { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; margin: 0; }
+.status { appearance: none; border: 0; border-radius: 999px; padding: 4px 26px 4px 12px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 13px) 55%, calc(100% - 9px) 55%; background-size: 4px 4px; background-repeat: no-repeat; }
+.status[data-s="on"] { color: var(--ok); background-color: var(--ok-soft); }
+.status[data-s="off"] { color: var(--warn); background-color: var(--warn-soft); }
+.status[data-s="done"] { color: var(--accent); background-color: var(--accent-soft); }
+.status[data-s="notdone"] { color: var(--bad); background-color: var(--bad-soft); }
+.status:disabled { cursor: default; background-image: none; padding-right: 12px; }
+.counts { display: flex; gap: 6px; flex-wrap: wrap; }
+.count { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 9px; background: var(--idle-soft); color: var(--idle); font-variant-numeric: tabular-nums; }
+.count.ok { background: var(--ok-soft); color: var(--ok); }
+.count.warn { background: var(--warn-soft); color: var(--warn); }
+.count.bad { background: var(--bad-soft); color: var(--bad); }
+.foot { display: flex; justify-content: flex-end; padding: 10px 18px; border-top: 1px solid var(--line); background: var(--raise); }
+.empty { display: flex; align-items: center; gap: 14px; padding: 22px 18px; color: var(--muted); border-top: 1px solid var(--line); }
+.empty img { width: 44px; height: 44px; border-radius: 12px; }
+.notice { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; color: var(--muted); }
+
+dialog { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); padding: 0; width: min(520px, calc(100vw - 32px)); }
+dialog::backdrop { background: rgb(10 14 25 / .45); }
+.dlg { display: grid; gap: 14px; padding: 20px; }
+.dlg h3 { font: 700 19px/1.2 var(--f-display); margin: 0; }
+.field { display: grid; gap: 5px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field input, .field select, .field textarea { border: 1px solid var(--line); background: var(--raise); border-radius: 9px; padding: 8px 10px; width: 100%; }
+.field textarea { min-height: 90px; resize: vertical; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.dlg-acts { display: flex; gap: 8px; align-items: center; padding-top: 4px; }
+.dlg-acts .spacer { flex: 1; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--surface);
+  padding: 9px 16px; border-radius: 10px; font-size: 14px; z-index: 20; max-width: calc(100vw - 32px); }
+
+@media (max-width: 640px) {
+  .rocks .row { grid-template: "what what what acts" "own due status status" / auto auto minmax(0, 1fr) auto; }
+  .rocks .row .status { width: auto; justify-self: start; }
+  .todos .row { grid-template: "tick what what acts" ". own due acts" / 22px auto minmax(0, 1fr) auto; }
+  .issues .row { grid-template: "what what acts" "own due acts" / auto minmax(0, 1fr) auto; }
+  .row .owner .av { width: 22px; height: 22px; line-height: 22px; font-size: 10px; }
+  .pair { grid-template-columns: 1fr; }
+  .brands .reach { height: 44px; } .brands .bran { height: 50px; }
+  .brands .sep { height: 32px; }
+  .brands .mascot { width: 40px; height: 40px; border-radius: 11px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="band">
+  <div class="band-in">
+    <div class="ident">
+      <div>
+        <div class="eyebrow" id="when">Weekly · Tuesdays at 10:00 AM</div>
+        <h1>Leadership Meeting</h1>
+      </div>
+    </div>
+    <div class="brands">
+      <img class="reach" src="reach-logo.png" alt="Reach Home Loans">
+      <span class="sep" aria-hidden="true"></span>
+      <img class="bran" src="bran-logo.png" alt="BranTheMortgageMan">
+      <span class="sep" aria-hidden="true"></span>
+      <img class="mascot" src="mascot.png" alt="Creative Buddy">
+    </div>
+  </div>
+</header>
+
+<main id="app">
+  <div id="sections">
+    <div class="notice" id="loading">Loading Rocks, To-Dos and Issues…</div>
+  </div>
+</main>
+
+<dialog id="dlg"><form class="dlg" id="form" method="dialog"></form></dialog>
+
+<script>
+const PEOPLE = [
+  { id: "adam", name: "Adam Stephens", color: "var(--p-adam)" },
+  { id: "brandon", name: "Brandon Brotsky", color: "var(--p-brandon)" },
+  { id: "chris", name: "Chris Lowman", color: "var(--p-chris)" },
+  { id: "ernesto", name: "Ernesto Gutierrez", color: "var(--p-ernesto)" },
+  { id: "patrick", name: "Patrick Amaral", color: "var(--p-patrick)" },
+];
+const PERSON = Object.fromEntries(PEOPLE.map(p => [p.id, p]));
+const STATUS = [["on", "On-Track"], ["off", "Off-Track"], ["done", "Done"], ["notdone", "Not Done"]];
+
+let db = null, isOwner = false, canWrite = true;
+const data = { rocks: null, todos: null, issues: null };
+const ui = { rocks: "active", todos: "open", issues: "active", rocksSort: "owner", todosSort: "owner" };
+try { Object.assign(ui, JSON.parse(localStorage.getItem("lm-ui") || "{}")); } catch {}
+const saveUi = () => { try { localStorage.setItem("lm-ui", JSON.stringify(ui)); } catch {} };
+
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v == null || v === false) continue;
+    if (k === "text") el.textContent = v;
+    else if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "style") el.style.cssText = v;
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c);
+  return el;
+}
+
+function parseDay(s) { if (!s) return null; const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); }
+function today() { const d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+function fmtDay(s) { const d = parseDay(s); return d ? d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "—"; }
+function isoDay(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
+function quarterOf(d) { return `Q${Math.floor(d.getMonth() / 3) + 1} ${d.getFullYear()}`; }
+function quarterOptions(extra) {
+  const out = new Set(); const d = today(); d.setDate(1);
+  d.setMonth(d.getMonth() - 3);
+  for (let i = 0; i < 4; i++) { out.add(quarterOf(d)); d.setMonth(d.getMonth() + 3); }
+  if (extra) out.add(extra);
+  return [...out];
+}
+
+function avatar(id) {
+  const p = PERSON[id];
+  const ini = p ? p.name.split(" ").map(w => w[0]).join("") : "?";
+  return h("span", { class: "av", style: `background:${p ? p.color : "var(--idle)"}`, title: p ? p.name : "Unassigned", text: ini });
+}
+function dateCell(s, lateIfPast) {
+  const d = parseDay(s);
+  const late = lateIfPast && d && d < today();
+  return h("span", { class: "date" + (late ? " late" : ""), text: fmtDay(s), title: late ? "Past due" : null });
+}
+function dateEdit(col, item, lateIfPast, locked) {
+  if (canWrite === false || locked) return dateCell(item.due, lateIfPast);
+  const d = parseDay(item.due);
+  return h("input", { type: "date", class: "date date-in" + (lateIfPast && d && d < today() ? " late" : ""),
+    value: item.due || "", "aria-label": `Due date: ${item.title}`,
+    onchange: e => { if ((e.target.value || null) !== (item.due || null)) upd(col, item.id, { due: e.target.value || null }); } });
+}
+function notes(t) { return t ? h("div", { class: "n", text: t }) : null; }
+let toastTimer;
+function toast(msg) {
+  document.querySelector(".toast")?.remove();
+  const t = h("div", { class: "toast", role: "status", text: msg });
+  document.body.append(t); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 3200);
+}
+
+async function write(fn, okMsg) {
+  try { await fn(); if (okMsg) toast(okMsg); }
+  catch (e) {
+    if (e && e.code === "invalid_argument" && canWrite !== true) { canWrite = false; render(); toast("You have view-only access to this page."); }
+    else if (e && e.code === "quota_exceeded") toast("The list is full. Ask Chris to delete old items.");
+    else toast("Couldn't save that change. Try again.");
+  }
+}
+const upd = (col, id, patch) => write(() => db.doc(`${col}/${id}`).update({ ...patch, updated: Date.now() }));
+
+const byDue = (a, b) => (a.due || "9999").localeCompare(b.due || "9999") || (a.created || 0) - (b.created || 0);
+const ownerRank = id => { const i = PEOPLE.findIndex(p => p.id === id); return i < 0 ? 99 : i; };
+const byOwner = (a, b) => ownerRank(a.owner) - ownerRank(b.owner) || byDue(a, b);
+const STATUS_RANK = { off: 0, on: 1, notdone: 2, done: 3 };
+const byStatus = (a, b) => (STATUS_RANK[a.status] ?? 9) - (STATUS_RANK[b.status] ?? 9) || byDue(a, b);
+
+function ownerTag(id) {
+  const p = PERSON[id];
+  return h("span", { class: "owner" }, avatar(id), h("span", { class: "nm", text: p ? p.name : "Unassigned" }));
+}
+function sortSel(key, opts) {
+  const sel = h("select", { id: `sort-${key}`, "aria-label": "Sort by",
+    onchange: e => { ui[key] = e.target.value; saveUi(); render(); } },
+    opts.map(([v, l]) => { const o = h("option", { value: v, text: l }); o.selected = ui[key] === v; return o; }));
+  return h("label", { class: "sort" }, "Sort by", sel);
+}
+// Owner sort inserts a header row above each person's items.
+function rowsList(list, grouped, rowFn) {
+  const out = []; let last;
+  for (const x of list) {
+    if (grouped && x.owner !== last) {
+      last = x.owner;
+      const n = list.filter(y => y.owner === x.owner).length;
+      out.push(h("li", { class: "group" }, avatar(x.owner), `${PERSON[x.owner]?.name || "Unassigned"} · ${n}`));
+    }
+    out.push(rowFn(x));
+  }
+  return h("ul", { class: "rows" }, out);
+}
+
+function tabs(key, opts) {
+  return h("div", { class: "tabs", role: "tablist" }, opts.map(([v, label]) =>
+    h("button", { type: "button", role: "tab", "aria-selected": String(ui[key] === v), text: label,
+      onclick: () => { ui[key] = v; saveUi(); render(); } })));
+}
+function panel(cls, title, sub, counts, tabEl, addLabel, onAdd, body, foot) {
+  return h("section", { class: `panel ${cls}` },
+    h("div", { class: "phead" },
+      h("h2", { text: title }), h("div", { class: "counts" }, counts), h("span", { class: "spacer" }), tabEl,
+      canWrite !== false ? h("button", { class: "btn primary", type: "button", text: addLabel, onclick: onAdd }) : null,
+      h("div", { class: "sub", text: sub })),
+    body, foot);
+}
+function emptyState(msg) {
+  return h("div", { class: "empty" }, h("img", { src: "mascot.png", alt: "" }), h("span", { text: msg }));
+}
+function editBtn(kind, item) {
+  return canWrite !== false ? h("button", { class: "btn ghost", type: "button", text: "Edit", onclick: () => openEditor(kind, item) }) : null;
+}
+
+function renderRocks() {
+  const all = data.rocks.filter(r => ui.rocks === "archive" ? r.archived : !r.archived);
+  const active = data.rocks.filter(r => !r.archived);
+  const n = s => active.filter(r => r.status === s).length;
+  const list = [...all].sort({ owner: byOwner, due: byDue, status: byStatus }[ui.rocksSort] || byOwner);
+  const counts = [
+    h("span", { class: "count ok", text: `${n("on")} on-track` }),
+    n("off") ? h("span", { class: "count warn", text: `${n("off")} off-track` }) : null,
+    h("span", { class: "count", text: `${n("done")} done` }),
+  ];
+  const body = list.length ? rowsList(list, ui.rocksSort === "owner", r =>
+    h("li", { class: "row" },
+      ownerTag(r.owner),
+      h("div", { class: "what" }, h("div", { class: "t", text: r.title }), notes(r.notes)),
+      dateEdit("rocks", r, !["done", "notdone"].includes(r.status), r.archived),
+      h("select", { class: "status", "data-s": r.status, "aria-label": "Status", disabled: canWrite === false || r.archived,
+        onchange: e => upd("rocks", r.id, { status: e.target.value }) },
+        STATUS.map(([v, l]) => { const o = h("option", { value: v, text: l }); o.selected = v === r.status; return o; })),
+      h("div", { class: "acts" },
+        canWrite !== false ? h("button", { class: "btn ghost", type: "button", text: r.archived ? "Restore" : "Archive",
+          onclick: () => upd("rocks", r.id, { archived: !r.archived }) }) : null,
+        editBtn("rocks", r))))
+    : emptyState(ui.rocks === "archive" ? "No archived Rocks." : "No Rocks yet. Add this quarter's 90-day priorities.");
+  return panel("rocks", "Rocks", "Are your 90-day goals on track to be done by the end of the quarter?", counts,
+    [sortSel("rocksSort", [["owner", "Owner"], ["due", "Due date"], ["status", "Status"]]),
+     tabs("rocks", [["active", "Current"], ["archive", "Archive"]])], "Add Rock", () => openEditor("rocks"), body);
+}
+
+function renderTodos() {
+  const open = data.todos.filter(t => !t.cleared);
+  const late = open.filter(t => !t.done && parseDay(t.due) && parseDay(t.due) < today()).length;
+  const checked = open.filter(t => t.done);
+  const list = ui.todos === "done"
+    ? data.todos.filter(t => t.cleared).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0))
+    : [...open].sort(ui.todosSort === "due" ? byDue : byOwner);
+  const counts = [
+    h("span", { class: "count", text: `${open.length - checked.length} open` }),
+    late ? h("span", { class: "count bad", text: `${late} past due` }) : null,
+    checked.length ? h("span", { class: "count ok", text: `${checked.length} checked` }) : null,
+  ];
+  const body = list.length ? rowsList(list, ui.todos === "open" && ui.todosSort === "owner", t =>
+    h("li", { class: "row" + (t.done ? " is-done" : "") },
+      h("input", { type: "checkbox", class: "tick", "aria-label": `Done: ${t.title}`, checked: !!t.done,
+        disabled: canWrite === false || t.cleared,
+        onchange: e => upd("todos", t.id, { done: e.target.checked, doneAt: e.target.checked ? Date.now() : null }) }),
+      h("div", { class: "what" }, h("div", { class: "t", text: t.title }), notes(t.notes)),
+      ownerTag(t.owner),
+      dateEdit("todos", t, !t.done, t.cleared),
+      h("div", { class: "acts" },
+        t.cleared && canWrite !== false ? h("button", { class: "btn ghost", type: "button", text: "Reopen",
+          onclick: () => upd("todos", t.id, { done: false, cleared: false, doneAt: null }) }) : null,
+        editBtn("todos", t))))
+    : emptyState(ui.todos === "done" ? "Nothing cleared yet. Checked To-Dos land here after you clear them." : "All caught up. No open To-Dos.");
+  const foot = ui.todos === "open" && checked.length && canWrite !== false
+    ? h("div", { class: "foot" }, h("button", { class: "btn", type: "button", text: `Clear completed (${checked.length})`,
+        onclick: () => write(async () => { for (const t of checked) await db.doc(`todos/${t.id}`).update({ cleared: true, updated: Date.now() }); },
+          `Moved ${checked.length} to Done`) }))
+    : null;
+  return panel("todos", "To-Dos", "Seven-day action items. Check them off during the meeting, then clear the completed ones.", counts,
+    [ui.todos === "open" ? sortSel("todosSort", [["owner", "Owner"], ["due", "Due date"]]) : null,
+     tabs("todos", [["open", "Open"], ["done", "Done"]])], "Add To-Do", () => openEditor("todos"), body, foot);
+}
+
+function renderIssues() {
+  const active = data.issues.filter(i => i.status !== "done");
+  const list = ui.issues === "done"
+    ? data.issues.filter(i => i.status === "done").sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0))
+    : [...active].sort((a, b) => (a.created || 0) - (b.created || 0));
+  const body = list.length ? h("ul", { class: "rows" }, list.map(i =>
+    h("li", { class: "row" + (i.status === "done" ? " is-done" : "") },
+      h("div", { class: "what" }, h("div", { class: "t", text: i.title }), notes(i.notes)),
+      ownerTag(i.owner),
+      h("span", { class: "date", text: i.created ? "Added " + new Date(i.created).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "" }),
+      h("div", { class: "acts" },
+        canWrite !== false ? h("button", { class: "btn ghost", type: "button", text: i.status === "done" ? "Reopen" : "Mark done",
+          onclick: () => upd("issues", i.id, i.status === "done" ? { status: "active", doneAt: null } : { status: "done", doneAt: Date.now() }) }) : null,
+        editBtn("issues", i)))))
+    : emptyState(ui.issues === "done" ? "No finished Issues yet." : "No open Issues. Add anything the team needs to discuss.");
+  return panel("issues", "Issues", "Problems, obstacles and opportunities to discuss and solve as a team.",
+    [h("span", { class: "count", text: `${active.length} active` })],
+    tabs("issues", [["active", "Active"], ["done", "Done"]]), "Add Issue", () => openEditor("issues"), body);
+}
+
+function render() {
+  const box = document.getElementById("sections");
+  if (!data.rocks || !data.todos || !data.issues) return;
+  box.replaceChildren(h("div", { style: "display:grid;gap:22px" }, renderRocks(), renderTodos(), renderIssues()));
+}
+
+/* ---- editor ---- */
+const FORMS = {
+  rocks: { noun: "Rock", fields: ["title", "owner", "due", "quarter", "notes"] },
+  todos: { noun: "To-Do", fields: ["title", "owner", "due", "notes"] },
+  issues: { noun: "Issue", fields: ["title", "owner", "notes"] },
+};
+function openEditor(kind, item) {
+  const cfg = FORMS[kind], f = cfg.fields, form = document.getElementById("form"), dlg = document.getElementById("dlg");
+  const v = item || {};
+  const field = (id, label, input) => h("div", { class: "field" }, h("label", { for: id, text: label }), input);
+  const ownerSel = h("select", { id: "f-owner", required: true },
+    h("option", { value: "", text: "Choose an owner" }),
+    PEOPLE.map(p => { const o = h("option", { value: p.id, text: p.name }); o.selected = v.owner === p.id; return o; }));
+  const defDue = kind === "todos" ? (() => { const d = today(); d.setDate(d.getDate() + 7); return isoDay(d); })() : "";
+  const q = quarterOptions(v.quarter);
+  const quarterSel = h("select", { id: "f-quarter" },
+    q.map(x => { const o = h("option", { value: x, text: x }); o.selected = (v.quarter || quarterOf(today())) === x; return o; }));
+  let armed = false;
+  const del = item && isOwner ? h("button", { class: "btn danger", type: "button", text: "Delete",
+    onclick: e => {
+      if (!armed) { armed = true; e.target.classList.add("armed"); e.target.textContent = "Click again to delete"; return; }
+      dlg.close(); write(() => db.doc(`${kind}/${item.id}`).delete(), `${cfg.noun} deleted`);
+    } }) : null;
+  form.replaceChildren(
+    h("h3", { text: item ? `Edit ${cfg.noun}` : `New ${cfg.noun}` }),
+    field("f-title", cfg.noun, h("input", { id: "f-title", required: true, maxlength: "200", value: v.title || "", autocomplete: "off" })),
+    h("div", { class: "pair" },
+      field("f-owner", "Owner", ownerSel),
+      f.includes("due") ? field("f-due", "Due date", h("input", { id: "f-due", type: "date", value: v.due || defDue })) : null),
+    f.includes("quarter") ? h("div", { class: "pair" }, field("f-quarter", "Quarter", quarterSel)) : null,
+    field("f-notes", "Notes", h("textarea", { id: "f-notes", maxlength: "4000" })),
+    h("div", { class: "dlg-acts" }, del, h("span", { class: "spacer" }),
+      h("button", { class: "btn", type: "button", text: "Cancel", onclick: () => dlg.close() }),
+      h("button", { class: "btn primary", type: "submit", text: item ? "Save" : `Add ${cfg.noun}` })));
+  form.querySelector("#f-notes").value = v.notes || "";
+  form.onsubmit = e => {
+    e.preventDefault();
+    const out = { title: form.querySelector("#f-title").value.trim(), owner: ownerSel.value, notes: form.querySelector("#f-notes").value.trim() };
+    if (!out.title || !out.owner) return;
+    if (f.includes("due")) out.due = form.querySelector("#f-due").value || null;
+    if (f.includes("quarter")) out.quarter = quarterSel.value;
+    dlg.close();
+    if (item) upd(kind, item.id, out);
+    else {
+      const base = kind === "rocks" ? { status: "on", archived: false } : kind === "todos" ? { done: false, cleared: false, doneAt: null } : { status: "active", doneAt: null };
+      write(() => db.collection(kind).add({ ...base, ...out, created: Date.now(), updated: Date.now() }), `${cfg.noun} added`);
+    }
+  };
+  dlg.showModal();
+  form.querySelector("#f-title").focus();
+}
+
+/* ---- header date ---- */
+(function () {
+  const d = today(); const add = (2 - d.getDay() + 7) % 7; d.setDate(d.getDate() + add);
+  document.getElementById("when").textContent =
+    (add === 0 ? "Today" : "Next: " + d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })) + " · 10:00 AM";
+})();
+
+/* ---- boot ---- */
+render();
+(async () => {
+  const [dbNs, user] = await Promise.all([window.claude?.use?.("db") ?? null, window.claude?.use?.("user") ?? null]);
+  if (!dbNs) {
+    document.getElementById("sections").replaceChildren(h("div", { class: "notice",
+      text: "Sign in to claude.ai to see and update the meeting list. Ask Chris for access if this page doesn't load." }));
+    return;
+  }
+  db = dbNs;
+  if (user) {
+    isOwner = await user.isOwner();
+    const c = await user.can("data.write");
+    canWrite = c === null ? null : c;
+  }
+  for (const col of ["rocks", "todos", "issues"]) {
+    db.collection(col).onSnapshot(
+      snap => { data[col] = snap.docs.map(d => ({ id: d.id, ...d.data() })); render(); },
+      () => { document.getElementById("sections").replaceChildren(h("div", { class: "notice",
+        text: "The meeting list stopped updating. Reload the page to reconnect." })); });
+  }
+})();
+</script>

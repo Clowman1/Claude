@@ -1,0 +1,70 @@
+<template>
+    <div class="backdrop" onclick={handleBackdrop}>
+        <section class="card" role="dialog" aria-modal="true" aria-labelledby="cs-title" aria-busy={loading}>
+            <header class="head" data-tour="comm-settings-intro">
+                <div>
+                    <h2 id="cs-title">Communication settings</h2>
+                    <p class="sub">Automated texts sent for you from the no-reply number {fromNumber}. Replies show in Up Next; answer them from your own phone.</p>
+                </div>
+                <button type="button" class="x" aria-label="Close" data-tour="comm-settings-close" onclick={close}>×</button>
+            </header>
+            <div class="body" data-tour="comm-settings-groups">
+                <template lwc:if={loading}>
+                    <p class="note">Loading…</p>
+                </template>
+                <template lwc:elseif={error}>
+                    <p class="error" role="alert">{error}</p>
+                </template>
+                <template lwc:else>
+                    <template for:each={groups} for:item="group">
+                        <section key={group.id} class="group">
+                            <h3 class="group-title">{group.label}</h3>
+                            <ul class="rows">
+                                <template for:each={group.rows} for:item="row">
+                                    <li key={row.key} class="row">
+                                        <div class="row-top">
+                                            <div class="row-copy">
+                                                <p class="row-label">{row.label}<template lwc:if={row.customized}><span class="tag">Edited</span></template></p>
+                                                <p class="row-when">{row.whenText}</p>
+                                            </div>
+                                            <button type="button" class={row.switchClass} role="switch" aria-checked={row.ariaOn}
+                                                aria-label={row.switchAria} data-key={row.key} disabled={saving} onclick={handleToggle}>
+                                                <span class="knob"></span><span class="switch-text">{row.onLabel}</span>
+                                            </button>
+                                        </div>
+                                        <template lwc:if={row.isEditing}>
+                                            <div class="editor" data-tour="comm-settings-editor">
+                                                <label class="sr-only" for="cs-body">Message</label>
+                                                <textarea id="cs-body" class="text" maxlength="1000" oninput={handleDraft} onselect={rememberCaret} onkeyup={rememberCaret} onclick={rememberCaret} value={draft}></textarea>
+                                                <p class="footer-preview">+ <b>No-reply</b> is always added on its own line</p>
+                                                <div class="tokens" role="group" aria-label="Insert a field">
+                                                    <template for:each={row.tokens} for:item="token">
+                                                        <button key={token} type="button" class="chip" data-token={token} onclick={handleToken}>{token}</button>
+                                                    </template>
+                                                </div>
+                                                <p class={countClass}>{countLabel}</p>
+                                                <div class="editor-actions">
+                                                    <button type="button" class="btn btn-link" disabled={saving} onclick={handleReset}>Reset to default</button>
+                                                    <span class="spacer"></span>
+                                                    <button type="button" class="btn" data-tour="comm-settings-cancel" onclick={cancelEdit}>Cancel</button>
+                                                    <button type="button" class="btn btn-primary" disabled={saveDisabled} onclick={handleSave}>{saveLabel}</button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template lwc:else>
+                                            <div class="preview">
+                                                <p class="preview-body">{row.body}</p>
+                                                <p class="preview-foot">No-reply</p>
+                                            </div>
+                                            <button type="button" class="btn btn-link edit" data-key={row.key} data-tour={row.editHook} onclick={startEdit}>Edit message</button>
+                                        </template>
+                                    </li>
+                                </template>
+                            </ul>
+                        </section>
+                    </template>
+                </template>
+            </div>
+        </section>
+    </div>
+</template>

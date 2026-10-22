@@ -4,7 +4,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import FORM_FACTOR from '@salesforce/client/formFactor';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import pulseResources from '@salesforce/resourceUrl/PULSEResources';
-import reachInverseLogo from '@salesforce/resourceUrl/reachInverseLogo';
+import reachLogoMark from '@salesforce/resourceUrl/Reach_Logo_Mark_White';
 import getData from '@salesforce/apex/LeadDocumentPortalController.initializeData';
 import { t, documentsReadyToSend, showCompleted, submitButton } from 'c/leadBorrowerPortalLabels';
 import submitPendingDocuments from '@salesforce/apex/LeadDocumentPortalController.submitPendingDocuments';
@@ -32,7 +32,7 @@ export default class LeadBorrowerPortalDocuments extends LightningElement {
         requested: 0,
         pending: 0
     };
-    reachLogoUrl = reachInverseLogo;
+    reachLogoUrl = reachLogoMark;
 
     @api
     get portalHash() {

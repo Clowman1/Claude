@@ -1,0 +1,20 @@
+<template>
+    <c-portal-list-layout
+        title="Realtor Prospects"
+        subtitle="New realtor relationships you imported or marked as prospects."
+        search-value={search}
+        search-placeholder="Search prospects"
+        loading={loading}
+        is-empty={isEmpty}
+        empty-title="No realtor prospects yet"
+        empty-message="Import realtor prospects from Import Data, or they will appear here once they are marked as prospects."
+        result-label={resultLabel}
+        row-type="generic"
+        items={partners}
+        onsearchchange={handleSearchChange}
+        onrowaction={handleRowAction}
+    ></c-portal-list-layout>
+    <template lwc:if={errorMessage}>
+        <p class="form-error" role="alert">{errorMessage}</p>
+    </template>
+</template>

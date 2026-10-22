@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Other_Lead_Team_Member__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Open Lead Team slot. Owner, Loan Partner or Scenario Manager can add anyone else who needs Note and Condition notifications for this lead.</inlineHelpText>
+    <label>Other Lead Team Member</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Leads (Other Lead Team Member)</relationshipLabel>
+    <relationshipName>Leads_Other_Lead_Team_Member</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

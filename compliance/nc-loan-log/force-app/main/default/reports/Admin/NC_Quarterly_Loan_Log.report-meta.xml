@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns><field>CUST_NAME</field></columns>
+    <columns><field>Transaction__c.Loan_Number__c</field></columns>
+    <columns><field>Transaction__c.Status__c</field></columns>
+    <columns><field>Transaction__c.Withdrawn_Reason__c</field></columns>
+    <columns><field>Transaction__c.Borrower_Name__c</field></columns>
+    <columns><field>Transaction__c.Loan_Officer__c</field></columns>
+    <columns><field>Transaction__c.NMLS_ID__c</field></columns>
+    <columns><field>Transaction__c.Channel__c</field></columns>
+    <columns><field>Transaction__c.Lender_lookup__c</field></columns>
+    <columns><field>Transaction__c.Property_Address__c</field></columns>
+    <columns><field>Transaction__c.Property_City__c</field></columns>
+    <columns><field>Transaction__c.County__c</field></columns>
+    <columns><field>Transaction__c.Property_State__c</field></columns>
+    <columns><field>Transaction__c.Property_Postal_Code__c</field></columns>
+    <columns><field>Transaction__c.Property_Type__c</field></columns>
+    <columns><field>Transaction__c.Occupancy__c</field></columns>
+    <columns><field>Transaction__c.Lien_Position__c</field></columns>
+    <columns><field>Transaction__c.Loan_Purpose__c</field></columns>
+    <columns><field>Transaction__c.Refinance_Purpose_Picklist__c</field></columns>
+    <columns><field>Transaction__c.Loan_Type_1st_TD__c</field></columns>
+    <columns><field>Transaction__c.Loan_Program_1st__c</field></columns>
+    <columns><field>Transaction__c.Loan_Amount_1st__c</field></columns>
+    <columns><field>Transaction__c.Purchase_Price__c</field></columns>
+    <columns><field>Transaction__c.Appraised_Value__c</field></columns>
+    <columns><field>Transaction__c.LTV__c</field></columns>
+    <columns><field>Transaction__c.CLTV__c</field></columns>
+    <columns><field>Transaction__c.Rate_1st_TD__c</field></columns>
+    <columns><field>Transaction__c.Term_1st__c</field></columns>
+    <columns><field>Transaction__c.FICO__c</field></columns>
+    <columns><field>Transaction__c.Origination_Charges__c</field></columns>
+    <columns><field>Transaction__c.Broker_Compensation__c</field></columns>
+    <columns><field>Transaction__c.Gross_Compensation__c</field></columns>
+    <columns><field>Transaction__c.TRID_Date__c</field></columns>
+    <columns><field>Transaction__c.Disclosures_Out_Date__c</field></columns>
+    <columns><field>Transaction__c.Approved_Date__c</field></columns>
+    <columns><field>Transaction__c.Closing_Date__c</field></columns>
+    <columns><field>Transaction__c.Funding_Date__c</field></columns>
+    <columns><field>Transaction__c.Withdrawn__c</field></columns>
+    <description>NCCOB quarterly loan log: NC loans decisioned last quarter (funded, or cancelled = denied/withdrawn/incomplete via Withdrawn Reason). Run after quarter end.</description>
+    <filter>
+        <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+        <criteriaItems><column>Transaction__c.Property_State__c</column><columnToColumn>false</columnToColumn><isUnlocked>true</isUnlocked><operator>equals</operator><value>NC,North Carolina</value></criteriaItems>
+        <criteriaItems><column>Transaction__c.Funding_Date__c</column><columnToColumn>false</columnToColumn><isUnlocked>true</isUnlocked><operator>equals</operator><value>LAST_QUARTER</value></criteriaItems>
+        <criteriaItems><column>Transaction__c.Withdrawn__c</column><columnToColumn>false</columnToColumn><isUnlocked>true</isUnlocked><operator>equals</operator><value>LAST_QUARTER</value></criteriaItems>
+    </filter>
+    <format>Tabular</format>
+    <name>NC Quarterly Loan Log (NCCOB)</name>
+    <params><name>co</name><value>1</value></params>
+    <reportType>CustomEntity$Transaction__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter><dateColumn>CUST_CREATED_DATE</dateColumn><interval>INTERVAL_CUSTOM</interval></timeFrameFilter>
+</Report>

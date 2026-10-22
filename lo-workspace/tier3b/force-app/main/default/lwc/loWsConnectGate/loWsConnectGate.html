@@ -1,0 +1,55 @@
+<template>
+    <div class="gate">
+        <template lwc:if={passed}>
+            <div class="gate-card gate-done">
+                <p class="gate-eyebrow">Step 1 of 3 done</p>
+                <h1 class="gate-title">You're all connected!</h1>
+                <p class="gate-sub">Nice work. Next up: a few quick questions so we can build your Perfect Week around you.</p>
+                <button type="button" class="btn btn-primary" onclick={handleContinue}>Let's go</button>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="gate-card">
+                <p class="gate-eyebrow">Step 1 of 3: Get connected</p>
+                <h1 class="gate-title">{greeting}</h1>
+                <p class="gate-sub">A few quick connections and LO Workspace is all yours. Each one saves you time every single day.</p>
+
+                <template lwc:if={error}>
+                    <p class="gate-error" role="alert">{error}</p>
+                </template>
+
+                <ul class="gate-list">
+                    <template for:each={rows} for:item="r">
+                        <li key={r.key} class={r.rowClass}>
+                            <div class="gate-row-head">
+                                <span class="gate-row-label">{r.label}</span>
+                                <span class={r.pillClass}>{r.pillText}</span>
+                            </div>
+                            <template lwc:if={r.showHelp}>
+                                <p class="gate-help">{r.help}</p>
+                                <div class="gate-actions">
+                                    <template lwc:if={r.showConnect}>
+                                        <button type="button" class="btn btn-primary" data-url={r.actionUrl} disabled={busy} onclick={handleConnect}>Connect RingCentral</button>
+                                    </template>
+                                    <template lwc:if={r.showAttest}>
+                                        <button type="button" class="btn btn-primary" disabled={busy} onclick={handleAttest}>I've connected</button>
+                                    </template>
+                                    <template lwc:if={r.showCheck}>
+                                        <button type="button" class="btn" disabled={busy} onclick={handleCheck}>Check again</button>
+                                    </template>
+                                </div>
+                            </template>
+                        </li>
+                    </template>
+                </ul>
+
+                <template lwc:if={hasMissing}>
+                    <div class="gate-lock" role="status">
+                        <p><strong>Still to connect:</strong> {missingText}.</p>
+                        <p>LO Workspace unlocks as soon as these turn green. Stuck on one? Contact Chris and he'll get you sorted.</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

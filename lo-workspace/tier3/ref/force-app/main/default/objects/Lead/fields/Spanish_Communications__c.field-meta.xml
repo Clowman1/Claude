@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Spanish_Communications__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Send this borrower their conditions, emails and document portal in Spanish. Deliberately separate from Spanish Speaker? (Intake Form), which drives Lead assignment - one switch cannot both reroute a lead and change its wording. Untranslated wording falls back to English.</description>
+    <inlineHelpText>Switches this borrower&apos;s conditions, request emails and document portal to Spanish. Does not affect Lead assignment.</inlineHelpText>
+    <label>Spanish Communications</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

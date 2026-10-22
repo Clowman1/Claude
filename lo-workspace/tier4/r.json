@@ -1,0 +1,2516 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.154.4.
+{
+  "status": 0,
+  "result": {
+    "done": true,
+    "fileProperties": [
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/portalUtils/portalUtils.js",
+        "fullName": "portalUtils/portalUtils.js",
+        "id": "0RdQi0000007QZ4KAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-08T22:39:45.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:31:21.000Z",
+        "fileName": "unpackaged/lwc/leadQuickActions/leadQuickActions.css",
+        "fullName": "leadQuickActions/leadQuickActions.css",
+        "id": "0RdQi0000005k3pKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-19T17:32:26.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:31:21.000Z",
+        "fileName": "unpackaged/lwc/leadQuickActions/leadQuickActions.html",
+        "fullName": "leadQuickActions/leadQuickActions.html",
+        "id": "0RdQi0000005k3qKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-19T17:32:32.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-06-18T21:31:21.000Z",
+        "fileName": "unpackaged/lwc/leadQuickActions/leadQuickActions.js",
+        "fullName": "leadQuickActions/leadQuickActions.js",
+        "id": "0RdQi0000005k3sKAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-19T17:32:32.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/perfectDayHome/perfectDayHome.css",
+        "fullName": "perfectDayHome/perfectDayHome.css",
+        "id": "0RdQi0000007QZDKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/perfectDayHome/perfectDayHome.html",
+        "fullName": "perfectDayHome/perfectDayHome.html",
+        "id": "0RdQi0000007QZEKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/perfectDayHome/perfectDayHome.js",
+        "fullName": "perfectDayHome/perfectDayHome.js",
+        "id": "0RdQi0000007QZGKA2",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:50.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalShell/externalLoPortalShell.css",
+        "fullName": "externalLoPortalShell/externalLoPortalShell.css",
+        "id": "0RdQi0000007QYrKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalShell/externalLoPortalShell.js",
+        "fullName": "externalLoPortalShell/externalLoPortalShell.js",
+        "id": "0RdQi0000007QYtKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:06.000Z",
+        "fileName": "unpackaged/lwc/externalLoPortalShell/externalLoPortalShell.html",
+        "fullName": "externalLoPortalShell/externalLoPortalShell.html",
+        "id": "0RdQi0000007QYuKAM",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:52.000Z",
+        "manageableState": "unmanaged",
+        "type": "LightningComponentBundle"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-21T14:43:57.800Z",
+        "fileName": "unpackaged/objects/Lead.object",
+        "fullName": "Lead",
+        "id": "000000000000000AAA",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-21T14:43:57.800Z",
+        "type": "CustomObject"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoActivityCatalog.cls",
+        "fullName": "ExternalLoActivityCatalog",
+        "id": "01pQi000003FNVeIAO",
+        "lastModifiedById": "0055x00000Bs3rBAAR",
+        "lastModifiedByName": "Salesforce Updates",
+        "lastModifiedDate": "2026-09-14T18:47:47.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-13T19:46:11.000Z",
+        "fileName": "unpackaged/classes/LoWsAutoTextService.cls",
+        "fullName": "LoWsAutoTextService",
+        "id": "01pQi000003KufSIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-20T17:03:14.000Z",
+        "fileName": "unpackaged/classes/TwilioStopKeywordService.cls",
+        "fullName": "TwilioStopKeywordService",
+        "id": "01pQi000003LyibIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T17:03:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2023-02-08T17:31:05.000Z",
+        "fileName": "unpackaged/classes/LeadRepository.cls",
+        "fullName": "LeadRepository",
+        "id": "01pAJ0000009GgRYAU",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T16:57:25.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-13T19:46:11.000Z",
+        "fileName": "unpackaged/classes/LoWsAutoTextServiceTest.cls",
+        "fullName": "LoWsAutoTextServiceTest",
+        "id": "01pQi000003KufTIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-08-31T17:37:17.000Z",
+        "fileName": "unpackaged/classes/TaskRepository.cls",
+        "fullName": "TaskRepository",
+        "id": "01pQi000003CdXCIA0",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T17:50:20.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-20T17:03:14.000Z",
+        "fileName": "unpackaged/classes/TwilioStopKeywordServiceTest.cls",
+        "fullName": "TwilioStopKeywordServiceTest",
+        "id": "01pQi000003LyicIAC",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T17:03:14.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoActivityRollupBuilder.cls",
+        "fullName": "ExternalLoActivityRollupBuilder",
+        "id": "01pQi000003FNVoIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T17:50:20.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoCsvImportService.cls",
+        "fullName": "ExternalLoCsvImportService",
+        "id": "01pQi000003FNVrIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "0055x00000Bs3rBAAR",
+        "createdByName": "Salesforce Updates",
+        "createdDate": "2026-09-14T18:47:47.000Z",
+        "fileName": "unpackaged/classes/ExternalLoCsvImportServiceTest.cls",
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "id": "01pQi000003FNVsIAO",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T20:24:35.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-08T18:29:54.000Z",
+        "fileName": "unpackaged/classes/LoWsTouchService.cls",
+        "fullName": "LoWsTouchService",
+        "id": "01pQi000003K2lVIAS",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-20T17:50:20.000Z",
+        "manageableState": "unmanaged",
+        "type": "ApexClass"
+      },
+      {
+        "createdById": "005f2000009OtLnAAK",
+        "createdByName": "Christopher Lowman",
+        "createdDate": "2026-10-21T14:43:58.017Z",
+        "fileName": "unpackaged/package.xml",
+        "fullName": "unpackaged/package.xml",
+        "id": "",
+        "lastModifiedById": "005f2000009OtLnAAK",
+        "lastModifiedByName": "Christopher Lowman",
+        "lastModifiedDate": "2026-10-21T14:43:58.017Z",
+        "manageableState": "unmanaged",
+        "type": "Package"
+      }
+    ],
+    "id": "09SQi00000PMW4TMAX",
+    "messages": [
+      {
+        "fileName": "unpackaged/package.xml",
+        "problem": "Entity of type 'ApexClass' named 'ExternalLoActivityRollupBuilderTest' cannot be found"
+      }
+    ],
+    "status": "Succeeded",
+    "success": true,
+    "files": [
+      {
+        "fullName": "ExternalLoActivityRollupBuilderTest",
+        "type": "ApexClass",
+        "state": "Failed",
+        "error": "Entity of type 'ApexClass' named 'ExternalLoActivityRollupBuilderTest' cannot be found",
+        "problemType": "Error"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\portalUtils\\portalUtils.js"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\portalUtils\\portalUtils.js-meta.xml"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.css"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.html"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.js"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\leadQuickActions\\leadQuickActions.js-meta.xml"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\perfectDayHome\\perfectDayHome.css"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\perfectDayHome\\perfectDayHome.html"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\perfectDayHome\\perfectDayHome.js"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\perfectDayHome\\perfectDayHome.js-meta.xml"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\externalLoPortalShell\\externalLoPortalShell.css"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\externalLoPortalShell\\externalLoPortalShell.html"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\externalLoPortalShell\\externalLoPortalShell.js"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\lwc\\externalLoPortalShell\\externalLoPortalShell.js-meta.xml"
+      },
+      {
+        "fullName": "Lead.Consumer Lead Process",
+        "type": "BusinessProcess",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\businessProcesses\\Consumer Lead Process.businessProcess-meta.xml"
+      },
+      {
+        "fullName": "Lead.Partner Relationship Dev",
+        "type": "BusinessProcess",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\businessProcesses\\Partner Relationship Dev.businessProcess-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor Lead process",
+        "type": "BusinessProcess",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\businessProcesses\\Realtor Lead process.businessProcess-meta.xml"
+      },
+      {
+        "fullName": "Lead.Leads_Custom_Compact_Layout",
+        "type": "CompactLayout",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\compactLayouts\\Leads_Custom_Compact_Layout.compactLayout-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Lead",
+        "type": "CompactLayout",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\compactLayouts\\Realtor_Lead.compactLayout-meta.xml"
+      },
+      {
+        "fullName": "Lead.ActiveCamp__ActiveCampaign_Sync_Status__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\ActiveCamp__ActiveCampaign_Sync_Status__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.ActiveCamp__Active_Campaign_Id__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\ActiveCamp__Active_Campaign_Id__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.ActiveCamp__Last_Synced__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\ActiveCamp__Last_Synced__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Address",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Address.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_Business__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_Business__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_First_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_First_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_Intake_Form__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_Intake_Form__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_Last_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_Last_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_Office_Address__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_Office_Address__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Agent_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Agent_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.AnnualRevenue",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\AnnualRevenue.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Assets__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Assets__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Borrower_1__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Borrower_1__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Borrower_2__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Borrower_2__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Credit__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Credit__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Goals__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Goals__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Household__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Household__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Income_B1__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Income_B1__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Income_B2__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Income_B2__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Other_Points__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Other_Points__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.App_Summary_Property__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\App_Summary_Property__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Appointment_Date_Time__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Appointment_Date_Time__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Appointment_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Appointment_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Appointment_Time_GMT__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Appointment_Time_GMT__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Appointment_Time__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Appointment_Time__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.AriveId__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\AriveId__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Arive_Status__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Arive_Status__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.BDR_New_Webhook_Sent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\BDR_New_Webhook_Sent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.BD_Attribution_Override__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\BD_Attribution_Override__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.BD_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\BD_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Best_Time_to_Contact__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Best_Time_to_Contact__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Birthdate__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Birthdate__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Biz_Dev__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Biz_Dev__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Branch_Manager__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Branch_Manager__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Branch__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Branch__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Buyer_Volume__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Buyer_Volume__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Buying_Agent_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Buying_Agent_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Buying_Agent_has_Changed__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Buying_Agent_has_Changed__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Buying_Timeline__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Buying_Timeline__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CW_Docs_Req_Webhook_Sent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CW_Docs_Req_Webhook_Sent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CampaignId",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CampaignId.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Candidate_Account__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Candidate_Account__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Channel__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Channel__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Closing_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Closing_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Attempt_1__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Attempt_1__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Attempt_2__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Attempt_2__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Attempt_3__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Attempt_3__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Contacted_Call_Back__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Contacted_Call_Back__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Docs_Received__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Docs_Received__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Docs_Requested__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Docs_Requested__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Pre_Approval__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Pre_Approval__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.CommSent_Working__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\CommSent_Working__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Comments__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Comments__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Company",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Company.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Consumer_Webinar_Contacted_Webhook_Sent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Consumer_Webinar_Contacted_Webhook_Sent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Call_Back_Message__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Call_Back_Message__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Campaign_Day_11__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Campaign_Day_11__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Campaign_Day_15__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Campaign_Day_15__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Campaign_Day_17__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Campaign_Day_17__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Campaign_Day_1__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Campaign_Day_1__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Campaign_Day_2__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Campaign_Day_2__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Campaign_Day_9__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contacted_Campaign_Day_9__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contingencies__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Contingencies__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Converted_Transaction_ID__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Converted_Transaction_ID__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Corrected_Mobile__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Corrected_Mobile__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Corrected_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Corrected_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.County_of_Operation__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\County_of_Operation__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Credit_Expiration_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Credit_Expiration_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Credit_Import_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Credit_Import_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Credit_Order_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Credit_Order_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Credit_Repair_Company__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Credit_Repair_Company__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_14_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_14_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_21_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_21_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_23_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_23_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_2_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_2_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_3_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_3_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_5_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_5_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Day_7_Campaign_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Day_7_Campaign_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Days_Since_Initial_Contact_To_PreApprov__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Days_Since_Initial_Contact_To_PreApprov__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Description",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Description.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.DoNotCall",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\DoNotCall.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Docs_Requested_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Docs_Requested_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Docs_Requested__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Docs_Requested__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Documents_Received_Message__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Documents_Received_Message__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Documents_Requested_Message__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Documents_Requested_Message__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Down_Payment_Amount__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Down_Payment_Amount__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Down_Payment_Percentage__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Down_Payment_Percentage__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Email",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Email.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Estimated_Cash_to_Close__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Estimated_Cash_to_Close__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Estimated_Monthly_Payment__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Estimated_Monthly_Payment__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Event_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Event_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Existing_Account__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Existing_Account__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.FB_Click_ID__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\FB_Click_ID__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Facebook__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Facebook__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Fax",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Fax.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.First_Contact_DateTime__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\First_Contact_DateTime__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.First_UTM_Campaign__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\First_UTM_Campaign__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.First_UTM_Content__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\First_UTM_Content__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.First_UTM_Medium__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\First_UTM_Medium__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.First_UTM_Source__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\First_UTM_Source__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.First_UTM_Term__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\First_UTM_Term__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Follow_Up_Account__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Follow_Up_Account__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Follows_Brandon_IG__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Follows_Brandon_IG__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.For_Deletion__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\For_Deletion__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Form_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Form_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.GenderIdentity",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\GenderIdentity.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Gift_Opt_In__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Gift_Opt_In__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Go_Fish__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Go_Fish__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.HOA__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\HOA__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.HasOptedOutOfEmail",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\HasOptedOutOfEmail.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.HasOptedOutOfFax",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\HasOptedOutOfFax.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Household_Income__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Household_Income__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Hyros_Ad_ID__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Hyros_Ad_ID__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Import_Identifier__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Import_Identifier__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.In_Person_Preapproval__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\In_Person_Preapproval__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.IndividualId",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\IndividualId.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Industry",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Industry.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Initial_Contact_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Initial_Contact_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Initial_Docs_Requested_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Initial_Docs_Requested_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Instagram__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Instagram__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Insurance__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Insurance__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Interest_Rate__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Interest_Rate__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Is_Recycled__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Is_Recycled__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Jigsaw",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Jigsaw.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.LO_Takeover_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\LO_Takeover_At__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.LTV__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\LTV__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Landing_Page__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Landing_Page__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.LastTransferDate",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\LastTransferDate.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_Call_Attempt_RingCentral__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_Call_Attempt_RingCentral__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_Call_DateTime__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_Call_DateTime__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_Call_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_Call_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_Call_Day_Ago__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_Call_Day_Ago__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_Note__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_Note__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_SMS_Attempt_RingCentral__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_SMS_Attempt_RingCentral__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_UTM_Campaign__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_UTM_Campaign__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_UTM_Content__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_UTM_Content__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_UTM_Medium__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_UTM_Medium__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_UTM_Source__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_UTM_Source__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Last_UTM_Term__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Last_UTM_Term__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.LeadSource",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\LeadSource.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Claimed__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Claimed__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Notes_JSON__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Notes_JSON__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Owner_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Owner_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Owner_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Owner_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Portal_Link_As_URL__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Portal_Link_As_URL__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Responded_to_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Responded_to_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Responded_to_Text__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Responded_to_Text__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Status_Value__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Lead_Status_Value__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Letter_Completed__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Letter_Completed__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.License_Number__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\License_Number__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.LinkedIn__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\LinkedIn__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Linktree_Status_Webhook_Sent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Linktree_Status_Webhook_Sent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.LoWs_Texts_Off__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\LoWs_Texts_Off__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Amount__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Amount__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Details__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Details__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Partner__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Partner__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Program__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Program__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Purpose__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Purpose__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Type_1st_TD__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Type_1st_TD__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Vol_12mo__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Vol_12mo__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Volume__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Loan_Volume__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Meta_Ad_ID__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Meta_Ad_ID__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Meta_Adset_ID__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Meta_Adset_ID__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Meta_Campaign_ID__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Meta_Campaign_ID__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Missing_Follow_Up__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Missing_Follow_Up__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.MobilePhone",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\MobilePhone.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.NMLS__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\NMLS__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Name",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Name.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Next_Touch_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Next_Touch_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Nickley_Realtor_LO__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Nickley_Realtor_LO__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Non_QM_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Non_QM_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Notes__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Notes__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.NumberOfEmployees",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\NumberOfEmployees.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Activities_in_Last_7_Days__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Activities_in_Last_7_Days__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Calls__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Calls__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Notes__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Notes__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Open_Nurture_Turndown_Tasks__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Open_Nurture_Turndown_Tasks__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Open_Preapproved_Tasks__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Open_Preapproved_Tasks__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Open_Under_Contract_Tasks__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Open_Under_Contract_Tasks__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Number_of_Transactions__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Number_of_Transactions__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Nurture_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Nurture_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Nurture__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Nurture__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Opt_In__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Opt_In__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Opt_Out_from_SMS_Automation__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Opt_Out_from_SMS_Automation__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Other_Lead_Team_Member__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Other_Lead_Team_Member__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.OwnerId",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\OwnerId.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Owner_First_Name__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Owner_First_Name__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Owner__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Owner__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Payment_Sum__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Payment_Sum__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Personal_Email__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Personal_Email__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Phone",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Phone.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Portal_Hash_Parameter__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Portal_Hash_Parameter__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Possible_Company_Switch__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Possible_Company_Switch__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Possible_In_House__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Possible_In_House__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Pre_Approval_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Pre_Approval_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Pre_Approval_Letter_HTML__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Pre_Approval_Letter_HTML__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Pre_Approval_Pass_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Pre_Approval_Pass_At__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Pre_Approved__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Pre_Approved__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Preferred_LO__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Preferred_LO__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Previous_Loan_Officer__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Previous_Loan_Officer__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Principal_and_Interest__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Principal_and_Interest__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Profile_URL__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Profile_URL__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Pronouns",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Pronouns.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Property_State__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Property_State__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Property_Tax__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Property_Tax__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Property_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Property_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Purchase_Price__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Purchase_Price__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.RETR_Link__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\RETR_Link__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Rating",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Rating.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Buying_Agent_Lead__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Realtor_Buying_Agent_Lead__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Buying_Agent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Realtor_Buying_Agent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Group_New__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Realtor_Group_New__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Group__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Realtor_Group__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Intake_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Realtor_Intake_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Lead_Source__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Realtor_Lead_Source__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recent_Agent_Company__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recent_Agent_Company__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recent_Agent_Partner__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recent_Agent_Partner__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Record_Type__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Record_Type__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recruit_Flag__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recruit_Flag__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recruit_List__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recruit_List__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recruit_Stage__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recruit_Stage__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recycle_Reactivated_At__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recycle_Reactivated_At__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Recycled_From_Transaction__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Recycled_From_Transaction__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.ReferralFormSourceEmail__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\ReferralFormSourceEmail__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Referral_Source__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Referral_Source__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Referred_By_Realtor_Group__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Referred_By_Realtor_Group__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Referred_By__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Referred_By__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Referrer__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Referrer__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Remote_LO__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Remote_LO__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Reviewed_Documents__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Reviewed_Documents__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.SSN__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\SSN__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Scenario_Manager__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Scenario_Manager__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Secondary_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Secondary_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Should_Send_Referral_Message__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Should_Send_Referral_Message__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Source_URL_Full__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Source_URL_Full__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Source_URL__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Source_URL__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Spanish_Communications__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Spanish_Communications__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Spanish_Speaker_Intake_Form__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Spanish_Speaker_Intake_Form__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Status",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Status.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Subject_Property_City__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Subject_Property_City__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Subject_Property_Street__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Subject_Property_Street__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Subject_Property_Zip__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Subject_Property_Zip__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Submission_Form_Completed__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Submission_Form_Completed__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.TRID_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\TRID_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Title",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Title.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Transaction_Coordinator__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Transaction_Coordinator__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Transaction_Is_Post_Closed__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Transaction_Is_Post_Closed__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.TwilioSF__Last_Message_Status_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\TwilioSF__Last_Message_Status_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.TwilioSF__Last_Message_Status__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\TwilioSF__Last_Message_Status__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.TwilioSF__Unformatted_Mobile__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\TwilioSF__Unformatted_Mobile__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.TwilioSF__Unformatted_Phone__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\TwilioSF__Unformatted_Phone__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.UTM_Content__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\UTM_Content__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.User_is_Owner__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\User_is_Owner__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.User_working_the_lead__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\User_working_the_lead__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Value_of_Property__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Value_of_Property__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Volume_Period__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Volume_Period__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Webinar_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Webinar_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Webinar_Registration_Date__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Webinar_Registration_Date__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Website",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Website.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Website_Status_Webhook_Sent__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Website_Status_Webhook_Sent__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Wireless_1__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Wireless_1__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Wireless_2__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Wireless_2__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Wireless_3__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Wireless_3__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Working_Message__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Working_Message__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Years_in_Business__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Years_in_Business__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Zillow__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Zillow__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Zoom_Preapproval__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\Zoom_Preapproval__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.smagicinteract__SMSOptOut__c",
+        "type": "CustomField",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\fields\\smagicinteract__SMSOptOut__c.field-meta.xml"
+      },
+      {
+        "fullName": "Lead.Active_House_Leads",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Active_House_Leads.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Active_Pre_Approvals_in_2026",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Active_Pre_Approvals_in_2026.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Biz_Dev_Team_Working_Leads",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Biz_Dev_Team_Working_Leads.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Biz_Dev_Team_Working_Leads_Boufford",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Biz_Dev_Team_Working_Leads_Boufford.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Consumer_webinar_leads",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Consumer_webinar_leads.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Copy_of_Active_Pre_Approvals_90_Days",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Copy_of_Active_Pre_Approvals_90_Days.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Copy_of_Leads_All",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Copy_of_Leads_All.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Copy_of_Leads_All_InIT",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Copy_of_Leads_All_InIT.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Copy_of_Leads_InIT",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Copy_of_Leads_InIT.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Copy_of_Leads_Manny",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Copy_of_Leads_Manny.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Home_Team_Pre_Approvals",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Home_Team_Pre_Approvals.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.InIT_Realtors_Referral_Pending",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\InIT_Realtors_Referral_Pending.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Intake_Form_Queue_Lead",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Intake_Form_Queue_Lead.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lauren_Refi_List",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Lauren_Refi_List.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Leads_All_LO",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\Leads_All_LO.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.My_Leads_New_to_Contact",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\My_Leads_New_to_Contact.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.My_Nurtured_Leads",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\My_Nurtured_Leads.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.My_Pre_Approvals",
+        "type": "ListView",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\listViews\\My_Pre_Approvals.listView-meta.xml"
+      },
+      {
+        "fullName": "Lead.Consumer_Lead_record_type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Consumer_Lead_record_type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Consumer_Under_Contract_Lead_Record_Type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Consumer_Under_Contract_Lead_Record_Type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Officer_Lead_Record_Type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Loan_Officer_Lead_Record_Type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Partner_Relationship_Dev",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Partner_Relationship_Dev.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Realtor_Lead_record_type",
+        "type": "RecordType",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\recordTypes\\Realtor_Lead_record_type.recordType-meta.xml"
+      },
+      {
+        "fullName": "Lead.Buyers_Agent_Required_for_Purchases",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Buyers_Agent_Required_for_Purchases.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Calls_Required_for_Status_Change",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Calls_Required_for_Status_Change.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Can_not_convert_without_Channel",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Can_not_convert_without_Channel.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Contacted_Call_Back_must_have_Appt_Date",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Contacted_Call_Back_must_have_Appt_Date.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Docs_Received_Message",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Docs_Received_Message.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Docs_Requested_Message",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Docs_Requested_Message.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lawrence_Lanos_Rule",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lawrence_Lanos_Rule.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Rating_and_Loan_Amount_Fields_requr",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_Rating_and_Loan_Amount_Fields_requr.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_Source_Change_Restricted",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_Source_Change_Restricted.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Lead_already_claimed",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Lead_already_claimed.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Officers_Cannot_Change_Owner",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Officers_Cannot_Change_Owner.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Partner_Reassignment_Restricted",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Partner_Reassignment_Restricted.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Loan_Purpose_Is_Required",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Loan_Purpose_Is_Required.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Megan_Cannot_Reassign_Loan_Partner",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Megan_Cannot_Reassign_Loan_Partner.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Message_for_Contacted_Call_Back",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Message_for_Contacted_Call_Back.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.No_Owner_Change_on_Leads",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\No_Owner_Change_on_Leads.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Preapproval_Type_Mutual_Exclusion",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Preapproval_Type_Mutual_Exclusion.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Select_Channel_Before_Converting",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Select_Channel_Before_Converting.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Submission_Form_must_be_completed",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Submission_Form_must_be_completed.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.Working_Message_Missing",
+        "type": "ValidationRule",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\validationRules\\Working_Message_Missing.validationRule-meta.xml"
+      },
+      {
+        "fullName": "Lead.ActiveCamp__Add_to_ActiveCampaign_Leads",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\ActiveCamp__Add_to_ActiveCampaign_Leads.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.GoogleMaps",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\GoogleMaps.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.GoogleNews",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\GoogleNews.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.GoogleSearch",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\GoogleSearch.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.Send_Bulk",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\Send_Bulk.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.Send_Bulk_SMS",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\Send_Bulk_SMS.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.Send_SMS",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\Send_SMS.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.TwilioSF__Twilio_Two_Way_Messages",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\TwilioSF__Twilio_Two_Way_Messages.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.rcsfl__SendSMS",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\rcsfl__SendSMS.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.smagicinteract__Send_Bulk_SMS",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\smagicinteract__Send_Bulk_SMS.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead.smagicinteract__Send_SMS",
+        "type": "WebLink",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\webLinks\\smagicinteract__Send_SMS.webLink-meta.xml"
+      },
+      {
+        "fullName": "Lead",
+        "type": "CustomObject",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\objects\\Lead\\Lead.object-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoActivityCatalog",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoActivityCatalog.cls"
+      },
+      {
+        "fullName": "ExternalLoActivityCatalog",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoActivityCatalog.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsAutoTextService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LoWsAutoTextService.cls"
+      },
+      {
+        "fullName": "LoWsAutoTextService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LoWsAutoTextService.cls-meta.xml"
+      },
+      {
+        "fullName": "TwilioStopKeywordService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\TwilioStopKeywordService.cls"
+      },
+      {
+        "fullName": "TwilioStopKeywordService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\TwilioStopKeywordService.cls-meta.xml"
+      },
+      {
+        "fullName": "LeadRepository",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LeadRepository.cls"
+      },
+      {
+        "fullName": "LeadRepository",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LeadRepository.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsAutoTextServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LoWsAutoTextServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsAutoTextServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LoWsAutoTextServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "TaskRepository",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\TaskRepository.cls"
+      },
+      {
+        "fullName": "TaskRepository",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\TaskRepository.cls-meta.xml"
+      },
+      {
+        "fullName": "TwilioStopKeywordServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\TwilioStopKeywordServiceTest.cls"
+      },
+      {
+        "fullName": "TwilioStopKeywordServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\TwilioStopKeywordServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoActivityRollupBuilder",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoActivityRollupBuilder.cls"
+      },
+      {
+        "fullName": "ExternalLoActivityRollupBuilder",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoActivityRollupBuilder.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoCsvImportService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoCsvImportService.cls"
+      },
+      {
+        "fullName": "ExternalLoCsvImportService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoCsvImportService.cls-meta.xml"
+      },
+      {
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoCsvImportServiceTest.cls"
+      },
+      {
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\ExternalLoCsvImportServiceTest.cls-meta.xml"
+      },
+      {
+        "fullName": "LoWsTouchService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LoWsTouchService.cls"
+      },
+      {
+        "fullName": "LoWsTouchService",
+        "type": "ApexClass",
+        "state": "Created",
+        "filePath": "C:\\Apps\\Claude Back Up\\lo-workspace\\tier4\\force-app\\main\\default\\classes\\LoWsTouchService.cls-meta.xml"
+      }
+    ]
+  },
+  "warnings": []
+}

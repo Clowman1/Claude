@@ -1,0 +1,63 @@
+<template>
+    <div class="content">
+        <div class="summary-header">
+            <h2 class="summary-title">Application Summary</h2>
+            <p class="summary-subtitle">Built from call summaries. Edit anything that is wrong; later calls add to it rather than replacing what you write.</p>
+        </div>
+
+        <template lwc:if={isLoading}>
+            <div class="loading-box"><lightning-spinner alternative-text="Loading application summary" size="small" variant="brand"></lightning-spinner></div>
+        </template>
+        <template lwc:else>
+            <template lwc:if={readOnly}>
+                <div class="read-only-banner">Read only. This summary is maintained by the loan officer.</div>
+            </template>
+            <template lwc:else>
+                <div class="co-borrower-toggle">
+                    <lightning-input type="checkbox" label="Include Co-Borrower" checked={hasCoBorrower} onchange={handleToggleCoBorrower}></lightning-input>
+                </div>
+            </template>
+
+            <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                <template for:each={visibleSections} for:item="section">
+                    <lightning-accordion-section key={section.name} name={section.name} label={section.label}>
+                        <template for:each={section.blocks} for:item="block">
+                            <div key={block.field} class="summary-block">
+                                <template lwc:if={section.showLabels}>
+                                    <p class="block-label">{block.label}</p>
+                                </template>
+                                <lightning-textarea
+                                    name={block.field}
+                                    label={block.label}
+                                    variant="label-hidden"
+                                    value={block.value}
+                                    disabled={readOnly}
+                                    onchange={handleBlockChange}
+                                    class="summary-text"
+                                    placeholder="Nothing captured yet. This fills in from call summaries."
+                                ></lightning-textarea>
+                            </div>
+                        </template>
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+
+            <template lwc:if={legacyNotes}>
+                <div class="legacy-section">
+                    <lightning-button variant="base" label={legacyToggleLabel} onclick={handleToggleLegacy}></lightning-button>
+                    <template lwc:if={showLegacy}>
+                        <pre class="legacy-body">{legacyNotes}</pre>
+                    </template>
+                </div>
+            </template>
+        </template>
+
+        <div class="footer-bar">
+            <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+            <template lwc:if={canSave}>
+                <lightning-button class="footer-gap" label="Save to Note" onclick={handleSaveToNote} disabled={isSaving}></lightning-button>
+                <lightning-button class="footer-gap" variant="brand" label="Save" onclick={handleSave} disabled={isSaving}></lightning-button>
+            </template>
+        </div>
+    </div>
+</template>

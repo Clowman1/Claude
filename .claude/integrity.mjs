@@ -12,7 +12,7 @@ const LOG = join(import.meta.dirname, 'integrity-log.md');
 const STAMP = join(import.meta.dirname, '.integrity-last-run');
 
 const FIELDS = [
-  'Id', 'Name', 'Status__c', 'Channel__c', 'MERS_Min__c', 'Loan_Number__c',
+  'Id', 'Name', 'Status__c', 'Channel__c', 'MERS_Min__c', 'Loan_Number__c', 'Lender_lookup__c',
   'Loan_Amount_1st__c', 'Rate_1st_TD__c', 'Loan_Purpose__c', 'Loan_Type_1st_TD__c',
   'Loan_Type_2nd_TD__c', 'Loan_Program_1st__c', 'Lien_Position__c', 'Occupancy__c', 'Lead_Source__c', 'Biz_Dev__c', 'Property_Address__c', 'Property_City__c',
   'Property_State__c', 'Property_Postal_Code__c', 'Property_Type__c', 'Closing_Date__c',
@@ -23,6 +23,8 @@ const FIELDS = [
   'Borrower_Name__r.PersonBirthdate', 'Loan_Officer__r.Name',
 ];
 const CLOSED = ['Post-Closed', 'Cancelled', 'Lost'];
+// Gold Star and NMSI issue their own MINs; we never generate one for their files.
+const OWN_MIN_LENDERS = ['0015x00002GLWuAAAX', '001Qi00001aarVGIAY'];
 const SOQL = `SELECT ${FIELDS.join(', ')} FROM Transaction__c ` +
   `WHERE Status__c NOT IN (${CLOSED.map(s => `'${s}'`).join(',')})`;
 
@@ -161,7 +163,7 @@ function evaluate(rows) {
     }
 
     // --- MERS MIN, Correspondent channel only ---
-    if (x.Channel__c === 'Correspondent') {
+    if (x.Channel__c === 'Correspondent' && !OWN_MIN_LENDERS.includes(x.Lender_lookup__c)) {
       if (!x.MERS_Min__c) add('mers', x, 'Correspondent file with no MERS MIN');
       else if (digits(x.MERS_Min__c).length !== 18) add('mers', x, 'MERS MIN not 18 digits (got ' + digits(x.MERS_Min__c).length + ')');
     }
@@ -277,9 +279,41 @@ if (process.argv.includes('--json')) {
   process.exit(0);
 }
 
+// --html: the 10 AM email body. Plain tags only; Outlook's sanitizer strips <style>/<span>.
+const TITLES = {
+  loan: 'Loan data', trid: 'TRID / disclosure dates',
+  mers: 'MERS MIN (correspondent files)', borrower: 'Borrower SSN / birthdate',
+};
+function htmlReport(rows, meta, F) {
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const total = Object.values(F).reduce((n, v) => n + v.length, 0);
+  const files = new Set(Object.values(F).flat().map(f => f.id)).size;
+  const H = [];
+  H.push(total
+    ? '<p><b>' + total + ' issue' + (total === 1 ? '' : 's') + ' on ' + files + ' of ' + rows.length + ' files.</b></p>'
+    : '<p><b>All ' + rows.length + ' files are clean.</b></p>');
+  const clean = Object.keys(F).filter(k => !F[k].length).map(k => TITLES[k]);
+  for (const k of Object.keys(F).filter(k => F[k].length)) {
+    const by = new Map();
+    for (const f of F[k]) (by.get(f.id) || by.set(f.id, { ...f, reasons: [] }).get(f.id)).reasons.push(f.reason);
+    H.push('<h3>' + esc(TITLES[k]) + ' (' + F[k].length + ')</h3>');
+    H.push('<table border="1" cellpadding="6" cellspacing="0"><tr><th>File</th><th>LO</th><th>Status</th><th>Issue</th></tr>');
+    for (const f of [...by.values()].sort((a, b) => a.lo.localeCompare(b.lo)))
+      H.push('<tr><td><a href="https://reachhomeloans.lightning.force.com/lightning/r/Transaction__c/' + f.id + '/view">' +
+        esc(f.name) + '</a></td><td>' + esc(f.lo) + '</td><td>' + esc(f.status) + '</td><td>' +
+        f.reasons.map(esc).join('<br>') + '</td></tr>');
+    H.push('</table>');
+  }
+  if (clean.length) H.push('<p>No issues: ' + clean.map(esc).join(', ') + '.</p>');
+  H.push('<p><i>Checked ' + rows.length + ' of ' + meta.totalActive + ' active files at Pre-Processing or later' +
+    ' (skipped ' + meta.early.length + ' earlier, ' + meta.testRows.length + ' test' +
+    (meta.unknown.length ? ', ' + meta.unknown.length + ' with an unrecognized status' : '') + ').</i></p>');
+  return H.join('\n');
+}
+
 const text = report(kept, meta, F);
 const total = Object.values(F).reduce((n, v) => n + v.length, 0);
 appendFileSync(LOG, '\n\n---\n\n## ' + stampToday() + ' -- ' + kept.length + ' reviewed, ' +
   total + ' issues (loan ' + F.loan.length + ' / trid ' + F.trid.length +
   ' / mers ' + F.mers.length + ' / borrower ' + F.borrower.length + ')\n\n```\n' + text + '\n```\n');
-console.log(text);
+console.log(process.argv.includes('--html') ? htmlReport(kept, meta, F) : text);

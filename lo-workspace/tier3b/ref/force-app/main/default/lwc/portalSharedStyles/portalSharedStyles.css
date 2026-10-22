@@ -1,0 +1,108 @@
+/*
+ * Shared portal styling primitives. Import from a component stylesheet with:
+ *   @import 'c/portalSharedStyles';
+ * Keep spinner timing, loading states, and inline form errors identical across
+ * every Partner Workspace component by editing them here only.
+ */
+
+/* Linked Prototype design tokens. Edit here only. */
+:host {
+    --pw-navy-50: #f1f5fa;  --pw-navy-100: #dfe8f3; --pw-navy-200: #c0d1e6;
+    --pw-navy-300: #94b0d2; --pw-navy-400: #5f83b3; --pw-navy-500: #3d6296;
+    --pw-navy-600: #2c4a76; --pw-navy-700: #243c60; --pw-navy-800: #1a2d4a;
+    --pw-navy-900: #0f1f36;
+
+    --pw-brand-50: #eff6ff;  --pw-brand-100: #dbeafe; --pw-brand-200: #bfdbfe;
+    --pw-brand-300: #93c5fd; --pw-brand-400: #60a5fa; --pw-brand-500: #2f7ce0;
+    --pw-brand-600: #1d63c4; --pw-brand-700: #1a4f9e; --pw-brand-800: #1a4280;
+    --pw-brand-900: #1b3a6b;
+
+    --pw-teal-50: #effcfb;  --pw-teal-100: #d6f6f4; --pw-teal-200: #aeecea;
+    --pw-teal-300: #79dcdb; --pw-teal-400: #41c3c4; --pw-teal-500: #189fa4;
+    --pw-teal-600: #0e7f85; --pw-teal-700: #0e666b; --pw-teal-800: #105157;
+    --pw-teal-900: #0f4348;
+
+    --pw-success-50: #f0fdf4; --pw-success-100: #dcfce7; --pw-success-200: #bbf7d0;
+    --pw-success-500: #16a34a; --pw-success-600: #15803d; --pw-success-700: #166534;
+
+    --pw-warn-50: #fff8ed; --pw-warn-100: #ffefd5; --pw-warn-200: #fed7aa;
+    --pw-warn-500: #e07a11; --pw-warn-600: #c2620b; --pw-warn-700: #9a4d0c;
+
+    --pw-danger-50: #fef2f2; --pw-danger-100: #fee2e2; --pw-danger-200: #fecaca;
+    --pw-danger-500: #dc2626; --pw-danger-600: #b91c1c; --pw-danger-700: #991b1b;
+
+    --pw-surface: #ffffff;
+    --pw-canvas: #f7f8fa;
+
+    --pw-ink-900: #0f1f36;
+    --pw-ink-700: #243c60;
+    --pw-ink-600: #2c4a76;
+    --pw-ink-500: #3d6296;
+    --pw-ink-400: #5f83b3;
+    --pw-line: #dfe8f3;
+    --pw-line-subtle: #f1f5fa;
+
+    --pw-radius-card: 18px;
+    --pw-radius-tile: 14px;
+    --pw-radius-control: 8px;
+
+    --pw-shadow-card: 0 1px 2px 0 rgba(15, 31, 54, 0.04), 0 1px 3px 0 rgba(15, 31, 54, 0.06);
+    --pw-shadow-raised: 0 4px 16px -4px rgba(15, 31, 54, 0.12);
+    --pw-shadow-panel: 8px 0 32px -12px rgba(15, 31, 54, 0.24);
+
+    --pw-font: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Prototype focus ring. Keyboard only, so pointer users keep a clean surface. */
+:host :focus-visible {
+    outline: 2px solid var(--pw-brand-500, #2f7ce0);
+    outline-offset: 2px;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.spinner-lg {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+    color: #1d63c4;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.detail-loading {
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail-loading-copy {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d4a8c;
+}
+
+.form-error {
+    color: var(--pw-danger-700, #991b1b);
+    background: var(--pw-danger-50, #fef2f2);
+    border: 1px solid var(--pw-danger-200, #fecaca);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 12px;
+}

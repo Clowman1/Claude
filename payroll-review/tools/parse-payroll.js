@@ -54,7 +54,11 @@ const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0
 const payDate = iso(pd);
 const feedbackCloses = iso(new Date(pd.getFullYear(), pd.getMonth(), 8));
 const reviewCloses = iso(new Date(pd.getFullYear(), pd.getMonth(), 11));
-const units = +((norm(main[1].A).match(/(\d+) Funded Files/) || [])[1] || 0);
+const headerUnits = +((norm(main[1].A).match(/(\d+) Funded Files/) || [])[1] || 0);
+
+// DPA 2nd loans are never shown or counted (any row whose loan type / program says DPA).
+const DPA = /\bDPA\b/i;
+const checks = [];
 
 // Main tab person blocks: "NAME - Role" header, then Loan rows, then "<Name> Total".
 const blocks = {};
@@ -78,6 +82,10 @@ for (const r of main) {
         cur.total = r.H;
         cur = null;
     } else if (typeof r.B === 'number' && typeof r.H === 'number' && a && a !== 'Loan') {
+        if (DPA.test(norm(r.D))) {
+            checks.push(`DPA 2nd ON MAIN TAB: ${cur.name} / ${a} (${norm(r.D)}) left out of the rows, but the paid total may include it. Fix the workbook.`);
+            continue;
+        }
         cur.lines.push({ section, loan: a, loanAmount: r.B, bizDev: norm(r.C), rate: norm(r.G), commission: r.H });
     }
 }
@@ -85,14 +93,21 @@ for (const r of main) {
 // Raw Data tab: header row gives the columns.
 const head = raw[0];
 const col = (label) => Object.keys(head).find((k) => norm(head[k]).toLowerCase() === label.toLowerCase());
-const C = { name: col('Transaction Name'), amt: col('Total Loan Amount'), lp: col('Loan Partner'), biz: col('Biz Dev') };
+const C = { name: col('Transaction Name'), amt: col('Total Loan Amount'), lp: col('Loan Partner'), biz: col('Biz Dev'), type: col('Loan Type'), program: col('Loan Program') };
 const rawLoans = raw
     .slice(1)
     .filter((r) => r[C.name] && !/^TOTALS/i.test(r[C.name]))
-    .map((r) => ({ loan: norm(r[C.name]).split(' - ')[0], amount: +r[C.amt], lp: norm(r[C.lp]), bizDev: norm(r[C.biz]) }));
+    .filter((r) => {
+        const dpa = DPA.test(norm(r[C.type])) || DPA.test(norm(r[C.program]));
+        if (dpa) checks.push(`DPA 2nd IN RAW DATA: ${norm(r[C.name])} excluded from LOA rows and Byron's units/volume.`);
+        return !dpa;
+    })
+    .map((r) => ({ number: norm(r[C.name]).split(' - ')[1] || '', loan: norm(r[C.name]).split(' - ')[0], amount: +r[C.amt], lp: norm(r[C.lp]), bizDev: norm(r[C.biz]) }));
+
+const units = rawLoans.length;
+if (headerUnits && headerUnits !== units) checks.push(`UNITS: header says ${headerUnits} funded files, Raw Data has ${units} (after DPA 2nd removed).`);
 
 const people = [];
-const checks = [];
 for (const name of [...new Set([...LOS, ...LOAS, ...BONUS])]) {
     const b = blocks[name];
     if (BONUS.includes(name)) {
@@ -141,6 +156,8 @@ console.log(`${period} · pay date ${payDate} · feedback closes ${feedbackClose
 for (const p of people) console.log(`  ${p.name.padEnd(20)} ${String(p.lines.length).padStart(3)} rows   total $${p.total.toFixed(2)}`);
 console.log(checks.length ? `\nCHECKS:\n  ${checks.join('\n  ')}` : '\nCHECKS: none');
 if (out) fs.writeFileSync(out, JSON.stringify(payload, null, 2));
+// For the Salesforce DPA 2nd cross-check (LOADING.md step 2).
+console.log(`\nRAW LOAN NUMBERS: ${rawLoans.map((l) => l.number).filter(Boolean).join(',')}`);
 
 // Anonymous Apex that loads it: sf apex run -o Production -f <out>.apex
 if (out) {

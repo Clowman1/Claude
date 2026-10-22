@@ -1,0 +1,229 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Blocked conversion preview</title><style>
+body{margin:0;background:#f3f3f3;font-family:"Salesforce Sans",-apple-system,"Segoe UI",Arial,sans-serif;color:#181818}
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 31, 54, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9000;
+}
+
+.modal-card {
+    width: min(640px, 100%);
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #dfe8f3;
+    box-shadow: 0 24px 48px rgba(15, 31, 54, 0.18);
+}
+
+.modal-header {
+    padding: 20px 20px 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.modal-header p {
+    margin: 8px 0 0;
+    color: #3d6296;
+    font-size: 14px;
+}
+
+.modal-body {
+    padding: 16px 20px;
+}
+
+.modal-body.loading {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checklist-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px solid #f1f5fa;
+    font-size: 14px;
+}
+
+.checklist-row:first-child {
+    border-top: none;
+}
+
+.checklist-row dt {
+    color: #3d6296;
+}
+
+.checklist-row dd {
+    margin: 0;
+    font-weight: 600;
+    white-space: pre-wrap;
+}
+
+.warning {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff8e6;
+    border: 1px solid #f1d38a;
+    font-size: 13px;
+}
+
+.ack {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 20px 20px;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-outline {
+    border: 1px solid #c7d6ea;
+    background: #fff;
+    color: #243c60;
+}
+
+.btn-brand {
+    border: none;
+    background: #1b4d8c;
+    color: #fff;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.checklist-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+}
+.received-btn {
+    margin-left: auto;
+    padding: 3px 10px;
+    border: 1px solid #c9d6ea;
+    border-radius: 999px;
+    background: #eef3fb;
+    color: #24386a;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.received-btn:focus-visible {
+    outline: 2px solid #24386a;
+    outline-offset: 2px;
+}
+/* Conversion refused by LeadConversionGuardService: open document requests or undecisioned files. */
+.eyebrow-warn {
+    margin: 0 0 6px;
+    color: #b45309;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.block-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.block-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border: 1px solid #f1d38a;
+    border-radius: 12px;
+    background: #fff8e6;
+    color: #243c60;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.block-num {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #b45309;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block-note {
+    margin: 14px 0 0;
+    color: #3d6296;
+    font-size: 13px;
+}
+.block-where {
+    display: block;
+    margin-top: 2px;
+}
+
+.block-list .block-items {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    list-style: disc;
+    display: block;
+}
+
+.block-list .block-items li {
+    display: list-item;
+    padding: 2px 0;
+    border: none;
+    background: none;
+    font-weight: 600;
+}
+</style></head><body>
+<section class="modal-backdrop"><div class="modal-card">
+<header class="modal-header"><p class="eyebrow-warn">Not converted &middot; nothing on the lead has changed</p><h2>This lead can't convert yet</h2><p>Finish the document review first. Every item below has to be done before Convert to Transaction will work.</p></header>
+<div class="modal-body"><ul class="block-list">
+<li><span class="block-num">!</span><span><strong>2 uploaded documents waiting for your approve / reject decision</strong><span class="block-where">Open the <strong>Documents</strong> tab and approve or reject each one.</span><ul class="block-items"><li>Most recent 30 days of paystubs</li><li>2 months of bank statements</li></ul></span></li>
+<li><span class="block-num">!</span><span><strong>1 open condition still owed by the borrower</strong><span class="block-where">Open the <strong>Document requests</strong> tab and clear, approve or complete each one.</span><ul class="block-items"><li>Copy of driver's license</li></ul></span></li>
+</ul><p class="block-note">Come back and click Convert to Transaction again once every item is done.</p></div>
+<footer class="modal-footer"><button type="button" class="btn btn-brand">Got it</button></footer>
+</div></section></body></html>

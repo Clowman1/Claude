@@ -1,0 +1,19 @@
+<template>
+    <template lwc:if={showCard}>
+        <c-bd-upcoming-card heading="Upcoming In-person Events" events={upcoming} can-edit
+            onopentracker={openTracker} onopencalendar={openCalendar}></c-bd-upcoming-card>
+    </template>
+    <template lwc:elseif={showError}>
+        <lightning-card title="Upcoming In-person Events">
+            <p class="slds-p-horizontal_medium slds-text-color_error" role="alert">Events could not be loaded: {error}</p>
+        </lightning-card>
+    </template>
+    <template lwc:if={showInvite}>
+        <c-bd-invite-modal heading="In Person Invite" scope="lo" partners={partners} preselected-ids={inviteFor}
+            rep-first-name={data.repFirstName} onclose={closeInvite} onsent={inviteSent}></c-bd-invite-modal>
+    </template>
+    <c-lo-ws-appointments hide-card></c-lo-ws-appointments>
+    <template lwc:if={trackerId}>
+        <c-bd-event-tracker campaign-id={trackerId} can-edit hide-open onclose={closeTracker}></c-bd-event-tracker>
+    </template>
+</template>

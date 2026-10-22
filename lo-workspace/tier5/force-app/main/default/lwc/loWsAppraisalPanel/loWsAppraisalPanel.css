@@ -1,0 +1,62 @@
+.appraisal { display: grid; gap: 1rem; }
+.card { display: grid; gap: 14px; background: #fff; border: 1px solid #dfe8f3; border-radius: 12px; padding: 1rem 1.25rem; }
+.card-title { margin: 0; font-size: 0.95rem; font-weight: 700; color: #1a2d4a; }
+.muted { color: #5b6b82; font-size: 0.85rem; margin: 0; }
+.notice { margin: 0; padding: 0.6rem 0.9rem; border-radius: 8px; background: #fdf0dc; color: #a35a00; }
+
+/* Status line */
+.hero { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 12px 14px; border-radius: 10px; background: #f1f5fa; }
+.hero-title { margin: 0; font-size: 1rem; font-weight: 700; color: #0f1f36; }
+.hero-meta { margin-left: auto; font-size: 0.8rem; color: #5b6b82; }
+.pill { padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+.pill-info { background: #e6effb; color: #1d63c4; }
+.pill-ok { background: #e3f4ea; color: #17794a; }
+.pill-warn { background: #fdf0dc; color: #a35a00; }
+.pill-bad { background: #fbe6e6; color: #a32020; }
+
+/* Four-step tracker */
+.stepper { display: grid; grid-template-columns: repeat(4, 1fr); list-style: none; margin: 0; padding: 0; }
+.step { position: relative; display: grid; justify-items: center; gap: 4px; text-align: center; font-size: 0.8rem; }
+.step::before { content: ""; position: absolute; top: 12px; left: -50%; width: 100%; height: 2px; background: #c0d1e6; }
+.step:first-child::before { display: none; }
+.step-done::before, .step-now::before { background: #1d63c4; }
+.dot { position: relative; z-index: 1; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #c0d1e6; background: #fff; font-size: 0.7rem; font-weight: 700; color: #5b6b82; }
+.step-done .dot { background: #1d63c4; border-color: #1d63c4; color: #fff; }
+.step-now .dot { border-color: #1d63c4; color: #1d63c4; box-shadow: 0 0 0 4px #e6effb; }
+.step-label { font-weight: 600; color: #0f1f36; }
+.step-date { color: #5b6b82; min-height: 1em; }
+
+/* Key facts */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1px; margin: 0; background: #dfe8f3; border: 1px solid #dfe8f3; border-radius: 10px; overflow: hidden; }
+.facts > div { background: #fff; padding: 10px 12px; }
+.fact-wide { grid-column: 1 / -1; }
+.facts dt { font-size: 0.7rem; color: #5b6b82; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+.facts dd { margin: 0.15rem 0 0; font-weight: 600; color: #0f1f36; }
+
+/* Collapsed sections */
+.fold { border: 1px solid #dfe8f3; border-radius: 10px; padding: 0 12px; }
+.fold summary { padding: 10px 0; cursor: pointer; font-size: 0.85rem; font-weight: 600; color: #1d63c4; }
+.fold[open] { padding-bottom: 12px; }
+.timeline, .docs, .comments { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.timeline li, .docs li { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: baseline; }
+.timeline-title { font-weight: 600; color: #1a2d4a; }
+.view-switch { display: inline-flex; gap: 6px; margin-bottom: 10px; }
+.view-btn { padding: 0.35rem 0.85rem; border: 1px solid #c0d1e6; border-radius: 999px; background: #fff; color: #243c60; font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+.view-btn-active { background: #e6effb; border-color: #1d63c4; color: #1d63c4; }
+.map-frame { display: block; width: 100%; height: 300px; border: 0; border-radius: 10px; }
+
+/* Documents and messages */
+.link-btn { background: none; border: 0; padding: 0; color: #1d63c4; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+.bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; border: 1px solid #dfe8f3; background: #f1f5fa; }
+.comment-body { margin: 0; white-space: pre-wrap; color: #1a2d4a; }
+.comment-meta { margin: 4px 0 0; font-size: 0.75rem; font-weight: 600; color: #3d6296; }
+.composer { display: grid; gap: 8px; border: 1px solid #c0d1e6; border-radius: 10px; padding: 8px 10px; }
+.composer-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.send-btn { padding: 0.45rem 1rem; border: 0; border-radius: 8px; background: #1d63c4; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.send-btn:disabled { opacity: 0.5; cursor: default; }
+.link-btn:focus-visible, .send-btn:focus-visible, .view-btn:focus-visible, .fold summary:focus-visible { outline: 2px solid #1d63c4; outline-offset: 2px; }
+
+@media (max-width: 480px) {
+    .step-date { display: none; }
+    .hero-meta { margin-left: 0; }
+}

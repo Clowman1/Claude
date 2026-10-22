@@ -1,0 +1,25 @@
+<template>
+    <fieldset class="block">
+        <legend class="legend">Follow-up</legend>
+        <div class="row">
+            <template for:each={modes} for:item="m">
+                <button key={m.id} type="button" class={m.className} data-id={m.id} aria-pressed={m.pressed} onclick={handleMode}>{m.label}</button>
+            </template>
+        </div>
+        <template lwc:if={isGeneral}>
+            <div class="row row-gap">
+                <template for:each={presets} for:item="p">
+                    <button key={p.id} type="button" class={p.className} data-id={p.id} aria-pressed={p.pressed} onclick={handlePreset}>{p.label}</button>
+                </template>
+            </div>
+            <template lwc:if={isOnDate}>
+                <input class="input" type="date" min={minDate} value={dateValue} aria-label="Follow-up date" onchange={handleDate} />
+            </template>
+            <p class="hint">Adds a to-do for that day. On the day it is due it appears in your Up Next on Perfect Day, and stays there until you mark it complete.</p>
+        </template>
+        <template lwc:if={isExact}>
+            <input class="input row-gap" type="datetime-local" min={minDatetime} value={datetimeValue} aria-label="Follow-up date and time" onchange={handleDatetime} />
+            <p class="hint">Adds a 30-minute appointment to your calendar.</p>
+        </template>
+    </fieldset>
+</template>

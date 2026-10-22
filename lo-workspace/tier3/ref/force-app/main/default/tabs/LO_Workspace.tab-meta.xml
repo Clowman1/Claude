@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Your daily workspace: Perfect Day, goals, leads, pre-approvals, loans and partners.</description>
+    <flexiPage>LO_Workspace</flexiPage>
+    <label>Perfect Day</label>
+    <motif>Custom24: Building</motif>
+</CustomTab>

@@ -1,0 +1,92 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-label={dialogLabel}>
+        <div class="modal-card">
+            <template lwc:if={isBlocked}>
+                <header class="modal-header">
+                    <p class="eyebrow-warn">Not converted &middot; nothing on the lead has changed</p>
+                    <h2>This lead can't convert yet</h2>
+                    <p>Finish the document review first. Every item below has to be done before Convert to Transaction will work.</p>
+                </header>
+                <div class="modal-body">
+                    <template lwc:if={loading}>
+                        <lightning-spinner alternative-text="Loading open items" size="small"></lightning-spinner>
+                    </template>
+                    <ul class="block-list">
+                        <template lwc:if={hasDocumentsAwaitingDecision}>
+                            <li>
+                                <span class="block-num">!</span>
+                                <span>
+                                    <strong>{documentsHeading}</strong>
+                                    <span class="block-where">Open the <strong>Documents</strong> tab and approve or reject each one.</span>
+                                    <ul class="block-items">
+                                        <template for:each={documentRows} for:item="item">
+                                            <li key={item.key}>{item.label}</li>
+                                        </template>
+                                    </ul>
+                                </span>
+                            </li>
+                        </template>
+                        <template lwc:if={hasOpenConditions}>
+                            <li>
+                                <span class="block-num">!</span>
+                                <span>
+                                    <strong>{conditionsHeading}</strong>
+                                    <span class="block-where">Open the <strong>Document requests</strong> tab and clear, approve or complete each one.</span>
+                                    <ul class="block-items">
+                                        <template for:each={conditionRows} for:item="item">
+                                            <li key={item.key}>{item.label}</li>
+                                        </template>
+                                    </ul>
+                                </span>
+                            </li>
+                        </template>
+                    </ul>
+                    <p class="block-note">Come back and click Convert to Transaction again once every item is done.</p>
+                </div>
+                <footer class="modal-footer">
+                    <button type="button" class="btn btn-brand" onclick={handleDecline}>Got it</button>
+                </footer>
+            </template>
+            <template lwc:else>
+            <header class="modal-header">
+                <h2>Confirm TRID application pieces</h2>
+                <p>Tick each item you have current information for, then confirm to convert. Decline leaves the lead unchanged.</p>
+            </header>
+
+            <template lwc:if={loading}>
+                <div class="modal-body loading" aria-busy="true">
+                    <lightning-spinner alternative-text="Loading checklist"></lightning-spinner>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="modal-body">
+                    <dl class="checklist">
+                        <template for:each={checklistRows} for:item="row">
+                            <div key={row.key} class="checklist-row">
+                                <dt>{row.label}</dt>
+                                <dd class="checklist-value">
+                                    <label class="have-info">
+                                        <input type="checkbox" data-label={row.label} checked={row.checked} disabled={row.locked} onchange={handleHaveInfo} />
+                                        <span>Yes, I have this</span>
+                                    </label>
+                                </dd>
+                            </div>
+                        </template>
+                    </dl>
+                    <label class="ack">
+                        <input type="checkbox" checked={acknowledged} onchange={handleAckChange} />
+                        <span>I confirm these application pieces are accurate and I am ready to convert this lead.</span>
+                    </label>
+                </div>
+            </template>
+
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick={handleDecline} disabled={saving}>Decline</button>
+                <button type="button" class="btn btn-brand" onclick={handleConfirm} disabled={disableConfirm}>
+                    Confirm conversion
+                </button>
+            </footer>
+            </template>
+        </div>
+    </section>
+</template>

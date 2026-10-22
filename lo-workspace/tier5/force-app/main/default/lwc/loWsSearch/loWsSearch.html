@@ -1,0 +1,69 @@
+<template>
+    <div class={hostClass} onfocusout={handleFocusOut}>
+        <template lwc:if={showInput}>
+            <div class="field">
+                <c-portal-icon class="field-icon" name="search" size="16"></c-portal-icon>
+                <input
+                    lwc:ref="input"
+                    type="search"
+                    class="field-input"
+                    placeholder="Search leads, loans, clients, partners"
+                    autocomplete="off"
+                    role="combobox"
+                    aria-label="Search your records"
+                    aria-autocomplete="list"
+                    aria-controls="lows-search-listbox"
+                    aria-expanded={ariaExpanded}
+                    aria-activedescendant={activeDescendant}
+                    value={term}
+                    oninput={handleInput}
+                    onkeydown={handleKeydown}
+                    onfocus={handleFocus}
+                />
+                <template lwc:if={term}>
+                    <button type="button" class="field-clear" aria-label="Clear search" title="Clear search" onclick={clear}><c-portal-icon name="x" size="14"></c-portal-icon></button>
+                </template>
+            </div>
+        </template>
+        <template lwc:else>
+            <button type="button" lwc:ref="iconBtn" class="icon-btn" aria-label="Search your records" title="Search" onclick={expand}><c-portal-icon name="search" size="20"></c-portal-icon></button>
+        </template>
+
+        <template lwc:if={showPanel}>
+            <div class="panel" id="lows-search-listbox" role="listbox" aria-label="Search results" onmousedown={keepFocus}>
+                <template lwc:if={loading}>
+                    <p class="panel-note" role="status">Searching…</p>
+                </template>
+                <template lwc:elseif={error}>
+                    <p class="panel-note panel-error" role="alert">{error}</p>
+                </template>
+                <template lwc:elseif={isEmpty}>
+                    <p class="panel-note" role="status">No matches in your records.</p>
+                </template>
+                <template lwc:else>
+                    <template for:each={options} for:item="g">
+                        <div key={g.key} class="group" role="group" aria-label={g.label}>
+                            <p class="group-label" aria-hidden="true">{g.label}</p>
+                            <template for:each={g.items} for:item="item">
+                                <div
+                                    key={item.id}
+                                    id={item.optionId}
+                                    class={item.cls}
+                                    role="option"
+                                    aria-selected={item.selected}
+                                    data-index={item.index}
+                                    onclick={handleOptionClick}
+                                >
+                                    <span class="option-title">{item.title}</span>
+                                    <template lwc:if={item.subtitle}>
+                                        <span class="option-sub">{item.subtitle}</span>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

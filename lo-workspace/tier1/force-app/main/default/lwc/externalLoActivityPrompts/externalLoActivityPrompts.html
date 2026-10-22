@@ -1,0 +1,107 @@
+<template>
+    <section class="panel" aria-labelledby="prompts-heading">
+        <div class="panel-header">
+            <h2 id="prompts-heading" class="panel-title">Up next for you</h2>
+            <button type="button" class="open-all" onclick={handleOpenAll}>Open all →</button>
+        </div>
+        <template lwc:if={isEmpty}>
+            <p class="empty">You're clear on highest-impact actions right now.</p>
+        </template>
+        <ul class="prompt-list" lwc:else>
+            <template for:each={items} for:item="prompt">
+                <li key={prompt.promptKey} class={prompt.cardClass} data-tour={prompt.tourHook}>
+                    <p class="reason">{prompt.reason}</p>
+                    <h3 class="title">{prompt.title}</h3>
+                    <p class="script">{prompt.script}</p>
+                    <div class="actions" data-tour={prompt.actionsHook}>
+                        <template lwc:if={prompt.isTextReply}>
+                            <button class="btn btn-alert" type="button" data-key={prompt.promptKey} onclick={handleOpenReply}>
+                                Open thread
+                            </button>
+                            <button class="btn btn-secondary" type="button" data-key={prompt.promptKey} onclick={handleReplyHandled}>
+                                Mark handled
+                            </button>
+                        </template>
+                        <template lwc:if={prompt.canReview}>
+                            <button class="btn btn-alert" type="button" data-key={prompt.promptKey} onclick={handleReview}>
+                                Review documents
+                            </button>
+                        </template>
+                        <template lwc:if={prompt.canComplete}>
+                            <button class="btn btn-primary" type="button" data-key={prompt.promptKey} onclick={handleComplete}>
+                                Mark complete
+                            </button>
+                        </template>
+                        <template lwc:if={prompt.canLog}>
+                            <button class={prompt.logClass} type="button" data-key={prompt.promptKey} onclick={handleLog}>
+                                {labels.log}
+                            </button>
+                        </template>
+                        <template lwc:if={prompt.showSnooze}>
+                            <button class="btn btn-secondary" type="button" data-key={prompt.promptKey} onclick={handleSnooze}>
+                                {labels.tomorrow}
+                            </button>
+                        </template>
+                    </div>
+                </li>
+            </template>
+        </ul>
+    </section>
+
+    <template lwc:if={allOpen}>
+        <div class="modal-backdrop" onclick={handleBackdropClick} onkeydown={handleModalKeydown}>
+            <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="upnext-all-title">
+                <header class="modal-header">
+                    <h2 id="upnext-all-title">Everything up next</h2>
+                    <span class="modal-count">{allCount}</span>
+                    <button type="button" class="modal-close" aria-label="Close" onclick={handleCloseAll}>×</button>
+                </header>
+                <div class="modal-filters" role="group" aria-label="Filter">
+                    <template for:each={kindChips} for:item="chip">
+                        <button key={chip.id} type="button" class={chip.className} data-kind={chip.id} aria-pressed={chip.pressed} onclick={handleKindFilter}>{chip.label}</button>
+                    </template>
+                </div>
+                <div class="modal-list">
+                    <template lwc:if={allLoading}>
+                        <p class="modal-note">Loading…</p>
+                    </template>
+                    <template lwc:elseif={allError}>
+                        <p class="modal-note" role="alert">{allError}</p>
+                    </template>
+                    <template lwc:elseif={allEmpty}>
+                        <p class="modal-note">Nothing here.</p>
+                    </template>
+                    <template lwc:else>
+                        <template for:each={allGroups} for:item="group">
+                            <div key={group.id}>
+                                <h3 class={group.className}>{group.label} <span class="group-count">{group.count}</span></h3>
+                                <ul class="all-list">
+                                    <template for:each={group.items} for:item="row">
+                                        <li key={row.rowKey}>
+                                            <button type="button" class="all-row" data-id={row.recordId} data-object={row.objectApiName} data-key={row.promptKey} onclick={handleOpenRow}>
+                                                <span class="all-icon" aria-hidden="true">{row.icon}</span>
+                                                <span class="all-text">
+                                                    <span class="all-title">{row.title}</span>
+                                                    <span class="all-reason">{row.reason}</span>
+                                                </span>
+                                                <span class={row.pill.className}>{row.pill.label}</span>
+                                            </button>
+                                            <template lwc:if={row.taskId}>
+                                                <div class="row-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" data-key={row.promptKey} data-action="complete" disabled={row.busy} onclick={handleRowTask}>Mark complete</button>
+                                                    <template lwc:if={row.canTomorrow}>
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-key={row.promptKey} data-action="tomorrow" disabled={row.busy} onclick={handleRowTask}>{labels.tomorrow}</button>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </section>
+        </div>
+    </template>
+</template>

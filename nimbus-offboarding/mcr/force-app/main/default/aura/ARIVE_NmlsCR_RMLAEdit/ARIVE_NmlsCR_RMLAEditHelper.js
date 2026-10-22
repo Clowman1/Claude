@@ -54,6 +54,22 @@
         }
         return currentState;
     },
+    // Exports the open datapoint detail table so line items can be compared to another report.
+    downloadDetailCsv : function(c) {
+        let table = c.get('v.reportDetailTable');
+        let report = c.get('v.report');
+        let state = c.get('v.currentState');
+        let rows = (table && table.rows) || [];
+        let labels = ['Record Id'].concat(rows.length ? rows[0].fields.map(f => f.label) : []);
+        let values = rows.map(r => [r.id].concat(r.fields.map(f => f.value == null ? '' : String(f.value))));
+        // split/join, not a regex: Aura's server parser breaks on a quote inside a regex literal
+        let cell = v => '"' + String(v).split('"').join('""') + '"';
+        let content = '﻿' +[labels].concat(values).map(r => r.map(cell).join(',')).join('\r\n');
+        let link = document.createElement('a');
+        link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(content);
+        link.download = (state.stateCode + ' ' + (table.title || 'Datapoint') + ' ' + report.startDate + ' to ' + report.endDate).replace(/[\\\/:*?<>|]/g, '-').split('"').join('-') + '.csv';
+        link.click();
+    },
     showToast : function(title, message, type) {
         let toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({

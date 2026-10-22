@@ -1,0 +1,75 @@
+<template>
+    <section class="modal-backdrop" role="dialog" aria-modal="true" aria-label={dialogLabel}>
+        <div class="modal-card">
+            <template lwc:if={blockedByDocuments}>
+                <header class="modal-header">
+                    <p class="eyebrow-warn">Not ready to convert</p>
+                    <h2>Finish the document review first</h2>
+                    <p>This lead still has document work open. Conversion unlocks once every item below is done.</p>
+                </header>
+                <div class="modal-body">
+                    <ul class="block-list">
+                        <li>
+                            <span class="block-num">1</span>
+                            <span><strong>Decision every document.</strong> Each file the borrower uploaded must be approved or rejected on the <strong>Documents</strong> tab.</span>
+                        </li>
+                        <li>
+                            <span class="block-num">2</span>
+                            <span><strong>Close every open document request.</strong> Each request on the <strong>Document requests</strong> tab must be cleared, approved or completed.</span>
+                        </li>
+                    </ul>
+                    <p class="block-note">Nothing on the lead has changed. Come back and convert once both are done.</p>
+                </div>
+                <footer class="modal-footer">
+                    <button type="button" class="btn btn-brand" onclick={handleDecline}>Got it</button>
+                </footer>
+            </template>
+            <template lwc:else>
+            <header class="modal-header">
+                <h2>Confirm TRID application pieces</h2>
+                <p>Items with data from ARIVE are checked. Mark anything else Info received, then confirm to convert. Decline leaves the lead unchanged.</p>
+            </header>
+
+            <template lwc:if={loading}>
+                <div class="modal-body loading" aria-busy="true">
+                    <lightning-spinner alternative-text="Loading checklist"></lightning-spinner>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="modal-body">
+                    <dl class="checklist">
+                        <template for:each={checklistRows} for:item="row">
+                            <div key={row.key} class="checklist-row">
+                                <dt>{row.label}</dt>
+                                <dd class="checklist-value">
+                                    <template lwc:if={row.checked}>
+                                        <span class="check" aria-label="Complete">&#10003;</span>
+                                    </template>
+                                    <span>{row.value}</span>
+                                    <template lwc:if={row.isMissing}>
+                                        <button type="button" class="received-btn" data-label={row.missingLabel} onclick={handleReceived}>{row.buttonLabel}</button>
+                                    </template>
+                                </dd>
+                            </div>
+                        </template>
+                    </dl>
+                    <template lwc:if={missingMessage}>
+                        <p class="warning" role="alert">{missingMessage}</p>
+                    </template>
+                    <label class="ack">
+                        <input type="checkbox" checked={acknowledged} onchange={handleAckChange} />
+                        <span>I confirm these application pieces are accurate and I am ready to convert this lead.</span>
+                    </label>
+                </div>
+            </template>
+
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick={handleDecline} disabled={saving}>Decline</button>
+                <button type="button" class="btn btn-brand" onclick={handleConfirm} disabled={disableConfirm}>
+                    Confirm conversion
+                </button>
+            </footer>
+            </template>
+        </div>
+    </section>
+</template>

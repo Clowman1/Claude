@@ -371,4 +371,40 @@ private class ARIVE_NmlsCallReportControllerTest {
         System.assertEquals(1, postClosedLoans.size(), 'Should have 1 Post-Closed loan');
         System.assertEquals(100000, postClosedLoans[0].Loan_Amount_1st__c, 'Post-Closed loan amount should be 100000');
     }
+
+    @isTest
+    private static void testDetailRowsMatchTopLineCounts() {
+        Date q2Start = Date.newInstance(2019, 4, 1);
+        insert new List<Transaction__c>{
+            // in process at start, funded in the quarter (broker)
+            new Transaction__c(TRID_Date__c = DateTime.newInstanceGmt(2019, 3, 10), Funding_Date__c = Date.newInstance(2019, 5, 1),
+                Property_State__c = 'CA', Channel__c = 'Broker', Loan_Type_1st_TD__c = 'FHA', Loan_Amount_1st__c = 200000, Lien_Position__c = '1st'),
+            // received on the last day of the quarter, still in process
+            new Transaction__c(TRID_Date__c = DateTime.newInstanceGmt(2019, 6, 30, 21, 0, 0), Property_State__c = 'CA',
+                Channel__c = 'Correspondent', Loan_Type_1st_TD__c = 'CONV', Loan_Amount_1st__c = 300000),
+            // DPA 2nd: excluded from every line
+            new Transaction__c(TRID_Date__c = DateTime.newInstanceGmt(2019, 3, 10), Funding_Date__c = Date.newInstance(2019, 5, 1),
+                Property_State__c = 'CA', Channel__c = 'Broker', Loan_Type_1st_TD__c = 'DPA 2nd', Loan_Amount_1st__c = 10000)
+        };
+        ARIVE_NmlsCallReportController.ReportModel report = ARIVE_NmlsCallReportController.generateReport('2', '2019', new List<String>{'CA'});
+        Map<String, Object> state = (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(report.stateData[0]));
+        Map<String, Object> app = (Map<String, Object>) state.get('applicationData');
+        Map<String, Object> closed = (Map<String, Object>) state.get('closedLoanData');
+
+        Test.startTest();
+        for (String line : new List<String>{'AC010', 'AC020', 'AC070', 'AC080', 'AC110', 'AC100', 'AC500'}) {
+            Map<String, Object> section = app.containsKey(line + '_2') ? app : closed;
+            Integer expected = toInt(section.get(line + '_2')) + toInt(section.get(line + '_4'));
+            ARIVE_NmlsCallReportTableController.Table table =
+                ARIVE_NmlsCallReportController.viewDatapointDetails(line, '04/01/2019', '06/30/2019', 'CA');
+            System.assertEquals(expected, table.rows.size(), line + ': CSV rows must equal the top-line count');
+        }
+        Test.stopTest();
+        System.assertEquals(1, toInt(app.get('AC010_2')), 'DPA 2nd is not in process');
+        System.assertEquals(1, toInt(app.get('AC020_2')), 'a TRID on the last evening of the quarter counts');
+    }
+
+    private static Integer toInt(Object value) {
+        return value == null ? 0 : ((Decimal) value).intValue();
+    }
 }

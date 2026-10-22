@@ -91,6 +91,8 @@
                                               onclick="{!c.closeStateReview}"/>
                         </div>
                         <div class="slds-grid slds-gutters_x-small arive-modal-footer-actions">
+                            <lightning:button label="Download CSV" iconName="utility:download"
+                                              onclick="{!c.downloadDetailCsv}"/>
                             <lightning:button variant="brand" label="Close Datapoint Details"
                                               onclick="{!c.clearReportDetailTable}"/>
                         </div>

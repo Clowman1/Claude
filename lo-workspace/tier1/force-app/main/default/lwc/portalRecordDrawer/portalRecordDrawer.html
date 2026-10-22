@@ -1,0 +1,121 @@
+<template>
+    <template lwc:if={isOpen}>
+        <div class="drawer-root">
+            <button type="button" class="drawer-backdrop" aria-label="Close records panel" onclick={handleBackdropClick}></button>
+            <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label={title}>
+                <div class="drawer-header">
+                    <div class="drawer-header-copy">
+                        <p class="drawer-eyebrow">Records</p>
+                        <h2 class="drawer-title">{title}</h2>
+                        <template lwc:if={subtitle}>
+                            <p class="drawer-subtitle">{subtitle}</p>
+                        </template>
+                    </div>
+                    <button type="button" class="drawer-close" aria-label="Close panel" onclick={handleClose}><c-portal-icon name="x" size="18"></c-portal-icon></button>
+                </div>
+
+                <div class="drawer-body" aria-live="polite" aria-busy={loading}>
+                    <template lwc:if={loading}>
+                        <ul class="record-list" aria-label="Loading records">
+                            <li class="record-skeleton"></li>
+                            <li class="record-skeleton"></li>
+                            <li class="record-skeleton"></li>
+                        </ul>
+                    </template>
+
+                    <template lwc:elseif={errorMessage}>
+                        <div class="drawer-error">
+                            <p class="drawer-error-title">We couldn’t load these records</p>
+                            <p class="drawer-error-copy">{errorMessage}</p>
+                            <button type="button" class="btn btn-danger" onclick={handleRetry}>Retry</button>
+                        </div>
+                    </template>
+
+                    <template lwc:elseif={showEmpty}>
+                        <div class="drawer-empty">
+                            <p class="drawer-empty-title">Nothing left here</p>
+                            <p class="drawer-empty-copy">
+                                Every follow-up in this group is complete. New items appear here as they’re assigned to you.
+                            </p>
+                        </div>
+                    </template>
+
+                    <template lwc:elseif={hasRecords}>
+                        <ul class="record-list">
+                            <template for:each={records} for:item="record">
+                                <li key={record.id} class="record-card">
+                                    <div class="record-top">
+                                        <div class="record-copy">
+                                            <div class="record-name-row">
+                                                <p class="record-name">{record.name}</p>
+                                            </div>
+                                            <p class="record-primary">{record.primary}</p>
+                                            <template lwc:if={record.secondary}>
+                                                <p class="record-secondary">{record.secondary}</p>
+                                            </template>
+                                        </div>
+                                        <span class={record.tagClass}>{record.tag}</span>
+                                    </div>
+                                    <div class="record-actions">
+                                        <template lwc:if={record.showLog}>
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary btn-sm"
+                                                data-record-id={record.id}
+                                                data-object-api-name={record.objectApiName}
+                                                data-name={record.name}
+                                                data-primary={record.primary}
+                                                onclick={handleLogClick}
+                                            >
+                                                Log communication
+                                            </button>
+                                        </template>
+                                        <template lwc:if={record.isOpenTask}>
+                                            <button type="button" class="btn btn-primary btn-sm" data-record-id={record.id} data-action="complete" disabled={record.busy} onclick={handleTaskAction}>
+                                                Mark complete
+                                            </button>
+                                            <button type="button" class="btn btn-secondary btn-sm" data-record-id={record.id} data-action="tomorrow" disabled={record.busy} onclick={handleTaskAction}>
+                                                Tomorrow
+                                            </button>
+                                        </template>
+                                        <template lwc:else>
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary btn-sm"
+                                                data-record-id={record.id}
+                                                data-object-api-name={record.objectApiName}
+                                                onclick={handleOpenRecord}
+                                            >
+                                                Open record
+                                            </button>
+                                        </template>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="drawer-footer">
+                    <button type="button" class="btn btn-secondary" onclick={handleClose}>Close</button>
+                    <template lwc:if={showListButton}>
+                        <button type="button" class="btn btn-primary" onclick={handleOpenList}>{listButtonLabel}</button>
+                    </template>
+                </div>
+            </aside>
+        </div>
+    </template>
+
+    <template lwc:if={isLogOpen}>
+        <c-portal-communication-modal
+            open={isLogOpen}
+            target-record-id={logRecordId}
+            object-api-name={logObjectApiName}
+            subject-name={logSubjectName}
+            subject-context={logSubjectContext}
+            goal-credit="your daily goals"
+            onclose={closeLog}
+            onlogged={handleLogged}
+        ></c-portal-communication-modal>
+    </template>
+</template>

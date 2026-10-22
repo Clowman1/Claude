@@ -1,0 +1,61 @@
+<template>
+    <template lwc:if={showDetail}>
+        <c-lo-ws-past-client-detail record-id={recordId}></c-lo-ws-past-client-detail>
+    </template>
+    <template lwc:else>
+    <c-portal-list-layout
+        title="Past Clients"
+        subtitle={subtitle}
+        search-value={search}
+        search-placeholder="Search past clients"
+        loading={loading}
+        is-empty={isEmpty}
+        empty-title="No past clients yet"
+        empty-message={emptyMessage}
+        result-label={resultLabel}
+        row-type="generic"
+        items={clients}
+        onsearchchange={handleSearchChange}
+        onrowaction={handleRowAction}
+    >
+        <button slot="actions" type="button" class="btn btn-outline" onclick={handleBulkImport}>Bulk import</button>
+        <button slot="actions" type="button" class="btn btn-navy" onclick={handleAddOpen}>Add past client</button>
+    </c-portal-list-layout>
+    </template>
+    <template lwc:if={errorMessage}>
+        <p class="form-error" role="alert">{errorMessage}</p>
+    </template>
+    <template lwc:if={addOpen}>
+        <div class="contact-backdrop" onclick={handleAddClose}></div>
+        <aside class="contact-drawer" role="dialog" aria-modal="true" aria-label="Add past client">
+            <div class="contact-drawer-head">
+                <h2 class="contact-drawer-title">Add past client</h2>
+                <button type="button" class="contact-drawer-close" onclick={handleAddClose}>Close</button>
+            </div>
+            <form class="add-form" onsubmit={handleAddSubmit}>
+                <label>First name<input data-field="firstName" oninput={handleAddField} required /></label>
+                <label>Last name<input data-field="lastName" oninput={handleAddField} required /></label>
+                <label>Phone<input type="tel" data-field="phone" oninput={handleAddField} /></label>
+                <label>Email<input type="email" data-field="email" oninput={handleAddField} /></label>
+                <label>Closing date<input type="date" data-field="closingDate" oninput={handleAddField} /></label>
+                <label>Loan amount<input type="number" min="0" data-field="loanAmount" oninput={handleAddField} /></label>
+                <label>Property street<input data-field="street" oninput={handleAddField} /></label>
+                <label>City<input data-field="city" oninput={handleAddField} /></label>
+                <label>State<input data-field="state" maxlength="2" oninput={handleAddField} /></label>
+                <label>Zip<input data-field="zip" oninput={handleAddField} /></label>
+                <template lwc:if={addError}><p class="form-error" role="alert">{addError}</p></template>
+                <button type="submit" class="btn btn-navy" disabled={adding}>{addLabel}</button>
+            </form>
+        </aside>
+    </template>
+    <template lwc:if={contactRow}>
+        <div class="contact-backdrop" onclick={handleContactClose}></div>
+        <aside class="contact-drawer" role="dialog" aria-modal="true" aria-label="Contact">
+            <div class="contact-drawer-head">
+                <h2 class="contact-drawer-title">{contactRow.name}</h2>
+                <button type="button" class="contact-drawer-close" onclick={handleContactClose}>Close</button>
+            </div>
+            <c-lo-ws-contact-card record-id={contactRow.id} onsaved={handleContactSaved}></c-lo-ws-contact-card>
+        </aside>
+    </template>
+</template>

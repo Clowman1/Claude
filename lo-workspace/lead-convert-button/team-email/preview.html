@@ -1,0 +1,324 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Convert to Transaction preview</title>
+<style>
+.action-strip {
+    background: #f5f8fc;
+    border: 1px solid #d5e0ee;
+    border-radius: 0 0 8px 8px;
+    padding: 12px 18px;
+}
+
+.strip-label {
+    color: #30415f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pill {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 800;
+    min-height: 32px;
+    padding: 7px 14px;
+    transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.pill:hover,
+.pill:focus {
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14);
+    filter: brightness(0.98);
+    transform: translateY(-1px);
+}
+
+.pill-blue {
+    background: #dcecff;
+    border-color: #a9ccf3;
+    color: #073763;
+}
+
+.pill-slate {
+    background: #eef2f7;
+    border-color: #cbd5e1;
+    color: #26364f;
+}
+
+.pill-orange {
+    background: #ffb452;
+    border-color: #f39a24;
+    color: #12213b;
+}
+
+.pill-green {
+    background: #dff7ec;
+    border-color: #a9e3c4;
+    color: #064e3b;
+}.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 31, 54, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 9000;
+}
+
+.modal-card {
+    width: min(640px, 100%);
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid #dfe8f3;
+    box-shadow: 0 24px 48px rgba(15, 31, 54, 0.18);
+}
+
+.modal-header {
+    padding: 20px 20px 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.modal-header p {
+    margin: 8px 0 0;
+    color: #3d6296;
+    font-size: 14px;
+}
+
+.modal-body {
+    padding: 16px 20px;
+}
+
+.modal-body.loading {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checklist-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px solid #f1f5fa;
+    font-size: 14px;
+}
+
+.checklist-row:first-child {
+    border-top: none;
+}
+
+.checklist-row dt {
+    color: #3d6296;
+}
+
+.checklist-row dd {
+    margin: 0;
+    font-weight: 600;
+    white-space: pre-wrap;
+}
+
+.warning {
+    margin: 12px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff8e6;
+    border: 1px solid #f1d38a;
+    font-size: 13px;
+}
+
+.ack {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 20px 20px;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-outline {
+    border: 1px solid #c7d6ea;
+    background: #fff;
+    color: #243c60;
+}
+
+.btn-brand {
+    border: none;
+    background: #1b4d8c;
+    color: #fff;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.checklist-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+}
+.received-btn {
+    margin-left: auto;
+    padding: 3px 10px;
+    border: 1px solid #c9d6ea;
+    border-radius: 999px;
+    background: #eef3fb;
+    color: #24386a;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.received-btn:focus-visible {
+    outline: 2px solid #24386a;
+    outline-offset: 2px;
+}
+/* Conversion refused by LeadConversionGuardService: open document requests or undecisioned files. */
+.eyebrow-warn {
+    margin: 0 0 6px;
+    color: #b45309;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.block-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.block-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border: 1px solid #f1d38a;
+    border-radius: 12px;
+    background: #fff8e6;
+    color: #243c60;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.block-num {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #b45309;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block-note {
+    margin: 14px 0 0;
+    color: #3d6296;
+    font-size: 13px;
+}</style>
+<style>
+  body { margin: 0; background: #f3f3f3; font-family: "Salesforce Sans", -apple-system, "Segoe UI", Arial, sans-serif; color: #181818; }
+  .page { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+  .hero { background: #1A2541; color: #fff; padding: 16px 22px; border-radius: 8px 8px 0 0; }
+  .hero h1 { margin: 0; font-size: 19px; }
+  .hero p { margin: 4px 0 0; font-size: 13px; color: #DDE7F3; }
+  .highlight { outline: 3px solid #e8590c; outline-offset: 3px; }
+  .callout { margin-top: 14px; font-size: 13px; color: #b45309; font-weight: 700; }
+  .ack input { margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hero"><h1>Jane Sample</h1><p>Lead · Status: Pre-Approval</p></div>
+  <div class="action-strip">
+    <div class="strip-label"><span>Lead Actions</span></div>
+    <div class="button-row">
+      <button class="pill pill-green highlight" type="button">Convert to Transaction</button>
+      <button class="pill pill-orange" type="button">Application Summary</button>
+      <button class="pill pill-blue" type="button">Sync ARIVE</button>
+      <button class="pill pill-blue" type="button">Open in ARIVE</button>
+      <button class="pill pill-green" type="button">Pre-Approval Letter</button>
+    </div>
+  </div>
+  <p class="callout">↑ New: shows only on Pre-Approval and Under Contract leads, for the lead's Owner or Loan Partner.</p>
+</div>
+
+<section class="modal-backdrop" id="modal" style="display:none">
+  <div class="modal-card">
+    <header class="modal-header">
+      <h2>Confirm TRID application pieces</h2>
+      <p>Items with data from ARIVE are checked. Mark anything else Info received, then confirm to convert. Decline leaves the lead unchanged.</p>
+    </header>
+    <div class="modal-body">
+      <dl class="checklist">
+        <div class="checklist-row"><dt>Borrower name</dt><dd class="checklist-value"><span class="check">&#10003;</span><span>Jane Sample</span></dd></div>
+        <div class="checklist-row"><dt>Borrower income</dt><dd class="checklist-value"><span class="check">&#10003;</span><span>$96,000</span></dd></div>
+        <div class="checklist-row"><dt>Borrower SSN</dt><dd class="checklist-value"><span class="check">&#10003;</span><span>On file with LO</span></dd></div>
+        <div class="checklist-row"><dt>Subject property</dt><dd class="checklist-value"><span>—</span><button class="received-btn" type="button">Info received</button></dd></div>
+        <div class="checklist-row"><dt>Estimated property value</dt><dd class="checklist-value"><span class="check">&#10003;</span><span>$425,000</span></dd></div>
+        <div class="checklist-row"><dt>Loan amount</dt><dd class="checklist-value"><span class="check">&#10003;</span><span>$340,000</span></dd></div>
+      </dl>
+      <p class="warning" role="alert">Fill in on the lead or mark Info received: Subject property</p>
+      <label class="ack"><input type="checkbox"><span>I confirm these application pieces are accurate and I am ready to convert this lead.</span></label>
+    </div>
+    <footer class="modal-footer">
+      <button class="btn btn-outline" type="button">Decline</button>
+      <button class="btn btn-brand" type="button" disabled>Confirm conversion</button>
+    </footer>
+  </div>
+</section>
+<script>
+  if (location.hash === '#modal') document.getElementById('modal').style.display = 'flex';
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+@import 'c/portalSharedStyles';
+
+.panel {
+    background: var(--pw-navy-800, #1a2d4a);
+    color: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+}
+
+.panel-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.empty,
+.reason,
+.script {
+    font-size: 13px;
+    color: var(--pw-navy-200, #c0d1e6);
+}
+
+.prompt-list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.prompt-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.title {
+    margin: 4px 0 8px;
+    font-size: 15px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn {
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary {
+    border: none;
+    background: var(--pw-brand-500, #2f7ce0);
+    color: #fff;
+}
+
+.btn-secondary {
+    border: 1px solid var(--pw-navy-400, #5f83b3);
+    background: transparent;
+    color: #fff;
+}
+/* High alert: borrower uploads waiting for review. */
+.prompt-card-alert {
+    background: #fff4f2;
+    border: 2px solid #e5484d;
+    color: #7a1c1c;
+}
+.prompt-card-alert .reason {
+    color: #c62828;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.prompt-card-alert .title,
+.prompt-card-alert .script {
+    color: #3b1111;
+}
+.btn-alert {
+    background: #d32f2f;
+    border: 1px solid #b71c1c;
+    color: #fff;
+    font-weight: 700;
+}
+.btn-alert:hover {
+    background: #b71c1c;
+}
+/* Secondary buttons (e.g. "Mark handled" on text replies) sit on the light alert card: white text would vanish. */
+.prompt-card-alert .btn-secondary {
+    background: #fff;
+    border-color: #b71c1c;
+    color: #b71c1c;
+}
+/* Open all (2026-10-08) */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.open-all {
+    border: none;
+    background: none;
+    padding: 4px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pw-navy-200, #c0d1e6);
+    cursor: pointer;
+}
+
+.open-all:hover,
+.open-all:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(15, 31, 54, 0.45);
+}
+
+.modal-card {
+    display: flex;
+    flex-direction: column;
+    width: min(640px, 100%);
+    max-height: min(80vh, 720px);
+    overflow: hidden;
+    background: #fff;
+    color: #0f1f36;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px -12px rgba(15, 31, 54, 0.35);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #dfe8f3;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.modal-count {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #f1f5fa;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5b6b82;
+}
+
+.modal-close {
+    margin-left: auto;
+    border: none;
+    background: none;
+    font-size: 22px;
+    line-height: 1;
+    color: #5b6b82;
+    cursor: pointer;
+}
+
+.modal-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 18px;
+    border-bottom: 1px solid #dfe8f3;
+}
+
+.chip {
+    border: 1px solid #c0d1e6;
+    background: #fff;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 12.5px;
+    color: #243c60;
+    cursor: pointer;
+}
+
+.chip-on {
+    background: #e6effb;
+    border-color: #1d63c4;
+    color: #1d63c4;
+    font-weight: 600;
+}
+
+.modal-list {
+    overflow: auto;
+    padding: 4px 18px 18px;
+}
+
+.modal-note {
+    margin: 16px 0;
+    font-size: 13px;
+    color: #5b6b82;
+}
+
+.group-head {
+    position: sticky;
+    top: 0;
+    margin: 0;
+    padding: 12px 0 6px;
+    background: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.group-overdue { color: #a32020; }
+.group-today { color: #1d63c4; }
+.group-upcoming { color: #5b6b82; }
+
+.group-count {
+    margin-left: 4px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #f1f5fa;
+    color: #5b6b82;
+}
+
+.all-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.all-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-top: 1px solid #dfe8f3;
+    background: none;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.all-list li:first-child .all-row {
+    border-top: none;
+}
+
+.all-row:hover .all-title {
+    color: #1d63c4;
+}
+
+.all-row:focus-visible {
+    outline: 2px solid #1d63c4;
+    outline-offset: 2px;
+}
+
+.all-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #f1f5fa;
+    font-size: 13px;
+    font-weight: 700;
+    color: #3d6296;
+}
+
+.all-text {
+    display: grid;
+    min-width: 0;
+}
+
+.all-title {
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.all-reason {
+    font-size: 12px;
+    color: #5b6b82;
+}
+
+.pill {
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.pill-overdue { background: #fbe6e6; color: #a32020; }
+.pill-today { background: #e6effb; color: #1d63c4; }
+.pill-upcoming { background: #f1f5fa; color: #5b6b82; }
+/* Open all: inline Mark complete / Tomorrow under a follow-up row */
+.row-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 0.75rem 0.75rem 2.75rem;
+}
+
+.btn-sm {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8125rem;
+}
+
+/* The modal is white: the card's white-text secondary button would vanish. */
+.row-actions .btn-secondary {
+    background: #fff;
+    border-color: var(--pw-navy-400, #5f83b3);
+    color: var(--pw-navy-700, #1d3a63);
+}

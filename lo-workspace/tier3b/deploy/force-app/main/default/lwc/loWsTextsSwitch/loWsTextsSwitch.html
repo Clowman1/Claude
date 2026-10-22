@@ -1,0 +1,40 @@
+<template>
+    <template lwc:if={hasSwitches}>
+        <div class="switches" data-tour="texts-switch">
+            <p class="title">Automated texts</p>
+            <template for:each={rows} for:item="row">
+                <div key={row.recordId} class="line">
+                    <span class="who">
+                        <template lwc:if={row.label}><span class="role">{row.label}</span></template>
+                        {row.name}
+                    </span>
+                    <button type="button" class={row.switchClass} role="switch" aria-checked={row.ariaOn} aria-label={row.aria}
+                        data-id={row.recordId} disabled={saving} onclick={handleToggle}>
+                        <span class="knob"></span><span>{row.onLabel}</span>
+                    </button>
+                </div>
+                <template lwc:if={row.sharedNote}><p key={row.noteKey} class="note">{row.sharedNote}</p></template>
+            </template>
+        </div>
+    </template>
+    <template lwc:elseif={loadError}>
+        <div class="switches"><p class="error" role="alert">{loadError}</p></div>
+    </template>
+
+    <template lwc:if={confirmRow}>
+        <div class="backdrop" onclick={handleBackdrop}>
+            <section class="card" role="alertdialog" aria-modal="true" aria-labelledby="ts-title" aria-describedby="ts-body">
+                <h2 id="ts-title">Turn off automated texts?</h2>
+                <p id="ts-body">
+                    All automated messages to <b>{confirmRow.name}</b> will be turned off
+                    <template lwc:if={confirmShared}>for all Reach loan officers until someone turns them back on in the LO Workspace.</template>
+                    <template lwc:else>until you turn them back on here in the LO Workspace.</template>
+                </p>
+                <div class="actions">
+                    <button type="button" class="btn" onclick={cancelConfirm}>Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick={confirmOff}>Turn off</button>
+                </div>
+            </section>
+        </div>
+    </template>
+</template>

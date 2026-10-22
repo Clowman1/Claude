@@ -1,0 +1,47 @@
+<template>
+    <div class="picker">
+        <label class="field-label" for="contact-search">{labels.contact}</label>
+        <template lwc:if={selectedId}>
+            <div class="selected">
+                <span>{selectedLabel}</span>
+                <button type="button" class="clear" onclick={handleClear} disabled={disabled}>Clear</button>
+            </div>
+        </template>
+        <template lwc:else>
+            <input
+                id="contact-search"
+                class="field-input"
+                type="search"
+                value={search}
+                placeholder="Search your leads, partners and past clients"
+                oninput={handleSearch}
+                disabled={disabled}
+                autocomplete="off"
+            />
+            <template lwc:if={required}>
+                <p class="field-help">Pick a contact from the search results. Typing a name alone doesn’t select anyone.</p>
+            </template>
+        </template>
+        <template lwc:if={errorMessage}>
+            <p class="field-error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:if={searching}>
+            <p class="search-status" role="status">Searching…</p>
+        </template>
+        <template lwc:elseif={hasHits}>
+            <ul class="hit-list" role="listbox">
+                <template for:each={hits} for:item="hit">
+                    <li key={hit.id}>
+                        <button type="button" class="hit" data-id={hit.id} onclick={handleSelect}>
+                            <span class="hit-name">{hit.name}</span>
+                            <span class="hit-meta">{hit.subtitle}</span>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:elseif={showNoMatch}>
+            <p class="search-status" role="status">No match in your leads, partners or past clients. Add them first (My Leads → Add lead, or My Realtors → Add partner).</p>
+        </template>
+    </div>
+</template>

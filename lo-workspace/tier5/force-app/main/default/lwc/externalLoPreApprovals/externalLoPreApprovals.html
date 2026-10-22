@@ -1,0 +1,33 @@
+<template>
+    <c-portal-list-layout
+        title="My Pre-Approvals"
+        subtitle="Active borrower files in pre-approval status. Keep weekly touches logged for each borrower."
+        search-value={search}
+        search-placeholder="Search pre-approvals by borrower or realtor"
+        filters={filterChips}
+        loading={loading}
+        is-empty={isListEmpty}
+        empty-title="No pre-approvals match this view"
+        empty-message="Try a different filter or clear your search."
+        result-label={resultLabel}
+        row-type="generic"
+        items={listItems}
+        onsearchchange={handleSearchChangeEvent}
+        onfilterchange={handleFilterChangeEvent}
+        onrowaction={handleRowAction}
+    ></c-portal-list-layout>
+    <!-- Re-issue letter: the same component the lead page's Pre-Approval Letter button opens. -->
+    <template lwc:if={letterOpen}>
+        <section class="letter-backdrop" role="dialog" aria-modal="true" aria-label="Pre-Approval Letter">
+            <div class="letter-modal">
+                <button type="button" class="letter-modal-close" onclick={handleCloseLetter}>Close</button>
+                <template lwc:if={letterCtor}>
+                    <lwc:component lwc:is={letterCtor} lwc:ref="letter" record-id={letterLeadId}></lwc:component>
+                </template>
+                <template lwc:else>
+                    <span class="spinner" aria-hidden="true"></span>
+                </template>
+            </div>
+        </section>
+    </template>
+</template>

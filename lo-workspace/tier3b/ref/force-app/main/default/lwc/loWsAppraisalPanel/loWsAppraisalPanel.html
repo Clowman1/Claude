@@ -1,0 +1,108 @@
+<template>
+    <div class="appraisal">
+        <template lwc:if={loading}>
+            <p class="muted" role="status">Loading the appraisal…</p>
+        </template>
+        <template lwc:elseif={noOrder}>
+            <p class="muted">No appraisal has been ordered on this loan yet.</p>
+        </template>
+        <template lwc:else>
+            <template lwc:if={errorMessage}>
+                <p class="notice" role="alert">{errorMessage}</p>
+            </template>
+
+            <!-- Status, tracker and key facts (mockup A, 2026-10-08) -->
+            <section class="card" aria-labelledby="appraisal-status-heading">
+                <div class="hero">
+                    <span class={statusPillClass}>{statusLabel}</span>
+                    <h3 id="appraisal-status-heading" class="hero-title">{headline}</h3>
+                    <span class="hero-meta">Order {order.orderNumber}</span>
+                </div>
+
+                <ol class="stepper" aria-label="Appraisal progress" data-tour="appraisal-tracker">
+                    <template for:each={steps} for:item="step">
+                        <li key={step.key} class={step.className}>
+                            <span class="dot" aria-hidden="true">{step.marker}</span>
+                            <span class="step-label">{step.label}</span>
+                            <span class="step-date">{step.date}</span>
+                        </li>
+                    </template>
+                </ol>
+
+                <dl class="facts">
+                    <div><dt>Product</dt><dd>{order.productOrdered}</dd></div>
+                    <div><dt>Needed by</dt><dd><lightning-formatted-date-time value={order.dateNeeded} month="short" day="numeric" year="numeric"></lightning-formatted-date-time></dd></div>
+                    <div class="fact-wide"><dt>Property</dt><dd>{address}</dd></div>
+                </dl>
+
+                <template lwc:if={hasTimeline}>
+                    <details class="fold">
+                        <summary>{timelineCountLabel}</summary>
+                        <ol class="timeline">
+                            <template for:each={timeline} for:item="item">
+                                <li key={item.key}>
+                                    <span class="timeline-title">{item.title}</span>
+                                    <span class="muted">{item.detail}</span>
+                                    <lightning-formatted-date-time class="muted" value={item.occurredOn} year="numeric" month="short" day="numeric" hour="numeric" minute="2-digit"></lightning-formatted-date-time>
+                                </li>
+                            </template>
+                        </ol>
+                    </details>
+                </template>
+
+                <template lwc:if={address}>
+                    <details class="fold">
+                        <summary>Property view</summary>
+                        <div class="view-switch" role="group" aria-label="Map view">
+                            <button type="button" class={satelliteClass} data-view="satellite" onclick={handleMapView}>Satellite</button>
+                            <button type="button" class={streetClass} data-view="street" onclick={handleMapView}>Street View</button>
+                        </div>
+                        <iframe class="map-frame" title="Property map" src={mapUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </details>
+                </template>
+            </section>
+
+            <section class="card" aria-labelledby="appraisal-docs-heading">
+                <h3 id="appraisal-docs-heading" class="card-title">Documents</h3>
+                <template lwc:if={hasDocuments}>
+                    <ul class="docs">
+                        <template for:each={documents} for:item="doc">
+                            <li key={doc.key}>
+                                <button type="button" class="link-btn" data-fileid={doc.OrderDocumentID} onclick={handleDownload}>{doc.DocumentFileName}</button>
+                                <lightning-formatted-date-time class="muted" value={doc.DocumentSubmittedOn} year="numeric" month="short" day="numeric"></lightning-formatted-date-time>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:else>
+                    <p class="muted">No documents from the appraisal company yet.</p>
+                </template>
+            </section>
+
+            <section class="card" aria-labelledby="appraisal-comments-heading" data-tour="appraisal-messages">
+                <h3 id="appraisal-comments-heading" class="card-title">Messages with the appraisal company</h3>
+                <template lwc:if={hasComments}>
+                    <ul class="comments">
+                        <template for:each={comments} for:item="c">
+                            <li key={c.key} class="bubble">
+                                <p class="comment-body">{c.Comment}</p>
+                                <p class="comment-meta">{c.CreatedBy} <span class="muted">{c.UserTypeName}</span></p>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <template lwc:else>
+                    <p class="muted">No messages yet.</p>
+                </template>
+                <div class="composer">
+                    <lightning-textarea label="Message the appraisal company" variant="label-hidden" placeholder="Message the appraisal company…"
+                        value={newComment} onchange={handleCommentInput} max-length="2000"></lightning-textarea>
+                    <div class="composer-row">
+                        <span class="muted">Goes to the appraisal company and is saved on the order.</span>
+                        <button type="button" class="send-btn" disabled={cannotSend} onclick={handleSendComment}>{sendLabel}</button>
+                    </div>
+                </div>
+            </section>
+        </template>
+    </div>
+</template>

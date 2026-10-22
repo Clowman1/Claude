@@ -1,0 +1,98 @@
+<template>
+    <main class="page">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">My Progress</h1>
+                <p class="page-subtitle">{focusLabel}</p>
+            </div>
+            <div class="period-tabs" role="tablist" aria-label="Reporting period" data-tour="progress-period">
+                <template for:each={periodTabs} for:item="tab">
+                    <button
+                        key={tab.id}
+                        type="button"
+                        role="tab"
+                        class={tab.tabClass}
+                        aria-selected={tab.isActive}
+                        data-period={tab.id}
+                        onclick={handlePeriodClick}
+                    >
+                        {tab.label}
+                    </button>
+                </template>
+            </div>
+        </header>
+
+        <template lwc:if={loading}>
+            <p class="muted">Loading your progress…</p>
+        </template>
+        <template lwc:elseif={errorMessage}>
+            <p class="form-error" role="alert">{errorMessage}</p>
+        </template>
+        <template lwc:else>
+            <div class="summary-grid">
+                <section class="summary-card">
+                    <h2 class="summary-title">Winning {periodName}</h2>
+                    <template lwc:if={hasAhead}>
+                        <ul class="summary-list">
+                            <template for:each={aheadRows} for:item="row">
+                                <li key={row.key}>
+                                    <span class="summary-label">{row.label}</span> — {row.progressLabel}
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template lwc:else>
+                        <p class="muted">No goals fully met yet this period.</p>
+                    </template>
+                </section>
+                <section class="summary-card" data-tour="progress-coaching">
+                    <h2 class="summary-title">Coaching focus</h2>
+                    <template lwc:if={hasBehind}>
+                        <ul class="summary-list">
+                            <template for:each={behindRows} for:item="row">
+                                <li key={row.key}>
+                                    <span class="summary-label">{row.label}</span> — short {row.shortfall}
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                    <template lwc:else>
+                        <p class="muted">Nothing behind pace. Consider raising a target.</p>
+                    </template>
+                </section>
+            </div>
+
+            <section class="panel" aria-labelledby="period-progress-heading">
+                <header class="panel-header">
+                    <div>
+                        <h2 id="period-progress-heading" class="panel-title">{periodHeading}</h2>
+                        <p class="panel-copy">Actual versus your own targets</p>
+                    </div>
+                    <div class="score">
+                        <span class="score-value">{overallPercent}%</span>
+                        <span class="score-label">of plan completed</span>
+                    </div>
+                </header>
+                <ul class="metric-list">
+                    <template for:each={activeRows} for:item="row">
+                        <li key={row.key} class="metric-row">
+                            <div class="metric-top">
+                                <span class="metric-label">{row.label}</span>
+                                <div class="metric-right">
+                                    <span class="metric-count">{row.progressLabel}</span>
+                                    <span class={row.paceClass}>{row.paceLabel}</span>
+                                </div>
+                            </div>
+                            <div class="track">
+                                <div class={row.fillClass} style={row.barStyle}></div>
+                            </div>
+                            <template lwc:if={row.showCoaching}>
+                                <p class="coaching-note">{row.coachingNote}</p>
+                            </template>
+                        </li>
+                    </template>
+                </ul>
+            </section>
+        </template>
+    </main>
+</template>

@@ -1,0 +1,228 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.153.5.
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-20T16:57:52.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-20T16:57:21.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:26.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalController.cls",
+          "fullName": "ExternalLoPortalController",
+          "id": "01pQi000003CdX1IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalService.cls",
+          "fullName": "ExternalLoPortalService",
+          "id": "01pQi000003CdX3IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoPortalServiceTest.cls",
+          "fullName": "ExternalLoPortalServiceTest",
+          "id": "01pQi000003CdX4IAK",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadRepository.cls",
+          "fullName": "LeadRepository",
+          "id": "01pAJ0000009GgRYAU",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsAutoTextService.cls",
+          "fullName": "LoWsAutoTextService",
+          "id": "01pQi000003KufSIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsAutoTextServiceTest.cls",
+          "fullName": "LoWsAutoTextServiceTest",
+          "id": "01pQi000003KufTIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCommunicationsService.cls",
+          "fullName": "LoWsCommunicationsService",
+          "id": "01pQi000003K50DIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsCommunicationsServiceTest.cls",
+          "fullName": "LoWsCommunicationsServiceTest",
+          "id": "01pQi000003K50EIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsContactServiceTest.cls",
+          "fullName": "LoWsContactServiceTest",
+          "id": "01pQi000003Iuy6IAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoLeads",
+          "fullName": "externalLoLeads",
+          "id": "0RbQi0000004SP7KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-20T16:57:35.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001VDrdKAG",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-20T16:57:52.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 10,
+    "numberComponentsTotal": 10,
+    "numberFiles": "26",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-20T16:57:22.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "315490",
+    "files": [
+      {
+        "fullName": "ExternalLoPortalController",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalController.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalService.cls"
+      },
+      {
+        "fullName": "ExternalLoPortalServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoPortalServiceTest.cls"
+      },
+      {
+        "fullName": "LeadRepository",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadRepository.cls"
+      },
+      {
+        "fullName": "LoWsAutoTextService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsAutoTextService.cls"
+      },
+      {
+        "fullName": "LoWsAutoTextServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsAutoTextServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsCommunicationsService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsCommunicationsService.cls"
+      },
+      {
+        "fullName": "LoWsCommunicationsServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsCommunicationsServiceTest.cls"
+      },
+      {
+        "fullName": "LoWsContactServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsContactServiceTest.cls"
+      },
+      {
+        "fullName": "externalLoLeads",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoLeads"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001VDrdKAG%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

@@ -17,6 +17,128 @@ public with sharing class ARIVE_NmlsCallReportController {
     private static final List<String> CASH_OUT_REFINANCE_PURPOSES = new List<String>{'Cash Out Refinance', 'Cash-Out Refinance', 'CashOutHomeImprovement', 'Cash Out Home Improvement'};
     private static final List<String> RATE_TERM_REFINANCE_PURPOSES = new List<String>{'Rate & Term', 'Rate and Term', 'Rate/Term', 'VA Interest Rate Reduction'};
 
+    // One WHERE clause per datapoint (_CORR = the correspondent column). The top-line totals and the
+    // CSV/XML detail both run these, so the two can never disagree. Bind names come from binds().
+    @TestVisible
+    private static final Map<String, String> FILTERS = new Map<String, String>{
+        'AC010' => 'TRID_Date__c < :startDate AND ( (Funding_Date__c >= :startDate OR Withdrawn__c >= :startDate) OR (Funding_Date__c = NULL AND Withdrawn__c = NULL) ) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC020' => 'TRID_Date__c >= :startDate AND TRID_Date__c < :endDatePlus1 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC030' => 'Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime AND Withdrawn_Reason__c = \'Approved But Not Accepted\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC040' => 'Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime AND Withdrawn_Reason__c IN (\'App Denied\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC050' => 'Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime AND Withdrawn_Reason__c IN (\'App Withdrawn By Borrower\', \'App Rescinded By Borrower\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC060' => 'Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime AND Withdrawn_Reason__c = \'File Closed For Incompleteness\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC062' => 'Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime AND Withdrawn_Reason__c = \'Pre-Approval Denied\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC064' => 'Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime AND Withdrawn_Reason__c = \'Pre-Approval Approved But Not Accepted\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC070' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Withdrawn__c = NULL AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != NULL',
+        'AC080' => 'TRID_Date__c < :endDatePlus1 AND (Funding_Date__c > :endDate OR Funding_Date__c = NULL) AND (Withdrawn__c > :endDateTime OR Withdrawn__c = NULL) AND (Post_Closed_Date__c > :endDate OR Post_Closed_Date__c = NULL) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != NULL',
+        'AC100' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c IN :CONVENTIONAL_FORWARD_LOAN_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC100_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c IN :CONVENTIONAL_FORWARD_LOAN_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC110' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c= \'FHA\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC110_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c = \'FHA\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC120' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c= \'VA\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC120_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c = \'VA\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC130' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c = \'FSA/RHS\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC130_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c = \'FSA/RHS\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC200' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Property_Type__c IN :ONE_TO_FOUR_FAMILY_PROPERTY_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC200_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Property_Type__c IN :ONE_TO_FOUR_FAMILY_PROPERTY_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC210' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Property_Type__c IN :MANUFACTURED_PROPERTY_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC210_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Property_Type__c IN :MANUFACTURED_PROPERTY_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC220' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Property_Type__c IN (\'4-10 Units\', \'10+ Units\') AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC220_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Property_Type__c IN (\'4-10 Units\', \'10+ Units\') AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC300' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Purchase\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC300_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Purchase\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC310' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Refinance_Purpose__c = \'Home Improvement\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC310_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Refinance_Purpose__c = \'Home Improvement\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC320' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Refinance\' AND Refinance_Purpose__c != \'Home Improvement\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC320_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Refinance\' AND Refinance_Purpose__c != \'Home Improvement\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC500' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = \'1st\' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC500_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = \'1st\' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC510' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = \'2nd\' AND Lien_Position__c != NULL AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC510_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = \'2nd\' AND Lien_Position__c != NULL AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC520' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = NULL AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC520_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = NULL AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC600' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC610' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC920' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c != :NON_QM_PRODUCT_NAME AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC920_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c != :NON_QM_PRODUCT_NAME AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC930' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c = :NON_QM_PRODUCT_NAME AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC930_CORR' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c = :NON_QM_PRODUCT_NAME AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC900' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC910' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'AC1100' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'I010' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c IN :GOVERNMENT_LOAN_TYPES AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE \'%ARM%\'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I020' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c IN :GOVERNMENT_LOAN_TYPES AND Loan_Program_1st__c LIKE \'%ARM%\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I030' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE \'%ARM%\'))) AND Loan_Type_1st_TD__c IN :CONVENTIONAL_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I040' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c LIKE \'%ARM%\' AND Loan_Type_1st_TD__c IN :CONVENTIONAL_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I050' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE \'%ARM%\'))) AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I060' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c LIKE \'%ARM%\' AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I070' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE \'%ARM%\'))) AND Loan_Type_1st_TD__c NOT IN (\'Jumbo\', \'Conventional\', \'CONV\', \'FHA\', \'VA\', \'FarmersHomeAdministration\', \'FSA/RHS\', \'USDA\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I080' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c LIKE \'%ARM%\' AND Loan_Type_1st_TD__c NOT IN (\'Jumbo\', \'Conventional\', \'CONV\', \'FHA\', \'VA\', \'FarmersHomeAdministration\', \'FSA/RHS\', \'USDA\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I110' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Lien_Position__c = \'2nd\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I120' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'HELOC\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I130' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c = \'Reverse Mortgage\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME',
+        'I140' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c LIKE \'%CONST%\' OR Loan_Program_1st__c LIKE \'%OTC%\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I170' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (NOT(Loan_Program_1st__c LIKE \'%Bank Statement%\' OR Loan_Program_1st__c LIKE \'%Investor Flex%\')) AND Lien_Position__c != \'2nd\' AND Loan_Purpose__c != \'HELOC\' AND Loan_Program_1st__c != \'Reverse Mortgage\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Channel__c = :CORRESPONDENT_CHANNEL_NAME',
+        'I210' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c =:CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I220' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c NOT IN (\'Correspondent\', \'Broker\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME',
+        'I230' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c = \'Broker\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I250' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE \'%ARM%\'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I251' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c LIKE \'%ARM%\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I260' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Type_1st_TD__c = \'Jumbo\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I261' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c != \'Jumbo\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I270' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Doc_Type_1st_TD__c != NULL AND Doc_Type_1st_TD__c != \'Full\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I271' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Doc_Type_1st_TD__c = NULL OR Doc_Type_1st_TD__c = \'Full\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I280' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c LIKE \'%Interest Only%\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I281' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE \'%Interest Only%\'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I290' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Program_1st__c = \'Option ARM\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I291' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Loan_Program_1st__c = NULL OR Loan_Program_1st__c != \'Option ARM\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I300' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Prepayment_Penalty__c = \'Yes\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I301' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (Prepayment_Penalty__c = NULL OR Prepayment_Penalty__c != \'Yes\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I310' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Purchase\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I311' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND ((Loan_Purpose__c = \'Refinance\' AND Refinance_Purpose__c IN :RATE_TERM_REFINANCE_PURPOSES) OR Loan_Purpose__c = \'Refinance Rate & Term\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN :states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I312' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND ((Loan_Purpose__c = \'Refinance\' AND Refinance_Purpose__c IN :CASH_OUT_REFINANCE_PURPOSES) OR Loan_Purpose__c = \'Refinance Cash-Out\') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I313' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Refinance\' AND Refinance_Purpose__c LIKE \'%RESTRUCTURE%\' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I314' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Loan_Purpose__c = \'Refinance\' AND (Refinance_Purpose__c = NULL OR (Refinance_Purpose__c NOT IN :RATE_TERM_REFINANCE_PURPOSES AND Refinance_Purpose__c NOT IN :CASH_OUT_REFINANCE_PURPOSES)) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I330' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c > 80 AND Loan_Type_1st_TD__c IN :MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I331' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND (LTV__c <= 80 OR LTV__c = NULL OR Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c NOT IN :MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I340' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Has_Piggyback_Seconds__c = TRUE AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I341' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Has_Piggyback_Seconds__c = FALSE AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I370' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c <= 60 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I371' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c > 60 AND LTV__c <= 70 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I372' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c > 70 AND LTV__c <= 80 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I373' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c > 80 AND LTV__c <= 90 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I374' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c > 90 AND LTV__c <= 100 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I375' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND LTV__c > 100 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I380' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I385' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I390' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I401' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Channel__c =:CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Status__c = \'Post-Closed\'',
+        'I450' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'I460' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Days_Over_90__c = 1 AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null',
+        'MLO' => 'Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != \'DPA 2nd\' AND Property_State__c IN:states AND Property_State__c != null AND NMLS_ID__c != null'
+    };
+
+    private static Map<String, Object> binds(Date startDate, Date endDate, List<String> states) {
+        return new Map<String, Object>{
+            'startDate' => startDate,
+            'endDate' => endDate,
+            'endDatePlus1' => endDate.addDays(1),
+            'endDateTime' => DateTime.newInstance(endDate, Time.newInstance(23, 59, 59, 999)),
+            'states' => states,
+            'CORRESPONDENT_CHANNEL_NAME' => CORRESPONDENT_CHANNEL_NAME,
+            'NON_QM_PRODUCT_NAME' => NON_QM_PRODUCT_NAME,
+            'CONVENTIONAL_FORWARD_LOAN_TYPES' => CONVENTIONAL_FORWARD_LOAN_TYPES,
+            'ONE_TO_FOUR_FAMILY_PROPERTY_TYPES' => ONE_TO_FOUR_FAMILY_PROPERTY_TYPES,
+            'MANUFACTURED_PROPERTY_TYPES' => MANUFACTURED_PROPERTY_TYPES,
+            'GOVERNMENT_LOAN_TYPES' => GOVERNMENT_LOAN_TYPES,
+            'CONVENTIONAL_CONFORMING_LOAN_TYPES' => CONVENTIONAL_CONFORMING_LOAN_TYPES,
+            'MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES' => MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES,
+            'NON_CONFORMING_LOAN_TYPES' => NON_CONFORMING_LOAN_TYPES,
+            'CASH_OUT_REFINANCE_PURPOSES' => CASH_OUT_REFINANCE_PURPOSES,
+            'RATE_TERM_REFINANCE_PURPOSES' => RATE_TERM_REFINANCE_PURPOSES
+        };
+    }
+
     public class ReportModel {
         @AuraEnabled
         public UserInfoModel user;
@@ -61,6 +183,15 @@ public with sharing class ARIVE_NmlsCallReportController {
             generateRevenueData();
             generateMloData();
         }
+        private List<AggregateResult> aggregate(String datapoint, String fields) {
+            return aggregate(datapoint, fields, '');
+        }
+        private List<AggregateResult> aggregate(String datapoint, String fields, String extraGroupBy) {
+            return (List<AggregateResult>) Database.queryWithBinds(
+                    'SELECT Property_State__c Id, ' + fields + ' FROM Transaction__c WHERE ' + FILTERS.get(datapoint)
+                    + ' GROUP BY Property_State__c' + extraGroupBy,
+                    binds(startDate, endDate, states), AccessLevel.SYSTEM_MODE);
+        }
         public void generateApplicationData() {
             generateApplicationsInProcess();
             generateApplicationsReceived();
@@ -81,21 +212,7 @@ public with sharing class ARIVE_NmlsCallReportController {
             }
         }
         public void generateApplicationsInProcess() {
-            Map<String, AggregateResult> results = new Map<String, AggregateResult>([
-                    SELECT Property_State__c Id, Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE TRID_Date__c < :startDate
-                    AND (
-                            (Funding_Date__c >= :startDate
-                            OR Withdrawn__c >= :startDate)
-                            OR
-                            (Funding_Date__c = NULL
-                            AND Withdrawn__c = NULL)
-                    )
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]);
+            Map<String, AggregateResult> results = new Map<String, AggregateResult>(aggregate('AC010', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount'));
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
                 if (result != null) {
@@ -105,16 +222,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateApplicationsReceived() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE TRID_Date__c >= :startDate AND TRID_Date__c < :endDate.addDays(1)
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC020', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -125,17 +233,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateApplicationsApprovedNotAccepted() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
-                    AND Withdrawn_Reason__c = 'Approved But Not Accepted'
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC030', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -146,17 +244,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateApplicationsDenied() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
-                    AND Withdrawn_Reason__c IN ('App Denied')
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC040', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -167,17 +255,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateApplicationsWithdrawn() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
-                    AND Withdrawn_Reason__c IN ('App Withdrawn By Borrower', 'App Rescinded By Borrower')
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC050', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -188,17 +266,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateFilesClosedForIncompleteness() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
-                    AND Withdrawn_Reason__c = 'File Closed For Incompleteness'
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC060', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -209,17 +277,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generatePreapprovalRequestsDenied() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
-                    AND Withdrawn_Reason__c = 'Pre-Approval Denied'
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC062', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -230,17 +288,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generatePreapprovalRequestsApprovedNotAccepted() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Withdrawn__c >= :startDate AND Withdrawn__c <= :endDateTime
-                    AND Withdrawn_Reason__c = 'Pre-Approval Approved But Not Accepted'
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC064', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -251,16 +299,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateLoansClosedAndFunded() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate AND Withdrawn__c = NULL
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != NULL
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC070', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -271,18 +310,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateApplicationsInProcessAtEnd() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE TRID_Date__c < :endDate.addDays(1) 
-                	AND (Funding_Date__c > :endDate OR Funding_Date__c = NULL) AND (Withdrawn__c > :endDateTime OR Withdrawn__c = NULL)
-                	AND (Post_Closed_Date__c > :endDate OR Post_Closed_Date__c = NULL)
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != NULL
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC080', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -361,17 +389,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         is within the fiscal quarter the report is being generated for "*/
         public void generateConventional() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c IN :CONVENTIONAL_FORWARD_LOAN_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC100', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -386,17 +404,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         is within the fiscal quarter the report is being generated for "*/
         public void generateConventionalForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c IN :CONVENTIONAL_FORWARD_LOAN_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC100_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -410,17 +418,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         is within the fiscal quarter the report is being generated for "*/
         public void generateFhaIssued() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c= 'FHA' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC110', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -434,17 +432,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         is within the fiscal quarter the report is being generated for "*/
         public void generateFhaIssuedForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = 'FHA' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC110_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -459,17 +447,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateVaGuarunteed() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c= 'VA' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC120', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -484,17 +462,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateVaGuarunteedForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = 'VA' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC120_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -509,17 +477,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateFsaRhaGuarunteed() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = 'FSA/RHS' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC130', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -534,17 +492,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateFsaRhaGuarunteedForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = 'FSA/RHS' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC130_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -559,17 +507,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for*/
         public void generateOneToFourFamilyDwelling() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Property_Type__c IN :ONE_TO_FOUR_FAMILY_PROPERTY_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC200', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -584,17 +522,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for*/
         public void generateOneToFourFamilyDwellingForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Property_Type__c IN :ONE_TO_FOUR_FAMILY_PROPERTY_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC200_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -609,17 +537,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateManufcaturedHousing() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Property_Type__c IN :MANUFACTURED_PROPERTY_TYPES AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC210', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -634,17 +552,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateManufcaturedHousingForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Property_Type__c IN :MANUFACTURED_PROPERTY_TYPES AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC210_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -659,17 +567,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateMultifamilyDwelling() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Property_Type__c IN ('4-10 Units', '10+ Units') AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC220', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -684,17 +582,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateMultifamilyDwellingForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Property_Type__c IN ('4-10 Units', '10+ Units') AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC220_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -709,17 +597,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateHomePurchase() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Purchase' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC300', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -734,17 +612,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateHomePurchaseForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Purchase' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC300_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -759,17 +627,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is are within the fiscal quarter the report is being generated for*/
         public void generateHomeImprovement() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Refinance_Purpose__c = 'Home Improvement' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC310', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -784,17 +642,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is are within the fiscal quarter the report is being generated for*/
         public void generateHomeImprovementForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Refinance_Purpose__c = 'Home Improvement' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC310_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -809,18 +657,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateRefinancing() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c != 'Home Improvement'
-                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC320', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -835,18 +672,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateRefinancingForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c  != 'Home Improvement'
-                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC320_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -861,17 +687,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateFirstLien() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = '1st' AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC500', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -887,17 +703,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for "*/
         public void generateFirstLienForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = '1st' AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC500_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -912,17 +718,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Lien Position is not 1st or NULL/Blank and Funded (date) is within the fiscal quarter the report is being generated for "*/
         public void generateSubordinateLien() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = '2nd' AND Lien_Position__c != NULL AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC510', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -936,17 +732,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Lien Position is 2nd and not NULL/Blank, Channel is Correspondent, and Funded (date) is within the fiscal quarter the report is being generated for "*/
         public void generateSubordinateLienForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = '2nd' AND Lien_Position__c != NULL AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC510_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -960,17 +746,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Lien Position is not secured which considered NULL"*/
         public void generateNotSecured() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = NULL AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC520', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -984,17 +760,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Lien Position is NULL/Blank, Channel is Correspondent, and Funded (date) is within the fiscal quarter the report is being generated for "*/
         public void generateNotSecuredForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = NULL AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC520_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1008,15 +774,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Lien Position is not secured which considered NULL"*/
         public void generateBrokerFeesCollected() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Sum(Broker_Compensation__c) BrokerFeesCollected
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC600', 'Sum(Broker_Compensation__c) BrokerFeesCollected')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1029,15 +787,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         }
         public void generateLenderFeesCollected() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC610', 'Count(Id) countOfLoans')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1148,17 +898,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for         /*/
         public void generateQualifiedMortgage() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c != :NON_QM_PRODUCT_NAME AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC920', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1173,17 +913,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated for         /*/
         public void generateQualifiedMortgageForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c != :NON_QM_PRODUCT_NAME AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC920_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1198,17 +928,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is generated for*/
         public void generateNonQualifiedMortgage() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = :NON_QM_PRODUCT_NAME AND Channel__c != :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC930', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1223,17 +943,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is generated for*/
         public void generateNonQualifiedMortgageForCorrespondent() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c = :NON_QM_PRODUCT_NAME AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC930_CORR', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1269,16 +979,7 @@ public with sharing class ARIVE_NmlsCallReportController {
 
         public void generateTotalLoansBrokeredByCompany() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c != :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC900', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1291,16 +992,7 @@ public with sharing class ARIVE_NmlsCallReportController {
 
         public void generateTotalLoansFundedByCompany() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c = :CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC910', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1320,15 +1012,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //is within the fiscal quarter the report is being generated or*/
         public void generateGrossRevenue() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Sum(Gross_Compensation__c) totalLoanRevenue
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('AC1100', 'Sum(Gross_Compensation__c) totalLoanRevenue')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1343,19 +1027,7 @@ public with sharing class ARIVE_NmlsCallReportController {
          belonging to the company the report is being run for, sum the total loan amount where
          Closed (date) and Funded (date) are within the quarter the report is being run for */
         public void generateMloData() {
-            List<AggregateResult> results = new List<AggregateResult>(
-            [
-                    SELECT Property_State__c Id, NMLS_ID__c nmlsId,
-                            count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                	AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    AND NMLS_ID__c != null
-                    GROUP BY Property_State__c, NMLS_ID__c
-            ]
-            );
+            List<AggregateResult> results = aggregate('MLO', 'NMLS_ID__c nmlsId, count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount', ', NMLS_ID__c');
             Map<String, List<AggregateResult>> aggregateResultMap = new Map<String, List<AggregateResult>>();
             for(AggregateResult result : results){
                 if(aggregateResultMap.containsKey((String)result.get('Id'))){
@@ -1453,18 +1125,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are guaranteed or insured by the government(FHA/VA/RHS) and amortization type is fixed"*/
         public void generateGovernmentFixed() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c IN :GOVERNMENT_LOAN_TYPES
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I010', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             System.debug(results);
             System.debug(stateData);
@@ -1482,18 +1143,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are guaranteed or insured by the government(FHA/VA/RHS) and amortization type is ARM"*/
         public void generateGovernmentARM() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c IN :GOVERNMENT_LOAN_TYPES
-                    AND Loan_Program_1st__c LIKE '%ARM%' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I020', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1507,19 +1157,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, amortization type is fixed, and loan type is conforming"*/
         public void generateConventionalConformingFixed() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
-                    AND Loan_Type_1st_TD__c IN :CONVENTIONAL_CONFORMING_LOAN_TYPES
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I030', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1533,19 +1171,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, amortization type is ARM, and loan type is conforming"*/
         public void generateConventionalConformingARM() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c LIKE '%ARM%'
-                    AND Loan_Type_1st_TD__c IN :CONVENTIONAL_CONFORMING_LOAN_TYPES
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I040', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1559,18 +1185,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, amortization type is fixed and loan type is Jumbo"*/
         public void generateConventionalNonConformingFixed() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
-                    AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I050', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1584,18 +1199,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, amortization type is ARM and loan type is Jumbo"*/
         public void generateConventionalNonConformingARM() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c LIKE '%ARM%'
-                    AND Loan_Type_1st_TD__c IN :NON_CONFORMING_LOAN_TYPES AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I060', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1609,19 +1213,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, amortization type is Fixed, and loan type is other"*/
         public void generateOtherFixed() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
-                    AND Loan_Type_1st_TD__c NOT IN ('Jumbo', 'Conventional', 'CONV', 'FHA', 'VA', 'FarmersHomeAdministration', 'FSA/RHS', 'USDA')
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I070', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1635,19 +1227,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, amortization type is ARM, and loan type is other"*/
         public void generateOtherARM() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c LIKE '%ARM%'
-                    AND Loan_Type_1st_TD__c NOT IN ('Jumbo', 'Conventional', 'CONV', 'FHA', 'VA', 'FarmersHomeAdministration', 'FSA/RHS', 'USDA')
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I080', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1662,18 +1242,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, program is HE-LOAN"*/
         public void generateClosedEndSecondMortgages() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Lien_Position__c = '2nd'
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I110', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1688,18 +1257,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, mortgage applied for is HELOC"*/
         public void generateHELOCS() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'HELOC'
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I120', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1713,17 +1271,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, program is reverse"*/
         public void generateReverse() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c = 'Reverse Mortgage'
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I130', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1737,18 +1285,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, mortgage applied for is construction"*/
         public void generateConstruction() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c LIKE '%CONST%' OR Loan_Program_1st__c LIKE '%OTC%')
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I140', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1762,18 +1299,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and not included above."*/
         public void generateOtherResidential() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (NOT(Loan_Program_1st__c LIKE '%Bank Statement%' OR Loan_Program_1st__c LIKE '%Investor Flex%'))
-                    AND Lien_Position__c != '2nd' AND Loan_Purpose__c != 'HELOC'
-                    AND Loan_Program_1st__c != 'Reverse Mortgage' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I170', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1787,17 +1313,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and compensation type is correspondent."*/
         public void generateRetail() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c =:CORRESPONDENT_CHANNEL_NAME AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I210', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1811,16 +1327,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and compensation type is not correspondent or broker."*/
         public void generateTableFunded() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c NOT IN ('Correspondent', 'Broker') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I220', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1834,17 +1341,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and compensation type is broker."*/
         public void generateWholesaleBrokered() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Channel__c = 'Broker' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I230', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1858,18 +1355,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and amortization type is fixed"*/
         public void generateFixedRate() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%ARM%')))
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I250', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1883,18 +1369,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and amortization type is ARM"*/
         public void generateARM() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c LIKE '%ARM%'
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I251', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1908,17 +1383,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and loan is jumbo"*/
         public void generateJumbo() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Type_1st_TD__c = 'Jumbo' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I260', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1932,17 +1397,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and loan is not jumbo"*/
         public void generateNonJumbo() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c != 'Jumbo') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I261', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1956,17 +1411,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and loan is jumbo"*/
         public void generateAltDoc() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            COUNT(Id) countOfLoans,
-                            SUM(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Doc_Type_1st_TD__c != NULL AND Doc_Type_1st_TD__c != 'Full' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I270', 'COUNT(Id) countOfLoans, SUM(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -1980,17 +1425,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and loan is not jumbo"*/
         public void generateFullDoc() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            COUNT(Id) countOfLoans,
-                            SUM(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Doc_Type_1st_TD__c = NULL OR Doc_Type_1st_TD__c = 'Full') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I271', 'COUNT(Id) countOfLoans, SUM(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2005,17 +1440,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and amortization type interest only"*/
         public void generateInterestOnly() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c LIKE '%Interest Only%' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I280', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2029,17 +1454,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and amortization type is not interest only"*/
         public void generateNotInterestOnly() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Loan_Program_1st__c = NULL OR (NOT(Loan_Program_1st__c LIKE '%Interest Only%'))) AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I281', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2053,17 +1468,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and program contains ARM or HELOC"*/
         public void generateOptionARMS() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Program_1st__c = 'Option ARM' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I290', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2077,18 +1482,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and program contains ARM or HELOC"*/
         public void generateNotOptionARMS() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                      AND (Loan_Program_1st__c = NULL OR Loan_Program_1st__c != 'Option ARM')
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I291', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2102,18 +1496,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and has prepayment penalties"*/
         public void generateLoansWithPrepaymentPenalties() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                      AND Prepayment_Penalty__c = 'Yes'
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I300', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2127,17 +1510,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and does not have prepayment penalties"*/
         public void generateLoansWithoutPrepaymentPenalties() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (Prepayment_Penalty__c = NULL OR Prepayment_Penalty__c != 'Yes') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I301', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2151,17 +1524,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and closed loan purpose is purchase"*/
         public void generatePurchase() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Purchase' AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I310', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2175,17 +1538,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, closed loan purpose is refinance and refinance purpose is either rate term or rate-term"*/
         public void generateRefinanceRateTerm() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND ((Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c IN :RATE_TERM_REFINANCE_PURPOSES) OR Loan_Purpose__c = 'Refinance Rate & Term') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN :this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I311', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2199,17 +1552,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, closed loan purpose is refinance, and refinance purpose is Cash Out or Cash-Out"*/
         public void generateCashOutRefinances() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND ((Loan_Purpose__c = 'Refinance' AND Refinance_Purpose__c IN :CASH_OUT_REFINANCE_PURPOSES) OR Loan_Purpose__c = 'Refinance Cash-Out') AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I312', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2223,19 +1566,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, closed loan purpose is refinance, refinance purpose is restructure"*/
         public void generateRefinanceRestructure() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                     AND Loan_Purpose__c = 'Refinance'
-                    AND Refinance_Purpose__c LIKE '%RESTRUCTURE%'
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I313', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2249,19 +1580,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, closed loan purpose is refinance, and refinance purpose is none of the above."*/
         public void generateRefinanceOtherUnknown() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Loan_Purpose__c = 'Refinance'
-                    AND (Refinance_Purpose__c = NULL OR (Refinance_Purpose__c NOT IN :RATE_TERM_REFINANCE_PURPOSES AND Refinance_Purpose__c NOT IN :CASH_OUT_REFINANCE_PURPOSES))
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I314', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2275,19 +1594,7 @@ public with sharing class ARIVE_NmlsCallReportController {
       //Residential loans have LTV over 80% and are MI-eligible loan products"*/
         public void generateLoansWithMortgageInsurance() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND LTV__c > 80
-                    AND Loan_Type_1st_TD__c IN :MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I330', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2301,18 +1608,7 @@ public with sharing class ARIVE_NmlsCallReportController {
      //Residential loans are not classified as having mortgage insurance"*/
         public void generateLoansWithoutMortgageInsurance() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND (LTV__c <= 80 OR LTV__c = NULL OR Loan_Type_1st_TD__c = NULL OR Loan_Type_1st_TD__c NOT IN :MORTGAGE_INSURANCE_ELIGIBLE_LOAN_TYPES)
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I331', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2326,17 +1622,7 @@ public with sharing class ARIVE_NmlsCallReportController {
      //Residential loans are for 1 to 4 units, loan type is not HELOC, and has piggyback seconds."*/
         public void generateLoansWithPiggybackSeconds() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Has_Piggyback_Seconds__c = TRUE AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I340', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2350,18 +1636,7 @@ public with sharing class ARIVE_NmlsCallReportController {
      //Residential loans are for 1 to 4 units, and does not have piggyback seconds"*/
         public void generateLoansWithoutPiggybackSeconds() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                     AND Has_Piggyback_Seconds__c = FALSE
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I341', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2375,18 +1650,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and LTV is less than or equal to 60%"*/
         public void generateLoansWithLTVEqualOrLessThan60() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                     AND LTV__c <= 60
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I370', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2400,19 +1664,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and LTV is greater than 60% but less than or equal to 70%"*/
         public void generateLoansWithLTVBetween60And70() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND LTV__c > 60 AND LTV__c <= 70
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I371', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2426,19 +1678,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and LTV is greater than 70% but less than or equal to 80%"*/
         public void generateLoansWithLTVBetween70And80() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND LTV__c > 70 AND LTV__c <= 80
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I372', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2452,19 +1692,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and LTV is 80% but less than or equal to 90%"*/
         public void generateLoansWithLTVBetween80And90() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND LTV__c > 80 AND LTV__c <= 90
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I373', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2478,19 +1706,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and LTV is greater than 90% but less than or equal to 100%"*/
         public void generateLoansWithLTVBetween90And100() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND LTV__c > 90 AND LTV__c <= 100
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I374', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2504,18 +1720,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and greater than 100%"*/
         public void generateLoansWithLTVGreaterThan100() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                     AND LTV__c > 100
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I375', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2528,17 +1733,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Calculating Weighted Average of LTV on First Mortgages Only
         public void generateWeightedAverageLTV() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            AVG(LTV__c) LTVLoansCollected
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I380', 'AVG(LTV__c) LTVLoansCollected')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2552,16 +1747,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Calculating Weighted Average of CLTV on First Mortgages Only
         public void generateWeightedAverageCLTV() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            AVG(LTV__c) CLTVLoansCollected
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I385', 'AVG(LTV__c) CLTVLoansCollected')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2575,17 +1761,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Calculating Weighted Average of Interest Rate on First Mortgages Only
         public void generateWeightedAverageCouponAtOrigination() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            AVG(Interest_Rate__c) InterestRateLoansCollected
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I390', 'AVG(Interest_Rate__c) InterestRateLoansCollected')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2601,18 +1777,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Residential loans are for 1 to 4 units, and compensation type is correspondent."*/
         public void generateProductionSoldToOthersNonAffiliate() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                     AND Channel__c =: CORRESPONDENT_CHANNEL_NAME
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null AND Channel__c = :CORRESPONDENT_CHANNEL_NAME
-                    AND Status__c = 'Post-Closed'
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I401', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2624,16 +1789,7 @@ public with sharing class ARIVE_NmlsCallReportController {
         //Calculating Weighted Average of days between funded date and wire ordered date on First Mortgages Only
         public void generateAvgDaysInWarehouse() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            AVG(Days_In_Warehouse__c) daysInWarehouse
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                    
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I450', 'AVG(Days_In_Warehouse__c) daysInWarehouse')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -2649,17 +1805,7 @@ public with sharing class ARIVE_NmlsCallReportController {
        //Residential loans are for 1 to 4 units, and days between funded date and wire ordered date is over 90"*/
         public void generateProductionWarehousedInExcessOf90Days() {
             Map<String, AggregateResult> results = new Map<String, AggregateResult>(
-            [
-                    SELECT Property_State__c Id,
-                            Count(Id) countOfLoans,
-                            Sum(Loan_Amount_1st__c) totalAmount
-                    FROM Transaction__c
-                    WHERE Funding_Date__c >= :startDate AND Funding_Date__c <= :endDate
-                     AND Days_Over_90__c = 1
-                    AND Exclude_From_MCR__c = FALSE AND Loan_Type_1st_TD__c != 'DPA 2nd'
-                    AND Property_State__c IN:this.states AND Property_State__c != null
-                    GROUP BY Property_State__c
-            ]
+            aggregate('I460', 'Count(Id) countOfLoans, Sum(Loan_Amount_1st__c) totalAmount')
             );
             for (StateModel state : stateData) {
                 AggregateResult result = (AggregateResult) results.get(state.stateCode);
@@ -4130,7 +3276,30 @@ public with sharing class ARIVE_NmlsCallReportController {
     }
 	@AuraEnabled 
     public static ARIVE_NmlsCallReportTableController.Table viewDatapointDetails(String datapointName, String startDate, String endDate, String state) {
-        return ARIVE_NmlsCallReportTableController.translateFieldSetToTable(datapointName, Date.parse(startDate), Date.parse(endDate), state);
+        return ARIVE_NmlsCallReportTableController.buildTable(datapointName, detailRows(datapointName, Date.parse(startDate), Date.parse(endDate), state));
+    }
+
+    // The loans behind one datapoint: its broker and correspondent filters, exactly as the top line runs them.
+    // A datapoint that isn't a line code is an MLO's NMLS ID.
+    @TestVisible
+    private static List<Transaction__c> detailRows(String datapointName, Date startDate, Date endDate, String state) {
+        Map<String, Object> b = binds(startDate, endDate, new List<String>{state});
+        List<String> clauses = new List<String>();
+        if (Pattern.matches('(AC|I)\\d+', datapointName)) {
+            for (String key : new List<String>{datapointName, datapointName + '_CORR'}) {
+                if (FILTERS.containsKey(key)) clauses.add('(' + FILTERS.get(key) + ')');
+            }
+            if (clauses.isEmpty()) {
+                throw new AuraHandledException(datapointName + ' is calculated from other lines and has no loan list of its own.');
+            }
+        } else {
+            clauses.add('(' + FILTERS.get('MLO') + ' AND NMLS_ID__c = :nmlsId)');
+            b.put('nmlsId', datapointName);
+        }
+        return (List<Transaction__c>) Database.queryWithBinds(
+                'SELECT Name, Loan_Number__c, Loan_Officer__r.Name, Loan_Amount_1st__c, TRID_Date__c, Funding_Date__c, Withdrawn__c, Channel__c'
+                + ' FROM Transaction__c WHERE ' + String.join(clauses, ' OR ') + ' ORDER BY Name',
+                b, AccessLevel.SYSTEM_MODE);
     }
 
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nickley_Realtor_LO__c</fullName>
+    <description>Which Nickley Group Loan Officer this lead is allocated to. Mirrors the picklist of the same name on Account, which drives the My Nickley Realtors Home tab and the intake form tile order.</description>
+    <inlineHelpText>The Nickley Group Loan Officer allocated to this lead.</inlineHelpText>
+    <label>Nickley Realtor LO</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Zach Fritz</fullName>
+                <default>false</default>
+                <label>Zach Fritz</label>
+            </value>
+            <value>
+                <fullName>Joe Olmsted</fullName>
+                <default>false</default>
+                <label>Joe Olmsted</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

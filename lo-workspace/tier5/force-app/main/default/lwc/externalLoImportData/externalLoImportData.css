@@ -1,0 +1,45 @@
+@import 'c/portalSharedStyles';
+
+:host {
+    display: block;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: var(--pw-navy-900, #0f1f36);
+}
+
+.page {
+    padding: 20px 16px 40px;
+    width: 100%;
+}
+
+.page-header {
+    margin-bottom: 20px;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+    margin: 4px 0 0;
+    color: var(--pw-navy-600, #2c4a76);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.import-shell {
+    border: 1px solid var(--pw-line, #dfe8f3);
+    border-radius: 18px;
+    background: var(--pw-surface, #fff);
+    padding: 20px 24px 24px;
+    box-shadow: 0 1px 2px 0 rgba(15, 31, 54, 0.04), 0 1px 3px 0 rgba(15, 31, 54, 0.06);
+}
+
+@media (min-width: 768px) {
+    .page {
+        padding: 24px 24px 40px;
+    }
+}

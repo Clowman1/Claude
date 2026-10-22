@@ -1,0 +1,364 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.153.5.
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-20T19:56:27.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-20T19:53:27.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:13.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPortalShell",
+          "fullName": "externalLoPortalShell",
+          "id": "0RbQi0000004SP9KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "lwc/perfectDayHome",
+          "fullName": "perfectDayHome",
+          "id": "0RbQi0000004SPCKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ValidationRule",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "objects/Lead.object",
+          "fullName": "Lead.Lead_Rating_and_Loan_Amount_Fields_requr",
+          "id": "03dQi000000JWtpIAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_Account_Phone_Record_Page.flexipage",
+          "fullName": "LO_Workspace_Account_Phone_Record_Page",
+          "id": "0M0Qi000000ChPNKA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_Lead_Phone_Record_Page.flexipage",
+          "fullName": "LO_Workspace_Lead_Phone_Record_Page",
+          "id": "0M0Qi000000CUjtKAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_Lead_Record_Page.flexipage",
+          "fullName": "LO_Workspace_Lead_Record_Page",
+          "id": "0M0Qi000000CUYcKAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_Log_Activity.flexipage",
+          "fullName": "LO_Workspace_Log_Activity",
+          "id": "0M0Qi000000ChPOKA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_My_Leads.flexipage",
+          "fullName": "LO_Workspace_My_Leads",
+          "id": "0M0Qi000000ChPPKA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_My_Loans.flexipage",
+          "fullName": "LO_Workspace_My_Loans",
+          "id": "0M0Qi000000ChPQKA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_My_Realtors.flexipage",
+          "fullName": "LO_Workspace_My_Realtors",
+          "id": "0M0Qi000000ChPRKA0",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "FlexiPage",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "flexipages/LO_Workspace_Transaction_Record_Page.flexipage",
+          "fullName": "LO_Workspace_Transaction_Record_Page",
+          "id": "0M0Qi000000CUYdKAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomTab",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "tabs/LO_Workspace_Log_Activity.tab",
+          "fullName": "LO_Workspace_Log_Activity",
+          "id": "01rQi00001cYc9JIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomTab",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "tabs/LO_Workspace_My_Leads.tab",
+          "fullName": "LO_Workspace_My_Leads",
+          "id": "01rQi00001cYc9KIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomTab",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "tabs/LO_Workspace_My_Loans.tab",
+          "fullName": "LO_Workspace_My_Loans",
+          "id": "01rQi00001cYc9LIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomTab",
+          "created": true,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "tabs/LO_Workspace_My_Realtors.tab",
+          "fullName": "LO_Workspace_My_Realtors",
+          "id": "01rQi00001cYc9MIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "CustomApplication",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "applications/LO_Workspace.app",
+          "fullName": "LO_Workspace",
+          "id": "02uQi000003MX8TIAW",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "PermissionSet",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "permissionsets/External_LO_Access.permissionset",
+          "fullName": "External_LO_Access",
+          "id": "0PSQi000000L8ozOAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "PermissionSetGroup",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "permissionsetgroups/External_Loan_Officer.permissionsetgroup",
+          "fullName": "External_Loan_Officer",
+          "id": "0PGQi00000037jJOAQ",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-20T19:56:17.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001VG6LKAW",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-20T19:56:27.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 18,
+    "numberComponentsTotal": 18,
+    "numberFiles": "34",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-20T19:55:33.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "282766",
+    "files": [
+      {
+        "fullName": "LO_Workspace",
+        "type": "CustomApplication",
+        "state": "Changed",
+        "filePath": "applications/LO_Workspace.app"
+      },
+      {
+        "fullName": "LO_Workspace_Log_Activity",
+        "type": "CustomTab",
+        "state": "Created",
+        "filePath": "tabs/LO_Workspace_Log_Activity.tab"
+      },
+      {
+        "fullName": "LO_Workspace_My_Leads",
+        "type": "CustomTab",
+        "state": "Created",
+        "filePath": "tabs/LO_Workspace_My_Leads.tab"
+      },
+      {
+        "fullName": "LO_Workspace_My_Loans",
+        "type": "CustomTab",
+        "state": "Created",
+        "filePath": "tabs/LO_Workspace_My_Loans.tab"
+      },
+      {
+        "fullName": "LO_Workspace_My_Realtors",
+        "type": "CustomTab",
+        "state": "Created",
+        "filePath": "tabs/LO_Workspace_My_Realtors.tab"
+      },
+      {
+        "fullName": "LO_Workspace_Account_Phone_Record_Page",
+        "type": "FlexiPage",
+        "state": "Created",
+        "filePath": "flexipages/LO_Workspace_Account_Phone_Record_Page.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_Lead_Phone_Record_Page",
+        "type": "FlexiPage",
+        "state": "Changed",
+        "filePath": "flexipages/LO_Workspace_Lead_Phone_Record_Page.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_Lead_Record_Page",
+        "type": "FlexiPage",
+        "state": "Changed",
+        "filePath": "flexipages/LO_Workspace_Lead_Record_Page.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_Log_Activity",
+        "type": "FlexiPage",
+        "state": "Created",
+        "filePath": "flexipages/LO_Workspace_Log_Activity.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_My_Leads",
+        "type": "FlexiPage",
+        "state": "Created",
+        "filePath": "flexipages/LO_Workspace_My_Leads.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_My_Loans",
+        "type": "FlexiPage",
+        "state": "Created",
+        "filePath": "flexipages/LO_Workspace_My_Loans.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_My_Realtors",
+        "type": "FlexiPage",
+        "state": "Created",
+        "filePath": "flexipages/LO_Workspace_My_Realtors.flexipage"
+      },
+      {
+        "fullName": "LO_Workspace_Transaction_Record_Page",
+        "type": "FlexiPage",
+        "state": "Changed",
+        "filePath": "flexipages/LO_Workspace_Transaction_Record_Page.flexipage"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPortalShell"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/perfectDayHome"
+      },
+      {
+        "fullName": "External_LO_Access",
+        "type": "PermissionSet",
+        "state": "Changed",
+        "filePath": "permissionsets/External_LO_Access.permissionset"
+      },
+      {
+        "fullName": "External_Loan_Officer",
+        "type": "PermissionSetGroup",
+        "state": "Changed",
+        "filePath": "permissionsetgroups/External_Loan_Officer.permissionsetgroup"
+      },
+      {
+        "fullName": "Lead.Lead_Rating_and_Loan_Amount_Fields_requr",
+        "type": "ValidationRule",
+        "state": "Changed",
+        "filePath": "objects/Lead.object"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001VG6LKAW%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

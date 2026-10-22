@@ -148,7 +148,7 @@ body:has(.rhl-hero) .community_byo-scoped-header-and-footer__header-content {
     position: relative;
 }
 .rhl-hero-logo {
-    width: 190px;
+    width: 270px;
     height: auto;
     display: block;
 }
@@ -226,7 +226,7 @@ body:has(.rhl-hero) .community_byo-scoped-header-and-footer__header-content {
     margin-bottom: 22px;
 }
 .rhl-welcome-logo {
-    width: 170px;
+    width: 240px;
     height: auto;
     display: block;
     margin-bottom: 36px;
@@ -321,7 +321,7 @@ body:has(.rhl-hero) .community_byo-scoped-header-and-footer__header-content {
         flex: none;
     }
     .rhl-hero-logo {
-        width: 150px;
+        width: 210px;
     }
     .rhl-hero-copy {
         padding-top: 28px;

@@ -1,0 +1,337 @@
+<template>
+    <template lwc:if={isDetailView}>
+        <template lwc:if={detail}>
+            <main class="detail-page">
+                <div class="detail-page-inner">
+                    <button type="button" class="back-link" onclick={handleBack}><c-portal-icon name="arrow-left" size="16"></c-portal-icon>My Loans</button>
+                    <header class="detail-header-card">
+                        <div>
+                            <div class="detail-title-row">
+                                <h1 class="detail-title">{detail.summary.borrower}</h1>
+                                <template lwc:if={detail.summary.milestone}>
+                                    <span class={milestoneChipClass} data-tour="loan-milestone">{detail.summary.milestone}</span>
+                                </template>
+                            </div>
+                            <p class="detail-primary">{detail.summary.amount} · {detail.summary.program}</p>
+                            <p class="detail-meta">{detail.summary.idLabel} · {detail.summary.milestone}</p>
+                        </div>
+                        <div class="detail-header-actions">
+                            <button type="button" class="btn btn-outline" onclick={handleOpenCoc} data-tour="loan-coc">Change of circumstance</button>
+                            <button type="button" class="btn btn-brand" onclick={handleOpenSubmission} data-tour="loan-submission">Submission form</button>
+                            <template lwc:if={detail.ariveUrl}>
+                                <a class="btn btn-outline" href={detail.ariveUrl} target="_blank" rel="noopener noreferrer">Open in Arive</a>
+                            </template>
+                            <template lwc:elseif={isLoWorkspace}>
+                                <button type="button" class="btn btn-outline" onclick={handleOpenAriveLink}>Link to ARIVE</button>
+                            </template>
+                        </div>
+                    </header>
+
+                    <nav class="detail-tabs" aria-label="Loan sections" data-tour="loan-tabs">
+                        <template for:each={detailTabs} for:item="tab">
+                            <button
+                                key={tab.id}
+                                type="button"
+                                class={tab.tabClass}
+                                data-tab={tab.id}
+                                data-tour={tab.tourHook}
+                                aria-current={tab.ariaCurrent}
+                                onclick={handleTabSelect}
+                            >{tab.label}</button>
+                        </template>
+                    </nav>
+
+                    <template lwc:if={isDetailsTab}>
+                        <div class="details-pair">
+                        <section class="detail-card">
+                            <h2 class="detail-card-title">Loan details</h2>
+                            <c-lo-ws-texts-switch record-id={detailId}></c-lo-ws-texts-switch>
+                            <dl class="field-list">
+                                <template for:each={detail.loanDetails} for:item="field">
+                                    <div key={field.label} class="field-row">
+                                        <dt>{field.label}</dt>
+                                        <dd>{field.value}</dd>
+                                    </div>
+                                </template>
+                            </dl>
+                        </section>
+                        <div class="details-side">
+                        <template lwc:if={detail.transactionPartners}>
+                            <section class="detail-card">
+                                <h2 class="detail-card-title">Transaction Partners</h2>
+                                <dl class="field-list">
+                                    <template for:each={detail.transactionPartners} for:item="field">
+                                        <div key={field.label} class="field-row">
+                                            <dt>{field.label}</dt>
+                                            <dd>{field.value}</dd>
+                                        </div>
+                                    </template>
+                                </dl>
+                            </section>
+                        </template>
+                        <section class="detail-card">
+                            <h2 class="detail-card-title">COC's for this Loan</h2>
+                            <template lwc:if={hasCocRows}>
+                                <ul class="coc-list">
+                                    <template for:each={cocRows} for:item="coc">
+                                        <li key={coc.id} class="coc-item">
+                                            <div class="coc-top">
+                                                <span class="coc-reasons">{coc.reasons}</span>
+                                                <span class={coc.statusClass}>{coc.status}</span>
+                                            </div>
+                                            <p class="coc-meta">{coc.metaLabel}</p>
+                                            <template lwc:if={coc.notes}>
+                                                <details class="coc-notes">
+                                                    <summary>Notes &amp; COC desk response</summary>
+                                                    <p>{coc.notes}</p>
+                                                </details>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:else>
+                                <p class="coc-empty">No COCs on this loan yet. Use Change of circumstance above to request one.</p>
+                            </template>
+                        </section>
+                        </div>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isAppraisalTab}>
+                        <c-lo-ws-appraisal-panel loan-id={detailId}></c-lo-ws-appraisal-panel>
+                    </template>
+
+                    <template lwc:if={isNotesTab}>
+                        <div class="detail-calls-stack">
+                        <template lwc:if={showEnhancedNotes}>
+                            <section class="detail-embed-panel">
+                                <div class="notes-toolbar">
+                                    <h2 class="detail-embed-title">Notes</h2>
+                                    <div>
+                                        <button type="button" class="btn btn-outline" onclick={loadNotes}>Refresh</button>
+                                        <button type="button" class="btn btn-brand" onclick={handleNewNote}>New</button>
+                                    </div>
+                                </div>
+                                <template lwc:if={notesLoading}>
+                                    <span class="spinner" aria-hidden="true"></span>
+                                </template>
+                                <template lwc:elseif={notesError}>
+                                    <p class="empty-copy" role="alert">{notesError}</p>
+                                </template>
+                                <template lwc:elseif={hasNotes}>
+                                    <ul class="notes-list">
+                                        <template for:each={notes} for:item="note">
+                                            <li key={note.id} class="note-row">
+                                                <p class="note-subject">{note.subject}<template lwc:if={note.pinned}> <span class="note-pin">Pinned</span></template></p>
+                                                <lightning-formatted-rich-text value={note.body}></lightning-formatted-rich-text>
+                                                <p class="note-meta">{note.author} · <lightning-formatted-date-time value={note.created} year="numeric" month="short" day="numeric" hour="numeric" minute="2-digit"></lightning-formatted-date-time></p>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                                <template lwc:else>
+                                    <p class="empty-copy">There have been no notes created.</p>
+                                </template>
+                            </section>
+                        </template>
+                        <section class="detail-card">
+                            <template lwc:if={showEnhancedNotes}>
+                                <h2 class="detail-embed-title">Activity</h2>
+                            </template>
+                            <template lwc:else>
+                                <h2 class="detail-card-title">Activity &amp; notes</h2>
+                            </template>
+                            <template lwc:if={hasActivityEntries}>
+                                <ul class="activity-list">
+                                    <template for:each={detail.activityEntries} for:item="entry">
+                                        <li key={entry.id} class="activity-item">
+                                            <div class="activity-top">
+                                                <strong>{entry.outcome}</strong>
+                                                <span>{entry.timestamp}</span>
+                                            </div>
+                                            <p class="activity-channel">{entry.channel}</p>
+                                            <template lwc:if={entry.note}>
+                                                <p class="activity-note">{entry.note}</p>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:else>
+                                <p class="empty-copy">No activity logged on this loan yet.</p>
+                            </template>
+                        </section>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isCommsTab}>
+                        <c-lo-ws-communications record-id={detailId} initial-tab={commsTab}></c-lo-ws-communications>
+                    </template>
+
+                    <template lwc:if={isCallsTab}>
+                        <div class="detail-calls-stack">
+                            <section class="detail-embed-panel">
+                                <h2 class="detail-embed-title">Phone calls (RingSense)</h2>
+                                <c-call-insight-list key={ringSenseInsightKey} context-record-key={detailId} source="RingSense"></c-call-insight-list>
+                            </section>
+                            <section class="detail-embed-panel">
+                                <h2 class="detail-embed-title">Zoom meetings</h2>
+                                <c-call-insight-list key={zoomInsightKey} context-record-key={detailId} source="Zoom"></c-call-insight-list>
+                            </section>
+                            <template lwc:if={showLoggedCalls}>
+                                <section class="detail-embed-panel">
+                                    <h2 class="detail-embed-title">Logged calls</h2>
+                                    <p class="logged-calls-hint">Calls and meetings logged by hand (Log activity / Log communication).</p>
+                                    <template lwc:if={hasLoggedCalls}>
+                                        <ul class="activity-list">
+                                            <template for:each={detail.loggedCalls} for:item="entry">
+                                                <li key={entry.id} class="activity-item">
+                                                    <div class="activity-top">
+                                                        <strong>{entry.channel} · {entry.outcome}</strong>
+                                                        <span>{entry.timestamp}</span>
+                                                    </div>
+                                                    <p class="activity-channel">Logged by {entry.author}</p>
+                                                    <template lwc:if={entry.note}>
+                                                        <p class="activity-note">{entry.note}</p>
+                                                    </template>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </template>
+                                    <template lwc:else>
+                                        <p class="empty-copy">No calls logged by hand yet.</p>
+                                    </template>
+                                </section>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template lwc:if={isDocumentsTab}>
+                        <section class="detail-embed-panel">
+                            <c-document-viewer key={detailId} context-record-key={detailId}></c-document-viewer>
+                        </section>
+                    </template>
+
+                    <template lwc:if={isConditionsTab}>
+                        <section class="detail-card">
+                            <h2 class="detail-card-title">Conditions snapshot</h2>
+                            <p class="helper-copy">Read-only view for partner LOs. Processors edit and clear conditions on the internal transaction page.</p>
+                            <template lwc:if={hasConditionRows}>
+                                <ul class="condition-list">
+                                    <template for:each={detail.conditionRows} for:item="row">
+                                        <li key={row.conditionKey} class="condition-item">
+                                            <div class="condition-top">
+                                                <strong>{row.name}</strong>
+                                                <span>{row.status}</span>
+                                            </div>
+                                            <p class="condition-meta">{row.type}</p>
+                                            <template lwc:if={row.description}>
+                                                <p class="condition-description">{row.description}</p>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                            <template lwc:else>
+                                <p class="empty-copy">No conditions on file yet.</p>
+                            </template>
+                        </section>
+                    </template>
+                </div>
+            </main>
+        </template>
+        <template lwc:else>
+            <main class="detail-page">
+                <div class="detail-page-inner detail-loading" aria-busy="true" aria-label="Loading loan">
+                    <span class="spinner spinner-lg" aria-hidden="true"></span>
+                    <p class="detail-loading-copy">Loading loan…</p>
+                </div>
+            </main>
+        </template>
+    </template>
+
+    <template lwc:else>
+        <c-portal-list-layout
+            title="My Loans"
+            subtitle={listSubtitle}
+            custom-body={showBoard}
+            search-value={search}
+            search-placeholder="Search loans by borrower, ID, or milestone"
+            filters={filterChips}
+            loading={loading}
+            is-empty={isListEmpty}
+            empty-title="No loans match this view"
+            empty-message="Try a different filter or clear your search."
+            result-label={resultLabel}
+            row-type="generic"
+            items={listItems}
+            onsearchchange={handleSearchChangeEvent}
+            onfilterchange={handleFilterChangeEvent}
+            onrowaction={handleRowAction}
+        >
+            <template lwc:if={isActiveTab}>
+                <div slot="actions" class="view-toggle" role="group" aria-label="View">
+                    <button type="button" class={boardToggleClass} data-view="board" aria-pressed={boardPressed} onclick={handleViewToggle}>Board</button>
+                    <button type="button" class={listToggleClass} data-view="list" aria-pressed={listPressed} onclick={handleViewToggle}>List</button>
+                </div>
+            </template>
+            <template lwc:if={showBoard}>
+                <div slot="body" class="board-scroll">
+                    <div class="board" data-tour="loans-board">
+                        <template for:each={boardColumns} for:item="col">
+                            <section key={col.id} class="board-col" aria-label={col.label}>
+                                <h2 class="board-col-head"><span>{col.label}</span><span class="board-col-count">{col.count}</span></h2>
+                                <template for:each={col.cards} for:item="card">
+                                    <button key={card.id} type="button" class={card.cardClass} data-id={card.id} onclick={handleCardOpen} data-tour="open-first">
+                                        <span class="board-card-name">{card.borrower}</span>
+                                        <span class="board-card-amount">{card.amount}</span>
+                                        <span class="board-card-meta">{card.metaLine}</span>
+                                        <template lwc:if={card.needsUpdate}>
+                                            <span class="board-card-flag-pill">Needs update</span>
+                                        </template>
+                                    </button>
+                                </template>
+                                <template lwc:if={col.isEmpty}>
+                                    <p class="board-col-empty">No loans</p>
+                                </template>
+                            </section>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </c-portal-list-layout>
+    </template>
+
+    <template lwc:if={cocOpen}>
+        <c-external-lo-portal-coc-modal context-loan-key={detailId} onclose={handleCloseCoc} onsubmitted={handleCocSubmitted}></c-external-lo-portal-coc-modal>
+    </template>
+    <template lwc:if={submissionOpen}>
+        <c-external-lo-portal-submission-modal context-loan-key={detailId} onclose={handleCloseSubmission} onsubmitted={handleSubmissionComplete}></c-external-lo-portal-submission-modal>
+    </template>
+    <!-- LO Workspace only: loan has no Arive ID (conversion normally carries the lead's), so the LO types it. -->
+    <template lwc:if={ariveLinkOpen}>
+        <section class="arive-link-backdrop" role="dialog" aria-modal="true" aria-label="Link to ARIVE">
+            <form class="arive-link-modal" onsubmit={handleAriveLinkSubmit}>
+                <h2>Link to ARIVE</h2>
+                <label>ARIVE loan number<input value={ariveIdInput} oninput={handleAriveIdInput} placeholder="e.g. 17869379, or paste the ARIVE loan URL" required /></label>
+                <template lwc:if={ariveLinkError}>
+                    <p class="arive-link-error" role="alert">{ariveLinkError}</p>
+                </template>
+                <div class="arive-link-actions">
+                    <button type="button" class="btn btn-outline" onclick={handleCloseAriveLink}>Cancel</button>
+                    <button type="submit" class="btn btn-brand" disabled={ariveLinkSaving}>Link</button>
+                </div>
+            </form>
+        </section>
+    </template>
+    <template lwc:if={noteModalOpen}>
+        <c-lo-ws-note-modal
+            record-id={noteRecordId}
+            object-api-name="Transaction__c"
+            record-name={detail.summary.borrower}
+            onclose={handleNoteModalClose}
+            onsaved={handleNoteSaved}
+        ></c-lo-ws-note-modal>
+    </template>
+</template>

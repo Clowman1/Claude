@@ -1,0 +1,27 @@
+<template>
+    <template for:each={groups} for:item="group">
+        <div key={group.id} class="nav-group">
+            <p class="nav-group-label">{group.label}</p>
+            <ul class="sidebar-nav">
+                <template for:each={group.items} for:item="item">
+                    <li key={item.id}>
+                        <button
+                            type="button"
+                            class={item.navClass}
+                            data-view={item.id}
+                            data-tour={item.tourId}
+                            aria-current={item.isActive}
+                            onclick={handleNavClick}
+                        >
+                            <c-portal-icon class="nav-icon" name={item.iconName} size="20"></c-portal-icon>
+                            <span class="nav-label">{item.label}</span>
+                            <template lwc:if={item.showBadge}>
+                                <span class="nav-badge">{item.badgeLabel}</span>
+                            </template>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </template>
+</template>

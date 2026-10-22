@@ -80,6 +80,9 @@
         });
         $A.enqueueAction(action);
     },
+    downloadDetailCsv : function(c,e,h){
+        h.downloadDetailCsv(c);
+    },
     clearReportDetailTable : function(c,e,h){
         c.set('v.reportDetailTable', null);
     },

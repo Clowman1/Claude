@@ -1,0 +1,262 @@
+ »   Warning: @salesforce/cli update available from 2.144.6 to 2.154.4.
+{
+  "status": 0,
+  "result": {
+    "checkOnly": false,
+    "completedDate": "2026-10-21T14:53:39.000Z",
+    "createdBy": "005f2000009OtLn",
+    "createdByName": "Christopher Lowman",
+    "createdDate": "2026-10-21T14:52:22.000Z",
+    "details": {
+      "componentSuccesses": [
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:29.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoCsvImportService.cls",
+          "fullName": "ExternalLoCsvImportService",
+          "id": "01pQi000003FNVrIAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "classes/ExternalLoCsvImportServiceTest.cls",
+          "fullName": "ExternalLoCsvImportServiceTest",
+          "id": "01pQi000003FNVsIAO",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "classes/LeadRepository.cls",
+          "fullName": "LeadRepository",
+          "id": "01pAJ0000009GgRYAU",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsAutoTextService.cls",
+          "fullName": "LoWsAutoTextService",
+          "id": "01pQi000003KufSIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "classes/LoWsTouchService.cls",
+          "fullName": "LoWsTouchService",
+          "id": "01pQi000003K2lVIAS",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "classes/TwilioStopKeywordService.cls",
+          "fullName": "TwilioStopKeywordService",
+          "id": "01pQi000003LyibIAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ApexClass",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "classes/TwilioStopKeywordServiceTest.cls",
+          "fullName": "TwilioStopKeywordServiceTest",
+          "id": "01pQi000003LyicIAC",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "lwc/externalLoPortalShell",
+          "fullName": "externalLoPortalShell",
+          "id": "0RbQi0000004SP9KAM",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "lwc/leadQuickActions",
+          "fullName": "leadQuickActions",
+          "id": "0RbQi0000003qTVKAY",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "lwc/perfectDayHome",
+          "fullName": "perfectDayHome",
+          "id": "0RbQi0000004SPCKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "LightningComponentBundle",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "lwc/portalUtils",
+          "fullName": "portalUtils",
+          "id": "0RbQi0000004SPHKA2",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "ValidationRule",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "objects/Lead.object",
+          "fullName": "Lead.Lead_Rating_and_Loan_Amount_Fields_requr",
+          "id": "03dQi000000JWtpIAG",
+          "success": true
+        },
+        {
+          "changed": true,
+          "componentType": "",
+          "created": false,
+          "createdDate": "2026-10-21T14:52:43.000Z",
+          "deleted": false,
+          "fileName": "package.xml",
+          "fullName": "package.xml",
+          "success": true
+        }
+      ],
+      "runTestResult": {
+        "numFailures": 0,
+        "numTestsRun": 0,
+        "totalTime": 0,
+        "codeCoverage": [],
+        "codeCoverageWarnings": [],
+        "failures": [],
+        "flowCoverage": [],
+        "flowCoverageWarnings": [],
+        "successes": []
+      },
+      "componentFailures": []
+    },
+    "done": true,
+    "id": "0AfQi000001VJgvKAG",
+    "ignoreWarnings": false,
+    "lastModifiedDate": "2026-10-21T14:53:39.000Z",
+    "numberComponentErrors": 0,
+    "numberComponentsDeployed": 12,
+    "numberComponentsTotal": 12,
+    "numberFiles": "37",
+    "numberTestErrors": 0,
+    "numberTestsCompleted": 0,
+    "numberTestsTotal": 0,
+    "rollbackOnError": true,
+    "runTestsEnabled": false,
+    "startDate": "2026-10-21T14:52:24.000Z",
+    "status": "Succeeded",
+    "success": true,
+    "zipSize": "258004",
+    "files": [
+      {
+        "fullName": "ExternalLoCsvImportService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoCsvImportService.cls"
+      },
+      {
+        "fullName": "ExternalLoCsvImportServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/ExternalLoCsvImportServiceTest.cls"
+      },
+      {
+        "fullName": "LeadRepository",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LeadRepository.cls"
+      },
+      {
+        "fullName": "LoWsAutoTextService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsAutoTextService.cls"
+      },
+      {
+        "fullName": "LoWsTouchService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/LoWsTouchService.cls"
+      },
+      {
+        "fullName": "TwilioStopKeywordService",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/TwilioStopKeywordService.cls"
+      },
+      {
+        "fullName": "TwilioStopKeywordServiceTest",
+        "type": "ApexClass",
+        "state": "Changed",
+        "filePath": "classes/TwilioStopKeywordServiceTest.cls"
+      },
+      {
+        "fullName": "externalLoPortalShell",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/externalLoPortalShell"
+      },
+      {
+        "fullName": "leadQuickActions",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/leadQuickActions"
+      },
+      {
+        "fullName": "perfectDayHome",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/perfectDayHome"
+      },
+      {
+        "fullName": "portalUtils",
+        "type": "LightningComponentBundle",
+        "state": "Changed",
+        "filePath": "lwc/portalUtils"
+      },
+      {
+        "fullName": "Lead.Lead_Rating_and_Loan_Amount_Fields_requr",
+        "type": "ValidationRule",
+        "state": "Changed",
+        "filePath": "objects/Lead.object"
+      }
+    ],
+    "deployUrl": "https://reachhomeloans.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfQi000001VJgvKAG%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp"
+  },
+  "warnings": []
+}

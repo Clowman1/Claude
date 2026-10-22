@@ -1,0 +1,35 @@
+<template>
+    <section class="panel" aria-labelledby="today-plan-heading">
+        <div class="panel-header">
+            <div>
+                <h2 id="today-plan-heading" class="panel-title">Today’s Plan</h2>
+                <p class="panel-subtitle">Daily share of your weekly audience targets</p>
+            </div>
+        </div>
+        <template lwc:if={isEmpty}>
+            <p class="empty">Finish setup to see today’s plan.</p>
+        </template>
+        <ul class="plan-list" lwc:else>
+            <template for:each={items} for:item="row">
+                <li key={row.activityKey} class="plan-row">
+                    <div class="plan-main">
+                        <span class={row.iconClass}>
+                            <c-portal-icon name={row.iconName} size="20"></c-portal-icon>
+                        </span>
+                        <div class="plan-body">
+                            <div class="plan-top">
+                                <span class="plan-label">{row.shortLabel}</span>
+                                <span class={row.paceClass}>{row.paceLabel}</span>
+                            </div>
+                            <p class="plan-count">{row.countLabel}</p>
+                            <div class="track" role="progressbar" aria-valuenow={row.percent} aria-valuemin="0" aria-valuemax="100">
+                                <div class={row.fillClass} style={row.barStyle}></div>
+                            </div>
+                        </div>
+                        <button class="btn" type="button" data-key={row.activityKey} onclick={handleLog}>Log</button>
+                    </div>
+                </li>
+            </template>
+        </ul>
+    </section>
+</template>

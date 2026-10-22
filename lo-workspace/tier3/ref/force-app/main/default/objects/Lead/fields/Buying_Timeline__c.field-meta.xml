@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Buying_Timeline__c</fullName>
+    <description>When the borrower expects to buy. Set from LO Workspace Pre-Approval Details. Separate from Rating (Hot/Warm/Cold), which internal teams still use.</description>
+    <inlineHelpText>When the borrower expects to buy.</inlineHelpText>
+    <label>Buying Timeline</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>In the next 3 months</fullName>
+                <default>false</default>
+                <label>In the next 3 months</label>
+            </value>
+            <value>
+                <fullName>3 to 6 months</fullName>
+                <default>false</default>
+                <label>3 to 6 months</label>
+            </value>
+            <value>
+                <fullName>6+ months</fullName>
+                <default>false</default>
+                <label>6+ months</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

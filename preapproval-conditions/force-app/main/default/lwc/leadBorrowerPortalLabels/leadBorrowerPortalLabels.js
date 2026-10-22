@@ -39,8 +39,8 @@ const ES = {
     'Add another file': 'Agregar otro archivo',
     Remove: 'Quitar',
     'Remove this file': 'Quitar este archivo',
-    'Added. Press Submit below when you have added everything.':
-        'Agregado. Presione Enviar abajo cuando haya agregado todo.',
+    'Added. Press Submit above when you have added everything.':
+        'Agregado. Presione Enviar arriba cuando haya agregado todo.',
 
     'Upload everything, then press Submit': 'Suba todo y luego presione Enviar',
     'Add as many documents as you like - take your time and come back if you need to. Your loan team is not notified until you press Submit Docs for Review, so please remember to press it when you have finished.':

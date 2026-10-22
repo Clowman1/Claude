@@ -6,7 +6,7 @@
  * about. This sweeps those baskets up and submits them as if the borrower had pressed the button,
  * with the email saying it was automatic.
  *
- * Timing: three hours after the borrower's LAST upload, so a slow evening of uploading is not
+ * Timing: thirty minutes after the borrower's LAST upload, so a session of uploading is not
  * interrupted mid-session, with an outer limit of twelve hours from their FIRST upload so nothing
  * can be deferred indefinitely by a trickle of files.
  *
@@ -15,7 +15,7 @@
 public without sharing class LeadPortalPendingUploadSweeper implements Schedulable {
 
     @TestVisible
-    private static final Integer QUIET_MINUTES = 180;
+    private static final Integer QUIET_MINUTES = 30;
     @TestVisible
     private static final Integer OUTER_LIMIT_MINUTES = 720;
     // A bound rather than a guess: a sweep should never be the thing that blows a governor limit.
@@ -32,12 +32,29 @@ public without sharing class LeadPortalPendingUploadSweeper implements Schedulab
         Datetime quietBefore = Datetime.now().addMinutes(-QUIET_MINUTES);
         Datetime firstUploadBefore = Datetime.now().addMinutes(-OUTER_LIMIT_MINUTES);
 
+        // ContentVersion filtered only by a custom field returns just the files the running user
+        // owns, even WITH SYSTEM_MODE, so the sweep saw nothing. Reach files through their
+        // request links first, the way the portal does.
+        // ponytail: scans every request link each run; filter to open requests if it gets slow.
+        Set<Id> documentIds = new Set<Id>();
+        for (ContentDocumentLink link : [
+            SELECT ContentDocumentId FROM ContentDocumentLink
+            WHERE LinkedEntityId IN (SELECT Id FROM Lead_Document_Request__c)
+            WITH SYSTEM_MODE
+        ]) {
+            documentIds.add(link.ContentDocumentId);
+        }
+        if (documentIds.isEmpty()) {
+            return 0;
+        }
+
         // Every pending file, oldest first. Grouping happens in Apex because the lead sits two
         // hops away: ContentVersion -> Lead_Document_Request__c -> Lead.
         List<ContentVersion> pending = [
             SELECT Id, CreatedDate, Lead_Document_Request__c, Lead_Document_Request__r.Lead__c
             FROM ContentVersion
-            WHERE Portal_Upload_Pending__c = TRUE
+            WHERE ContentDocumentId IN :documentIds
+            AND Portal_Upload_Pending__c = TRUE
             AND Lead_Document_Request__c != NULL
             WITH SYSTEM_MODE
             ORDER BY CreatedDate

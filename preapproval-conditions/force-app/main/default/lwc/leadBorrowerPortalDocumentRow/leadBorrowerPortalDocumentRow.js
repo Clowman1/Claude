@@ -42,7 +42,7 @@ export default class LeadBorrowerPortalDocumentRow extends LightningElement {
             addAnother: t('Add another file', es),
             remove: t('Remove', es),
             removeThisFile: t('Remove this file', es),
-            added: t('Added. Press Submit below when you have added everything.', es)
+            added: t('Added. Press Submit above when you have added everything.', es)
         };
     }
     isPhone = false;

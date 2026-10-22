@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LoWs_Texts_Off__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>LO Workspace: no automated texts from the no-reply number to this contact. Does not affect internal texts.</description>
+    <label>LO Workspace Texts Off</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

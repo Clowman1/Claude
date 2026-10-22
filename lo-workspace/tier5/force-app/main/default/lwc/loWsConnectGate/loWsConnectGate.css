@@ -1,0 +1,28 @@
+:host { display: block; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; color: #0f1f36; }
+.gate { display: flex; justify-content: center; padding: 32px 16px; }
+.gate-card { width: 100%; max-width: 720px; background: #fff; border: 1px solid #dfe8f3; border-radius: 16px; padding: 28px; box-shadow: 0 8px 24px rgba(15, 31, 54, 0.06); }
+.gate-done { text-align: center; }
+.gate-eyebrow { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #3d6296; }
+.gate-title { margin: 6px 0 4px; font-size: 24px; font-weight: 800; }
+.gate-sub { margin: 0 0 20px; color: #3d6296; }
+.gate-error { padding: 10px 12px; border-radius: 10px; background: #fdecec; color: #8a1c1c; font-weight: 600; }
+.gate-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.gate-row { border: 1px solid #dfe8f3; border-left-width: 4px; border-radius: 12px; padding: 14px 16px; }
+.gate-row-green { border-left-color: #1f9d55; }
+.gate-row-red { border-left-color: #d64545; }
+.gate-row-waived, .gate-row-optional { border-left-color: #a7b6cc; }
+.gate-row-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.gate-row-label { font-weight: 700; }
+.pill { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.pill-green { background: #e3f6ea; color: #17703d; }
+.pill-red { background: #fdecec; color: #a32020; }
+.pill-muted { background: #eef2f7; color: #4a5d7a; }
+.gate-help { margin: 8px 0 10px; font-size: 14px; line-height: 1.5; color: #1b2a4a; }
+.gate-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid #c9d6e8; background: #fff; color: #1a2d4a; font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 10px; cursor: pointer; }
+.btn:hover { background: #f1f5fb; }
+.btn:disabled { opacity: .6; cursor: default; }
+.btn-primary { background: #1a2d4a; border-color: #1a2d4a; color: #fff; }
+.btn-primary:hover { background: #0f1f36; }
+.gate-lock { margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: #fff7e6; color: #6b4a00; }
+.gate-lock p { margin: 0 0 4px; }

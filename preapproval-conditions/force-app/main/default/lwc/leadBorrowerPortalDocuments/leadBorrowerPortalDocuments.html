@@ -42,6 +42,32 @@
                     </div>
                 </div>
             </div>
+            <template lwc:if={showSubmittedConfirmation}>
+                <div class="submitted-banner" role="status">
+                    <span class="submitted-check" aria-hidden="true">&#10003;</span>
+                    <div>
+                        <p class="submitted-title">{labels.submittedTitle}</p>
+                        <p class="submitted-sub">{labels.submittedSub}</p>
+                    </div>
+                    <button type="button" class="submitted-dismiss" onclick={dismissSubmittedConfirmation}>{labels.dismiss}</button>
+                </div>
+            </template>
+
+            <template lwc:if={hasPendingSubmissions}>
+                <div class="submit-bar">
+                    <div class="submit-bar-text">
+                        <p class="submit-bar-count">{pendingSummaryLabel}</p>
+                        <p class="submit-warning">
+                            Your loan team has not been notified yet.
+                        </p>
+                    </div>
+                    <button
+                        type="button"
+                        class="submit-button"
+                        onclick={handleSubmitPending}
+                        disabled={isSubmitting}>{submitButtonLabel}</button>
+                </div>
+            </template>
             <div class="imbus-main-container-header">
                 <div class="imbus-title">
                     <h2 class="imbus-title-greeting">{labels.documentsRequired}</h2>
@@ -86,32 +112,6 @@
                 </template>
             </div>
 
-            <template lwc:if={showSubmittedConfirmation}>
-                <div class="submitted-banner" role="status">
-                    <span class="submitted-check" aria-hidden="true">&#10003;</span>
-                    <div>
-                        <p class="submitted-title">{labels.submittedTitle}</p>
-                        <p class="submitted-sub">{labels.submittedSub}</p>
-                    </div>
-                    <button type="button" class="submitted-dismiss" onclick={dismissSubmittedConfirmation}>{labels.dismiss}</button>
-                </div>
-            </template>
-
-            <template lwc:if={hasPendingSubmissions}>
-                <div class="submit-bar">
-                    <div class="submit-bar-text">
-                        <p class="submit-bar-count">{pendingSummaryLabel}</p>
-                        <p class="submit-warning">
-                            Your loan team has not been notified yet.
-                        </p>
-                    </div>
-                    <button
-                        type="button"
-                        class="submit-button"
-                        onclick={handleSubmitPending}
-                        disabled={isSubmitting}>{submitButtonLabel}</button>
-                </div>
-            </template>
             <template lwc:if={hasClearedRequests}>
                 <section class="cleared-section">
                     <button class="cleared-toggle" type="button" onclick={toggleCleared}>
