@@ -165,6 +165,7 @@ private class PeopleControllerTest {
     static void dailyJobActivatesAndEmails() {
         Id emp = PeopleController.createEmployee(hire('Processor', 'In-Office', Date.newInstance(2026, 10, 26)));
         Test.startTest();
+        PeopleDaily.emailsOn = true; // paused in prod; still exercised here
         PeopleDaily.run(Date.newInstance(2026, 10, 26)); // a Monday
         PeopleDaily.run(Date.newInstance(2026, 10, 31)); // Saturday: status only
         System.schedule('People daily test', '0 0 9 * * ?', new PeopleDaily());

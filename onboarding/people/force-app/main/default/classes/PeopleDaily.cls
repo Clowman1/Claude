@@ -7,6 +7,11 @@ public with sharing class PeopleDaily implements Schedulable {
     @TestVisible
     static final Set<Id> DIGEST_TO = new Set<Id>{ '005f2000009OtLnAAK', '0055x00000Bf9iaAAB' };
 
+    // Digest and reminder emails paused at Chris's request (2026-10-23). The job still activates hires, links users and
+    // opens Annual Compliance on Oct 15; the People board's digest panel still shows what is due. Set true to resume.
+    @TestVisible
+    static Boolean emailsOn = false;
+
     public void execute(SchedulableContext ctx) {
         run(Date.today());
     }
@@ -24,6 +29,9 @@ public with sharing class PeopleDaily implements Schedulable {
         // Renewal checklists for the year open every Oct 15 (decision 18); generateRenewals skips anyone who already has one.
         if (today.month() == 10 && today.day() == 15) {
             PeopleController.generateRenewals(today.year());
+        }
+        if (!emailsOn) {
+            return;
         }
         sendReminders(today);
 
