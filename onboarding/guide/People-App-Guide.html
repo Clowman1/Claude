@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>People App: How-To and Overview</title>
+<style>
+  @page { size: letter; margin: 0.6in 0.65in 0.7in; }
+  :root { --ink:#111827; --muted:#5b6472; --line:#e3e6eb; --soft:#f4f6f8; --accent:#1d4ed8; --amber-bg:#fef3c7; --amber:#92400e; --green-bg:#d1fae5; --green:#065f46; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1 { font-size: 22pt; margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2 { font-size: 15pt; margin: 0 0 8px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 16px 0 4px; break-after: avoid; }
+  p { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 8px; padding-left: 20px; }
+  li { margin-bottom: 3px; }
+  .muted { color: var(--muted); }
+  .section { break-before: page; }
+  .keep { break-inside: avoid; }
+  .num { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 9pt; align-items: center; justify-content: center; margin-right: 6px; }
+  .tip { background: #eff4ff; border-left: 0; border-radius: 8px; padding: 8px 12px; margin: 8px 0; color: #1e3a8a; }
+  .warn { background: var(--amber-bg); border-radius: 8px; padding: 8px 12px; margin: 8px 0; color: var(--amber); }
+  table.ref { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 9.5pt; }
+  table.ref th { text-align: left; background: var(--soft); border-bottom: 1px solid var(--line); padding: 6px 8px; }
+  table.ref td { border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  .kbd { font-family: Consolas, monospace; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; font-size: 9pt; }
+  /* cover */
+  .cover { height: 9.4in; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover img { width: 3.2in; }
+  .cover .title { font-size: 34pt; font-weight: 700; line-height: 1.1; margin: 0 0 10px; }
+  .cover .band { background: var(--soft); border-radius: 14px; padding: 18px 22px; }
+  /* screen sketches */
+  .screen { border: 1px solid var(--line); border-radius: 12px; background: var(--soft); padding: 12px; margin: 8px 0 12px; break-inside: avoid; font-size: 8.5pt; }
+  .screen .cap { font-size: 8pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .grow { flex: 1 1 auto; }
+  .segs { display: inline-flex; gap: 3px; background: #e9ecf0; padding: 3px; border-radius: 9px; }
+  .seg { padding: 3px 8px; border-radius: 7px; color: #4b5563; }
+  .seg.on { background: #fff; color: var(--ink); font-weight: 600; }
+  .btn { display: inline-block; padding: 3px 10px; border-radius: 8px; border: 1px solid var(--line); background: #fff; font-weight: 600; }
+  .btn.p { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .pill { display: inline-block; font-size: 7.5pt; font-weight: 600; padding: 1px 7px; border-radius: 999px; background: #f3f4f6; }
+  .pill.b { background: #dbeafe; color: #1e3a8a; }
+  .pill.a { background: var(--amber-bg); color: var(--amber); }
+  .pill.g { background: var(--green-bg); color: var(--green); }
+  .av { width: 22px; height: 22px; border-radius: 50%; background: #dbeafe; color: #1e3a8a; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 7.5pt; }
+  .ring { width: 26px; height: 26px; border-radius: 50%; border: 3px solid #e5e7eb; border-top-color: var(--accent); border-right-color: var(--accent); }
+  .callout { display: inline-flex; width: 15px; height: 15px; border-radius: 50%; background: #f59e0b; color: #fff; font-weight: 700; font-size: 7.5pt; align-items: center; justify-content: center; vertical-align: middle; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .task { background: #fff; border-top: 1px solid #f0f2f5; padding: 5px 8px; display: flex; gap: 8px; align-items: center; }
+  .box { width: 11px; height: 11px; border: 1.5px solid #9ca3af; border-radius: 3px; }
+  .box.x { background: var(--accent); border-color: var(--accent); }
+  .strike { text-decoration: line-through; color: #6b7280; }
+  .stamp { font-size: 7.5pt; color: #1e3a8a; }
+  .chip { font-size: 7.5pt; background: #f3f4f6; padding: 1px 6px; border-radius: 5px; }
+  .chip.i { background: #eef2ff; color: #3730a3; }
+  .chip.l { background: var(--amber-bg); color: var(--amber); font-weight: 600; }
+  .toc li { margin-bottom: 2px; }
+  .footer-note { font-size: 8.5pt; color: var(--muted); margin-top: 14px; }
+</style>
+</head>
+<body>
+
+<!-- ======================= COVER ======================= -->
+<div class="cover">
+  <div><img src="logo.png" alt="Reach Home Loans"></div>
+  <div>
+    <div class="title">People App</div>
+    <div style="font-size:15pt;color:var(--muted)">How-To and Overview</div>
+    <p style="margin-top:18px;max-width:5.6in">Onboarding, Annual Compliance, offboarding, branches, and HR records for every Reach Home Loans employee, in one place inside Salesforce.</p>
+  </div>
+  <div class="band">
+    <div class="row"><div class="grow"><strong>Prepared for</strong> Adam Stephens and Bianca Rodrigues<br><strong>Prepared by</strong> Christopher Lowman</div><div style="text-align:right"><strong>October 2026</strong><br><span class="muted">Internal: People admins only</span></div></div>
+  </div>
+</div>
+
+<!-- ======================= CONTENTS ======================= -->
+<div class="section">
+  <h2>Contents</h2>
+  <ol class="toc">
+    <li>What People is, and who can use it</li>
+    <li>Opening People in Salesforce</li>
+    <li>The board at a glance</li>
+    <li>Onboarding a new hire</li>
+    <li>The employee page</li>
+    <li>Working a checklist: tasks, emails, sign-off</li>
+    <li>Licenses and compensation</li>
+    <li>Annual Compliance</li>
+    <li>Offboarding</li>
+    <li>Branches</li>
+    <li>Staff and adding existing employees</li>
+    <li>The Compliance tab</li>
+    <li>Master templates</li>
+    <li>What happens automatically</li>
+    <li>Quick reference</li>
+  </ol>
+
+  <h2 style="margin-top:22px">1. What People is, and who can use it</h2>
+  <p>People replaces the onboarding spreadsheet. Every employee has one permanent record, and that record carries checklists for each stage of employment:</p>
+  <table class="ref keep">
+    <tr><th style="width:24%">Checklist</th><th>What it covers</th><th style="width:28%">Due dates count from</th></tr>
+    <tr><td><strong>Onboarding</strong></td><td>The 53-step new-hire list: pre-start, Day 1, Week 1, 30 and 90 days</td><td>The start date</td></tr>
+    <tr><td><strong>Annual Compliance</strong></td><td>License renewals per state, NMLS CE, BSA/AML, Fair Lending, GLBA privacy, IT security, handbook</td><td>December 31 of the year</td></tr>
+    <tr><td><strong>Offboarding</strong></td><td>Resignation paperwork through equipment return, access shutdown, NMLS removal and COBRA</td><td>The last day</td></tr>
+    <tr><td><strong>Branch</strong></td><td>Opening a new branch: approval, licensing, setup and launch</td><td>The target open date</td></tr>
+  </table>
+  <p>Every task records <strong>who completed it and when</strong>. A finished checklist is signed off, which locks it and files a regulator-format PDF. That's the record examiners ask for.</p>
+  <div class="tip"><strong>Access:</strong> only <strong>Christopher Lowman, Bianca Rodrigues and Adam Stephens</strong> can open People. Access comes from the <em>People Admin</em> permission set. Nobody else sees the tab, the records or the HR data. Employees don't need a Salesforce login to be managed in People.</div>
+</div>
+
+<!-- ======================= ACCESS ======================= -->
+<div class="section">
+  <h2>2. Opening People in Salesforce</h2>
+  <p><span class="num">1</span>Click the <strong>App Launcher</strong> (the 9-dot grid at the top left of Salesforce).</p>
+  <p><span class="num">2</span>Type <strong>People</strong> and choose the <strong>People</strong> app. Or open the People tab directly at <span class="kbd">reachhomeloans.lightning.force.com/lightning/n/People</span></p>
+  <p><span class="num">3</span><em>Optional:</em> to add People to an app you already use, click the pencil at the right end of that app's navigation bar, then <strong>Add More Items</strong>, search for <strong>People</strong>, add it and save.</p>
+
+  <div class="screen">
+    <div class="cap">The top of every People screen</div>
+    <div class="row"><span class="av" style="border-radius:6px;background:var(--accent);color:#fff">P</span><div class="grow"><strong>People</strong><br><span class="muted">Onboarding · Renewals · Offboarding · Branches</span></div><span class="btn">Master template</span></div>
+  </div>
+  <p><strong>Master template</strong> (top right) opens the template editor (section 13). On the template screen it changes to <strong>Back to board</strong>.</p>
+  <div class="tip">If People doesn't appear for Adam or Bianca, refresh the browser or sign out and back in once.</div>
+</div>
+
+<!-- ======================= BOARD ======================= -->
+<div class="section">
+  <h2>3. The board at a glance</h2>
+  <p>The board is the home screen. The tabs across the top filter what you see:</p>
+  <div class="screen">
+    <div class="cap">Board</div>
+    <div class="row" style="margin-bottom:8px"><span class="segs"><span class="seg on">Onboarding · 1</span><span class="seg">Annual Compliance · 23</span><span class="seg">Offboarding · 0</span><span class="seg">Branches · 2</span><span class="seg">Staff · 24</span><span class="seg">Compliance</span></span><span class="grow"></span><span class="btn p">+ New Employee</span></div>
+    <div class="row" style="background:var(--amber-bg);color:var(--amber);border-radius:8px;padding:5px 8px;margin-bottom:8px;font-weight:600"><span class="grow">⚠ 24 employees need information filled in</span><span class="btn">Review</span></div>
+    <div class="row" style="align-items:flex-start">
+      <div class="grid2 grow" style="flex:3">
+        <div class="card"><div class="row"><span class="av">TH</span><div class="grow"><strong>Test Hire</strong><br><span class="muted">Loan Officer · Remote</span></div><span class="ring"></span></div><div class="row" style="margin-top:5px"><span class="pill">Candidate</span><span class="muted">Starts Mon, Nov 2</span></div><div class="muted" style="margin-top:4px">Next: Background check cleared · due Oct 16</div><div class="row" style="margin-top:4px"><span class="muted grow">12 of 50 tasks done</span><span class="pill a">3 overdue</span></div></div>
+      </div>
+      <div class="card" style="flex:1.3"><strong>Your 9 AM digest</strong><div class="muted">Overdue and due in the next 5 business days</div><div style="border-top:1px solid #f0f2f5;margin-top:4px;padding-top:4px">Background check cleared<br><span style="color:var(--amber);font-weight:600">Test Hire · overdue since Oct 16</span></div></div>
+    </div>
+  </div>
+  <table class="ref">
+    <tr><th style="width:24%">Tab</th><th>What it shows</th><th style="width:26%">Button</th></tr>
+    <tr><td>Onboarding</td><td>A card for every open onboarding checklist</td><td>+ New Employee</td></tr>
+    <tr><td>Annual Compliance</td><td>A card per employee for this year's Annual Compliance</td><td>Open {year} Annual Compliance (only if someone still needs one)</td></tr>
+    <tr><td>Offboarding</td><td>A card per employee being offboarded</td><td>None (start from an employee page)</td></tr>
+    <tr><td>Branches</td><td>Every branch: status, manager, target open date, checklist progress</td><td>+ New Branch</td></tr>
+    <tr><td>Staff</td><td>Everyone who works here, with role, status, start date, manager, NMLS and states</td><td>+ Add existing employee</td></tr>
+    <tr><td>Compliance</td><td>The examiner view: grid, expiring licenses, missing information</td><td>Export CSV</td></tr>
+  </table>
+  <h3>Reading a card</h3>
+  <ul>
+    <li><strong>The ring</strong> shows the percentage of tasks done. <strong>The pill</strong> shows status (Candidate, Pre-Start, Active, Offboarding).</li>
+    <li><strong>Next:</strong> the next open task and its due date. <strong>Overdue</strong> (amber) counts tasks past their due date.</li>
+    <li>Click a card to open that person's page with that checklist showing.</li>
+  </ul>
+  <h3>The digest panel and the missing-info banner</h3>
+  <ul>
+    <li><strong>Digest panel:</strong> <em>your</em> open tasks that are overdue or due in the next 5 business days, across all checklists. Click a line to jump to that person.</li>
+    <li><strong>Amber banner:</strong> counts employees with required information missing. <strong>Review</strong> opens the list on the Compliance tab.</li>
+  </ul>
+  <div class="warn">Digest and reminder <strong>emails are paused</strong> for now. The panel on the board still shows what's due.</div>
+</div>
+
+<!-- ======================= ONBOARDING ======================= -->
+<div class="section">
+  <h2>4. Onboarding a new hire</h2>
+  <p><span class="num">1</span>On the <strong>Onboarding</strong> tab, click <strong>+ New Employee</strong>.</p>
+  <p><span class="num">2</span>Fill in the form. <strong>First name, last name, role, work arrangement and start date are required.</strong> The rest can be added later:</p>
+  <table class="ref keep">
+    <tr><th style="width:30%">Field</th><th>Notes</th></tr>
+    <tr><td>Role</td><td>Loan Officer, Branch Manager, Processor, Closer, Opener, Operations/Admin, Manager. Sets which tasks apply.</td></tr>
+    <tr><td>Work arrangement</td><td>In-Office, Remote, Hybrid. VPN only for Remote/Hybrid; desk and business cards only for In-Office.</td></tr>
+    <tr><td>Start date</td><td>Every due date is calculated from this.</td></tr>
+    <tr><td>Title, department, employment type, schedule, hire date</td><td>HR details (section 5).</td></tr>
+    <tr><td>Branch, manager, emails, NMLS ID</td><td>Personal email is where the onboarding emails go.</td></tr>
+    <tr><td>Licensed states</td><td>Creates a <em>Pending</em> license for each state (section 7).</td></tr>
+  </table>
+  <p><span class="num">3</span>Before you save, the blue box previews the result. For example: <em>"50 tasks will be generated for a Loan Officer (Remote), plus 1 optional to add. First task due Mon, Nov 9."</em></p>
+  <p><span class="num">4</span>Click <strong>Create and generate tasks</strong>. The employee page opens with the checklist ready.</p>
+  <h3>How due dates are worked out</h3>
+  <ul>
+    <li>Most tasks count <strong>business days</strong> from the start date and skip weekends and company holidays. For example, "−14" means 14 business days before Day 1.</li>
+    <li>The <strong>benefits deadline, 30-day check-in, scheduling the 90-day, and the 90-day check-in</strong> count <strong>calendar days</strong>. If one lands on a weekend or holiday it moves to the next business day.</li>
+    <li><strong>Moving the start date</strong> (Edit details) re-dates every open task. Completed tasks keep their dates, and you're warned if any open task now falls in the past.</li>
+  </ul>
+  <h3>Status moves on its own</h3>
+  <p><strong>Candidate</strong> → <strong>Pre-Start</strong> when "Collect background check info" (PH-4) is done → <strong>Active</strong> on the start date (overnight job) → <strong>Offboarding</strong> → <strong>Terminated</strong> when the offboarding checklist is signed off. <strong>Withdraw</strong> (employee page) is for a candidate who backs out or fails the background check: open tasks become N/A and the history is kept.</p>
+</div>
+
+<!-- ======================= EMPLOYEE PAGE ======================= -->
+<div class="section">
+  <h2>5. The employee page</h2>
+  <p>Click any card, Staff row or Compliance row to open the employee page. From top to bottom:</p>
+  <div class="screen">
+    <div class="cap">Employee page: header</div>
+    <div class="card">
+      <div class="row"><span class="av" style="width:34px;height:34px;font-size:10pt">BR</span><div class="grow"><strong style="font-size:11pt">Byron Richie</strong> <span class="pill b">Active</span><br><span class="muted">Loan Officer · Started Mar 4</span></div><span class="btn">Edit details</span><span class="btn">Exam PDF</span><span class="btn" style="color:var(--amber)">Offboard</span></div>
+      <div class="row muted" style="margin-top:6px"><span class="grow">4 of 11 tasks done</span><span>On track</span></div>
+      <div style="height:6px;background:#e5e7eb;border-radius:9px;margin:3px 0 8px"><div style="width:36%;height:100%;background:var(--accent);border-radius:9px"></div></div>
+      <div class="grid3"><div><span class="muted">TITLE</span><br>Loan Officer</div><div><span class="muted">DEPARTMENT</span><br>Sales</div><div><span class="muted">NMLS ID</span><br>1395408</div></div>
+      <div style="background:var(--amber-bg);color:var(--amber);border-radius:8px;padding:5px 8px;margin-top:8px;font-weight:600">Needs: Hire date, Emergency contact, FL license number. Use Edit details or the sections below.</div>
+      <div class="row" style="margin-top:8px;border-top:1px solid #f0f2f5;padding-top:6px"><strong class="grow">Personal details</strong><span class="muted">Encrypted · visible to People admins only</span><span class="btn">🔒 Reveal</span></div>
+    </div>
+  </div>
+  <table class="ref">
+    <tr><th style="width:26%">Part</th><th>What it does</th></tr>
+    <tr><td><strong>Edit details</strong></td><td>Changes name, role, arrangement, start date, title, department, employment type, schedule, hire date, branch, manager, emails and NMLS ID. Moving the start or last day re-dates open tasks.</td></tr>
+    <tr><td><strong>Exam PDF</strong></td><td>Previews the regulator-format PDF of the checklist on screen. It's marked DRAFT until signed off.</td></tr>
+    <tr><td><strong>Offboard</strong></td><td>Starts offboarding (section 9).</td></tr>
+    <tr><td><strong>Withdraw</strong></td><td>Onboarding only. Closes a candidate's checklist.</td></tr>
+    <tr><td><strong>Facts</strong></td><td>Title, department, employment, work anniversary, manager, branch, NMLS ID, licensed states, emails, linked Salesforce user, last day.</td></tr>
+    <tr><td><strong>Needs banner</strong></td><td>Exactly what's missing for this person: hire date, department, employment type, emergency contact, and for licensed staff each license's number and expiration.</td></tr>
+    <tr><td><strong>Personal details</strong></td><td>Date of birth, home address, personal phone, emergency contact. Stored encrypted; click <strong>Reveal</strong> to view or edit, then <strong>Save</strong>. No SSN is ever stored.</td></tr>
+    <tr><td><strong>Licenses / Compensation</strong></td><td>See section 7.</td></tr>
+    <tr><td><strong>Checklist switcher</strong></td><td>Appears when the person has more than one checklist, e.g. <em>Onboarding · Annual Compliance 2026 · Offboarding</em>. Click to switch.</td></tr>
+  </table>
+</div>
+
+<!-- ======================= TASKS ======================= -->
+<div class="section">
+  <h2>6. Working a checklist: tasks, emails, sign-off</h2>
+  <p>Tasks are grouped by phase (Pre-Start, Day 1, Week 1, 30 Days, 90 Days, and the equivalent phases for the other checklist types). Filter with <strong>All · Mine · Open</strong>.</p>
+  <div class="screen">
+    <div class="cap">A phase with tasks</div>
+    <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden">
+      <div class="row" style="background:#fafbfc;padding:5px 8px"><strong class="grow">Pre-Start</strong><span class="muted">9 of 32 done</span></div>
+      <div class="task"><span class="box x"></span><div class="grow"><span class="strike">Welcome call to new hire</span><br><span class="stamp">Completed by Bianca Rodrigues · Oct 22, 9:14 AM</span></div><span class="muted">Mon, Nov 9</span><span class="av">BR</span></div>
+      <div class="task"><span class="box"></span><div class="grow">Send offer letter and comp/bonus forms<br><span class="muted">Offer letter and bonus plan via DocuSign</span></div><span class="chip i">Email · PH-3</span><span class="btn" style="color:var(--accent);border-color:var(--accent)">➤ Send PH-3</span><span class="muted">Mon, Nov 9</span><span class="av">BR</span></div>
+      <div class="task"><span class="box"></span><div class="grow">Background check cleared</div><span class="chip l">Overdue · Oct 16</span><span class="av">BR</span><span class="muted">✎</span></div>
+      <div class="task"><span class="box"></span><div class="grow">Processing training</div><span class="chip">Led by Angelina</span><span class="chip i">DocuSign</span><span class="muted">Wed, Dec 2</span><span class="av">BR</span></div>
+    </div>
+  </div>
+  <h3>Completing, editing and adding tasks</h3>
+  <ul>
+    <li><strong>Tick the box</strong> to complete a task. It's stamped with your name and the time. Unticking reopens it, until the checklist is signed off.</li>
+    <li><strong>Pencil (✎)</strong>: change the assignee (Chris, Bianca or Adam), the due date or notes, or <strong>Mark N/A</strong> if the task doesn't apply.</li>
+    <li><strong>Chips:</strong> <em>Led by</em> shows who actually runs the task (e.g. Angelina), <em>DocuSign</em> means it's sent through DocuSign, <em>To:</em> shows the recipient, and <em>Email reminder</em> marks a task that sends reminders when emails are on.</li>
+    <li><strong>Optional items:</strong> tasks that only apply sometimes (e.g. FHA Connection ID). Click <strong>Add to checklist</strong> when needed.</li>
+    <li><strong>Add a one-off task:</strong> a task for this person only, with subject, phase, due date and assignee.</li>
+  </ul>
+  <h3>Sending the onboarding emails (PH-3, PH-4, PH-7, PH-8)</h3>
+  <ol>
+    <li>Click <strong>Send PH-x</strong> on the task. A preview opens, already filled in with the hire's name, NMLS ID and the Paychex "2 business days" date.</li>
+    <li>Check or edit the To, Subject and message. The email ends with <strong>your own signature card</strong> (new logo, headshot, title).</li>
+    <li>Click <strong>Send</strong>. It goes from <strong>your</strong> email address, the task is marked done, and a note records who it went to and when.</li>
+  </ol>
+  <p class="muted">PH-6, PH-9, PH-10, Day 1 Instructions and Team Announcement go through DocuSign, so tick those tasks by hand once sent. The template wording can be edited in Setup → Classic Email Templates → folder <em>People Onboarding</em>.</p>
+  <h3>Compliance sign-off and the exam PDF</h3>
+  <ul>
+    <li>When every task is done or N/A, <strong>Sign off</strong> unlocks for Bianca, with Chris as backup. You confirm the attestation: <em>"I attest that every item on this checklist was completed as recorded."</em></li>
+    <li>Signing off <strong>locks the checklist</strong> and <strong>files the exam PDF</strong> on the employee's record: header, items grouped Regulatory / Systems / Documentation, completed-by and date for each, and the sign-off block. <strong>Open filed PDF</strong> opens it.</li>
+  </ul>
+</div>
+
+<!-- ======================= LICENSES & COMP ======================= -->
+<div class="section">
+  <h2>7. Licenses and compensation</h2>
+  <div class="screen">
+    <div class="cap">Employee page: Licenses and Compensation</div>
+    <div class="grid2">
+      <div class="card"><div class="row"><strong class="grow">Licenses</strong><span class="btn">Add license</span></div>
+        <div class="row" style="border-top:1px solid #f0f2f5;padding-top:4px;margin-top:4px"><strong>FL</strong><span class="grow" style="color:var(--amber);font-weight:600">No number</span><span class="pill b">Active</span><span style="color:var(--amber);font-weight:600">No expiration</span></div>
+        <div class="row" style="border-top:1px solid #f0f2f5;padding-top:4px;margin-top:4px"><strong>VA</strong><span class="grow">LO-88213</span><span class="pill b">Active</span><span>Dec 31, 2027</span></div>
+      </div>
+      <div class="card"><div class="row"><strong class="grow">Compensation</strong><span class="btn">Add entry</span></div>
+        <div class="row" style="border-top:1px solid #f0f2f5;padding-top:4px;margin-top:4px"><strong>Jan 1, 2026</strong><span class="pill b">Current</span><span class="grow">Salary + Commission</span><span>$65,000 / year</span></div>
+        <div class="row" style="border-top:1px solid #f0f2f5;padding-top:4px;margin-top:4px"><strong>Jan 1, 2025</strong><span class="grow">Salary</span><span>$60,000 / year</span></div>
+      </div>
+    </div>
+  </div>
+  <h3>Licenses: one per state</h3>
+  <ul>
+    <li><strong>Add license</strong> or click a license to edit its state, license number, status (Active / Pending / Inactive / Expired), sponsorship (Sponsored / Pending / Removed), issue date, expiration date and last renewed date.</li>
+    <li>The person's <strong>Licensed States</strong> are worked out from their Active and Pending licenses and copied to their Salesforce user, which LO Workspace and signature cards use. You don't type states anywhere else.</li>
+    <li>When someone stops holding a state, set it to <strong>Inactive</strong> rather than deleting it.</li>
+    <li>Ticking <em>"Confirm {state} renewal approved"</em> in Annual Compliance marks that license <strong>renewed today, valid through December 31 next year</strong>.</li>
+    <li>The <strong>NMLS ID</strong> is kept on the employee record (Edit details) and copied to their Salesforce user.</li>
+  </ul>
+  <div class="warn">All 32 current licenses were created without numbers or expiration dates, so licensed staff appear under <strong>Missing information</strong> until Bianca fills them in.</div>
+  <h3>Compensation: dated history</h3>
+  <ul>
+    <li><strong>Add entry</strong> for each pay change: effective date and pay type (required), base amount per year or hour, LO comp in bps, a per-loan flat amount, bonus plan and notes.</li>
+    <li>The newest entry is marked <strong>Current</strong>. For a raise, add a new entry rather than editing the old one, so the history stays intact. Delete only mistakes.</li>
+    <li>Only the three People admins can see compensation in People. Full Salesforce System Administrators can technically read it as well.</li>
+  </ul>
+</div>
+
+<!-- ======================= ANNUAL COMPLIANCE ======================= -->
+<div class="section">
+  <h2>8. Annual Compliance</h2>
+  <p>Every <strong>October 15</strong>, People opens an <strong>Annual Compliance {year}</strong> checklist for every Active and Pre-Start employee. Use the <strong>Open {year} Annual Compliance</strong> button on that tab to open them early, or for anyone who doesn't have one yet. Running it twice never creates duplicates.</p>
+  <table class="ref keep">
+    <tr><th style="width:44%">Item</th><th style="width:30%">Who gets it</th><th>Due</th></tr>
+    <tr><td>Complete NMLS annual CE (8 hours)</td><td>Anyone with an NMLS ID</td><td>Nov 16</td></tr>
+    <tr><td>Submit {state} license renewal in NMLS</td><td>One per licensed state</td><td>Dec 1</td></tr>
+    <tr><td>Confirm {state} renewal approved in NMLS</td><td>One per licensed state; renews the license record</td><td>Dec 31</td></tr>
+    <tr><td>BSA/AML refresher (OnCourse)</td><td>Everyone</td><td>Dec 1</td></tr>
+    <tr><td>Fair Lending training</td><td>Everyone</td><td>Dec 1</td></tr>
+    <tr><td>GLBA privacy training</td><td>Everyone</td><td>Dec 1</td></tr>
+    <tr><td>IT security training</td><td>Everyone</td><td>Dec 1</td></tr>
+    <tr><td>Employee handbook re-acknowledgment</td><td>Everyone</td><td>Dec 1</td></tr>
+    <tr><td>Update NMLS individual record (MU4)</td><td>Optional: add it when something changed</td><td>Nov 16</td></tr>
+  </table>
+  <ul>
+    <li><strong>Licensing follows the NMLS ID, not the job title.</strong> A President or Manager with an NMLS ID gets the license tasks too. Brandon, for example, has one pair of tasks for each of his 13 states.</li>
+    <li>Paste the certificate's OneDrive link into the task's notes when you tick it.</li>
+    <li>Sign off each person's checklist when it's complete. The signed PDF is the renewal record for examiners.</li>
+  </ul>
+</div>
+
+<!-- ======================= OFFBOARDING ======================= -->
+<div class="section">
+  <h2>9. Offboarding</h2>
+  <p><span class="num">1</span>Open the employee (from Staff), click <strong>Offboard</strong>, and enter the <strong>last day</strong> and reason (Resigned / Terminated / Other).</p>
+  <p><span class="num">2</span>Their status becomes <strong>Offboarding</strong> and a 13-task checklist is dated from the last day:</p>
+  <table class="ref keep">
+    <tr><th style="width:22%">Phase</th><th>Tasks</th></tr>
+    <tr><td>Before last day</td><td>Resignation letter or separation agreement · notice of termination filed · <strong>reassign open Leads and Transactions</strong> · FedEx return slip (remote/hybrid)</td></tr>
+    <tr><td>Last day</td><td>Equipment and keys · <strong>deactivate Salesforce user</strong> · disable ARIVE, Encompass, UWM/EASE, Advantage, CIC, RingCentral, GoHighLevel, Trainual, DocuSign · <strong>KB Technologies Outlook / M365 shutdown</strong> · final pay in Paychex</td></tr>
+    <tr><td>After last day</td><td>Remove from NMLS (licensed) · remove from Teams and distribution lists · COBRA paperwork · confirm equipment received</td></tr>
+  </table>
+  <p><span class="num">3</span>An amber line on their page shows what they still have: <em>"To hand over: 4 open Leads owned and 2 active Transactions as Loan Officer."</em></p>
+  <p><span class="num">4</span>Sign off the offboarding checklist when it's complete. The employee becomes <strong>Terminated</strong>, and their history stays on file.</p>
+</div>
+
+<!-- ======================= BRANCHES ======================= -->
+<div class="section">
+  <h2>10. Branches</h2>
+  <p>This is the first time branch information is stored in Salesforce; until now, branch was only a dropdown on Leads and Transactions. The <strong>Branches</strong> tab lists every branch:</p>
+  <div class="screen">
+    <div class="cap">Branches tab</div>
+    <div class="grid2">
+      <div class="card"><div class="row"><span class="av" style="border-radius:6px;background:#e0e7ff;color:#3730a3">FL</span><div class="grow"><strong>Orlando, FL Branch</strong><br><span class="muted">Branch Manager: Adam Stephens</span></div></div><div style="margin-top:4px"><span class="pill b">Open</span></div><div class="muted" style="margin-top:4px">NMLS 2792294 · 811 Guernsey St, Orlando, FL 32804</div></div>
+      <div class="card"><div class="row"><span class="av" style="border-radius:6px;background:#e0e7ff;color:#3730a3">NV</span><div class="grow"><strong>Nevada Branch</strong><br><span class="muted">Branch Manager: TBD · Target open: TBD</span></div></div><div style="margin-top:4px"><span class="pill">Planning</span></div><div class="muted" style="margin-top:4px">Add a target open date to start the branch checklist</div></div>
+    </div>
+  </div>
+  <ul>
+    <li><strong>+ New Branch</strong> or <strong>Edit details</strong> on a branch: name, state, status (Planning / Licensing / Open / Closed), target open date, branch NMLS ID, branch manager, address.</li>
+    <li><strong>The branch checklist starts once a target open date is set.</strong> That's 31 tasks across Approval, Licensing (including the state branch license, e.g. Nevada's Division of Mortgage Lending, and NMLS branch sponsorship), Setup and Launch. Moving the date re-dates open tasks.</li>
+    <li>Established branches like Orlando don't need a checklist: leave the target open date empty.</li>
+    <li>Each person's onboarding for a new branch stays on their own checklist. The branch checklist includes a step to add them in People.</li>
+  </ul>
+</div>
+
+<!-- ======================= STAFF ======================= -->
+<div class="section">
+  <h2>11. Staff and adding existing employees</h2>
+  <p>The <strong>Staff</strong> tab lists everyone who works here: name, role, status, start date, manager, NMLS ID and states. Rows with an <span class="pill a">Needs info</span> marker are missing required information. Click any row to open the person.</p>
+  <h3>Adding someone who already works here</h3>
+  <p>Many employees don't use Salesforce. To add one:</p>
+  <ol>
+    <li>On <strong>Staff</strong>, click <strong>+ Add existing employee</strong>.</li>
+    <li>Enter first and last name and role (required), plus title, department, employment type, schedule, hire date, branch, manager, emails, NMLS ID and licensed states.</li>
+    <li><strong>Salesforce user</strong> is optional. Leave it empty for people without a login.</li>
+    <li>Click <strong>Add employee</strong>. They're created Active, with <strong>no onboarding checklist</strong> and an Active license for each state. During renewal season their Annual Compliance opens straight away.</li>
+  </ol>
+  <div class="tip">When a Salesforce user is created later with the same email as someone's <strong>work email</strong>, People links them automatically and ticks "Set up Salesforce user".</div>
+</div>
+
+<!-- ======================= COMPLIANCE TAB ======================= -->
+<div class="section">
+  <h2>12. The Compliance tab</h2>
+  <p>The view for examiners, renewals season and housekeeping:</p>
+  <div class="screen">
+    <div class="cap">Compliance tab: Annual Compliance grid</div>
+    <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px">
+      <tr style="color:var(--muted);text-align:left"><th style="padding:4px 6px">Employee</th><th>NMLS CE</th><th>Submit renewal</th><th>Confirm approved</th><th>BSA/AML</th><th>Fair Lending</th><th>IT security</th></tr>
+      <tr><td style="padding:4px 6px"><strong>Brandon Brotsky</strong><br><span class="muted">Manager</span></td><td><span class="pill b">Open</span></td><td><span class="pill b">CA, CO, FL…</span></td><td><span class="pill b">CA, CO, FL…</span></td><td><span class="pill g">Done</span></td><td><span class="pill b">Open</span></td><td><span class="pill a">Overdue</span></td></tr>
+      <tr><td style="padding:4px 6px"><strong>Bianca Rodrigues</strong><br><span class="muted">Operations/Admin</span></td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td><span class="pill g">Done</span></td><td><span class="pill g">Done</span></td><td><span class="pill b">Open</span></td></tr>
+    </table>
+  </div>
+  <ul>
+    <li><strong>Grid:</strong> one row per person, one column per Annual Compliance item: <span class="pill g">Done</span> <span class="pill b">Open</span> <span class="pill a">Overdue</span>, or "—" for not applicable. License columns list each state, with ✓ once done.</li>
+    <li><strong>Licenses expiring within 60 days</strong>, soonest first.</li>
+    <li><strong>Missing information:</strong> everyone with gaps, and exactly which fields. This is where the board banner's <strong>Review</strong> button leads.</li>
+    <li><strong>Export CSV</strong> (top right) downloads the grid to give to an examiner.</li>
+  </ul>
+</div>
+
+<!-- ======================= TEMPLATES ======================= -->
+<div class="section">
+  <h2>13. Master templates</h2>
+  <p><strong>Master template</strong> (top right) holds the master task list for each checklist type: <strong>Onboarding · Annual Compliance · Offboarding · Branch</strong>. Any of the three admins can change them.</p>
+  <ul>
+    <li><strong>Reorder</strong> by dragging rows, or with the ↑ ↓ arrows. <strong>+ New task</strong> adds one, and the pencil edits one.</li>
+    <li><strong>Changes apply to checklists created from now on.</strong> Existing checklists keep their tasks; add a one-off task to them if needed.</li>
+  </ul>
+  <table class="ref">
+    <tr><th style="width:32%">Template setting</th><th>Meaning</th></tr>
+    <tr><td>Subject, description, phase</td><td>What the task says and where it appears</td></tr>
+    <tr><td>Offset + Offset counts</td><td>Days from the anchor date (negative = before), in business or calendar days</td></tr>
+    <tr><td>Default assignee / Led by</td><td>Who owns the task (Chris, Bianca or Adam) and who actually performs it</td></tr>
+    <tr><td>Roles, work arrangements</td><td>Who gets the task. Leave blank for everyone.</td></tr>
+    <tr><td>Optional</td><td>Offered as "Add to checklist" instead of created automatically</td></tr>
+    <tr><td>Email template, Send to, Sent via DocuSign</td><td>Shows the Send button (PH-3/4/7/8), the recipient, or the DocuSign chip</td></tr>
+    <tr><td>Exam section</td><td>The section of the exam PDF it appears under: Regulatory, Systems or Documentation</td></tr>
+    <tr><td>Completing it moves a Candidate to</td><td>Pre-Start (set on PH-4)</td></tr>
+    <tr><td>Complete automatically when</td><td>"Salesforce user linked" (set on "Set up Salesforce user")</td></tr>
+    <tr><td>One per licensed state</td><td>Annual Compliance only; <em>{STATE}</em> in the subject becomes the state code</td></tr>
+    <tr><td>Email reminder</td><td>Reminder 7 days before and on the due date (while emails are on)</td></tr>
+    <tr><td>Active</td><td>Turn off instead of deleting</td></tr>
+  </table>
+</div>
+
+<!-- ======================= AUTOMATIC + REFERENCE ======================= -->
+<div class="section">
+  <h2>14. What happens automatically</h2>
+  <table class="ref keep">
+    <tr><th style="width:36%">When</th><th>People does this</th></tr>
+    <tr><td>Every morning (9 AM job)</td><td>Moves Candidates and Pre-Starts to <strong>Active</strong> on their start date; links Salesforce users; syncs NMLS ID and states to users</td></tr>
+    <tr><td>Every October 15</td><td>Opens Annual Compliance for the year</td></tr>
+    <tr><td>A Salesforce user is created (or their email changes)</td><td>Links them to the People employee with that work email; ticks "Set up Salesforce user"</td></tr>
+    <tr><td>PH-4 task completed</td><td>Candidate → Pre-Start</td></tr>
+    <tr><td>Offboarding signed off</td><td>Employee → Terminated</td></tr>
+    <tr><td>"Confirm {state} renewal approved" ticked</td><td>License renewed; expires Dec 31 next year</td></tr>
+    <tr><td>Digest and reminder emails</td><td><strong>Paused.</strong> They can be switched back on whenever wanted</td></tr>
+  </table>
+
+  <h2 style="margin-top:20px">15. Quick reference</h2>
+  <table class="ref keep">
+    <tr><th style="width:40%">I want to…</th><th>Go to</th></tr>
+    <tr><td>Start onboarding a new hire</td><td>Onboarding tab → + New Employee</td></tr>
+    <tr><td>Add someone already employed</td><td>Staff tab → + Add existing employee</td></tr>
+    <tr><td>Send an onboarding email</td><td>Employee page → task → Send PH-x</td></tr>
+    <tr><td>Record a pay change</td><td>Employee page → Compensation → Add entry</td></tr>
+    <tr><td>Add or renew a license</td><td>Employee page → Licenses → Add license / click a license</td></tr>
+    <tr><td>See what's overdue for exams</td><td>Compliance tab (Export CSV for an examiner)</td></tr>
+    <tr><td>Fill in missing information</td><td>Board banner → Review, or the Needs line on the employee page</td></tr>
+    <tr><td>Offboard someone</td><td>Staff → employee → Offboard</td></tr>
+    <tr><td>Plan a new branch</td><td>Branches tab → + New Branch (set a target open date)</td></tr>
+    <tr><td>Change the standard task lists</td><td>Master template (top right)</td></tr>
+    <tr><td>Get the signed record for an examiner</td><td>Employee page → Open filed PDF (after sign-off)</td></tr>
+  </table>
+  <h3>Good to know</h3>
+  <ul>
+    <li><strong>Documents stay in OneDrive.</strong> People stores status, dates and links, not files. The only file People creates is the signed exam PDF.</li>
+    <li><strong>No SSNs.</strong> HireRight and Paychex hold them.</li>
+    <li><strong>Encrypted personal details</strong> need Reveal. Only the three People admins can view them.</li>
+    <li>Questions or changes: Christopher Lowman.</li>
+  </ul>
+  <p class="footer-note">People app, Reach Home Loans LLC (NMLS# 2266637). Internal use only.</p>
+</div>
+
+</body>
+</html>
