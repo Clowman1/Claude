@@ -3,7 +3,7 @@
     <brand>
         <headerColor>#1A2541</headerColor>
         <logo>RHL_full_logo_blue</logo>
-        <logoVersion>1</logoVersion>
+        <logoVersion>2</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
     <defaultLandingTab>LO_Mobile_Dashboard</defaultLandingTab>

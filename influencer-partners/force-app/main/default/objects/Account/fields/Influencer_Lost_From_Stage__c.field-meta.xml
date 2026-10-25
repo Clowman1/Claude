@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Influencer_Lost_From_Stage__c</fullName>
+    <description>Stage the partner was in when marked Lost; Reopen returns here.</description>
+    <label>Influencer Lost From Stage</label>
+    <length>60</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

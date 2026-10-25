@@ -175,6 +175,12 @@ public with sharing class TransactionDocuSignController {
         return dfsle.EnvelopeService.getSenderViewUrl(dfsle.UUID.parse(e.dfsle__DocuSignId__c), back).toExternalForm();
     }
 
+    /** DocuSign login + one-time consent URL for senders who haven't granted Apps Launcher impersonation yet. */
+    @AuraEnabled
+    public static String getConsentUrl(Id transactionId) {
+        return dfsle.AuthService.getLoginUrl(Url.getOrgDomainUrl().toExternalForm() + '/' + transactionId).toExternalForm();
+    }
+
     private static Transaction__c loadTransaction(Id transactionId) {
         return [
             SELECT Borrower_Name__c, Borrower_Name__r.Name, Borrower_Name__r.PersonEmail,

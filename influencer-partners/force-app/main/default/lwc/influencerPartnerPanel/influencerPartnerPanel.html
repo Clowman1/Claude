@@ -1,0 +1,183 @@
+<template>
+    <section class="card panel">
+        <template lwc:if={error}><div class="err" role="alert">{error}</div></template>
+        <template lwc:if={p}>
+            <div class="ph">
+                <div class="av">{initials}</div>
+                <div class="grow">
+                    <h2 class="h2">{p.name}</h2>
+                    <div class={touchCls}>{touchLine}</div>
+                </div>
+                <button class="x" title="Close" onclick={close}>×</button>
+            </div>
+
+            <div class="sec">
+                <div class="stagebar">
+                    <lightning-combobox class="grow" label="Stage" variant="label-hidden" options={stageOptions} value={p.stage} onchange={pickStage} disabled={busy}></lightning-combobox>
+                    <template lwc:if={isLost}><button class="btn btn-s" disabled={busy} onclick={doReopen}>Reopen</button></template>
+                </div>
+                <template lwc:if={lostLine}><div class="sm warn">{lostLine}</div></template>
+                <div class="actions">
+                    <button class="btn btn-s btn-p" onclick={openTouch}>Log touch</button>
+                    <button class="btn btn-s" onclick={openLead}>+ New lead from partner</button>
+                    <button class="btn btn-s" onclick={startEdit}>Edit details</button>
+                </div>
+            </div>
+
+            <div class="sec">
+                <div class="lbl">Partner code</div>
+                <div class="linkrow">
+                    <code class="link">{p.code}</code>
+                    <button class="btn btn-s btn-o" onclick={copyCode}>Copy</button>
+                </div>
+                <div class="muted sm">Put this code on the partner's landing page. The Zap must send it in the Lead's Influencer Partner Code field; that tags the lead to this partner and routes it to their LO. {codeHelp}</div>
+            </div>
+
+            <template lwc:if={r}>
+                <div class="sec">
+                    <div class="lbl">Production · all time</div>
+                    <div class="mini">
+                        <div><div class="mnum">{r.leads}</div><div class="muted sm">leads</div></div>
+                        <div><div class="mnum">{r.preApproved}</div><div class="muted sm">pre-approved</div></div>
+                        <div><div class="mnum">{r.closed}</div><div class="muted sm">closed · {r.convLabel}</div></div>
+                        <div><div class="mnum">{r.volumeLabel}</div><div class="muted sm">funded</div></div>
+                        <div><div class="mnum">{r.costLabel}</div><div class="muted sm">fees</div></div>
+                        <div><div class="mnum">{r.cplLabel}</div><div class="muted sm">cost / closed</div></div>
+                    </div>
+                </div>
+            </template>
+
+            <div class="sec">
+                <div class="lbl">Partner</div>
+                <dl class="dl">
+                    <dt>Email</dt><dd>{p.email}</dd>
+                    <dt>Phone</dt><dd>{p.phone}</dd>
+                    <dt>Biggest channel</dt><dd>{p.channel}</dd>
+                    <dt>Channel</dt><dd><template lwc:if={p.channelUrl}><a href={p.channelUrl} target="_blank" rel="noopener">{p.channelUrl}</a></template></dd>
+                    <dt>Audience</dt><dd>{audienceLabel}</dd>
+                    <dt>Offer website</dt><dd><template lwc:if={p.offerWebsite}><a href={p.offerWebsite} target="_blank" rel="noopener">{p.offerWebsite}</a></template></dd>
+                    <dt>Assigned LO</dt><dd>{p.loName}</dd>
+                    <dt>Agreement signed</dt><dd><lightning-formatted-date-time value={p.agreementDate} time-zone="UTC"></lightning-formatted-date-time></dd>
+                    <dt>Monthly fee</dt><dd>{feeLabel}</dd>
+                </dl>
+                <template lwc:if={p.notes}><div class="notes">{p.notes}</div></template>
+            </div>
+
+            <div class="sec">
+                <div class="lbl">Leads</div>
+                <template lwc:if={hasLeads}>
+                    <template for:each={leads} for:item="l">
+                        <div key={l.id} class="li"><a href={l.url} target="_blank">{l.name}</a><span class="muted sm">{l.status} · {l.ownerName}</span></div>
+                    </template>
+                </template>
+                <template lwc:else><div class="muted sm">No leads yet.</div></template>
+            </div>
+
+            <template lwc:if={hasLoans}>
+                <div class="sec">
+                    <div class="lbl">Loans</div>
+                    <template for:each={loans} for:item="l">
+                        <div key={l.id} class="li"><a href={l.url} target="_blank">{l.name}</a><span class="muted sm">{l.status} · {l.amountLabel}</span></div>
+                    </template>
+                </div>
+            </template>
+
+            <div class="sec">
+                <div class="lbl">Timeline</div>
+                <template lwc:if={hasTimeline}>
+                    <template for:each={timeline} for:item="t">
+                        <div key={t.id} class="ti-row">
+                            <span class={t.dotCls}></span>
+                            <div class="grow">
+                                <div class="strong sm">{t.title}</div>
+                                <template lwc:if={t.body}><div class="sm body">{t.body}</div></template>
+                                <div class="muted xs">{t.when} · {t.who}</div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:else><div class="muted sm">Nothing logged yet.</div></template>
+            </div>
+        </template>
+    </section>
+
+    <!-- Edit details -->
+    <template lwc:if={editing}>
+        <div class="backdrop">
+            <section class="modal wide" role="dialog" aria-modal="true" aria-label="Edit partner">
+                <div class="mh"><h2 class="h2">Edit {p.name}</h2></div>
+                <div class="mb">
+                    <template lwc:if={modalError}><div class="err" role="alert">{modalError}</div></template>
+                    <div class="two">
+                        <lightning-input label="First name" data-field="firstName" value={form.firstName} onchange={handleForm}></lightning-input>
+                        <lightning-input label="Last name" required data-field="lastName" value={form.lastName} onchange={handleForm}></lightning-input>
+                        <lightning-input label="Email" type="email" data-field="email" value={form.email} onchange={handleForm}></lightning-input>
+                        <lightning-input label="Phone" type="tel" data-field="phone" value={form.phone} onchange={handleForm}></lightning-input>
+                        <lightning-combobox label="Biggest social channel" options={channelOptions} data-field="channel" value={form.channel} onchange={handleForm}></lightning-combobox>
+                        <lightning-input label="Audience size" type="number" data-field="audience" value={form.audience} onchange={handleForm}></lightning-input>
+                        <lightning-input label="Channel URL / handle" type="url" data-field="channelUrl" value={form.channelUrl} onchange={handleForm}></lightning-input>
+                        <lightning-input label="Offer website" type="url" data-field="offerWebsite" value={form.offerWebsite} onchange={handleForm}></lightning-input>
+                        <lightning-combobox label="Assigned LO" options={loOptions} data-field="loId" value={form.loId} onchange={handleForm}></lightning-combobox>
+                        <lightning-input label="Partner code" data-field="code" value={form.code} onchange={handleForm} disabled={p.codeLocked} field-level-help={codeHelp}></lightning-input>
+                        <lightning-input label="Agreement signed" type="date" data-field="agreementDate" value={form.agreementDate} onchange={handleForm}></lightning-input>
+                        <lightning-input label="Monthly fee (flat)" type="number" formatter="currency" step="0.01" data-field="monthlyFee" value={form.monthlyFee} onchange={handleForm}></lightning-input>
+                    </div>
+                    <lightning-textarea label="Notes (niche, audience location)" data-field="notes" value={form.notes} onchange={handleForm}></lightning-textarea>
+                    <div class="muted xs">Fees must be a flat marketing fee — never per lead or per loan (RESPA §8). Attach the signed agreement to the account's Files.</div>
+                </div>
+                <div class="mf">
+                    <button class="btn" disabled={busy} onclick={cancelEdit}>Cancel</button>
+                    <button class="btn btn-p" disabled={busy} onclick={saveEdit}>Save</button>
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <!-- Log touch -->
+    <template lwc:if={touching}>
+        <div class="backdrop">
+            <section class="modal" role="dialog" aria-modal="true" aria-label="Log touch">
+                <div class="mh"><h2 class="h2">Log touch · {p.name}</h2></div>
+                <div class="mb">
+                    <template lwc:if={modalError}><div class="err" role="alert">{modalError}</div></template>
+                    <div class="lbl">What happened</div>
+                    <div class="pills">
+                        <template for:each={kindButtons} for:item="k">
+                            <button key={k.value} class={k.cls} data-value={k.value} onclick={pickKind}>{k.value}</button>
+                        </template>
+                    </div>
+                    <lightning-textarea label="Notes" value={touchNotes} onchange={handleTouchNotes} placeholder="What did you talk about? Any next step?"></lightning-textarea>
+                    <template lwc:if={isNote}><div class="muted sm">A note goes on the timeline but doesn't reset the 14-day touch clock.</div></template>
+                </div>
+                <div class="mf">
+                    <button class="btn" disabled={busy} onclick={closeTouch}>Cancel</button>
+                    <button class="btn btn-p" disabled={busy} onclick={saveTouch}>Save</button>
+                </div>
+            </section>
+        </div>
+    </template>
+
+    <!-- New lead -->
+    <template lwc:if={leading}>
+        <div class="backdrop">
+            <section class="modal" role="dialog" aria-modal="true" aria-label="New lead from partner">
+                <div class="mh"><h2 class="h2">New lead from {p.name}</h2></div>
+                <div class="mb">
+                    <template lwc:if={modalError}><div class="err" role="alert">{modalError}</div></template>
+                    <div class="two">
+                        <lightning-input label="First name" required data-field="firstName" onchange={handleLead}></lightning-input>
+                        <lightning-input label="Last name" required data-field="lastName" onchange={handleLead}></lightning-input>
+                        <lightning-input label="Phone" type="tel" data-field="phone" onchange={handleLead}></lightning-input>
+                        <lightning-input label="Email" type="email" data-field="email" onchange={handleLead}></lightning-input>
+                    </div>
+                    <lightning-textarea label="Notes" data-field="notes" onchange={handleLead}></lightning-textarea>
+                    <div class="muted sm">Tagged Influencer Partners with {p.name} as Referral Source. Goes to {p.loName} when an LO is assigned, otherwise normal lead assignment.</div>
+                </div>
+                <div class="mf">
+                    <button class="btn" disabled={busy} onclick={closeLead}>Cancel</button>
+                    <button class="btn btn-p" disabled={busy} onclick={saveLead}>Create lead</button>
+                </div>
+            </section>
+        </div>
+    </template>
+</template>

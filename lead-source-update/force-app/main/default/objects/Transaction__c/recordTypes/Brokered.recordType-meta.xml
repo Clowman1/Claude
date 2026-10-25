@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Brokered</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>Highlights_Panel</compactLayoutAssignment>
+    <label>Brokered</label>
+    <picklistValues>
+        <picklist>Lead_Source__c</picklist>
+        <values>
+            <fullName>Consumer Webinar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facebook - Landing Refi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facebook Lead Ad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facebook Text Quote</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facebook-Linktree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Google_Organic</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Influencer Partners</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instagram</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instagram-Linktree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nickley ISA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nickley Listing Credit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Past Client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Personal Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Previous Client Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reach In Market Dialer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Realtor Referral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tik Tok</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tiktok-Linktree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Syndicate Financial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Website</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>YouTube</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Youtube-Linktree</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zillow</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

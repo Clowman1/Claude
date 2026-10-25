@@ -1,0 +1,218 @@
+<template>
+    <div class={shellClass}>
+        <template lwc:if={loading}><div class="card pad"><lightning-spinner alternative-text="Loading" size="small"></lightning-spinner></div></template>
+        <template lwc:if={error}><div class="card pad err" role="alert">{error}</div></template>
+
+        <template lwc:if={home}>
+            <header class="head">
+                <div>
+                    <div class="lbl">Marketing · Partner channel</div>
+                    <h1 class="hello">Influencer Partners</h1>
+                </div>
+                <div class="head-actions">
+                    <button class="btn" onclick={load}><lightning-icon icon-name="utility:refresh" size="x-small"></lightning-icon>Refresh</button>
+                    <button class="btn btn-p" onclick={openAdd}>+ Add partner</button>
+                </div>
+            </header>
+
+            <section class="stats" aria-label="Program at a glance">
+                <div class="card stat"><div class="lbl">Partners in pipeline</div><div class="num">{stats.partners}</div><div class="muted sm">excluding Lost</div></div>
+                <div class="card stat"><div class="lbl">Active partners</div><div class="num">{stats.active}</div><div class="muted sm">link live, sending leads</div></div>
+                <div class="card stat"><div class="lbl">Needs a touch</div><div class="num">{stats.needsTouch}</div><div class="muted sm">14+ days quiet</div></div>
+                <div class="card stat"><div class="lbl">Leads · all time</div><div class="num">{stats.leads}</div><div class="muted sm">{stats.closed} closed loans</div></div>
+                <div class="card stat dark"><div class="lbl gold">Funded volume · all time</div><div class="num">{stats.volume}</div><div class="sm light">Post-Closed, 1st lien amount</div></div>
+            </section>
+
+            <nav class="navbar" aria-label="Influencer Partners views">
+                <template for:each={navItems} for:item="n">
+                    <button key={n.value} class={n.cls} data-value={n.value} onclick={pickView}>{n.label}</button>
+                </template>
+            </nav>
+
+            <div class="split">
+                <div class="grow">
+                    <!-- ============================== PIPELINE -->
+                    <template lwc:if={isPipeline}>
+                        <div class="toolbar">
+                            <div class="muted sm">Drag a card to move it. Contacted and Meeting Booked also move on their own when you log a touch or book a meeting.</div>
+                            <button class="btn btn-s" onclick={toggleLost}>{lostToggleLabel}</button>
+                        </div>
+                        <div class="board">
+                            <template for:each={columns} for:item="c">
+                                <div key={c.stage} class={c.cls} data-stage={c.stage}
+                                     ondragover={dragOver} ondragleave={dragLeave} ondrop={drop}>
+                                    <div class="colhead"><span class={c.chip}>{c.stage}</span><span class="muted sm strong">{c.count}</span></div>
+                                    <template for:each={c.cards} for:item="p">
+                                        <button key={p.id} class={p.cls} data-id={p.id} draggable="true"
+                                                ondragstart={dragStart} onclick={openPartner}>
+                                            <span class="strong">{p.name}</span>
+                                            <span class="muted sm">{p.channel}<template lwc:if={p.audienceLabel}> · {p.audienceLabel}</template></span>
+                                            <template lwc:if={p.production}><span class="sm strong prod">{p.production}</span></template>
+                                            <span class="kfoot">
+                                                <span class="muted sm">{p.loName}</span>
+                                                <template lwc:if={p.quiet}><span class="chip wait">{p.quiet}</span></template>
+                                            </span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- ============================== LEADS -->
+                    <template lwc:if={isLeads}>
+                        <section class="card">
+                            <div class="sechead">
+                                <div><h2 class="h2">Influencer Partners leads</h2><div class="muted sm">Lead Source = Influencer Partners · read-only · {leadCount} shown</div></div>
+                                <div class="tools">
+                                    <lightning-combobox class="pick" label="Partner" variant="label-hidden" options={partnerFilterOptions} value={leadPartner} data-field="leadPartner" onchange={filter}></lightning-combobox>
+                                    <lightning-combobox class="pick" label="Status" variant="label-hidden" options={leadStatusOptions} value={leadStatus} data-field="leadStatus" onchange={filter}></lightning-combobox>
+                                </div>
+                            </div>
+                            <div class="tablewrap">
+                                <table class="tbl">
+                                    <thead><tr><th>Name</th><th>Partner</th><th>Status</th><th>Owner</th><th>Created</th><th>Pre-Approved</th><th>Converted</th></tr></thead>
+                                    <tbody>
+                                        <template for:each={leadRows} for:item="r">
+                                            <tr key={r.id}><td><a href={r.url} target="_blank">{r.name}</a></td><td>{r.partnerName}</td><td>{r.status}</td><td>{r.ownerName}</td><td>{r.createdLabel}</td><td>{r.preLabel}</td><td>{r.convertedLabel}</td></tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                                <template lwc:if={noLeads}><div class="empty muted">No leads match.</div></template>
+                            </div>
+                        </section>
+                    </template>
+
+                    <!-- ============================== LOANS -->
+                    <template lwc:if={isLoans}>
+                        <section class="card">
+                            <div class="sechead">
+                                <div><h2 class="h2">Influencer Partners loans</h2><div class="muted sm">read-only · {loanCount} shown · {loanVolume} funded</div></div>
+                                <div class="tools">
+                                    <lightning-combobox class="pick" label="Partner" variant="label-hidden" options={partnerFilterOptions} value={loanPartner} data-field="loanPartner" onchange={filter}></lightning-combobox>
+                                    <lightning-combobox class="pick" label="Status" variant="label-hidden" options={loanStatusOptions} value={loanStatus} data-field="loanStatus" onchange={filter}></lightning-combobox>
+                                </div>
+                            </div>
+                            <div class="tablewrap">
+                                <table class="tbl">
+                                    <thead><tr><th>Loan</th><th>Partner</th><th>Status</th><th>Loan Officer</th><th class="r">Amount</th><th>Post-Closed</th><th>Created</th></tr></thead>
+                                    <tbody>
+                                        <template for:each={loanRows} for:item="r">
+                                            <tr key={r.id}><td><a href={r.url} target="_blank">{r.name}</a></td><td>{r.partnerName}</td><td>{r.status}</td><td>{r.loName}</td><td class="r">{r.amountLabel}</td><td>{r.closedLabel}</td><td>{r.createdLabel}</td></tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                                <template lwc:if={noLoans}><div class="empty muted">No loans match.</div></template>
+                            </div>
+                        </section>
+                    </template>
+
+                    <!-- ============================== RESULTS -->
+                    <template lwc:if={isResults}>
+                        <div class="toolbar">
+                            <div class="seg small-seg">
+                                <template for:each={rangeButtons} for:item="r">
+                                    <button key={r.value} class={r.cls} data-value={r.value} onclick={pickRange}>{r.label}</button>
+                                </template>
+                            </div>
+                            <div class="muted sm">Leads by created date · closed loans by Post-Closed date · cost = flat monthly fee × months</div>
+                        </div>
+                        <template lwc:if={total}>
+                            <section class="stats six">
+                                <div class="card stat"><div class="lbl">Leads</div><div class="num">{total.leads}</div></div>
+                                <div class="card stat"><div class="lbl">Pre-Approved</div><div class="num">{total.preApproved}</div></div>
+                                <div class="card stat"><div class="lbl">Loans</div><div class="num">{total.loans}</div><div class="muted sm">{total.cancelled} cancelled</div></div>
+                                <div class="card stat"><div class="lbl">Closed</div><div class="num">{total.closed}</div><div class="muted sm">{total.convLabel} of leads</div></div>
+                                <div class="card stat dark"><div class="lbl gold">Funded volume</div><div class="num">{total.volumeLabel}</div></div>
+                                <div class="card stat"><div class="lbl">Cost / closed loan</div><div class="num">{total.cplLabel}</div><div class="muted sm">{total.costLabel} total fees</div></div>
+                            </section>
+                            <section class="card">
+                                <div class="sechead"><h2 class="h2">Partner leaderboard</h2><div class="muted sm">Leads without a partner count in the program totals only.</div></div>
+                                <div class="tablewrap">
+                                    <table class="tbl">
+                                        <thead><tr><th>#</th><th>Partner</th><th>Stage</th><th class="r">Leads</th><th class="r">Pre-Appr.</th><th class="r">Loans</th><th class="r">Closed</th><th class="r">Conv.</th><th>Funded volume</th><th class="r">Fees</th><th class="r">Cost / closed</th></tr></thead>
+                                        <tbody>
+                                            <template for:each={leaderboard} for:item="p">
+                                                <tr key={p.partnerId} class="clickable" data-id={p.partnerId} onclick={openFromResults}>
+                                                    <td class="muted">{p.rank}</td><td class="strong">{p.partnerName}</td><td><span class={p.chip}>{p.stage}</span></td>
+                                                    <td class="r">{p.leads}</td><td class="r">{p.preApproved}</td><td class="r">{p.loans}</td><td class="r">{p.closed}</td><td class="r">{p.convLabel}</td>
+                                                    <td><div class="vol"><div class="track"><div class="fill" style={p.barStyle}></div></div><span class="strong">{p.volumeLabel}</span></div></td>
+                                                    <td class="r">{p.costLabel}</td><td class="r">{p.cplLabel}</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                    <template lwc:if={noLeaderboard}><div class="empty muted">No partners yet.</div></template>
+                                </div>
+                            </section>
+                        </template>
+                    </template>
+                </div>
+
+                <template lwc:if={hasSelection}>
+                    <div class="pdetail">
+                        <c-influencer-partner-panel partner-id={selectedId} stages={home.stages} channels={home.channels}
+                            loan-officers={home.loanOfficers}
+                            onclose={closePartner} onchanged={handleChanged} onlost={handleLost}></c-influencer-partner-panel>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- ============================== Lost dialog -->
+        <template lwc:if={lostFor}>
+            <div class="backdrop">
+                <section class="modal" role="dialog" aria-modal="true" aria-label="Mark partner Lost">
+                    <div class="mh"><h2 class="h2">Mark {lostFor.name} as Lost</h2></div>
+                    <div class="mb">
+                        <template lwc:if={modalError}><div class="err pad2" role="alert">{modalError}</div></template>
+                        <div class="muted sm">They were at <span class="strong">{lostFor.stage}</span>. You can reopen them to that stage later.</div>
+                        <lightning-combobox label="Reason" options={lostOptions} value={lostReason} onchange={pickLostReason} required></lightning-combobox>
+                    </div>
+                    <div class="mf">
+                        <button class="btn" onclick={cancelLost}>Cancel</button>
+                        <button class="btn btn-p" onclick={confirmLost}>Mark Lost</button>
+                    </div>
+                </section>
+            </div>
+        </template>
+
+        <!-- ============================== Add partner -->
+        <template lwc:if={adding}>
+            <div class="backdrop">
+                <section class="modal" role="dialog" aria-modal="true" aria-label="Add influencer partner">
+                    <div class="mh"><h2 class="h2">Add influencer partner</h2></div>
+                    <div class="mb">
+                        <template lwc:if={modalError}><div class="err pad2" role="alert">{modalError}</div></template>
+                        <div class="two">
+                            <lightning-input label="First name" required data-field="firstName" value={add.firstName} onchange={handleAdd}></lightning-input>
+                            <lightning-input label="Last name" required data-field="lastName" value={add.lastName} onchange={handleAdd}></lightning-input>
+                            <lightning-input label="Email" type="email" data-field="email" value={add.email} onchange={handleAdd} onblur={checkDupes}></lightning-input>
+                            <lightning-input label="Phone" type="tel" data-field="phone" value={add.phone} onchange={handleAdd} onblur={checkDupes}></lightning-input>
+                            <lightning-combobox label="Biggest social channel" options={channelOptions} data-field="channel" value={add.channel} onchange={handleAdd}></lightning-combobox>
+                            <lightning-input label="Audience size" type="number" data-field="audience" value={add.audience} onchange={handleAdd}></lightning-input>
+                            <lightning-input label="Channel URL / handle" type="url" data-field="channelUrl" value={add.channelUrl} onchange={handleAdd}></lightning-input>
+                            <lightning-input label="Offer website" type="url" data-field="offerWebsite" value={add.offerWebsite} onchange={handleAdd}></lightning-input>
+                            <lightning-combobox label="Assigned LO" options={loOptions} data-field="loId" value={add.loId} onchange={handleAdd}></lightning-combobox>
+                        </div>
+                        <template lwc:if={hasDupes}>
+                            <div class="alert">
+                                <div class="strong">This contact already exists — select them instead of creating a duplicate.</div>
+                                <template for:each={dupes} for:item="d">
+                                    <div key={d.id} class="dupe">
+                                        <div class="grow"><div class="strong">{d.name}</div><div class="sm">{d.typeLabel} · {d.email} {d.phone} · matched on {d.matchedOn}</div></div>
+                                        <button class="btn btn-s" data-id={d.id} disabled={busy} onclick={useExisting}>{d.label}</button>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="mf">
+                        <button class="btn" disabled={busy} onclick={closeAdd}>Cancel</button>
+                        <button class="btn btn-p" disabled={busy} onclick={saveAdd}>Add at Target</button>
+                    </div>
+                </section>
+            </div>
+        </template>
+    </div>
+</template>

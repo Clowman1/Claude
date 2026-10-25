@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Influencer_Stage__c</fullName>
+    <description>Influencer Partners pipeline stage. Set = this account is an influencer partner (never key off Type__c).</description>
+    <label>Influencer Stage</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Target</fullName>
+                <default>false</default>
+                <label>Target</label>
+            </value>
+            <value>
+                <fullName>Contacted</fullName>
+                <default>false</default>
+                <label>Contacted</label>
+            </value>
+            <value>
+                <fullName>Meeting Booked</fullName>
+                <default>false</default>
+                <label>Meeting Booked</label>
+            </value>
+            <value>
+                <fullName>Follow Up</fullName>
+                <default>false</default>
+                <label>Follow Up</label>
+            </value>
+            <value>
+                <fullName>Marketing Agreement Signed</fullName>
+                <default>false</default>
+                <label>Marketing Agreement Signed</label>
+            </value>
+            <value>
+                <fullName>Landing Page Launched &amp; Tested</fullName>
+                <default>false</default>
+                <label>Landing Page Launched &amp; Tested</label>
+            </value>
+            <value>
+                <fullName>Active</fullName>
+                <default>false</default>
+                <label>Active</label>
+            </value>
+            <value>
+                <fullName>Lost</fullName>
+                <default>false</default>
+                <label>Lost</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

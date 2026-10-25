@@ -1,0 +1,32 @@
+@import 'c/bdStyles';
+
+.panel { display: flex; flex-direction: column; color: #17233f; max-height: calc(100vh - 140px); overflow-y: auto; }
+.ph { display: flex; gap: 12px; align-items: center; padding: 16px 18px; border-bottom: 3px solid #f6b15d; }
+.ph .av { width: 44px; height: 44px; font-size: 15px; }
+.x { border: 0; background: transparent; font-size: 22px; line-height: 1; color: #5f6f86; cursor: pointer; }
+.sec { padding: 14px 18px; border-top: 1px solid #eef2f7; display: flex; flex-direction: column; gap: 8px; }
+.sec:first-of-type { border-top: 0; }
+.stagebar, .actions, .linkrow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.grow { flex-grow: 1; min-width: 0; }
+.link { flex-grow: 1; min-width: 0; font-size: 12px; background: #eef2f7; border-radius: 8px; padding: 7px 9px; overflow-wrap: anywhere; }
+.mini { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.mnum { font-size: 17px; font-weight: 800; }
+.dl { display: grid; grid-template-columns: 130px 1fr; gap: 5px 10px; margin: 0; font-size: 13px; }
+.dl dt { color: #5f6f86; font-weight: 600; }
+.dl dd { margin: 0; overflow-wrap: anywhere; }
+.dl a, .li a { color: #244d8f; font-weight: 700; text-decoration: none; }
+.notes { font-size: 13px; white-space: pre-wrap; background: #fafbfd; border-radius: 10px; padding: 10px; }
+.li { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 4px 0; }
+.ti-row { display: flex; gap: 10px; padding: 6px 0; }
+.dot { width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; background: #9aa8bd; }
+.dot-touch { background: #244d8f; }
+.dot-meeting, .dot-upcoming { background: #5b21b6; }
+.dot-lead { background: #166534; }
+.dot-note { background: #f6b15d; }
+.body { white-space: pre-wrap; color: #3a4760; }
+.sm { font-size: 12.5px; }
+.xs { font-size: 11.5px; }
+.strong { font-weight: 700; }
+.err { background: #fde7e7; color: #9f1d1d; padding: 10px 12px; border-radius: 10px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+.modal.wide { max-width: 680px; }

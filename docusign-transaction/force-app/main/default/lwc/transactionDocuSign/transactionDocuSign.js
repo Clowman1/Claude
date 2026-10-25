@@ -3,6 +3,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getData from '@salesforce/apex/TransactionDocuSignController.getData';
 import createDraft from '@salesforce/apex/TransactionDocuSignController.createDraft';
 import getSenderView from '@salesforce/apex/TransactionDocuSignController.getSenderView';
+import getConsentUrl from '@salesforce/apex/TransactionDocuSignController.getConsentUrl';
 
 const FILE_COLUMNS = [
     { label: 'File', fieldName: 'title', cellAttributes: { iconName: { fieldName: 'icon' } } },
@@ -137,6 +138,19 @@ export default class TransactionDocuSign extends LightningElement {
             this.selected = [];
             this.load();
         } catch (e) {
+            // First send per user: DocuSign needs a one-time consent. Send them there in the tab we already opened.
+            if (/consent|impersonat/i.test(e?.body?.message || e?.message || '')) {
+                try {
+                    const url = await getConsentUrl({ transactionId: this.recordId });
+                    if (win) win.location = url;
+                    else window.open(url, '_blank');
+                    this.toast('warning', 'Allow DocuSign access first',
+                        'In the DocuSign tab, log in and click Allow (one time only). Then come back and click Send again.');
+                    return;
+                } catch (consentError) {
+                    e = consentError;
+                }
+            }
             if (win) win.close();
             this.toast('error', 'DocuSign send failed', e);
         } finally {

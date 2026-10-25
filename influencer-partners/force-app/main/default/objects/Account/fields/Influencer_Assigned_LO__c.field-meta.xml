@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Influencer_Assigned_LO__c</fullName>
+    <description>Owns the borrower leads from this partner's intake link.</description>
+    <label>Influencer Assigned LO</label>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Influencer_Partner_Accounts</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

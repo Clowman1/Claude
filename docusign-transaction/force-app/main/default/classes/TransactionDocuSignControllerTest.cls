@@ -79,5 +79,10 @@ private class TransactionDocuSignControllerTest {
         } catch (Exception e) {
             Assert.isNotNull(e.getMessage());
         }
+        try {
+            Assert.isNotNull(TransactionDocuSignController.getConsentUrl(tId));
+        } catch (Exception e) {
+            Assert.isNotNull(e.getMessage());
+        }
     }
 }
