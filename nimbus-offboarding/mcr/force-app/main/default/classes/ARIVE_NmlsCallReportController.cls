@@ -3224,40 +3224,97 @@ public with sharing class ARIVE_NmlsCallReportController {
 
     @AuraEnabled
     public static Map<String, Object> generateXmlFile(String jsonReport) {
-        String file, base64Value;
         try {
-            Http http = new Http();
-            HttpRequest req = generateHttpRequest(jsonReport);
-            HTTPResponse res = http.send(req);
-            file = res.getBody();
-            base64Value = EncodingUtil.base64Encode(Blob.valueOf(file));
+            return new Map<String, Object>{
+                    'status' => 'SUCCESS',
+                    'file' => EncodingUtil.base64Encode(Blob.valueOf(buildRmlaXml(jsonReport)))
+            };
         } catch (Exception e) {
             return new Map<String, Object>{
                     'status' => 'ERROR',
                     'errorMessage' => e.getMessage()
             };
-        } finally {
-
         }
-        return new Map<String, Object>{
-                'status' => 'SUCCESS',
-                'file' => base64Value
-        };
     }
 
-    private static HttpRequest generateHttpRequest(String jsonReport){
-        HttpRequest req = new httpRequest();
-        String endpoint = 'https://callreportgenerator.herokuapp.com/api/v2/corresponder/report';
-        req.setEndpoint(endpoint);
-        req.setHeader('Content-Type', 'application/json');
-        req.setMethod('POST');
-        String username = 'admin';
-        String password = 'nimbus123';
-        Blob headerValue = Blob.valueOf(username + ':' + password);
-        String authorizationHeader = 'Basic ' + EncodingUtil.base64Encode(headerValue);
-        req.setHeader('Authorization', authorizationHeader);
-        req.setBody(jsonReport);
-        return req;
+    // NMLS RMLA XML (MCR form v7), built in-org since Nimbus's Heroku converter was retired.
+    // Element order, the column remaps and whole-number truncation all copy that converter's
+    // Q3 2026 output, which this reproduced byte for byte.
+    private static final List<String> RMLA_SECTION_I = ('AC010_1 AC010_2 AC010_3 AC010_4 AC020_1 AC020_2 AC020_3 AC020_4 AC030_1 AC030_2 AC030_3 AC030_4 '
+            + 'AC040_1 AC040_2 AC040_3 AC040_4 AC050_1 AC050_2 AC050_3 AC050_4 AC060_1 AC060_2 AC060_3 AC060_4 AC065_1 AC065_3 '
+            + 'AC070_1 AC070_2 AC070_3 AC070_4 AC080_1 AC080_2 AC080_3 AC080_4 '
+            + 'AC100_1 AC100_2 AC100_3 AC100_4 AC100_5 AC100_6 AC110_1 AC110_2 AC110_3 AC110_4 AC110_5 AC110_6 '
+            + 'AC120_1 AC120_2 AC120_3 AC120_4 AC120_5 AC120_6 AC130_1 AC130_2 AC130_3 AC130_4 AC130_5 AC130_6 '
+            + 'AC200_1 AC200_2 AC200_3 AC200_4 AC200_5 AC200_6 AC210_1 AC210_2 AC210_3 AC210_4 AC210_5 AC210_6 '
+            + 'AC300_1 AC300_2 AC300_3 AC300_4 AC300_5 AC300_6 AC310_1 AC310_2 AC310_3 AC310_4 AC310_5 AC310_6 '
+            + 'AC320_1 AC320_2 AC320_3 AC320_4 AC320_5 AC320_6 AC400_1 AC400_2 AC400_3 AC400_4 AC400_5 AC400_6 '
+            + 'AC500_1 AC500_2 AC500_3 AC500_4 AC500_5 AC500_6 AC510_1 AC510_2 AC510_3 AC510_4 AC510_5 AC510_6 '
+            + 'AC520_1 AC520_2 AC520_3 AC520_4 AC520_5 AC520_6 AC600_1 AC610_3 AC610_5 '
+            + 'AC700_1 AC700_2 AC700_3 AC700_4 AC700_5 AC700_6 AC720_1 AC720_2 AC720_3 AC720_4 AC720_5 AC720_6 '
+            + 'AC800_1 AC800_2 AC800_3 AC800_4 AC800_5 AC800_6 AC810_1 AC810_2 AC810_3 AC810_4 AC810_5 AC810_6 '
+            + 'AC620_1 AC630_3 AC630_5 AC920_1 AC920_2 AC920_3 AC920_4 AC920_5 AC920_6 '
+            + 'AC930_1 AC930_2 AC930_3 AC930_4 AC930_5 AC930_6 AC940_1 AC940_2 AC940_3 AC940_4 AC940_5 AC940_6 '
+            + 'AC1000_1 AC1000_2 AC1100_1').split(' ');
+    private static final List<String> RMLA_SECTION_II = ('I010_1 I010_2 I020_1 I020_2 I030_1 I030_2 I040_1 I040_2 I050_1 I050_2 '
+            + 'I060_1 I060_2 I070_1 I070_2 I080_1 I080_2 I110_1 I110_2 I120_1 I120_2 I130_1 I130_2 I140_1 I140_2 I170_1 I170_2 '
+            + 'I210_1 I210_2 I220_1 I220_2 I230_1 I230_2 I250_1 I250_2 I251_1 I251_2 I260_1 I260_2 I261_1 I261_2 '
+            + 'I270_1 I270_2 I271_1 I271_2 I280_1 I280_2 I281_1 I281_2 I290_1 I290_2 I291_1 I291_2 I300_1 I300_2 I301_1 I301_2 '
+            + 'I310_1 I310_2 I312_1 I312_2 I313_1 I313_2 I314_1 I314_2 I330_1 I330_2 I331_1 I331_2 I340_1 I340_2 I341_1 I341_2 '
+            + 'I370_1 I370_2 I371_1 I371_2 I372_1 I372_2 I373_1 I373_2 I374_1 I374_2 I375_1 I375_2 I380_2 I390_2 '
+            + 'I400_1 I400_2 I401_1 I401_2 I402_1 I402_2 I404_1 I404_2 I405_1 I405_2 I410_1 I410_2 I421_1 I421_2 I460_1 I460_2').split(' ');
+    // XML columns fed by a differently named model field.
+    private static final Map<String, String> RMLA_SOURCE_FIELD = new Map<String, String>{'AC610_3' => 'AC610_1', 'AC630_3' => 'AC630_1'};
+    // Application lines' XML column 3 is never filled: the model's _3 there is an average, not that column.
+    private static final Pattern RMLA_UNFILLED = Pattern.compile('AC0\\d\\d_3');
+
+    @TestVisible
+    private static String buildRmlaXml(String jsonReport) {
+        Map<String, Object> report = (Map<String, Object>) JSON.deserializeUntyped(jsonReport);
+        List<String> lines = new List<String>{'<?xml version="1.0"?><Mcr formVersion="v7" periodType="MCRQ' + report.get('quarter')
+                + '" type="E" year="' + report.get('year') + '">'};
+        for (Object stateObj : (List<Object>) report.get('stateData')) {
+            Map<String, Object> state = (Map<String, Object>) stateObj;
+            Map<String, Object> values = new Map<String, Object>();
+            for (String section : new List<String>{'applicationData', 'closedLoanData', 'revenueData', 'residentialFirstMortgageData'}) {
+                if (state.get(section) != null) values.putAll((Map<String, Object>) state.get(section));
+            }
+            lines.add('    <Rmla stateCode="' + String.valueOf(state.get('stateCode')).escapeXml() + '">');
+            for (String section : new List<String>{'SectionISection', 'SectionIISection'}) {
+                lines.add('        <' + section + '>');
+                for (String name : section == 'SectionISection' ? RMLA_SECTION_I : RMLA_SECTION_II) {
+                    Object value = RMLA_UNFILLED.matcher(name).matches() ? null
+                            : values.get(RMLA_SOURCE_FIELD.containsKey(name) ? RMLA_SOURCE_FIELD.get(name) : name);
+                    lines.add('            <' + name + '>' + wholeNumber(value) + '</' + name + '>');
+                }
+                lines.add('        </' + section + '>');
+            }
+            List<Object> mlos = (List<Object>) state.get('loanOriginatorData');
+            lines.add('        <ListSectionOfSectionIMlosItem>');
+            if (mlos == null || mlos.isEmpty()) {
+                lines.add('            <DetailItemList/>');
+            } else {
+                lines.add('            <DetailItemList>');
+                for (Object mloObj : mlos) {
+                    Map<String, Object> mlo = (Map<String, Object>) mloObj;
+                    lines.add('                <SectionIMlosItem>');
+                    lines.add('                    <ACMLO>' + String.valueOf(mlo.get('nmlsId')).escapeXml() + '</ACMLO>');
+                    lines.add('                    <ACMLO_2>' + wholeNumber(mlo.get('amount')) + '</ACMLO_2>');
+                    lines.add('                    <ACMLO_3>' + wholeNumber(mlo.get('count')) + '</ACMLO_3>');
+                    lines.add('                </SectionIMlosItem>');
+                }
+                lines.add('            </DetailItemList>');
+            }
+            lines.add('        </ListSectionOfSectionIMlosItem>');
+            lines.add('    </Rmla>');
+        }
+        lines.add('</Mcr>');
+        return String.join(lines, '\n');
+    }
+
+    // NMLS takes whole numbers; cents and fractional averages are dropped, not rounded.
+    private static String wholeNumber(Object value) {
+        String text = value == null ? '' : String.valueOf(value).trim();
+        return String.isBlank(text) ? '0' : String.valueOf(Decimal.valueOf(text).longValue());
     }
 
     public class ReportXmlFile{

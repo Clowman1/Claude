@@ -8,7 +8,6 @@
     <aura:attribute type="Boolean" name="isLocked" default="true"/>
     <aura:attribute type="Boolean" name="spinner"/>
     <aura:attribute type="Boolean" name="showResetConfirmation" default="false"/>
-    <aura:attribute type="String" name="baseUrl" default="https://callreportgenerator.herokuapp.com/api/report"/>
     <aura:attribute type="Boolean" name="isGeneratingXml" default="false"/>
     <aura:attribute type="Integer" name="step" access="global"/>
     <aura:attribute type="Object" name="reportDetailTable"/>

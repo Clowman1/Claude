@@ -20,10 +20,39 @@ private class ARIVE_NmlsCallReportControllerTest {
         {
             ARIVE_NmlsCallReportController.ReportModel report = ARIVE_NmlsCallReportController.generateReport('2', '2019', states);
             system.debug('testing report' + report);
-            ARIVE_NmlsCallReportController.generateXmlFile(JSON.serialize(report));
+            Map<String, Object> result = ARIVE_NmlsCallReportController.generateXmlFile(JSON.serialize(report));
+            system.assertEquals('SUCCESS', result.get('status'), '' + result.get('errorMessage'));
             system.assertNotEquals(null, ARIVE_NmlsCallReportController.retrievePastReports());
         }
         Test.stopTest();
+    }
+
+    @isTest
+    private static void testRmlaXmlMatchesNmlsFormat() {
+        String xml = ARIVE_NmlsCallReportController.buildRmlaXml(JSON.serialize(new Map<String, Object>{
+                'quarter' => '3', 'year' => '2026',
+                'stateData' => new List<Object>{
+                        new Map<String, Object>{
+                                'stateCode' => 'FL',
+                                'applicationData' => new Map<String, Object>{'AC010_1' => 50281236.5, 'AC010_2' => 119, 'AC010_3' => 422531},
+                                'closedLoanData' => new Map<String, Object>{'AC610_1' => 110630, 'AC100_3' => 21109244},
+                                'residentialFirstMortgageData' => new Map<String, Object>{'I380_2' => 81.9},
+                                'loanOriginatorData' => new List<Object>{new Map<String, Object>{'nmlsId' => '342274', 'amount' => 2910936.5, 'count' => 11}}
+                        },
+                        new Map<String, Object>{'stateCode' => 'CA', 'loanOriginatorData' => new List<Object>()}
+                }
+        }));
+
+        system.assert(xml.startsWith('<?xml version="1.0"?><Mcr formVersion="v7" periodType="MCRQ3" type="E" year="2026">\n    <Rmla stateCode="FL">'), xml.left(200));
+        system.assert(xml.contains('<AC010_1>50281236</AC010_1>'), 'cents are truncated');
+        system.assert(xml.contains('<AC010_3>0</AC010_3>'), 'application averages are not reported');
+        system.assert(xml.contains('<AC610_3>110630</AC610_3>'), 'AC610 fees land in column 3');
+        system.assert(xml.contains('<AC100_3>21109244</AC100_3>'));
+        system.assert(xml.contains('<I380_2>81</I380_2>'));
+        system.assert(xml.contains('<ACMLO>342274</ACMLO>\n                    <ACMLO_2>2910936</ACMLO_2>\n                    <ACMLO_3>11</ACMLO_3>'));
+        system.assert(xml.contains('<Rmla stateCode="CA">'));
+        system.assert(xml.contains('<DetailItemList/>'), 'a state with no MLOs gets an empty list');
+        system.assert(xml.endsWith('    </Rmla>\n</Mcr>'));
     }
 
     @isTest
