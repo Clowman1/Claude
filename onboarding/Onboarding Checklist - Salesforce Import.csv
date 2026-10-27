@@ -11,10 +11,10 @@ Order,Phase,Subject,Description,Assigned To,Days From Start Date,Applies To
 10,Pre-Start,Finalize Paychex hire,Set status to Hired - Exported to Payroll; Add Worker > Begin Review > Finish,Bianca,-7,All
 11,Pre-Start,Send employee handbook and I-9 document list,Email Template PH-6,Bianca,-7,All
 12,Pre-Start,Confirm NMLS ID,Email Template PH-8,Bianca,-10,Loan Officers / Branch Managers
-13,Pre-Start,Email Licensing Store (Tonya),"Start date, position, NMLS ID, email, phone (PH-9)",Bianca,-10,Loan Officers / Branch Managers
+13,Pre-Start,Submit Licensing Store order form,"https://orders.licensingstore.com/ - start date, position, NMLS ID, email, phone",Bianca,-10,Loan Officers / Branch Managers
 14,Pre-Start,Email UWM for LO access,"Chelsea Morgan cmorgan1@uwm.com; EASE / Launchpad / ENC (PH-10)",Bianca,-10,Loan Officers / Branch Managers
 15,Pre-Start,FHA Connection ID setup,See FHA Connection ID Administration guide,Bianca,-7,Loan Officers (if applicable)
-16,Pre-Start,Send IT request to KB Technologies,support@kb-global.com; computer setup and firstname.lastname@reachhomeloans.com,Bianca,-10,All
+16,Pre-Start,Submit KB Technologies IT request form,"Jotform: https://form.jotform.com/240105900423138 - computer setup and firstname.lastname@reachhomeloans.com",Bianca,-10,All
 17,Pre-Start,Set up Microsoft 365 / Teams / SharePoint,Add to Teams channels and distribution lists; department folder access,Bianca,-5,All
 18,Pre-Start,Set up RingCentral,Assign extension and softphone,Bianca,-5,All
 19,Pre-Start,Set up VPN,Remote/hybrid only,Bianca,-5,Remote / Hybrid

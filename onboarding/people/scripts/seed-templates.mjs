@@ -35,8 +35,9 @@ const APPLIES = {
 const PHASE = { 'Pre-Start': 'Pre-Start', 'Day 1': 'Day 1', 'Week 1': 'Week 1', '30 Days': '30 Days', '90 Days': '90 Days' };
 // Bianca's docx templates (Salesforce send in phase 2) vs. the ones she sends through DocuSign (decision 39).
 const EMAIL = { 3: 'PH-3', 4: 'PH-4', 9: 'PH-7', 12: 'PH-8' };
-const DOCUSIGN = { 11: 'PH-6', 13: 'PH-9', 14: 'PH-10', 30: 'Day 1 Instructions', 32: 'Team Announcement' };
-const SEND_TO = { 13: 'Licensing Store (Tonya)', 14: 'cmorgan1@uwm.com', 16: 'support@kb-global.com' };
+// Rows 13 (Licensing Store) and 16 (KB Technologies) became web forms on 2026-10-27; their links are in the description.
+const DOCUSIGN = { 11: 'PH-6', 14: 'PH-10', 30: 'Day 1 Instructions', 32: 'Team Announcement' };
+const SEND_TO = { 14: 'cmorgan1@uwm.com' };
 const EXAM = {
     Regulatory: [12, 13, 31, 40, 47],
     Documentation: [3, 4, 5, 6, 11, 34, 35, 36, 46],
