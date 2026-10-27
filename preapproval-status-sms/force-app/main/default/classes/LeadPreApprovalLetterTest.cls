@@ -55,7 +55,7 @@ private class LeadPreApprovalLetterTest {
             'The QUALIFICATION REVIEW section already says this; it is not said twice.');
         System.assertEquals(false, html.contains('FINANCING QUALIFICATION'),
             'The banner strapline was removed.');
-        System.assertEquals(true, html.contains('/resource/Reach_Logo'), 'The real logo, not typed text.');
+        System.assertEquals(true, html.contains('/Reach_Logo"'), 'The real logo, not typed text.');
         System.assertEquals(true, html.contains('$795,000'));
         System.assertEquals(true, html.contains('85.00% LTV'));
         System.assertEquals(true, html.contains('DOCUMENTATION REVIEWED'));

@@ -444,6 +444,19 @@ public with sharing class LeadPreApprovalLetterController {
 
     // Names the download after the borrower so a downloads folder stays legible.
     @TestVisible
+    /**
+     * The versioned /resource/<timestamp>/Name form. Browsers cache the bare /resource/Name for 45
+     * days, so after a logo change the preview kept showing the old one until the cache expired.
+     */
+    private static String versionedResourceUrl(String resourceName) {
+        List<StaticResource> resources = [
+            SELECT SystemModstamp FROM StaticResource WHERE Name = :resourceName LIMIT 1
+        ];
+        return resources.isEmpty()
+            ? '/resource/' + resourceName
+            : '/resource/' + resources[0].SystemModstamp.getTime() + '/' + resourceName;
+    }
+
     private static String buildLetterFileName(Id leadId) {
         List<Lead> leads = [
             SELECT FirstName, LastName, Name FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1
@@ -501,8 +514,8 @@ public with sharing class LeadPreApprovalLetterController {
         // flexbox nor grid, so the preview has to be built the way the PDF needs it.
         return ''
             + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family:Helvetica,Arial,sans-serif;color:#1b2f5c;">'
-            + '<tr><td style="padding:0 0 26px 0;">'
-            + '<img src="/resource/Reach_Logo" alt="Reach Home Loans" width="190" />'
+            + '<tr><td style="padding:0 0 18px 0;">'
+            + '<img src="' + versionedResourceUrl('Reach_Logo') + '" alt="Reach Home Loans" width="190" />'
             + '</td></tr>'
 
             + '<tr><td style="background:#e8f1fb;padding:20px 24px;">'
@@ -511,18 +524,18 @@ public with sharing class LeadPreApprovalLetterController {
             + '<td align="right" style="font-size:11px;font-weight:bold;color:#5a6b86;letter-spacing:1px;vertical-align:top;">' + today + '</td>'
             + '</tr></table></td></tr>'
 
-            + '<tr><td style="padding:26px 0 10px 0;font-size:19px;font-weight:bold;color:#14284b;">'
+            + '<tr><td style="padding:18px 0 8px 0;font-size:19px;font-weight:bold;color:#14284b;">'
             + htmlEncode(borrowerName)
             + (isJointApplication ? ' are' : ' is') + ' pre-approved for mortgage financing.</td></tr>'
             + '<tr><td style="padding:0 0 12px 0;font-size:13px;line-height:20px;color:#33405c;">'
             + 'To whom it may concern:</td></tr>'
-            + '<tr><td style="padding:0 0 20px 0;font-size:13px;line-height:20px;color:#33405c;">'
+            + '<tr><td style="padding:0 0 14px 0;font-size:13px;line-height:20px;color:#33405c;">'
             + 'I have issued this Pre-Approval Letter to certify that the below applicant(s) is/are '
             + 'pre-approved for financing per Desktop Underwriter (DU) and/or Loan Prospector (LP).</td></tr>'
 
             + '<tr><td>' + buildTermsTable(leadRecord, applicantNames, ltvSuffix, propertyAddress) + '</td></tr>'
 
-            + '<tr><td style="padding:22px 0 6px 0;font-size:12px;font-weight:bold;color:#1b6fc4;letter-spacing:0.5px;">QUALIFICATION REVIEW</td></tr>'
+            + '<tr><td style="padding:16px 0 4px 0;font-size:12px;font-weight:bold;color:#1b6fc4;letter-spacing:0.5px;">QUALIFICATION REVIEW</td></tr>'
             + '<tr><td style="font-size:13px;line-height:20px;color:#33405c;">'
             + 'This pre-approval is subject to the terms and conditions of the applicable loan program, '
             + 'satisfactory property review, and no material change in the applicant\'s creditworthiness '
@@ -530,10 +543,10 @@ public with sharing class LeadPreApprovalLetterController {
 
             + buildDocsReviewedRows(docsReviewed)
 
-            + '<tr><td style="padding:34px 0 0 0;font-size:13px;font-weight:bold;color:#14284b;">'
+            + '<tr><td style="padding:20px 0 0 0;font-size:13px;font-weight:bold;color:#14284b;">'
             + 'Questions regarding this pre-approval? Please contact me directly.</td></tr>'
 
-            + '<tr><td style="padding:26px 0 0 0;">' + buildSignerCard(signer) + '</td></tr>'
+            + '<tr><td style="padding:14px 0 0 0;">' + buildSignerCard(signer) + '</td></tr>'
             + '</table>';
     }
 
@@ -584,9 +597,9 @@ public with sharing class LeadPreApprovalLetterController {
         String background = shaded ? 'background:#f4f7fb;' : '';
         String valueWeight = emphasise ? 'font-weight:bold;' : '';
         return '<tr>'
-            + '<td width="30%" style="' + background + 'padding:11px 14px;font-size:11px;font-weight:bold;color:#5a6b86;letter-spacing:0.6px;">'
+            + '<td width="30%" style="' + background + 'padding:8px 14px;font-size:11px;font-weight:bold;color:#5a6b86;letter-spacing:0.6px;">'
             + label + '</td>'
-            + '<td style="' + background + 'padding:11px 14px;color:#14284b;' + valueWeight + '">'
+            + '<td style="' + background + 'padding:8px 14px;color:#14284b;' + valueWeight + '">'
             + (String.isBlank(value) ? '&mdash;' : value) + '</td>'
             + '</tr>';
     }
@@ -597,23 +610,30 @@ public with sharing class LeadPreApprovalLetterController {
             return '';
         }
 
-        List<String> items = new List<String>();
+        List<String> cells = new List<String>();
         for (String line : docsReviewed.split('\n')) {
             String trimmed = line.trim();
             if (String.isNotBlank(trimmed)) {
-                items.add(
-                    '<tr><td style="padding:5px 0;font-size:13px;color:#33405c;">'
+                cells.add(
+                    '<td width="50%" style="padding:3px 8px 3px 0;font-size:13px;color:#33405c;vertical-align:top;">'
                     + '<img src="/resource/Reviewed_Check" alt="Reviewed" width="11" height="11" />'
                     + '&nbsp;&nbsp;'
-                    + htmlEncode(trimmed) + '</td></tr>'
+                    + htmlEncode(trimmed) + '</td>'
                 );
             }
         }
-        if (items.isEmpty()) {
+        if (cells.isEmpty()) {
             return '';
         }
 
-        return '<tr><td style="padding:22px 0 6px 0;font-size:12px;font-weight:bold;color:#1b6fc4;letter-spacing:0.5px;">DOCUMENTATION REVIEWED</td></tr>'
+        // Two columns, filled row by row: this list is the part of the letter that grows, and as one
+        // column it pushed longer letters onto a second page.
+        List<String> items = new List<String>();
+        for (Integer i = 0; i < cells.size(); i += 2) {
+            items.add('<tr>' + cells[i] + (i + 1 < cells.size() ? cells[i + 1] : '<td width="50%"></td>') + '</tr>');
+        }
+
+        return '<tr><td style="padding:16px 0 4px 0;font-size:12px;font-weight:bold;color:#1b6fc4;letter-spacing:0.5px;">DOCUMENTATION REVIEWED</td></tr>'
             + '<tr><td><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'
             + String.join(items, '')
             + '</table></td></tr>';
