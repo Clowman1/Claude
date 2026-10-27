@@ -11,4 +11,11 @@ private class MersUtilityTest {
         List<String> mersResponse = MersUtility.generateMers(new List<MersUtility.InvocableRequest>{req}) ;
         System.assertEquals('959456701234567898',mersResponse[0]);
     }
+
+    @IsTest
+    static void nonNumericGetsNoMin() {
+        MersUtility.InvocableRequest req = new MersUtility.InvocableRequest();
+        req.numberRepresentation = '10164720026-112962';
+        System.assertEquals(null, MersUtility.generateMers(new List<MersUtility.InvocableRequest>{req})[0]);
+    }
 }

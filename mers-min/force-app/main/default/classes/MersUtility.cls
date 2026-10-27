@@ -11,6 +11,11 @@ public with sharing class MersUtility {
     public static List<String> generateMers(List<InvocableRequest> requests){
         List<String> mers = new List<String>();
         for(InvocableRequest req : requests){
+            // Non-numeric input (e.g. a dashed loan number) gets no MIN rather than blocking every save on the record.
+            if(String.isBlank(req.numberRepresentation) || !req.numberRepresentation.isNumeric()){
+                mers.add(null);
+                continue;
+            }
             String [] numbers = req.numberRepresentation.split('');
             Boolean isOddNumber = Math.mod(numbers.size(), 2) == 0 ? false : true;
             Integer checkDigit = generateCheckDigit(numbers,isOddNumber);
