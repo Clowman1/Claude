@@ -347,8 +347,8 @@
                                     <input type="checkbox" checked={t.done} disabled={locked} data-id={t.Id} onchange={toggleTask} aria-label={t.checkLabel} />
                                     <span class="task-text">
                                         <span class={t.subjectCls}>{t.Name}<template lwc:if={t.isNa}> (N/A)</template></span>
-                                        <template lwc:if={t.Description__c}><span class="muted small">{t.Description__c}</span></template>
-                                        <template lwc:if={t.Notes__c}><span class="note small">Note: {t.Notes__c}</span></template>
+                                        <template lwc:if={t.Description__c}><lightning-formatted-text class="muted small" value={t.Description__c} linkify></lightning-formatted-text></template>
+                                        <template lwc:if={t.Notes__c}><span class="note small">Note: <lightning-formatted-text value={t.Notes__c} linkify></lightning-formatted-text></span></template>
                                         <template lwc:if={t.stamp}><span class="stamp">{t.stamp}</span></template>
                                     </span>
                                 </label>
@@ -395,7 +395,7 @@
                     <h2 class="h2">Optional items</h2>
                     <template for:each={optional} for:item="o">
                         <div key={o.Id} class="opt-row">
-                            <span class="task-text grow"><span class="subject">{o.Name}</span><span class="muted small">{o.Description__c}</span></span>
+                            <span class="task-text grow"><span class="subject">{o.Name}</span><lightning-formatted-text class="muted small" value={o.Description__c} linkify></lightning-formatted-text></span>
                             <button class="btn" data-id={o.Id} onclick={addOptional}>Add to checklist</button>
                         </div>
                     </template>
