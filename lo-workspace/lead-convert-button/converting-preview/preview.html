@@ -1,0 +1,192 @@
+<title>Converting Screen Preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: a mock Salesforce page with the real Convert modal floating over it. Deliberately single light theme,
+   because it previews the Salesforce component, which is light only. */
+:root {
+    --navy: #16325c;
+    --brand: #1b4d8c;
+    --green: #2e8b57;
+    --muted: #3d6296;
+    --soft: #5f7898;
+    --line: #dfe8f3;
+    --track: #e3ecf7;
+    --page: #eef2f7;
+    --card: #ffffff;
+    --font: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+body {
+    font-family: var(--font);
+    color: var(--navy);
+    background: var(--page);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 16px;
+}
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; max-width: 640px; margin: 0 auto 16px; }
+.toolbar p { margin: 0; flex: 1 1 260px; font-size: 13px; color: var(--muted); }
+.stage { position: relative; min-height: 470px; border-radius: 14px; background: rgba(15, 31, 54, 0.45); display: flex; align-items: center; justify-content: center; padding: 16px; max-width: 760px; margin: 0 auto; }
+.modal-card { width: min(640px, 100%); background: var(--card); border-radius: 18px; border: 1px solid var(--line); box-shadow: 0 24px 48px rgba(15, 31, 54, 0.18); }
+.modal-header { padding: 20px 20px 0; }
+.modal-header h2 { margin: 0; font-size: 20px; text-wrap: balance; }
+.modal-header p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+.modal-body { padding: 16px 20px; }
+.checklist { margin: 0; }
+.checklist-row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px; padding: 8px 0; border-top: 1px solid #f1f5fa; font-size: 14px; }
+.checklist-row:first-child { border-top: none; }
+.checklist-row dt { color: var(--muted); }
+.checklist-row dd { margin: 0; }
+.have-info { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+.ack { display: flex; gap: 10px; margin-top: 16px; font-size: 13px; line-height: 1.4; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 0 20px 20px; }
+.btn { border-radius: 10px; padding: 10px 16px; font-weight: 600; cursor: pointer; font-size: 14px; font-family: inherit; }
+.btn-outline { border: 1px solid #c7d6ea; background: var(--card); color: #243c60; }
+.btn-brand { border: none; background: var(--brand); color: #fff; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:focus-visible, input:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---- Converting state: this block ships in externalLoLeadConversionModal.css ---- */
+.converting { padding: 32px 24px 28px; text-align: center; }
+.converting-art { position: relative; width: 112px; height: 112px; margin: 0 auto 18px; }
+.converting-ring { position: absolute; inset: 0; border-radius: 50%; border: 6px solid var(--track); border-top-color: var(--brand); border-right-color: var(--green); animation: converting-spin 1.1s linear infinite; }
+.converting-house { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; animation: converting-bob 1.8s ease-in-out infinite; }
+.converting-house svg { width: 50px; height: 50px; }
+.converting h2 { margin: 0 0 8px; font-size: 20px; }
+.converting-quip { min-height: 22px; margin: 0 auto 18px; max-width: 420px; font-size: 15px; color: var(--muted); font-style: italic; transition: opacity 0.35s ease; }
+.converting-quip.fade { opacity: 0; }
+.converting-bar { height: 8px; border-radius: 999px; background: var(--track); overflow: hidden; max-width: 360px; margin: 0 auto 12px; }
+.converting-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--brand), var(--green)); transition: width 0.9s ease; }
+.converting-note { margin: 0; font-size: 12px; color: var(--soft); }
+@keyframes converting-spin { to { transform: rotate(360deg); } }
+@keyframes converting-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+/* Animations turned off in Windows: keep a slow spin so the screen still reads as working, drop the bob. */
+@media (prefers-reduced-motion: reduce) {
+    .converting-ring { animation-duration: 3s; }
+    .converting-house { animation: none; }
+}
+
+.success { padding: 36px 24px; text-align: center; }
+.success .tick { width: 64px; height: 64px; margin: 0 auto 12px; border-radius: 50%; background: #dcfce7; color: #15803d; font-size: 34px; line-height: 64px; }
+.success h2 { margin: 0 0 6px; }
+.success p { margin: 0; color: var(--muted); }
+</style>
+
+<div class="toolbar">
+    <p>Sample data. The demo runs 20 seconds; a real conversion takes 30 to 60.</p>
+    <button type="button" class="btn btn-outline" id="replay">Replay</button>
+    <button type="button" class="btn btn-outline" id="restart">Start from the checklist</button>
+</div>
+
+<section class="stage" role="dialog" aria-modal="true" aria-label="Convert to Transaction">
+<div class="modal-card">
+
+    <div id="checklist" hidden>
+        <header class="modal-header">
+            <h2>Confirm TRID application pieces</h2>
+            <p>Tick each item you have current information for, then confirm to convert. Decline leaves the lead unchanged.</p>
+        </header>
+        <div class="modal-body">
+            <dl class="checklist" id="rows"></dl>
+            <label class="ack"><input type="checkbox" id="ack"><span>I confirm these application pieces are accurate and I am ready to convert this lead.</span></label>
+        </div>
+        <footer class="modal-footer">
+            <button type="button" class="btn btn-outline">Decline</button>
+            <button type="button" class="btn btn-brand" id="confirm" disabled>Confirm conversion</button>
+        </footer>
+    </div>
+
+    <div class="converting" id="converting" role="status" aria-live="polite">
+        <div class="converting-art" aria-hidden="true">
+            <div class="converting-ring"></div>
+            <div class="converting-house">
+                <svg viewBox="0 0 48 48" fill="none" stroke="#1b4d8c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                    <path d="M6 22 24 7l18 15"/><path d="M11 19v21h26V19"/><path d="M20 40V29h8v11" stroke="#2e8b57"/>
+                </svg>
+            </div>
+        </div>
+        <h2>Creating the transaction</h2>
+        <p class="converting-quip" id="quip">Rolling out the red tape…</p>
+        <div class="converting-bar"><span id="bar" style="width: 4%"></span></div>
+        <p class="converting-note" id="note">This usually takes 30 to 60 seconds. Please keep this window open.</p>
+    </div>
+
+    <div class="success" id="success" hidden>
+        <div class="tick" aria-hidden="true">&#10003;</div>
+        <h2>Lead converted</h2>
+        <p>Opening the new transaction…</p>
+    </div>
+
+</div>
+</section>
+
+<script>
+const QUIPS = [
+    'Rolling out the red tape…',
+    'Dotting the i\'s, crossing the t\'s, initialing here, here and here…',
+    'Moving the borrower in, one file at a time…',
+    'Fluffing the pillows on the new loan file…',
+    'Counting the commas in the loan amount…',
+    'Giving the paperwork a pep talk…',
+    'Stacking documents neatly. Very neatly…',
+    'Handing the keys to the processing team…',
+    'Waiting for the underwriter\'s coffee to kick in…',
+    'Measuring for curtains…'
+];
+const DEMO_MS = 20000;
+const $ = (id) => document.getElementById(id);
+const items = ['Borrower name', 'Borrower income', 'Borrower SSN', 'Subject property', 'Estimated property value', 'Loan amount'];
+const locked = new Set(['Borrower name', 'Borrower SSN']);
+$('rows').innerHTML = items.map((label, i) =>
+    `<div class="checklist-row"><dt>${label}</dt><dd><label class="have-info"><input type="checkbox" class="hv" id="hv${i}" ${locked.has(label) ? 'checked disabled' : ''}><span>Yes, I have this</span></label></dd></div>`
+).join('');
+const refresh = () => {
+    $('confirm').disabled = ![...document.querySelectorAll('.hv')].every((c) => c.checked) || !$('ack').checked;
+};
+document.querySelectorAll('#checklist input').forEach((i) => i.addEventListener('change', refresh));
+
+let timers = [];
+const stopTimers = () => { timers.forEach((t) => clearInterval(t)); timers = []; };
+const show = (id) => ['checklist', 'converting', 'success'].forEach((v) => { $(v).hidden = v !== id; });
+
+// Same logic as the component: shuffle once, rotate every 4 s, bar eases toward 95% over about 45 s,
+// and the note changes after 75 s.
+function startConverting() {
+    stopTimers();
+    show('converting');
+    const order = [...QUIPS].sort(() => Math.random() - 0.5);
+    let index = 0;
+    $('quip').textContent = order[0];
+    $('note').textContent = 'This usually takes 30 to 60 seconds. Please keep this window open.';
+    $('bar').style.width = '4%';
+    const started = Date.now();
+    timers.push(setInterval(() => {
+        $('quip').classList.add('fade');
+        setTimeout(() => {
+            index = (index + 1) % order.length;
+            $('quip').textContent = order[index];
+            $('quip').classList.remove('fade');
+        }, 350);
+    }, 4000));
+    timers.push(setInterval(() => {
+        const seconds = (Date.now() - started) / 1000;
+        $('bar').style.width = Math.min(95, 4 + 91 * (1 - Math.exp(-seconds / 20))) + '%';
+        if (seconds > 75) {
+            $('note').textContent = 'Taking longer than usual. Still working, please keep this window open.';
+        }
+        if (Date.now() - started >= DEMO_MS) {
+            stopTimers();
+            show('success');
+        }
+    }, 1000));
+}
+$('confirm').addEventListener('click', startConverting);
+$('replay').addEventListener('click', startConverting);
+$('restart').addEventListener('click', () => {
+    stopTimers();
+    document.querySelectorAll('.hv:not(:disabled)').forEach((c) => { c.checked = false; });
+    $('ack').checked = false;
+    refresh();
+    show('checklist');
+});
+startConverting();
+</script>

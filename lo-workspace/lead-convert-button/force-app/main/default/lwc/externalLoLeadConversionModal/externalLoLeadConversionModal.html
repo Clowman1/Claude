@@ -47,6 +47,24 @@
                     <button type="button" class="btn btn-brand" onclick={handleDecline}>Got it</button>
                 </footer>
             </template>
+            <template lwc:elseif={saving}>
+                <div class="converting" role="status" aria-live="polite">
+                    <div class="converting-art" aria-hidden="true">
+                        <div class="converting-ring"></div>
+                        <div class="converting-house">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="#1b4d8c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+                                <path d="M6 22 24 7l18 15"></path>
+                                <path d="M11 19v21h26V19"></path>
+                                <path d="M20 40V29h8v11" stroke="#2e8b57"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h2>Creating the transaction</h2>
+                    <p class={quipClass}>{quip}</p>
+                    <div class="converting-bar"><span style={barStyle}></span></div>
+                    <p class="converting-note">{convertingNote}</p>
+                </div>
+            </template>
             <template lwc:else>
             <header class="modal-header">
                 <h2>Confirm TRID application pieces</h2>

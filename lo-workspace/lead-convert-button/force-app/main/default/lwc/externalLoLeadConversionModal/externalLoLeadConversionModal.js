@@ -6,6 +6,22 @@ import { reduceApexError, showPortalToast } from 'c/portalUtils';
 // The phrase LeadConversionGuardService.BLOCK_MESSAGE opens with; ConvertLead wraps it in its own text.
 const isDocumentsBlock = (message) => String(message || '').includes('Finish the document review first');
 
+// Shown one at a time while the conversion runs (30-60 s), so the wait reads as progress, not a freeze.
+const QUIPS = [
+    'Rolling out the red tape…',
+    'Dotting the i\'s, crossing the t\'s, initialing here, here and here…',
+    'Moving the borrower in, one file at a time…',
+    'Fluffing the pillows on the new loan file…',
+    'Counting the commas in the loan amount…',
+    'Giving the paperwork a pep talk…',
+    'Stacking documents neatly. Very neatly…',
+    'Handing the keys to the processing team…',
+    'Waiting for the underwriter\'s coffee to kick in…',
+    'Measuring for curtains…'
+];
+const NOTE_NORMAL = 'This usually takes 30 to 60 seconds. Please keep this window open.';
+const NOTE_SLOW = 'Taking longer than usual. Still working, please keep this window open.';
+
 export default class ExternalLoLeadConversionModal extends LightningElement {
     @api contextRecordKey;
 
@@ -17,9 +33,61 @@ export default class ExternalLoLeadConversionModal extends LightningElement {
     received = [];
     /** LeadConversionGuardService refused: open document requests or undecisioned documents. */
     blockedByDocuments = false;
+    quip = '';
+    quipFading = false;
+    barPercent = 4;
+    convertingNote = NOTE_NORMAL;
+    progressTimers = [];
 
     connectedCallback() {
         this.loadPreview();
+    }
+
+    disconnectedCallback() {
+        this.stopProgress();
+    }
+
+    get quipClass() {
+        return this.quipFading ? 'converting-quip fade' : 'converting-quip';
+    }
+
+    get barStyle() {
+        return `width: ${this.barPercent}%`;
+    }
+
+    // Quips rotate every 4 s; the bar eases toward 95% over about 45 s and never claims to be done.
+    startProgress() {
+        this.stopProgress();
+        const order = [...QUIPS].sort(() => Math.random() - 0.5);
+        let index = 0;
+        this.quip = order[0];
+        this.quipFading = false;
+        this.barPercent = 4;
+        this.convertingNote = NOTE_NORMAL;
+        const started = Date.now();
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.progressTimers.push(setInterval(() => {
+            this.quipFading = true;
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                index = (index + 1) % order.length;
+                this.quip = order[index];
+                this.quipFading = false;
+            }, 350);
+        }, 4000));
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.progressTimers.push(setInterval(() => {
+            const seconds = (Date.now() - started) / 1000;
+            this.barPercent = Math.round(Math.min(95, 4 + 91 * (1 - Math.exp(-seconds / 20))));
+            if (seconds > 75) {
+                this.convertingNote = NOTE_SLOW;
+            }
+        }, 1000));
+    }
+
+    stopProgress() {
+        this.progressTimers.forEach((timer) => clearInterval(timer));
+        this.progressTimers = [];
     }
 
     async loadPreview() {
@@ -129,6 +197,7 @@ export default class ExternalLoLeadConversionModal extends LightningElement {
 
     async handleConfirm() {
         this.saving = true;
+        this.startProgress();
         try {
             const result = await confirmLeadConversion({
                 contextRecordKey: this.contextRecordKey,
@@ -146,15 +215,20 @@ export default class ExternalLoLeadConversionModal extends LightningElement {
                 this.showDocumentsBlock();
                 return;
             }
-            showPortalToast(this, 'Conversion blocked', result.userMessage, 'warning');
+            showPortalToast(this, 'Lead not converted', result.userMessage, 'warning');
         } catch (error) {
             const message = reduceApexError(error);
             if (isDocumentsBlock(message)) {
                 this.showDocumentsBlock();
                 return;
             }
-            showPortalToast(this, 'Conversion failed', message, 'error');
+            // A governor limit can't be caught in Apex, so its raw text lands here.
+            const plain = /Too many SOQL|LimitException|CPU time/i.test(message)
+                ? 'The lead was not converted and nothing was changed. This lead set off more automation than Salesforce allows in one save. Send this lead to an admin to convert.'
+                : message;
+            showPortalToast(this, 'Lead not converted', plain, 'error');
         } finally {
+            this.stopProgress();
             this.saving = false;
         }
     }

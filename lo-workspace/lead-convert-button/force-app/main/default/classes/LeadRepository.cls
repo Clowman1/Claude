@@ -266,6 +266,46 @@ public with sharing class LeadRepository {
     }
 
     /**
+     * LO Workspace My Leads: one status scope ('active' = not Nurture, 'nurture' = Nurture + 30 Day + Follow Up,
+     * which the page shows under Working) with the search done here, so a big book is never cut before
+     * it is filtered. term matches name, email, a full phone number or its last 4 digits.
+     */
+    public List<Lead> selectPortalLeadsByOwner(Id ownerId, String scope, String term, Integer rowLimit) {
+        if (ownerId == null) {
+            return new List<Lead>();
+        }
+        Set<String> recordTypes = ExternalLOBaselineHelper.CONSUMER_LEAD_RECORD_TYPES;
+        Integer lim = rowLimit == null || rowLimit < 1 ? 2000 : Math.min(rowLimit, 2000);
+        String soql = 'SELECT Id, Name, Status, IsConverted, Phone, Email, MobilePhone, LeadSource, CreatedDate,'
+            + ' LastActivityDate, Loan_Purpose__c, Loan_Amount__c, Loan_Program__c,'
+            + ' City, State, AriveId__c, Realtor_Buying_Agent__c, RecordType.DeveloperName'
+            + ' FROM Lead WHERE OwnerId = :ownerId AND IsConverted = false'
+            + ' AND RecordType.DeveloperName IN :recordTypes';
+        soql += scope == 'nurture'
+            // LO Workspace shows 30 Day + Follow Up under Working, so it never enters the nurture page (keeps
+            // "Load more" honest); the old portal's Nurture tab still lists it.
+            ? (UserInfo.getUserType() == 'Standard'
+                ? ' AND Status LIKE \'Nurtur%\''
+                : ' AND (Status LIKE \'Nurtur%\' OR Status = \'30 Day + Follow Up\')')
+            : ' AND (NOT Status LIKE \'Nurtur%\')';
+        String likeTerm;
+        Set<String> phones = new Set<String>();
+        String last4;
+        if (String.isNotBlank(term)) {
+            likeTerm = '%' + term.trim() + '%'; // bound, so no escaping
+            String digits = term.replaceAll('\\D', '');
+            if (digits.length() >= 10) {
+                phones = ExternalLoPhoneNormalizer.soqlVariants(new Set<String>{ digits.right(10) });
+            }
+            last4 = digits.length() >= 4 ? '%' + digits.right(4) : null;
+            soql += ' AND (Name LIKE :likeTerm OR Email LIKE :likeTerm OR Phone IN :phones OR MobilePhone IN :phones'
+                + (last4 == null ? '' : ' OR Phone LIKE :last4 OR MobilePhone LIKE :last4') + ')';
+        }
+        soql += ' WITH SYSTEM_MODE ORDER BY CreatedDate DESC LIMIT :lim';
+        return Database.query(soql);
+    }
+
+    /**
      * The user's open leads referred by one partner — the shared pipeline on
      * the partner detail page.
      */
@@ -309,6 +349,8 @@ public with sharing class LeadRepository {
         return leads.isEmpty() ? null : leads[0];
     }
 
+    private static final Set<String> CONVERT_ANY_LEAD_PROFILES = new Set<String>{ 'Manager', 'System Administrator' };
+
     public Lead selectPortalLeadForConversion(Id leadId, Id ownerId) {
         if (leadId == null || ownerId == null) {
             return null;
@@ -330,9 +372,14 @@ public with sharing class LeadRepository {
             }
         }
 
+        // Who may convert: the lead's Owner or Loan Partner, or any Manager or Admin.
+        String profileName = [SELECT Name FROM Profile WHERE Id = :UserInfo.getProfileId() WITH SYSTEM_MODE].Name;
+        String teamFilter = CONVERT_ANY_LEAD_PROFILES.contains(profileName)
+            ? ''
+            : ' AND (OwnerId = :ownerId OR Loan_Partner__c = :ownerId)';
         String query =
             'SELECT ' + String.join(fields, ',') +
-            ' FROM Lead WHERE Id = :leadId AND (OwnerId = :ownerId OR Loan_Partner__c = :ownerId) AND IsConverted = false WITH SYSTEM_MODE LIMIT 1';
+            ' FROM Lead WHERE Id = :leadId' + teamFilter + ' AND IsConverted = false WITH SYSTEM_MODE LIMIT 1';
         List<Lead> leads = (List<Lead>) Database.query(query);
         return leads.isEmpty() ? null : leads[0];
     }

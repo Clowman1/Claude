@@ -45,7 +45,10 @@ public with sharing class ExternalLoPortalConversionFacade {
         Id userId = UserInfo.getUserId();
         Lead leadRecord = LeadRepository.getInstance().selectPortalLeadForConversion(leadId, userId);
         if (leadRecord == null) {
-            throw new AuraHandledException('Lead could not be found or is not visible.');
+            throw new AuraHandledException(
+                'Only this lead\'s Owner or Loan Partner, a Manager, or an Admin can convert it. '
+                + 'If that should be you, ask an admin to add you to the lead team.'
+            );
         }
 
         ConversionPreview preview = new ConversionPreview();
@@ -127,7 +130,7 @@ public with sharing class ExternalLoPortalConversionFacade {
         Savepoint beforeConversion = Database.setSavepoint();
         try {
             releaseScheduledAutomation(leadId);
-            ConvertLeadsInvocable.convertLeads(new List<Id>{ leadId });
+            new SharingFreeConvert().convert(leadId);
             createTransactionForConvertedLead(leadId);
             Lead convertedLead = [
                 SELECT Id, IsConverted, Converted_Transaction_ID__c
@@ -139,6 +142,7 @@ public with sharing class ExternalLoPortalConversionFacade {
             result.success = convertedLead.IsConverted == true;
             if (result.success) {
                 recordInfoReceived(leadId, preview.missingFields, received);
+                warnIfNearSoqlLimit(leadId, preview.borrowerName);
             }
             result.transactionKey = convertedLead.Converted_Transaction_ID__c == null
                 ? null
@@ -153,9 +157,88 @@ public with sharing class ExternalLoPortalConversionFacade {
         } catch (Exception error) {
             Database.rollback(beforeConversion);
             result.errorCode = 'CONVERSION_FAILED';
-            result.userMessage = error.getMessage();
+            result.userMessage = plainConversionError(error.getMessage());
         }
         return result;
+    }
+
+    /**
+     * The button's own gate (Owner, Loan Partner, Manager, Admin) decides who may convert. The convert runs without
+     * sharing because a returning borrower's Person Account is usually owned by someone else, and Salesforce refuses
+     * to attach a lead to an account the user can't edit (Megan / Reade Palmer, 2026-10-26).
+     */
+    private without sharing class SharingFreeConvert {
+        void convert(Id leadId) {
+            ConvertLeadsInvocable.convertLeads(new List<Id>{ leadId });
+        }
+    }
+
+    /** Turns a raw Salesforce error into something an LO can act on. Nothing was saved whenever this runs. */
+    @TestVisible
+    private static String plainConversionError(String raw) {
+        String text = String.isBlank(raw) ? '' : raw;
+        String prefix = 'The lead was not converted and nothing was changed. ';
+        if (text.contains('Finish the document review first')) {
+            return text; // the modal matches on this and shows its own open-items card
+        }
+        if (text.contains('FIELD_CUSTOM_VALIDATION_EXCEPTION')) {
+            // Validation rule messages are already written for users: show just that sentence.
+            String rule = text.substringAfter('FIELD_CUSTOM_VALIDATION_EXCEPTION,').substringBefore(': [').trim();
+            return prefix + (String.isBlank(rule) ? 'A required field is missing or invalid.' : rule);
+        }
+        if (text.contains('INSUFFICIENT_ACCESS') || text.contains('required permissions')) {
+            return prefix + 'You don\'t have access to a record this conversion needs to update, usually the '
+                + 'borrower\'s existing account. Send this lead to an admin to convert.';
+        }
+        if (text.contains('RECORD_IN_USE_BY_WORKFLOW') || text.contains('UNABLE_TO_LOCK_ROW')) {
+            return prefix + 'Salesforce is busy updating this lead right now. Wait a minute and try again.';
+        }
+        if (text.contains('DUPLICATE')) {
+            return prefix + 'Salesforce thinks this borrower already exists. Send this lead to an admin to convert.';
+        }
+        if (text.contains('Too many SOQL') || text.contains('LimitException')) {
+            return prefix + 'This lead set off more automation than Salesforce allows in one save. '
+                + 'Send this lead to an admin to convert.';
+        }
+        if (text.contains('CANNOT_EXECUTE_FLOW_TRIGGER')) {
+            String flow = text.substringBetween('the "', '" process');
+            return prefix + 'An automation' + (String.isBlank(flow) ? '' : ' ("' + flow + '")')
+                + ' failed during the conversion. Send this lead to an admin to convert.';
+        }
+        return prefix + 'Send this lead to an admin to convert. Details for the admin: ' + text.abbreviate(200);
+    }
+
+    /**
+     * Early warning: a conversion measured 100/100 SOQL on 2026-10-20 and the fixes left it at about 72. New automation on
+     * Lead, Transaction__c, Condition__c or Lead_Document_Request__c eats that headroom silently, and the 101st query is an
+     * uncatchable LimitException. Emails the admin when a successful conversion used soqlAlertThreshold or more.
+     * Spends no SOQL and never throws. See lo-workspace/conversion-soql/README.md.
+     */
+    @TestVisible private static Integer soqlAlertThreshold = 85;
+    @TestVisible private static Integer soqlAlertsAttempted = 0;
+    private static final String SOQL_ALERT_TO = 'clowman@reachhomeloans.com';
+
+    @TestVisible
+    private static void warnIfNearSoqlLimit(Id leadId, String borrowerName) {
+        try {
+            Integer used = Limits.getQueries();
+            Integer cap = Limits.getLimitQueries();
+            if (used < soqlAlertThreshold) {
+                return;
+            }
+            soqlAlertsAttempted++;
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setToAddresses(new List<String>{ SOQL_ALERT_TO });
+            mail.setSaveAsActivity(false);
+            mail.setSubject('Lead conversion used ' + used + ' of ' + cap + ' SOQL queries');
+            mail.setPlainTextBody('Lead ' + borrowerName + ' (' + leadId + ') converted from the LO Workspace using ' + used
+                + ' of ' + cap + ' SOQL queries (alert threshold ' + soqlAlertThreshold + ').\n\n'
+                + 'Conversions fail at ' + (cap + 1) + '. Cut headroom before the next automation lands; start with the '
+                + 'doc-request carry-forward cascade. Details: lo-workspace/conversion-soql/README.md.');
+            Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ mail }, false);
+        } catch (Exception ignored) {
+            // An alert must never fail or roll back a conversion.
+        }
     }
 
     /**
@@ -190,17 +273,16 @@ public with sharing class ExternalLoPortalConversionFacade {
 
     /**
      * A lead with a queued scheduled-flow step can't be converted (RECORD_IN_USE_BY_WORKFLOW). Pre-Approval
-     * leads always have one (flow Create_task_on_pre_approval_with_no_activity_Angelina, 90 days out).
+     * leads always have one (flow Create_task_on_pre_approval_with_no_activity_Angelina, 90 days out), and
+     * other statuses can too; LOs may convert at any status, so every lead is released.
      * Moving the lead to the status conversion sets anyway (Submitted For Disclosures) drops it, and the
      * convert in the same transaction then succeeds; a failed conversion rolls the status back.
      */
-    private static final Set<String> RELEASED_STATUSES = new Set<String>{ 'Pre-Approval', 'Under Contract' };
-
     @TestVisible
     private static void releaseScheduledAutomation(Id leadId) {
         List<Lead> leads = [SELECT Id, Status FROM Lead WHERE Id = :leadId WITH SYSTEM_MODE LIMIT 1];
         String convertedStatus = Label.Consumer_Lead_Process;
-        if (leads.isEmpty() || !RELEASED_STATUSES.contains(leads[0].Status) || String.isBlank(convertedStatus)) {
+        if (leads.isEmpty() || String.isBlank(convertedStatus) || leads[0].Status == convertedStatus) {
             return;
         }
         Database.update(new Lead(Id = leadId, Status = convertedStatus), true, AccessLevel.SYSTEM_MODE);

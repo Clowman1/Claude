@@ -191,15 +191,15 @@ private class ExternalLoPortalConversionFacadeTest {
     }
 
     @IsTest
-    static void preApprovalLeadsAreReleasedBeforeConverting() {
+    static void everyLeadIsReleasedBeforeConverting() {
         Lead l = new Lead(LastName = 'Releaser', Company = 'n/a', Status = 'Pre-Approval', Loan_Amount__c = 350000);
         insert l;
         ExternalLoPortalConversionFacade.releaseScheduledAutomation(l.Id);
         System.assertEquals(Label.Consumer_Lead_Process, [SELECT Status FROM Lead WHERE Id = :l.Id].Status);
-        Lead working = new Lead(LastName = 'Untouched', Company = 'n/a', Status = 'Working');
+        Lead working = new Lead(LastName = 'Working', Company = 'n/a', Status = 'Working');
         insert working;
         ExternalLoPortalConversionFacade.releaseScheduledAutomation(working.Id);
-        System.assertEquals('Working', [SELECT Status FROM Lead WHERE Id = :working.Id].Status, 'Only Pre-Approval / Under Contract leads move.');
+        System.assertEquals(Label.Consumer_Lead_Process, [SELECT Status FROM Lead WHERE Id = :working.Id].Status, 'LOs convert at any status.');
         Lead contract = new Lead(LastName = 'Contract', Company = 'n/a', Status = 'Under Contract');
         insert contract;
         ExternalLoPortalConversionFacade.releaseScheduledAutomation(contract.Id);
@@ -234,5 +234,35 @@ private class ExternalLoPortalConversionFacadeTest {
         System.assertEquals(loanId, [SELECT Transaction__c FROM Borrower__c WHERE Id = :co.Id].Transaction__c, 'Co-borrower follows the lead onto the loan.');
         System.assertEquals(loanId, ExternalLoPortalConversionFacade.createTransactionForConvertedLead(l.Id), 'A second call creates nothing.');
         System.assertEquals(1, [SELECT COUNT() FROM Transaction__c WHERE Borrower_Name__c = :loan.Borrower_Name__c]);
+    }
+
+    @IsTest
+    static void soqlAlertFiresOnlyAtOrAboveThreshold() {
+        Lead l = new Lead(LastName = 'Headroom', Company = 'n/a', Status = 'New');
+        insert l;
+        ExternalLoPortalConversionFacade.soqlAlertThreshold = 100;
+        ExternalLoPortalConversionFacade.warnIfNearSoqlLimit(l.Id, 'Headroom');
+        System.assertEquals(0, ExternalLoPortalConversionFacade.soqlAlertsAttempted, 'Below the threshold, no alert.');
+
+        ExternalLoPortalConversionFacade.soqlAlertThreshold = 0;
+        Integer queriesBefore = Limits.getQueries();
+        ExternalLoPortalConversionFacade.warnIfNearSoqlLimit(l.Id, 'Headroom');
+        System.assertEquals(1, ExternalLoPortalConversionFacade.soqlAlertsAttempted, 'At or above the threshold, the admin is alerted.');
+        System.assertEquals(queriesBefore, Limits.getQueries(), 'The alert spends no SOQL.');
+    }
+
+    @IsTest
+    static void plainConversionError_translatesSalesforceErrors() {
+        String access = ExternalLoPortalConversionFacade.plainConversionError('ConvertLead failed. First exception on row 0; '
+            + 'first error: INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY, You do not have the required permissions.: []');
+        System.assert(access.contains('existing account') && !access.contains('INSUFFICIENT'), access);
+        String rule = ExternalLoPortalConversionFacade.plainConversionError('Update failed. first error: '
+            + 'FIELD_CUSTOM_VALIDATION_EXCEPTION, Loan Amount is required: [Loan_Amount__c]');
+        System.assert(rule.endsWith('Loan Amount is required'), rule);
+        String flow = ExternalLoPortalConversionFacade.plainConversionError('CANNOT_EXECUTE_FLOW_TRIGGER, '
+            + 'We can\'t save this record because the "Some Flow" process failed.');
+        System.assert(flow.contains('("Some Flow")'), flow);
+        String guard = 'Finish the document review first: 2 open items.';
+        System.assertEquals(guard, ExternalLoPortalConversionFacade.plainConversionError(guard), 'The modal matches on it.');
     }
 }

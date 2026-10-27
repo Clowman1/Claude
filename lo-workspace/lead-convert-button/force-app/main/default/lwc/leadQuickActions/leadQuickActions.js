@@ -10,6 +10,7 @@ import ARIVE_ID_FIELD from '@salesforce/schema/Lead.AriveId__c';
 import STATUS_FIELD from '@salesforce/schema/Lead.Status';
 import OWNER_ID_FIELD from '@salesforce/schema/Lead.OwnerId';
 import LOAN_PARTNER_FIELD from '@salesforce/schema/Lead.Loan_Partner__c';
+import IS_EXTERNAL_LO from '@salesforce/customPermission/External_LO';
 
 const FIELDS = [
     IS_CONVERTED_FIELD, RECORD_TYPE_DEVELOPER_NAME_FIELD, FOLLOW_UP_ACCOUNT_FIELD, ARIVE_ID_FIELD,
@@ -77,11 +78,14 @@ export default class LeadQuickActions extends NavigationMixin(LightningElement) 
         return this.recordTypeDeveloperName === 'Realtor_Lead_record_type';
     }
 
-    // Same modal as the LO Workspace; the server only lets the lead's Owner or Loan Partner convert.
+    // Same modal as the LO Workspace; the server lets the lead's Owner or Loan Partner, Managers and Admins convert
+    // (LeadRepository.selectPortalLeadForConversion).
     get canConvert() {
+        // External LOs convert at any status (decided 2026-10-20); internal LOs keep Pre-Approval / Under Contract.
         return !this.isConverted
-            && CONVERTIBLE_STATUSES.includes(this.status)
-            && (USER_ID === this.ownerId || USER_ID === this.loanPartnerId);
+            && (IS_EXTERNAL_LO || CONVERTIBLE_STATUSES.includes(this.status))
+            && (USER_ID === this.ownerId || USER_ID === this.loanPartnerId
+                || this.isAdminProfile || this.profileName === 'Manager');
     }
 
     get visibleActions() {

@@ -124,8 +124,16 @@ private class LeadRepositoryTest {
         System.assertEquals(partner.Id, [SELECT Loan_Partner__c FROM Lead WHERE Id = :l.Id].Loan_Partner__c);
 
         LeadRepository repo = LeadRepository.getInstance();
-        System.assertNotEquals(null, repo.selectPortalLeadForConversion(l.Id, partner.Id), 'Loan Partner can convert.');
-        System.assertEquals(null, repo.selectPortalLeadForConversion(l.Id, stranger.Id), 'Neither owner nor partner.');
+        System.runAs(partner) {
+            System.assertNotEquals(null, repo.selectPortalLeadForConversion(l.Id, partner.Id), 'Loan Partner can convert.');
+        }
+        System.runAs(stranger) {
+            System.assertEquals(null, repo.selectPortalLeadForConversion(l.Id, stranger.Id), 'Neither owner nor partner.');
+        }
+        User admin = [SELECT Id FROM User WHERE Profile.Name = 'System Administrator' AND IsActive = true LIMIT 1];
+        System.runAs(admin) {
+            System.assertNotEquals(null, repo.selectPortalLeadForConversion(l.Id, admin.Id), 'Admins can convert any lead.');
+        }
     }
 
     @IsTest
