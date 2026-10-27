@@ -49,6 +49,12 @@
 .THIS .progressBar {
     width: 100%;
 }
+.THIS .progress-count {
+    float: right;
+    font-weight: normal;
+    letter-spacing: 0;
+    color: #565656;
+}
 .THIS .progress-bar {
     width: 100%;
     height: 10px;

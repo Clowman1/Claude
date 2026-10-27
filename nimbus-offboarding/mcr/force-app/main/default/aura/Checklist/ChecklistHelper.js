@@ -44,9 +44,19 @@
                         currentCheckListFields.push(checklist.items[i].fieldName);
                     }
                 }
-                const percentage = Math.round(filledItems.length/ currentCheckListFields.length * 100);
-                component.set('v.checkListCount', percentage);
+                const total = currentCheckListFields.length;
+                component.set('v.checkListCount', total ? Math.round(filledItems.length / total * 100) : 0);
+                component.set('v.doneCount', filledItems.length);
+                component.set('v.totalCount', total);
+                component.set('v.loadError', null);
                 component.set('v.checklist',checklist);
+                component.set('v.isLoading', false);
+            } else {
+                // A failed load used to leave a blank card with a full-width bar that looked 100% done.
+                const message = this.getErrorMessage(res.getError());
+                component.set('v.loadError', /access to Apex class/i.test(message)
+                    ? 'your user is missing checklist access. Ask a Salesforce admin.'
+                    : message);
                 component.set('v.isLoading', false);
             }
         })

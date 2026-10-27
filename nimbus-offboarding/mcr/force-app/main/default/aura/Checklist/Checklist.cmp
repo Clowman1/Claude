@@ -5,7 +5,10 @@
 <aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" controller="ChecklistController">
     <aura:handler name="init" action="{!c.init}" value="{!this}"/>
     <aura:attribute name="checklist" type="Object" access="global" default="{ 'items' : [] }"/>
-    <aura:attribute name="checkListCount" type="String" access="global" />
+    <aura:attribute name="checkListCount" type="Integer" access="global" default="0"/>
+    <aura:attribute name="doneCount" type="Integer" default="0"/>
+    <aura:attribute name="totalCount" type="Integer" default="0"/>
+    <aura:attribute name="loadError" type="String"/>
     <aura:attribute name="isLoading" type="Object" access="global" default="true"/>
     <aura:attribute name="fields" type="String" access="global"/>
     <aura:handler event="force:refreshView" action="{! c.init}" />
@@ -26,7 +29,7 @@
     <aura:attribute name="bpsVerificationLoanNumber" type="String" default=""/>
     <aura:attribute name="bpsVerificationBorrowerName" type="String" default=""/>
 
-    <lightning:card title="{!v.checklist.title}" iconName="custom:custom18" variant="base">
+    <lightning:card title="{!empty(v.checklist.title) ? 'Checklist' : v.checklist.title}" iconName="custom:custom18" variant="base">
         <aura:if isTrue="{!v.spinner}">
             <div aura:id="spinnerId" class="slds-spinner_container">
                 <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
@@ -37,8 +40,13 @@
             </div>
         </aura:if>
         <div class="slds-card__body_inner">
+          <aura:if isTrue="{!not(empty(v.loadError))}">
+            <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small" role="alert">
+                <span>Checklist could not load: {!v.loadError}</span>
+            </div>
+          </aura:if>
           <div class="progress-bar-container">
-            <h2>{!v.checkListCount}% Complete</h2>
+            <h2>{!v.checkListCount}% Complete <span class="progress-count">{!v.doneCount} of {!v.totalCount} done</span></h2>
             <div class="progress-bar">
                 <span aura:id="percentBar" style="{! 'width: ' + v.checkListCount + '%'}" class="percentage"></span>
             </div>
